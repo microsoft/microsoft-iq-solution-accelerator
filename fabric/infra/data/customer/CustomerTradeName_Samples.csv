@@ -1,0 +1,161 @@
+CustomerID,CustomerTypeID,TradeNameID,TradeName,PeriodStartDate,PeriodEndDate,CustomerTradeNameNote
+CID-002,Government,TN-001,Ganymede Municipal Office,8/17/2018,5/24/2020,Generated government trade name for compliance testing
+CID-003,Business,TN-002,Contoso Group,4/3/2019,,Generated business trade name for compliance testing
+CID-008,Business,TN-003,Contoso Enterprises,10/17/2021,,Generated business trade name for compliance testing
+CID-010,Business,TN-004,Contoso Solutions,4/24/2021,,Generated business trade name for compliance testing
+CID-012,Government,TN-005,Planet Mars Authority,7/11/2018,,Generated government trade name for compliance testing
+CID-013,Business,TN-006,Contoso Corp,2/23/2021,,Generated business trade name for compliance testing
+CID-026,Business,TN-007,Fabrikam Solutions,3/28/2019,,Generated business trade name for compliance testing
+CID-034,Government,TN-008,Neptune State Agency,1/14/2018,,Generated government trade name for compliance testing
+CID-035,Government,TN-009,Saturn Municipal Services,11/30/2021,,Generated government trade name for compliance testing
+CID-036,Business,TN-010,Fabrikam Inc,11/15/2018,,Generated business trade name for compliance testing
+CID-044,Government,TN-011,Mercury City Government,7/29/2018,,Generated government trade name for compliance testing
+CID-051,Government,TN-012,Jupiter Department of Commerce,1/6/2020,,Generated government trade name for compliance testing
+CID-052,Business,TN-013,Fabrikam Inc,3/30/2018,,Generated business trade name for compliance testing
+CID-053,Government,TN-014,Europa Space Authority,9/13/2018,,Generated government trade name for compliance testing
+CID-054,Business,TN-015,Fabrikam Manufacturing,6/11/2018,,Generated business trade name for compliance testing
+CID-056,Government,TN-016,Ganymede Municipal Office,6/20/2021,,Generated government trade name for compliance testing
+CID-063,Business,TN-017,Fabrikam Technologies,3/28/2021,,Generated business trade name for compliance testing
+CID-068,Business,TN-018,Contoso Solutions,4/4/2018,,Generated business trade name for compliance testing
+CID-070,Government,TN-019,Neptune State Agency,6/13/2018,,Generated government trade name for compliance testing
+CID-071,Business,TN-020,Contoso Enterprises,2/18/2020,,Generated business trade name for compliance testing
+CID-074,Business,TN-021,Fabrikam Technologies,11/30/2018,,Generated business trade name for compliance testing
+CID-075,Business,TN-022,Contoso Services,10/4/2021,,Generated business trade name for compliance testing
+CID-076,Business,TN-023,Contoso Solutions,6/1/2021,,Generated business trade name for compliance testing
+CID-077,Business,TN-024,Contoso Group,12/1/2018,,Generated business trade name for compliance testing
+CID-081,Business,TN-025,Fabrikam Inc,8/3/2021,,Generated business trade name for compliance testing
+CID-087,Business,TN-026,Contoso Group,11/3/2021,,Generated business trade name for compliance testing
+CID-089,Business,TN-027,Contoso Industries,4/15/2019,,Generated business trade name for compliance testing
+CID-092,Business,TN-028,Fabrikam Group,4/1/2020,,Generated business trade name for compliance testing
+CID-093,Business,TN-029,Contoso Services,3/7/2021,,Generated business trade name for compliance testing
+CID-095,Business,TN-030,Fabrikam Group,3/12/2019,,Generated business trade name for compliance testing
+CID-105,Government,TN-031,Uranus Federal Bureau,8/9/2021,,Generated government trade name for compliance testing
+CID-108,Business,TN-032,Fabrikam Inc,10/13/2018,,Generated business trade name for compliance testing
+CID-113,Government,TN-033,Europa Space Authority,1/8/2021,,Generated government trade name for compliance testing
+CID-114,Business,TN-034,Fabrikam Solutions,4/10/2021,,Generated business trade name for compliance testing
+CID-116,Business,TN-035,Contoso Group,10/11/2018,,Generated business trade name for compliance testing
+CID-117,Business,TN-036,Contoso Solutions,4/7/2018,,Generated business trade name for compliance testing
+CID-119,Business,TN-037,Contoso Manufacturing,7/9/2021,,Generated business trade name for compliance testing
+CID-121,Business,TN-038,Fabrikam Solutions,5/6/2021,,Generated business trade name for compliance testing
+CID-122,Business,TN-039,Fabrikam Manufacturing,5/5/2021,,Generated business trade name for compliance testing
+CID-127,Business,TN-040,Fabrikam Inc,2/7/2021,,Generated business trade name for compliance testing
+CID-128,Business,TN-041,Contoso Corp,10/25/2021,,Generated business trade name for compliance testing
+CID-135,Government,TN-042,Ganymede Municipal Office,1/4/2021,,Generated government trade name for compliance testing
+CID-138,Business,TN-043,Fabrikam Group,8/17/2018,,Generated business trade name for compliance testing
+CID-140,Government,TN-044,Saturn Municipal Services,7/18/2020,4/13/2022,Generated government trade name for compliance testing
+CID-141,Government,TN-045,Europa Space Authority,1/1/2019,,Generated government trade name for compliance testing
+CID-151,Government,TN-046,Jupiter Department of Commerce,7/4/2021,,Generated government trade name for compliance testing
+CID-155,Government,TN-047,Ganymede Municipal Office,11/5/2020,,Generated government trade name for compliance testing
+CID-158,Business,TN-048,Contoso Manufacturing,2/5/2020,,Generated business trade name for compliance testing
+CID-160,Business,TN-049,Contoso Corp,5/11/2021,,Generated business trade name for compliance testing
+CID-166,Business,TN-050,Contoso Corp,8/18/2018,,Generated business trade name for compliance testing
+CID-179,Government,TN-051,Neptune State Agency,5/6/2019,,Generated government trade name for compliance testing
+CID-183,Government,TN-052,Titan Regional Services,6/11/2018,,Generated government trade name for compliance testing
+CID-184,Business,TN-053,Fabrikam Industries,5/22/2018,,Generated business trade name for compliance testing
+CID-187,Business,TN-054,Contoso Manufacturing,9/20/2018,,Generated business trade name for compliance testing
+CID-192,Business,TN-055,Contoso Technology,6/27/2019,,Generated business trade name for compliance testing
+CID-193,Government,TN-056,Titan Regional Services,5/16/2020,,Generated government trade name for compliance testing
+CID-197,Business,TN-057,Contoso Services,12/31/2021,,Generated business trade name for compliance testing
+CID-198,Business,TN-058,Fabrikam Technologies,6/16/2020,,Generated business trade name for compliance testing
+CID-199,Business,TN-059,Fabrikam Services,9/5/2018,,Generated business trade name for compliance testing
+CID-200,Business,TN-060,Contoso Solutions,11/24/2019,6/13/2022,Generated business trade name for compliance testing
+CID-204,Business,TN-061,Contoso Group,4/20/2021,,Generated business trade name for compliance testing
+CID-215,Business,TN-062,Contoso Solutions,12/20/2021,,Generated business trade name for compliance testing
+CID-218,Business,TN-063,Contoso Group,5/19/2018,,Generated business trade name for compliance testing
+CID-220,Business,TN-064,Fabrikam Group,5/26/2018,,Generated business trade name for compliance testing
+CID-227,Government,TN-065,Neptune State Agency,10/2/2021,,Generated government trade name for compliance testing
+CID-229,Business,TN-066,Contoso Manufacturing,3/15/2021,,Generated business trade name for compliance testing
+CID-231,Business,TN-067,Contoso Group,8/26/2020,,Generated business trade name for compliance testing
+CID-236,Business,TN-068,Contoso Services,7/13/2018,,Generated business trade name for compliance testing
+CID-241,Government,TN-069,Uranus Federal Bureau,12/27/2019,,Generated government trade name for compliance testing
+CID-242,Government,TN-070,Pluto District Office,4/21/2018,,Generated government trade name for compliance testing
+CID-243,Government,TN-071,Ganymede Municipal Office,7/21/2018,,Generated government trade name for compliance testing
+CID-246,Government,TN-072,Callisto State Department,11/26/2019,,Generated government trade name for compliance testing
+CID-248,Government,TN-073,Jupiter Department of Commerce,5/25/2019,,Generated government trade name for compliance testing
+CID-249,Government,TN-074,Europa Space Authority,7/7/2020,,Generated government trade name for compliance testing
+CID-250,Business,TN-075,Contoso Technology,7/25/2019,,Generated business trade name for compliance testing
+CID-253,Business,TN-076,Contoso Solutions,6/26/2020,,Generated business trade name for compliance testing
+CID-257,Government,TN-077,Europa Space Authority,7/20/2018,,Generated government trade name for compliance testing
+CID-262,Government,TN-078,Europa Space Authority,1/31/2018,,Generated government trade name for compliance testing
+CID-265,Business,TN-079,Contoso Group,12/7/2018,,Generated business trade name for compliance testing
+CID-266,Business,TN-080,Fabrikam Industries,3/14/2019,,Generated business trade name for compliance testing
+CID-268,Business,TN-081,Contoso Industries,12/4/2018,,Generated business trade name for compliance testing
+CID-271,Business,TN-082,Fabrikam Manufacturing,6/28/2019,,Generated business trade name for compliance testing
+CID-272,Business,TN-083,Fabrikam Services,8/8/2019,,Generated business trade name for compliance testing
+CID-273,Business,TN-084,Fabrikam Industries,11/14/2018,,Generated business trade name for compliance testing
+CID-274,Government,TN-085,Venus Regional Office,4/30/2018,,Generated government trade name for compliance testing
+CID-277,Business,TN-086,Contoso Industries,10/5/2019,,Generated business trade name for compliance testing
+CID-279,Business,TN-087,Fabrikam Industries,10/26/2020,,Generated business trade name for compliance testing
+CID-280,Business,TN-088,Contoso Technology,4/27/2018,,Generated business trade name for compliance testing
+CID-281,Business,TN-089,Contoso Solutions,1/16/2019,,Generated business trade name for compliance testing
+CID-293,Business,TN-090,Contoso Solutions,10/14/2021,,Generated business trade name for compliance testing
+CID-297,Business,TN-091,Fabrikam Manufacturing,9/3/2018,,Generated business trade name for compliance testing
+CID-305,Business,TN-092,Contoso Group,3/31/2021,,Generated business trade name for compliance testing
+CID-306,Government,TN-093,Titan Regional Services,6/17/2018,,Generated government trade name for compliance testing
+CID-309,Business,TN-094,Fabrikam Group,6/19/2019,,Generated business trade name for compliance testing
+CID-314,Government,TN-095,Callisto State Department,10/6/2019,,Generated government trade name for compliance testing
+CID-315,Business,TN-096,Fabrikam Manufacturing,9/26/2018,,Generated business trade name for compliance testing
+CID-322,Business,TN-097,Fabrikam Systems,7/25/2020,,Generated business trade name for compliance testing
+CID-325,Government,TN-098,Jupiter Department of Commerce,1/20/2018,,Generated government trade name for compliance testing
+CID-326,Business,TN-099,Contoso Enterprises,5/31/2018,,Generated business trade name for compliance testing
+CID-332,Business,TN-100,Fabrikam Inc,9/29/2018,,Generated business trade name for compliance testing
+CID-337,Business,TN-101,Contoso Solutions,5/16/2019,,Generated business trade name for compliance testing
+CID-338,Business,TN-102,Contoso Technology,6/16/2020,,Generated business trade name for compliance testing
+CID-352,Business,TN-103,Fabrikam Systems,6/6/2021,,Generated business trade name for compliance testing
+CID-359,Government,TN-104,Ganymede Municipal Office,12/19/2020,7/9/2023,Generated government trade name for compliance testing
+CID-365,Government,TN-105,Neptune State Agency,9/20/2021,,Generated government trade name for compliance testing
+CID-367,Government,TN-106,Saturn Municipal Services,6/26/2019,,Generated government trade name for compliance testing
+CID-368,Government,TN-107,Jupiter Department of Commerce,2/7/2021,,Generated government trade name for compliance testing
+CID-377,Business,TN-108,Fabrikam Systems,5/23/2021,,Generated business trade name for compliance testing
+CID-379,Business,TN-109,Fabrikam Group,2/21/2019,,Generated business trade name for compliance testing
+CID-384,Business,TN-110,Fabrikam Inc,11/1/2020,,Generated business trade name for compliance testing
+CID-385,Business,TN-111,Contoso Industries,7/9/2018,,Generated business trade name for compliance testing
+CID-386,Business,TN-112,Fabrikam Inc,4/1/2018,8/12/2019,Generated business trade name for compliance testing
+CID-389,Business,TN-113,Fabrikam Inc,11/27/2018,,Generated business trade name for compliance testing
+CID-390,Business,TN-114,Fabrikam Solutions,2/22/2021,5/10/2022,Generated business trade name for compliance testing
+CID-391,Government,TN-115,Callisto State Department,11/2/2018,,Generated government trade name for compliance testing
+CID-394,Business,TN-116,Fabrikam Technologies,4/7/2021,,Generated business trade name for compliance testing
+CID-396,Government,TN-117,Uranus Federal Bureau,9/19/2018,9/26/2020,Generated government trade name for compliance testing
+CID-397,Business,TN-118,Contoso Industries,1/3/2020,,Generated business trade name for compliance testing
+CID-399,Business,TN-119,Contoso Group,9/27/2021,,Generated business trade name for compliance testing
+CID-400,Business,TN-120,Fabrikam Solutions,6/25/2021,,Generated business trade name for compliance testing
+CID-402,Government,TN-121,Venus Regional Office,11/29/2018,,Generated government trade name for compliance testing
+CID-404,Business,TN-122,Contoso Technology,4/24/2020,3/30/2022,Generated business trade name for compliance testing
+CID-406,Business,TN-123,Fabrikam Solutions,10/3/2021,,Generated business trade name for compliance testing
+CID-409,Government,TN-124,Venus Regional Office,7/1/2019,,Generated government trade name for compliance testing
+CID-412,Government,TN-125,Callisto State Department,8/10/2018,,Generated government trade name for compliance testing
+CID-413,Government,TN-126,Planet Mars Authority,8/21/2020,,Generated government trade name for compliance testing
+CID-420,Business,TN-127,Fabrikam Services,12/18/2019,,Generated business trade name for compliance testing
+CID-421,Business,TN-128,Contoso Group,4/2/2019,10/15/2020,Generated business trade name for compliance testing
+CID-422,Business,TN-129,Fabrikam Manufacturing,11/4/2019,,Generated business trade name for compliance testing
+CID-428,Business,TN-130,Contoso Solutions,7/26/2019,,Generated business trade name for compliance testing
+CID-432,Business,TN-131,Fabrikam Manufacturing,10/23/2021,,Generated business trade name for compliance testing
+CID-436,Business,TN-132,Fabrikam Group,2/26/2018,,Generated business trade name for compliance testing
+CID-438,Business,TN-133,Fabrikam Inc,1/1/2019,,Generated business trade name for compliance testing
+CID-439,Business,TN-134,Fabrikam Inc,3/20/2018,,Generated business trade name for compliance testing
+CID-442,Government,TN-135,Uranus Federal Bureau,12/9/2019,,Generated government trade name for compliance testing
+CID-445,Business,TN-136,Fabrikam Group,6/12/2020,,Generated business trade name for compliance testing
+CID-446,Government,TN-137,Europa Space Authority,8/25/2018,,Generated government trade name for compliance testing
+CID-447,Government,TN-138,Titan Regional Services,1/25/2019,,Generated government trade name for compliance testing
+CID-448,Business,TN-139,Fabrikam Solutions,1/4/2018,,Generated business trade name for compliance testing
+CID-451,Business,TN-140,Contoso Services,1/16/2020,,Generated business trade name for compliance testing
+CID-454,Government,TN-141,Ganymede Municipal Office,11/8/2019,,Generated government trade name for compliance testing
+CID-463,Business,TN-142,Contoso Enterprises,9/8/2019,,Generated business trade name for compliance testing
+CID-465,Government,TN-143,Ganymede Municipal Office,4/16/2020,,Generated government trade name for compliance testing
+CID-468,Business,TN-144,Fabrikam Systems,2/9/2021,,Generated business trade name for compliance testing
+CID-470,Government,TN-145,Uranus Federal Bureau,9/23/2021,,Generated government trade name for compliance testing
+CID-472,Government,TN-146,Ganymede Municipal Office,12/23/2018,,Generated government trade name for compliance testing
+CID-474,Business,TN-147,Fabrikam Systems,4/11/2020,,Generated business trade name for compliance testing
+CID-476,Government,TN-148,Planet Mars Authority,9/15/2019,,Generated government trade name for compliance testing
+CID-479,Government,TN-149,Uranus Federal Bureau,4/2/2021,,Generated government trade name for compliance testing
+CID-486,Government,TN-150,Mercury City Government,8/10/2020,,Generated government trade name for compliance testing
+CID-489,Government,TN-151,Ganymede Municipal Office,3/14/2019,,Generated government trade name for compliance testing
+CID-490,Business,TN-152,Contoso Technology,9/11/2021,,Generated business trade name for compliance testing
+CID-499,Government,TN-153,Europa Space Authority,9/21/2021,,Generated government trade name for compliance testing
+CID-500,Government,TN-154,Mercury City Government,7/11/2018,,Generated government trade name for compliance testing
+CID-504,Business,TN-155,Contoso Group,10/9/2021,,Generated business trade name for compliance testing
+CID-507,Government,TN-156,Venus Regional Office,10/29/2018,7/5/2020,Generated government trade name for compliance testing
+CID-508,Business,TN-157,Fabrikam Industries,6/5/2021,,Generated business trade name for compliance testing
+CID-509,Government,TN-158,Jupiter Department of Commerce,7/21/2020,,Generated government trade name for compliance testing
+CID-510,Business,TN-159,Contoso Services,11/27/2021,,Generated business trade name for compliance testing
+CID-513,Government,TN-160,Uranus Federal Bureau,5/15/2019,,Generated government trade name for compliance testing

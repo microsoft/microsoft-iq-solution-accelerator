@@ -1,0 +1,42 @@
+# ============================================================================
+# parameter.yml — fabric-cicd parameterization for fabric/fabric_workspace
+# ============================================================================
+# Handles environment-specific value replacement when deploying to target
+# environments via the fabric-cicd library.
+# See: https://microsoft.github.io/fabric-cicd/0.1.12/how_to/parameterization/
+#
+# find_replace: replaces every instance of find_value in every file matching
+# the optional item_type / item_name / file_path filters.
+# .platform files are excluded automatically by fabric-cicd.
+#
+# Current GUIDs (source/DEV workspace — main_pipeline.Notebook):
+#   Lakehouse : f02e5a95-d5ae-4ac2-8624-d58064024b9b (fabriciq_team_lake)
+#   Workspace : 7d2ebc1a-df2a-485f-9786-a9d7067186a9
+#
+# NOTE: model_customer.Notebook uses different GUIDs (lakehouse 7bc5f01b,
+#       workspace 2948455a) that are NOT parameterized here.
+# ============================================================================
+
+find_replace:
+
+  # ==========================================================================
+  # NOTEBOOK — Lakehouse ID Replacement
+  # ==========================================================================
+
+  # Lakehouse GUID used in main_pipeline.Notebook/notebook-content.py
+  # (default_lakehouse and lakehouse id fields)
+  - find_value: "f02e5a95-d5ae-4ac2-8624-d58064024b9b"
+    replace_value:
+      _ALL_: "$items.Lakehouse.fabriciq_team_lake.$id"
+    item_type: "Notebook"
+  
+  # ==========================================================================
+  # NOTEBOOK — Workspace ID Replacement
+  # ==========================================================================
+
+  # Workspace GUID used in main_pipeline.Notebook/notebook-content.py
+  # (default_lakehouse_workspace_id field)
+  - find_value: "7d2ebc1a-df2a-485f-9786-a9d7067186a9"
+    replace_value:
+      _ALL_: "$workspace.$id"
+    item_type: "Notebook"

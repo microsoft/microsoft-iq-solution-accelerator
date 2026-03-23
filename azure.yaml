@@ -1,0 +1,39 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
+
+name: unified-data-foundation-with-fabric
+metadata:
+  template: unified-data-foundation-with-fabric@1.0
+
+requiredVersions:
+  azd: ">1.17.1"
+
+infra:
+  provider: bicep
+  path: infra
+  parameters:
+    solutionName: ${AZURE_ENV_NAME}
+    location: ${AZURE_LOCATION}
+
+hooks:
+  postprovision:
+    windows:
+      shell: pwsh
+      run: ./fabric/infra/scripts/utils/Run-PythonScript.ps1 -ScriptPath "fabric/infra/scripts/fabric/install_fabric_solution.py"
+      interactive: true
+      continueOnError: false
+    posix:
+      shell: pwsh
+      run: ./fabric/infra/scripts/utils/Run-PythonScript.ps1 -ScriptPath "fabric/infra/scripts/fabric/install_fabric_solution.py" -SkipPythonVirtualEnvironment
+      interactive: true
+      continueOnError: false
+  predown:
+    windows:
+      shell: pwsh
+      run: ./fabric/infra/scripts/utils/Run-PythonScript.ps1 -ScriptPath "fabric/infra/scripts/fabric/remove_fabric_solution.py"
+      interactive: true
+      continueOnError: false
+    posix:
+      shell: pwsh
+      run: ./fabric/infra/scripts/utils/Run-PythonScript.ps1 -ScriptPath "fabric/infra/scripts/fabric/remove_fabric_solution.py" -SkipPythonVirtualEnvironment
+      interactive: true
+      continueOnError: false

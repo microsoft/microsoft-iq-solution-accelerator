@@ -1,0 +1,15 @@
+# Sample Data Generation Requirements
+# ===================================
+# Core dependencies for generating realistic sales, finance & supply chain data
+# Supports both sales/finance generators and supply chain generators
+
+# Essential for data generation and processing
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Required for analytics dashboards and graphing (--graph flag)
+matplotlib>=3.5.0
+
+# Note: All other imports are Python built-ins:
+# - json, random, datetime, uuid, os, argparse, pathlib, sys, shutil, glob, collections
+# - No additional dependencies required for full functionality

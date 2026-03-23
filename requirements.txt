@@ -1,0 +1,7 @@
+# Requirements for fabric_iq/infra/scripts
+
+# Azure authentication (fabric_api.py, graph_api.py)
+azure-identity==1.15.0
+
+# HTTP requests (fabric_api.py, graph_api.py)
+requests==2.31.0
