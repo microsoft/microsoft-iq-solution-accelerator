@@ -10,8 +10,8 @@
 # .platform files are excluded automatically by fabric-cicd.
 #
 # Current GUIDs (source/DEV workspace — main_pipeline.Notebook):
-#   Lakehouse : f02e5a95-d5ae-4ac2-8624-d58064024b9b (fabriciq_team_lake)
-#   Workspace : 7d2ebc1a-df2a-485f-9786-a9d7067186a9
+#   Lakehouse : 1650c6ba-a2fa-44f8-ba66-d4643da39fae (fabriciq_team_lake)
+#   Workspace : 27818fad-0450-42b9-a4a0-db84075ac8d7
 #
 # NOTE: model_customer.Notebook uses different GUIDs (lakehouse 7bc5f01b,
 #       workspace 2948455a) that are NOT parameterized here.
@@ -25,7 +25,7 @@ find_replace:
 
   # Lakehouse GUID used in main_pipeline.Notebook/notebook-content.py
   # (default_lakehouse and lakehouse id fields)
-  - find_value: "f02e5a95-d5ae-4ac2-8624-d58064024b9b"
+  - find_value: "1650c6ba-a2fa-44f8-ba66-d4643da39fae"
     replace_value:
       _ALL_: "$items.Lakehouse.fabriciq_team_lake.$id"
     item_type: "Notebook"
@@ -36,7 +36,7 @@ find_replace:
 
   # Workspace GUID used in main_pipeline.Notebook/notebook-content.py
   # (default_lakehouse_workspace_id field)
-  - find_value: "7d2ebc1a-df2a-485f-9786-a9d7067186a9"
+  - find_value: "27818fad-0450-42b9-a4a0-db84075ac8d7"
     replace_value:
       _ALL_: "$workspace.$id"
     item_type: "Notebook"
