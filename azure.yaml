@@ -1,11 +1,11 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
 
-name: unified-data-foundation-with-fabric
+name: microsoft-iq
 metadata:
-  template: unified-data-foundation-with-fabric@1.0
+  template: microsoft-iq@1.0
 
 requiredVersions:
-  azd: ">1.17.1"
+  azd: ">=1.23.11"
 
 infra:
   provider: bicep

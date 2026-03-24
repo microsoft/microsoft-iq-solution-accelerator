@@ -23,7 +23,7 @@ import time
 import uuid
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Union, Any, Tuple
-from azure.identity import AzureCliCredential, DefaultAzureCredential
+from azure.identity import AzureCliCredential, AzureDeveloperCliCredential, ChainedTokenCredential, DefaultAzureCredential
 
 
 class GraphApiError(Exception):
@@ -60,7 +60,10 @@ class GraphApiClient:
         self.api_url = api_url.rstrip('/')
         self.resource_url = resource_url
         self.timeout_sec = timeout_sec
-        self._credential = credential or AzureCliCredential()
+        self._credential = credential or ChainedTokenCredential(
+            AzureDeveloperCliCredential(),
+            AzureCliCredential(),
+        )
         self._token = None
         self._token_expiry = None
     

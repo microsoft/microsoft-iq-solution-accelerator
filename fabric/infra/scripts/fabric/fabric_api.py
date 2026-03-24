@@ -25,7 +25,7 @@ import time
 import json
 import requests
 from typing import Dict, List, Optional, Union, Any
-from azure.identity import AzureCliCredential
+from azure.identity import AzureCliCredential, AzureDeveloperCliCredential, ChainedTokenCredential
 
 
 class FabricApiError(Exception):
@@ -65,7 +65,10 @@ class FabricApiClient:
         self.api_url = api_url.rstrip('/')
         self.resource_url = resource_url
         self.timeout_sec = timeout_sec
-        self._credential = credential or AzureCliCredential()
+        self._credential = credential or ChainedTokenCredential(
+            AzureDeveloperCliCredential(),
+            AzureCliCredential(),
+        )
         self._token = None
         self._token_expiry = None
     
