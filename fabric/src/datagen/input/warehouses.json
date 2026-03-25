@@ -1,0 +1,116 @@
+{
+  "warehouses": [
+    {
+      "WarehouseID": "Main",
+      "WarehouseName": "Main Distribution Center",
+      "DisplayName": "Kansas City, MO",
+      "Type": "Main",
+      "Status": "Active",
+      "Location": "Kansas City, MO, USA",
+      "Address": {
+        "Street": "1234 Main Street",
+        "City": "Kansas City",
+        "State": "MO",
+        "ZipCode": "98052",
+        "Country": "USA"
+      },
+      "ContactInfo": {
+        "Phone": "+1 (816) 555-0100",
+        "Email": "operations.main@contoso.com",
+        "Manager": "Sarah Johnson",
+        "ManagerEmail": "sarah.johnson@contoso.com"
+      },
+      "Capacity": {
+        "Priority": 0.7,
+        "MaxCapacity": 100000,
+        "Description": "Primary distribution hub with highest inventory allocation"
+      },
+      "DeliveryName": "Main Warehouse",
+      "Operations": {
+        "OperatingHours": "24/7",
+        "StaffCount": 150,
+        "AutomationLevel": "High",
+        "ShippingCarriers": ["FedEx", "UPS", "USPS", "DHL"]
+      },
+      "CreatedBy": "system"
+    },
+    {
+      "WarehouseID": "Backup",
+      "WarehouseName": "Backup Distribution Center", 
+      "DisplayName": "Memphis, TN",
+      "Type": "Backup",
+      "Status": "Active",
+      "Location": "Memphis, TN, USA",
+      "Address": {
+        "Street": "5678 Oak Avenue",
+        "City": "Memphis",
+        "State": "TN",
+        "ZipCode": "98053",
+        "Country": "USA"
+      },
+      "ContactInfo": {
+        "Phone": "+1 (901) 555-0101",
+        "Email": "operations.backup@contoso.com",
+        "Manager": "Michael Chen",
+        "ManagerEmail": "michael.chen@contoso.com"
+      },
+      "Capacity": {
+        "Priority": 0.2,
+        "MaxCapacity": 50000,
+        "Description": "Secondary distribution center for overflow and backup operations"
+      },
+      "DeliveryName": "Backup Warehouse",
+      "Operations": {
+        "OperatingHours": "Mon-Fri 6AM-10PM",
+        "StaffCount": 75,
+        "AutomationLevel": "Medium",
+        "ShippingCarriers": ["FedEx", "UPS", "USPS"]
+      },
+      "CreatedBy": "system"
+    },
+    {
+      "WarehouseID": "Regional",
+      "WarehouseName": "Regional Distribution Center",
+      "DisplayName": "Atlanta, GA", 
+      "Type": "Regional",
+      "Status": "Active",
+      "Location": "Atlanta, GA, USA",
+      "Address": {
+        "Street": "9012 Elm Street",
+        "City": "Atlanta",
+        "State": "GA",
+        "ZipCode": "98054",
+        "Country": "USA"
+      },
+      "ContactInfo": {
+        "Phone": "+1 (404) 555-0102",
+        "Email": "operations.regional@contoso.com",
+        "Manager": "Jessica Williams",
+        "ManagerEmail": "jessica.williams@contoso.com"
+      },
+      "Capacity": {
+        "Priority": 0.1,
+        "MaxCapacity": 30000,
+        "Description": "Regional fulfillment center for local distribution"
+      },
+      "DeliveryName": "Regional DC",
+      "Operations": {
+        "OperatingHours": "Mon-Sat 7AM-8PM",
+        "StaffCount": 45,
+        "AutomationLevel": "Low",
+        "ShippingCarriers": ["FedEx", "UPS"]
+      },
+      "CreatedBy": "system"
+    }
+  ],
+  "configuration": {
+    "version": "1.0",
+    "lastUpdated": "2026-03-09",
+    "description": "Warehouse configuration for supply chain data generation",
+    "validation": {
+      "requiredFields": ["WarehouseID", "DisplayName", "Type", "Status", "DeliveryName"],
+      "totalPrioritySum": 1.0,
+      "notes": "Priority values should sum to 1.0 for proper inventory distribution"
+    }
+  }
+}

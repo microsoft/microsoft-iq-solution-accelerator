@@ -1,0 +1,100 @@
+{
+  "suppliers": [
+    {
+      "SupplierID": 1,
+      "SupplierName": "Contoso Ltd",
+      "SupplierType": "Primary",
+      "Status": "Active",
+      "ProductCategory": "Camping",
+      "PrimarySupplierID": null,
+      "LeadTimeDays": 10,
+      "ReliabilityScore": 95,
+      "Location": "Denver, CO, USA",
+      "ContactEmail": "orders@contoso.com",
+      "CreatedBy": "system"
+    },
+    {
+      "SupplierID": 2,
+      "SupplierName": "Proseware Inc",
+      "SupplierType": "Primary", 
+      "Status": "Active",
+      "ProductCategory": "Kitchen",
+      "PrimarySupplierID": null,
+      "LeadTimeDays": 10,
+      "ReliabilityScore": 93,
+      "Location": "Portland, OR, USA",
+      "ContactEmail": "orders@proseware.com",
+      "CreatedBy": "system"
+    },
+    {
+      "SupplierID": 3,
+      "SupplierName": "Alpine Ski House",
+      "SupplierType": "Primary",
+      "Status": "Active", 
+      "ProductCategory": "Ski",
+      "PrimarySupplierID": null,
+      "LeadTimeDays": 12,
+      "ReliabilityScore": 96,
+      "Location": "Aspen, CO, USA",
+      "ContactEmail": "orders@alpineskihouse.com",
+      "CreatedBy": "system"
+    },
+    {
+      "SupplierID": 4,
+      "SupplierName": "Worldwide Importers",
+      "SupplierType": "Secondary",
+      "Status": "Active",
+      "ProductCategory": "Multi",
+      "PrimarySupplierID": null,
+      "LeadTimeDays": 21,
+      "ReliabilityScore": 85,
+      "Location": "Vancouver, BC, Canada", 
+      "ContactEmail": "wholesale@wideworldimporters.com",
+      "CreatedBy": "system",
+      "Notes": "Secondary supplier for all categories - Camping, Kitchen, and Ski"
+    },
+    {
+      "SupplierID": 5,
+      "SupplierName": "Fabrikam",
+      "SupplierType": "Secondary",
+      "Status": "Active",
+      "ProductCategory": "Ski", 
+      "PrimarySupplierID": 3,
+      "LeadTimeDays": 14,
+      "ReliabilityScore": 90,
+      "Location": "Salt Lake City, UT, USA",
+      "ContactEmail": "supply@fabrikam.com", 
+      "CreatedBy": "system",
+      "Notes": "Secondary supplier for Ski products"
+    }
+  ],
+  "secondary_relationships": [
+    {
+      "primary_category": "Camping",
+      "primary_supplier_id": 1,
+      "secondary_suppliers": [4]
+    },
+    {
+      "primary_category": "Kitchen", 
+      "primary_supplier_id": 2,
+      "secondary_suppliers": [4]
+    },
+    {
+      "primary_category": "Ski",
+      "primary_supplier_id": 3, 
+      "secondary_suppliers": [4, 5]
+    }
+  ],
+  "supplier_tiers": {
+    "primary": {
+      "lead_time_range": [7, 21],
+      "reliability_range": [91, 99],
+      "description": "Main suppliers with fastest delivery and highest reliability"
+    },
+    "secondary": {
+      "lead_time_range": [14, 35], 
+      "reliability_range": [85, 90],
+      "description": "Alternative suppliers for continuity planning"
+    }
+  }
+}
