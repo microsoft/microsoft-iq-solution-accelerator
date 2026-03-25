@@ -39,12 +39,24 @@ Environment Variables:
                                                     workspace administrator identities.
 """
 
+import logging
 import os
 import sys
 from datetime import datetime
 
 # Add current directory to path so local modules can be imported
 sys.path.append(os.path.dirname(__file__))
+
+from helpers.logging_config import setup_logging
+
+# Configure logging before any other imports so that library modules
+# (fabric_api, graph_api, helpers.*) inherit the root logger's settings.
+# The log level can be set via ``azd env set LOG_LEVEL DEBUG``.
+setup_logging()
+
+# Module-level logger for this entry-point script.  All log calls below
+# use this logger; the level and handler are inherited from setup_logging().
+logger = logging.getLogger(__name__)
 
 from fabric_api import FabricApiError, create_fabric_client, create_workspace_fabric_client
 from graph_api import create_graph_client
@@ -104,19 +116,19 @@ def _upload_installer_notebook(workspace_client, notebook_path: str) -> str:
         FileNotFoundError: If the notebook file does not exist.
         FabricApiError: If the Fabric API call fails.
     """
-    print(f"   Reading notebook file: {notebook_path}")
+    logger.info(f"   Reading notebook file: {notebook_path}")
     notebook_base64 = encode_notebook(notebook_path)
 
-    print(f"   Checking for existing notebook: {INSTALLER_NOTEBOOK_NAME}")
+    logger.info(f"   Checking for existing notebook: {INSTALLER_NOTEBOOK_NAME}")
     existing = workspace_client.get_notebook_by_name(INSTALLER_NOTEBOOK_NAME)
 
     if existing:
         notebook_id = existing["id"]
-        print(f"   ℹ️  Notebook already exists ({notebook_id}) – updating definition")
+        logger.info(f"   ℹ️  Notebook already exists ({notebook_id}) – updating definition")
         workspace_client.update_notebook(notebook_id, notebook_base64)
-        print(f"   ✅ Notebook updated: {INSTALLER_NOTEBOOK_NAME}")
+        logger.info(f"   ✅ Notebook updated: {INSTALLER_NOTEBOOK_NAME}")
     else:
-        print(f"   Creating notebook: {INSTALLER_NOTEBOOK_NAME}")
+        logger.info(f"   Creating notebook: {INSTALLER_NOTEBOOK_NAME}")
         workspace_client.create_notebook(INSTALLER_NOTEBOOK_NAME, notebook_base64)
         refreshed = workspace_client.get_notebook_by_name(INSTALLER_NOTEBOOK_NAME)
         if not refreshed:
@@ -124,7 +136,7 @@ def _upload_installer_notebook(workspace_client, notebook_path: str) -> str:
                 f"Notebook '{INSTALLER_NOTEBOOK_NAME}' was not found after creation"
             )
         notebook_id = refreshed["id"]
-        print(f"   ✅ Notebook created: {INSTALLER_NOTEBOOK_NAME} ({notebook_id})")
+        logger.info(f"   ✅ Notebook created: {INSTALLER_NOTEBOOK_NAME} ({notebook_id})")
 
     return notebook_id
 
@@ -140,15 +152,15 @@ def _run_installer_notebook(workspace_client, notebook_id: str, monitor_interval
     Raises:
         FabricApiError: If the notebook job fails to start or returns an error status.
     """
-    print(f"   Scheduling notebook job: {INSTALLER_NOTEBOOK_NAME} ({notebook_id})")
+    logger.info(f"   Scheduling notebook job: {INSTALLER_NOTEBOOK_NAME} ({notebook_id})")
     result = workspace_client.schedule_notebook_job(notebook_id, monitor_interval=monitor_interval)
 
     status = result.get("status", "Unknown")
     duration = result.get("duration", "N/A")
 
-    print(f"   📊 Execution result:")
-    print(f"      Status:   {status}")
-    print(f"      Duration: {duration}")
+    logger.info(f"   📊 Execution result:")
+    logger.info(f"      Status:   {status}")
+    logger.info(f"      Duration: {duration}")
 
     if status != "Completed":
         error_detail = result.get("error", "No error details available")
@@ -156,7 +168,7 @@ def _run_installer_notebook(workspace_client, notebook_id: str, monitor_interval
             f"Installer notebook finished with status '{status}'. Error: {error_detail}"
         )
 
-    print(f"   ✅ Installer notebook completed successfully")
+    logger.info(f"   ✅ Installer notebook completed successfully")
 
 
 # ---------------------------------------------------------------------------
@@ -187,43 +199,43 @@ def main() -> None:
     # ------------------------------------------------------------------
     # Startup banner
     # ------------------------------------------------------------------
-    print(f"🏭 {SOLUTION_NAME} – Solution Installer")
-    print("=" * 60)
-    print(f"Capacity:          {capacity_name}")
-    print(f"Subscription:      {subscription_id}")
-    print(f"Resource Group:    {resource_group}")
-    print(f"Workspace:         {workspace_name}")
-    print(f"Solution Suffix:   {solution_suffix}")
-    print(f"Installer Notebook:{notebook_path}")
+    logger.info(f"🏭 {SOLUTION_NAME} – Solution Installer")
+    logger.info("=" * 60)
+    logger.info(f"Capacity:          {capacity_name}")
+    logger.info(f"Subscription:      {subscription_id}")
+    logger.info(f"Resource Group:    {resource_group}")
+    logger.info(f"Workspace:         {workspace_name}")
+    logger.info(f"Solution Suffix:   {solution_suffix}")
+    logger.info(f"Installer Notebook:{notebook_path}")
     if workspace_administrators:
-        print(f"Administrators:    {', '.join(workspace_administrators)}")
-    print(f"Start time:        {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    print("=" * 60)
+        logger.info(f"Administrators:    {', '.join(workspace_administrators)}")
+    logger.info(f"Start time:        {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    logger.info("=" * 60)
 
     # ------------------------------------------------------------------
     # Authenticate API clients
     # ------------------------------------------------------------------
-    print("\n🔐 Authenticating clients…")
+    logger.info("\n🔐 Authenticating clients…")
     try:
         fabric_client = create_fabric_client()
-        print("   ✅ Fabric API client authenticated")
+        logger.info("   ✅ Fabric API client authenticated")
     except Exception as exc:
-        print(f"   ❌ Failed to authenticate Fabric API client: {exc}")
+        logger.error(f"Failed to authenticate Fabric API client: {exc}")
         sys.exit(1)
 
     try:
         graph_client = create_graph_client()
-        print("   ✅ Graph API client authenticated")
+        logger.info("   ✅ Graph API client authenticated")
     except Exception as exc:
-        print(f"   ❌ Failed to authenticate Graph API client: {exc}")
+        logger.error(f"Failed to authenticate Graph API client: {exc}")
         sys.exit(1)
 
     executed_steps: list = []
     failed_steps: list = []
 
     def _abort(step_name: str, error: Exception) -> None:
-        """Record the failure, print a summary, and exit."""
-        print(f"❌ Exception while executing {step_name}: {error}")
+        """Record the failure, log a summary, and exit."""
+        logger.error(f"Exception while executing {step_name}: {error}")
         failed_steps.append({"step": step_name, "error": str(error)})
         completed = {s for s in executed_steps} | {s["step"] for s in failed_steps}
         uncompleted = [s for s in ALL_DEPLOYMENT_STEPS if s not in completed]
@@ -243,16 +255,16 @@ def main() -> None:
             subscription_id=subscription_id,
             resource_group=resource_group,
         )
-        print("✅ Successfully completed: setup_workspace")
+        logger.info("✅ Successfully completed: setup_workspace")
         executed_steps.append("setup_workspace")
     except Exception as exc:
         _abort("setup_workspace", exc)
 
     # Workspace-scoped client required for all subsequent steps
-    print("\n🔐 Creating workspace-scoped Fabric API client…")
+    logger.info("\n🔐 Creating workspace-scoped Fabric API client…")
     try:
         workspace_client = create_workspace_fabric_client(workspace_id)
-        print("   ✅ Workspace client authenticated")
+        logger.info("   ✅ Workspace client authenticated")
     except Exception as exc:
         _abort("create_workspace_client", exc)
 
@@ -268,7 +280,7 @@ def main() -> None:
             fabric_admins=workspace_administrators,
             graph_client=graph_client,
         )
-        print("✅ Successfully completed: setup_administrators")
+        logger.info("✅ Successfully completed: setup_administrators")
         executed_steps.append("setup_administrators")
     except Exception as exc:
         _abort("setup_administrators", exc)
@@ -280,7 +292,7 @@ def main() -> None:
                notebook=INSTALLER_NOTEBOOK_NAME)
     try:
         notebook_id = _upload_installer_notebook(workspace_client, notebook_path)
-        print("✅ Successfully completed: upload_installer")
+        logger.info("✅ Successfully completed: upload_installer")
         executed_steps.append("upload_installer")
     except Exception as exc:
         _abort("upload_installer", exc)
@@ -292,7 +304,7 @@ def main() -> None:
                notebook_id=notebook_id)
     try:
         _run_installer_notebook(workspace_client, notebook_id)
-        print("✅ Successfully completed: run_installer")
+        logger.info("✅ Successfully completed: run_installer")
         executed_steps.append("run_installer")
     except Exception as exc:
         _abort("run_installer", exc)
@@ -306,22 +318,22 @@ def main() -> None:
 
     print_steps_summary(SOLUTION_NAME, solution_suffix, executed_steps, failed_steps, [])
 
-    print(f"\n{'='*60}")
-    print(f"🎉 {SOLUTION_NAME.upper()} INSTALLATION COMPLETE!")
-    print(f"{'='*60}")
-    print(f"📅 Completed:  {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    print(f"🏷️  Suffix:     {solution_suffix}")
-    print(f"☁️  Workspace:  {workspace_name}")
-    print(f"🔗 URL:        {workspace_url}")
-    print(f"{'='*60}")
+    logger.info(f"\n{'='*60}")
+    logger.info(f"🎉 {SOLUTION_NAME.upper()} INSTALLATION COMPLETE!")
+    logger.info(f"{'='*60}")
+    logger.info(f"📅 Completed:  {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    logger.info(f"🏷️  Suffix:     {solution_suffix}")
+    logger.info(f"☁️  Workspace:  {workspace_name}")
+    logger.info(f"🔗 URL:        {workspace_url}")
+    logger.info(f"{'='*60}")
 
 
 if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print("\n\n⚠️  Installation interrupted by user")
+        logger.warning("\n\nInstallation interrupted by user")
         sys.exit(1)
     except Exception as exc:
-        print(f"\n\n❌ Unexpected error: {exc}")
+        logger.error(f"\n\nUnexpected error: {exc}")
         sys.exit(1)
