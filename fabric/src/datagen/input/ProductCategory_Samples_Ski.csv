@@ -1,0 +1,11 @@
+CategoryID,ParentCategoryID,CategoryName,CategoryDescription,BrandName,BrandLogoUrl,IsActive
+301,P3-Ski,Alpine Skis,Alpine Skis for winter sports and cold weather activities.,Contoso Ski Sportswear,https://contoso.com/ski-logo.png,TRUE
+302,P3-Ski,Cross-Country Skis,Cross-Country Skis for winter sports and cold weather activities.,Contoso Ski Sportswear,https://contoso.com/ski-logo.png,TRUE
+303,P3-Ski,Ski Boots,Ski Boots for winter sports and cold weather activities.,Contoso Ski Sportswear,https://contoso.com/ski-logo.png,TRUE
+304,P3-Ski,Ski Poles,Ski Poles for winter sports and cold weather activities.,Contoso Ski Sportswear,https://contoso.com/ski-logo.png,TRUE
+305,P3-Ski,Ski Apparel,Ski Apparel for winter sports and cold weather activities.,Contoso Ski Sportswear,https://contoso.com/ski-logo.png,TRUE
+306,P3-Ski,Safety Equipment,Safety Equipment for winter sports and cold weather activities.,Contoso Ski Sportswear,https://contoso.com/ski-logo.png,TRUE
+307,P3-Ski,Ski Accessories,Ski Accessories for winter sports and cold weather activities.,Contoso Ski Sportswear,https://contoso.com/ski-logo.png,TRUE
+308,P3-Ski,Ski Maintenance,Ski Maintenance for winter sports and cold weather activities.,Contoso Ski Sportswear,https://contoso.com/ski-logo.png,TRUE
+309,P3-Ski,Snowboards & Equipment,Snowboards & Equipment for winter sports and cold weather activities.,Contoso Ski Sportswear,https://contoso.com/ski-logo.png,TRUE
+310,P3-Ski,Winter Footwear,Winter Footwear for winter sports and cold weather activities.,Contoso Ski Sportswear,https://contoso.com/ski-logo.png,TRUE

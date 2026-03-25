@@ -1,0 +1,13 @@
+CategoryID,ParentCategoryID,CategoryName,CategoryDescription,BrandName,BrandLogoUrl,IsActive
+201,P2-Kitchen,Coffee Makers,Coffee Makers for home and business kitchens.,Contoso Kitchen,https://contoso.com/kitchen-logo.png,TRUE
+202,P2-Kitchen,Cutlery,Cutlery for home and business kitchens.,Contoso Kitchen,https://contoso.com/kitchen-logo.png,TRUE
+203,P2-Kitchen,Cups & Mugs,Cups & Mugs for home and business kitchens.,Contoso Kitchen,https://contoso.com/kitchen-logo.png,TRUE
+204,P2-Kitchen,Serving Dishes,Serving Dishes for home and business kitchens.,Contoso Kitchen,https://contoso.com/kitchen-logo.png,TRUE
+205,P2-Kitchen,Ice Cream Dishes,Ice Cream Dishes for home and business kitchens.,Contoso Kitchen,https://contoso.com/kitchen-logo.png,TRUE
+206,P2-Kitchen,Mixing Bowls,Mixing Bowls for home and business kitchens.,Contoso Kitchen,https://contoso.com/kitchen-logo.png,TRUE
+207,P2-Kitchen,Bakeware,Bakeware for home and business kitchens.,Contoso Kitchen,https://contoso.com/kitchen-logo.png,TRUE
+208,P2-Kitchen,Storage Containers,Storage Containers for home and business kitchens.,Contoso Kitchen,https://contoso.com/kitchen-logo.png,TRUE
+209,P2-Kitchen,Cooking Utensils,Cooking Utensils for home and business kitchens.,Contoso Kitchen,https://contoso.com/kitchen-logo.png,TRUE
+210,P2-Kitchen,Measuring Tools,Measuring Tools for home and business kitchens.,Contoso Kitchen,https://contoso.com/kitchen-logo.png,TRUE
+211,P2-Kitchen,Small Appliances,Small Appliances for home and business kitchens.,Contoso Kitchen,https://contoso.com/kitchen-logo.png,TRUE
+212,P2-Kitchen,Cutting Boards,Cutting Boards for home and business kitchens.,Contoso Kitchen,https://contoso.com/kitchen-logo.png,TRUE

@@ -1,0 +1,9 @@
+CategoryID,ParentCategoryID,CategoryName,CategoryDescription,BrandName,BrandLogoUrl,IsActive
+151,P1-Camping,Tents,Tents for outdoor camping and adventure activities.,Contoso Camping,https://contoso.com/camping-logo.png,TRUE
+152,P1-Camping,Backpacks,Backpacks for outdoor camping and adventure activities.,Contoso Camping,https://contoso.com/camping-logo.png,TRUE
+153,P1-Camping,Hiking Clothing,Hiking Clothing for outdoor camping and adventure activities.,Contoso Camping,https://contoso.com/camping-logo.png,TRUE
+154,P1-Camping,Hiking Footwear,Hiking Footwear for outdoor camping and adventure activities.,Contoso Camping,https://contoso.com/camping-logo.png,TRUE
+155,P1-Camping,Camping Tables,Camping Tables for outdoor camping and adventure activities.,Contoso Camping,https://contoso.com/camping-logo.png,TRUE
+156,P1-Camping,Camping Stoves,Camping Stoves for outdoor camping and adventure activities.,Contoso Camping,https://contoso.com/camping-logo.png,TRUE
+157,P1-Camping,Sleeping Bags,Sleeping Bags for outdoor camping and adventure activities.,Contoso Camping,https://contoso.com/camping-logo.png,TRUE
+158,P1-Camping,Lighting,Lighting for outdoor camping and adventure activities.,Contoso Camping,https://contoso.com/camping-logo.png,TRUE

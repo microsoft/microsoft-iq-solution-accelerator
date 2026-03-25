@@ -1,0 +1,341 @@
+name: CI/CD Azure
+
+# Trigger the workflow on push to main/master or manual dispatch
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - "*"
+    paths:
+      - "infra/**"
+      - "src/**"
+      - ".github/workflows/azure-dev.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "infra/**"
+      - "src/**"
+      - ".github/workflows/azure-dev.yml"
+
+# Set up permissions for deploying with secretless Azure federated credentials
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+  AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  AZURE_LOCATION: 'westus3'
+  PYTHONIOENCODING: utf-8
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build and Static Analysis
+    environment: 'udfwf-build'
+    outputs:
+      RESOURCE_GROUP_NAME: ${{ steps.check_create_rg.outputs.RESOURCE_GROUP_NAME }}
+      ENV_NAME: ${{ steps.generate_env_name.outputs.ENV_NAME }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Azure CLI
+        uses: azure/login@v2
+        with:
+          client-id: ${{ env.AZURE_CLIENT_ID }}
+          tenant-id: ${{ env.AZURE_TENANT_ID }}
+          subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Install Bicep CLI
+        run: |
+          curl -Lo bicep https://github.com/Azure/bicep/releases/latest/download/bicep-linux-x64
+          chmod +x ./bicep
+          sudo mv ./bicep /usr/local/bin/bicep
+      - name: Generate Resource Group Name
+        id: generate_rg_name
+        shell: bash
+        run: |
+          echo "Generating a unique resource group name..."
+          ACCL_NAME="udf"
+          SHORT_UUID=$(uuidgen | cut -d'-' -f1)
+          UNIQUE_RG_NAME="arg-${ACCL_NAME}-${SHORT_UUID}"
+          echo "RESOURCE_GROUP_NAME=${UNIQUE_RG_NAME}" >> $GITHUB_ENV
+          echo "Generated RESOURCE_GROUP_NAME: ${UNIQUE_RG_NAME}"
+
+      - name: Check and Create Resource Group
+        id: check_create_rg
+        shell: bash
+        run: |
+          set -e
+          echo "🔍 Checking if resource group '$RESOURCE_GROUP_NAME' exists..."
+          rg_exists=$(az group exists --name $RESOURCE_GROUP_NAME)
+          if [ "$rg_exists" = "false" ]; then
+            echo "📦 Resource group does not exist. Creating new resource group '$RESOURCE_GROUP_NAME' in location '$AZURE_LOCATION'..."
+            az group create --name $RESOURCE_GROUP_NAME --location $AZURE_LOCATION || { echo "❌ Error creating resource group"; exit 1; }
+            echo "✅ Resource group '$RESOURCE_GROUP_NAME' created successfully."
+          else
+            echo "✅ Resource group '$RESOURCE_GROUP_NAME' already exists. Deploying to existing resource group."
+          fi
+          echo "RESOURCE_GROUP_NAME=$RESOURCE_GROUP_NAME" >> $GITHUB_OUTPUT
+          echo "RESOURCE_GROUP_NAME=$RESOURCE_GROUP_NAME" >> $GITHUB_ENV
+
+      - name: Generate Unique Environment Name
+        id: generate_env_name
+        shell: bash
+        run: |
+          COMMON_PART="pslc"
+          TIMESTAMP=$(date +%s)
+          UPDATED_TIMESTAMP=$(echo $TIMESTAMP | tail -c 6)
+          UNIQUE_ENV_NAME="${COMMON_PART}${UPDATED_TIMESTAMP}"
+          echo "ENV_NAME=${UNIQUE_ENV_NAME}" >> $GITHUB_ENV
+          echo "Generated Environment Name: ${UNIQUE_ENV_NAME}"
+          
+          echo "ENV_NAME=${UNIQUE_ENV_NAME}" >> $GITHUB_OUTPUT
+
+      - name: Bicep Static Code Analysis
+        run: |
+          echo "Running Bicep static code analysis on main.bicep..."
+          bicep build infra/main.bicep --outfile infra/main.json
+          echo "✅ Bicep compilation successful"
+
+          # Run bicep linter
+          bicep lint infra/main.bicep
+          echo "✅ Bicep linting completed"
+
+      - name: Validate Bicep Template
+        run: |
+          echo "Validating Bicep template..."
+          az deployment group validate \
+            --resource-group ${{ env.RESOURCE_GROUP_NAME }} \
+            --template-file infra/main.json \
+            --parameters infra/main.parameters.json \
+            --parameters solutionName=${{ env.ENV_NAME }} \
+            --parameters location=${{ env.AZURE_LOCATION }} || true
+          echo "✅ Bicep template validation completed"
+
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy
+    environment: 'udfwf-dev'
+    needs: build
+    outputs:
+      SOLUTION_SUFFIX: ${{ steps.azd_params.outputs.SOLUTION_SUFFIX }}
+      AZURE_FABRIC_CAPACITY_NAME: ${{ steps.azd_params.outputs.AZURE_FABRIC_CAPACITY_NAME }}
+    env:
+      RESOURCE_GROUP_NAME: ${{ needs.build.outputs.RESOURCE_GROUP_NAME }}
+      ENV_NAME: ${{ needs.build.outputs.ENV_NAME }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Azure CLI login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ env.AZURE_CLIENT_ID }}
+          tenant-id: ${{ env.AZURE_TENANT_ID }}
+          subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Install azd
+        uses: Azure/setup-azd@v2
+
+      - name: Azure Developer CLI login
+        shell: bash
+        run: |
+          azd auth login \
+            --client-id "${{ env.AZURE_CLIENT_ID }}" \
+            --federated-credential-provider "github" \
+            --tenant-id "${{ env.AZURE_TENANT_ID }}"
+
+      - name: Deploy using azd up and Run Fabric provisioning script
+        id: get_output_linux
+        shell: bash
+        env:
+          ENV_NAME: ${{ env.ENV_NAME }}
+          AZURE_LOCATION: ${{ env.AZURE_LOCATION }}
+          RESOURCE_GROUP_NAME: ${{ env.RESOURCE_GROUP_NAME }}
+        run: |
+          set -e
+
+          echo "Creating environment..."
+          azd env new $ENV_NAME --no-prompt
+          echo "Environment created: $ENV_NAME"
+
+          echo "Setting default subscription..."
+          azd config set defaults.subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          
+          # Set additional parameters
+          azd env set AZURE_SUBSCRIPTION_ID="${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+          azd env set AZURE_LOCATION="$AZURE_LOCATION"
+          azd env set AZURE_RESOURCE_GROUP="$RESOURCE_GROUP_NAME"
+
+          # # Set optional workspace administrators if provided via repository variable
+          # FABRIC_WS_ADMINS="${{ vars.FABRIC_WORKSPACE_ADMINISTRATORS }}"
+          # if [ -n "$FABRIC_WS_ADMINS" ]; then
+          #   azd env set FABRIC_WORKSPACE_ADMINISTRATORS "$FABRIC_WS_ADMINS"
+          #   echo "Workspace administrators set: $FABRIC_WS_ADMINS"
+          # fi
+
+          # Deploy using azd up
+          azd up --no-prompt
+
+      - name: Get azd Environment Parameters
+        id: azd_params
+        shell: bash
+        run: |
+          echo "Extracting azd environment parameters..."
+
+          AZURE_FABRIC_CAPACITY_NAME=$(azd env get-value AZURE_FABRIC_CAPACITY_NAME 2>/dev/null || echo "")
+          echo "AZURE_FABRIC_CAPACITY_NAME=${AZURE_FABRIC_CAPACITY_NAME}" >> $GITHUB_OUTPUT
+          echo "AZURE_FABRIC_CAPACITY_NAME=${AZURE_FABRIC_CAPACITY_NAME}" >> $GITHUB_ENV
+
+          SOLUTION_SUFFIX=$(azd env get-value SOLUTION_SUFFIX 2>/dev/null || echo "")
+          echo "SOLUTION_SUFFIX=${SOLUTION_SUFFIX}" >> $GITHUB_OUTPUT
+          echo "SOLUTION_SUFFIX=${SOLUTION_SUFFIX}" >> $GITHUB_ENV
+
+          AZURE_RESOURCE_GROUP=$(azd env get-value AZURE_RESOURCE_GROUP 2>/dev/null || echo "")
+          echo "AZURE_RESOURCE_GROUP=${AZURE_RESOURCE_GROUP}" >> $GITHUB_OUTPUT
+          echo "AZURE_RESOURCE_GROUP=${AZURE_RESOURCE_GROUP}" >> $GITHUB_ENV
+
+          AZURE_FABRIC_CAPACITY_ADMINISTRATORS=$(azd env get-value AZURE_FABRIC_CAPACITY_ADMINISTRATORS 2>/dev/null || echo "")
+          echo "AZURE_FABRIC_CAPACITY_ADMINISTRATORS=${AZURE_FABRIC_CAPACITY_ADMINISTRATORS}" >> $GITHUB_OUTPUT
+          echo "AZURE_FABRIC_CAPACITY_ADMINISTRATORS=${AZURE_FABRIC_CAPACITY_ADMINISTRATORS}" >> $GITHUB_ENV
+
+          echo "✅ azd parameters extracted successfully"
+
+      - name: Output Deployment Summary
+        run: |
+          # Capture deployment completion time
+          DEPLOYMENT_TIME=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          
+          # Construct URLs
+          AZURE_RG_URL="https://portal.azure.com/#@${{ env.AZURE_TENANT_ID }}/resource/subscriptions/${{ env.AZURE_SUBSCRIPTION_ID }}/resourceGroups/${{ env.RESOURCE_GROUP_NAME }}/overview"
+          AZURE_FABRIC_CAPACITY_URL="https://portal.azure.com/#@${{ env.AZURE_TENANT_ID }}/resource/subscriptions/${{ env.AZURE_SUBSCRIPTION_ID }}/resourceGroups/${{ env.RESOURCE_GROUP_NAME }}/providers/Microsoft.Fabric/capacities/${{ env.AZURE_FABRIC_CAPACITY_NAME }}/overview"
+          FABRIC_WORKSPACE_NAME="UDF-${{ env.SOLUTION_SUFFIX }}"
+          FABRIC_WORKSPACE_URL="https://app.fabric.microsoft.com"
+          
+          echo "# 🚀 Unified Data Foundation Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Deployment completed successfully!** ✅" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Completed at:** ${DEPLOYMENT_TIME}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "## 📊 Deployment Details" >> $GITHUB_STEP_SUMMARY
+          echo "| Resource | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| **Environment** | \`${{ env.ENV_NAME }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Azure Region** | \`${{ env.AZURE_LOCATION }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Solution Suffix** | \`${{ env.SOLUTION_SUFFIX }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Resource Group** | [\`${{ env.RESOURCE_GROUP_NAME }}\`](${AZURE_RG_URL}) |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Fabric Capacity** | [\`${{ env.AZURE_FABRIC_CAPACITY_NAME }}\`](${AZURE_FABRIC_CAPACITY_URL}) |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Fabric Workspace** | \`${FABRIC_WORKSPACE_NAME}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "## 🔗 Quick Access Links" >> $GITHUB_STEP_SUMMARY
+          echo "| Service | Link |" >> $GITHUB_STEP_SUMMARY
+          echo "|---------|------|" >> $GITHUB_STEP_SUMMARY
+          echo "| **Azure Portal** | [View Resource Group](${AZURE_RG_URL}) |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Fabric Capacity** | [View Capacity](${AZURE_FABRIC_CAPACITY_URL}) |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Microsoft Fabric** | [Open Fabric Portal](${FABRIC_WORKSPACE_URL}) |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "## 📚 What Was Deployed" >> $GITHUB_STEP_SUMMARY
+          echo "- 🏗️ **Azure Infrastructure**: Fabric capacity and supporting resources" >> $GITHUB_STEP_SUMMARY
+          echo "- 📁 **Fabric Workspace**: Pre-configured workspace with UDF solution items" >> $GITHUB_STEP_SUMMARY
+          echo "- 🔐 **Security Configuration**: Managed identity and admin access setup" >> $GITHUB_STEP_SUMMARY
+          echo "- 📊 **Sample Data**: Lakehouse, notebooks, and data pipelines for the unified data foundation" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "## 🚀 Next Steps" >> $GITHUB_STEP_SUMMARY
+          echo "1. 🔍 **Navigate to Fabric**: Open the [Fabric Portal](${FABRIC_WORKSPACE_URL}) and locate your workspace" >> $GITHUB_STEP_SUMMARY
+          echo "2. 📖 **Review Documentation**: Check the [deployment guide](https://github.com/${{ github.repository }}/blob/main/docs/DeploymentGuideFabric.md) for detailed usage instructions" >> $GITHUB_STEP_SUMMARY
+          echo "3. 🧪 **Explore Samples**: Run the included notebooks and explore the sample workflows" >> $GITHUB_STEP_SUMMARY
+          echo "4. 🔧 **Customize**: Adapt the solution for your specific data foundation requirements" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "## 🆘 Need Help?" >> $GITHUB_STEP_SUMMARY
+          echo "- 📋 [View FAQs](https://github.com/${{ github.repository }}/blob/main/docs/FAQs.md)" >> $GITHUB_STEP_SUMMARY
+          echo "- 🐛 [Report Issues](https://github.com/${{ github.repository }}/issues)" >> $GITHUB_STEP_SUMMARY
+          echo "- 📖 [Technical Architecture](https://github.com/${{ github.repository }}/blob/main/docs/TechnicalArchitecture.md)" >> $GITHUB_STEP_SUMMARY
+
+  cleanup:
+    runs-on: ubuntu-latest
+    name: Cleanup Resources
+    environment: 'udfwf-dev'
+    needs: [build, deploy]
+    if: always() && needs.build.outputs.RESOURCE_GROUP_NAME != '' && needs.build.outputs.ENV_NAME != ''
+    env:
+      RESOURCE_GROUP_NAME: ${{ needs.build.outputs.RESOURCE_GROUP_NAME }}
+      ENV_NAME: ${{ needs.build.outputs.ENV_NAME }}
+      SOLUTION_SUFFIX: ${{ needs.deploy.outputs.SOLUTION_SUFFIX }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Azure CLI login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ env.AZURE_CLIENT_ID }}
+          tenant-id: ${{ env.AZURE_TENANT_ID }}
+          subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Install azd
+        uses: Azure/setup-azd@v2
+
+      - name: Azure Developer CLI login
+        shell: bash
+        run: |
+          azd auth login \
+            --client-id "${{ env.AZURE_CLIENT_ID }}" \
+            --federated-credential-provider "github" \
+            --tenant-id "${{ env.AZURE_TENANT_ID }}"
+
+      - name: Restore azd Environment and Run azd down
+        if: env.SOLUTION_SUFFIX != ''
+        shell: bash
+        run: |
+          echo "Restoring azd environment: ${{ env.ENV_NAME }}"
+          azd env new ${{ env.ENV_NAME }} --no-prompt || true
+          azd env select ${{ env.ENV_NAME }}
+          azd config set defaults.subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          azd env set AZURE_SUBSCRIPTION_ID="${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+          azd env set AZURE_LOCATION="${{ env.AZURE_LOCATION }}"
+          azd env set AZURE_RESOURCE_GROUP="${{ env.RESOURCE_GROUP_NAME }}"
+          azd env set SOLUTION_SUFFIX="${{ env.SOLUTION_SUFFIX }}"
+          echo "✅ azd environment restored"
+
+          echo "🗑️  Running azd down to remove Fabric workspace and Azure resources..."
+          azd down --force --purge --no-prompt || echo "⚠️ azd down failed, will fall back to direct RG deletion"
+          echo "✅ azd down step completed"
+
+      - name: Delete Resource Group (fallback)
+        if: always() && env.RESOURCE_GROUP_NAME != ''
+        shell: bash
+        run: |
+          echo "🗑️  Ensuring resource group '${{ env.RESOURCE_GROUP_NAME }}' is deleted..."
+          rg_exists=$(az group exists --name "${{ env.RESOURCE_GROUP_NAME }}")
+          if [ "$rg_exists" = "true" ]; then
+            echo "Resource group still exists. Deleting directly..."
+            az group delete --name "${{ env.RESOURCE_GROUP_NAME }}" --yes --no-wait
+            echo "✅ Resource group deletion initiated."
+          else
+            echo "✅ Resource group '${{ env.RESOURCE_GROUP_NAME }}' already deleted."
+          fi
+
+      - name: Output Cleanup Summary
+        run: |
+          CLEANUP_TIME=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          echo "# 🧹 Cleanup Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Cleanup completed at:** ${CLEANUP_TIME}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Resource | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| **Resource Group** | \`${{ env.RESOURCE_GROUP_NAME }}\` — deleted |" >> $GITHUB_STEP_SUMMARY
+          if [ -n "${{ env.SOLUTION_SUFFIX }}" ]; then
+            echo "| **Fabric Workspace** | Deleted via azd down |" >> $GITHUB_STEP_SUMMARY
+          fi
