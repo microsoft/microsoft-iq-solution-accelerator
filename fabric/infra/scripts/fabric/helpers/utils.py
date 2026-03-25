@@ -6,10 +6,17 @@ This module provides common utility functions used across the Unified Data Found
 """
 
 import base64
+import json
+import logging
 import os
 import sys
-import json
 from typing import Optional
+
+# Module-level logger — inherits configuration from the root logger set up
+# by setup_logging() in the entry-point scripts.  No handlers or levels are
+# configured here; this follows the Python convention that library modules
+# only acquire loggers and never configure them.
+logger = logging.getLogger(__name__)
 
 
 def read_file_content(file_path: str) -> str:
@@ -50,8 +57,8 @@ def get_required_env_var(var_name: str) -> str:
     """
     value = os.getenv(var_name)
     if not value:
-        print(f"❌ Error: Required environment variable '{var_name}' is not set")
-        print(f"   Please ensure the variable is set before running this script.")
+        logger.error(f"Required environment variable '{var_name}' is not set")
+        logger.error("   Please ensure the variable is set before running this script.")
         sys.exit(1)
     return value
 
@@ -98,7 +105,7 @@ def parse_workspace_administrators(
         try:
             administrators.extend(json.loads(capacity_administrators_json))
         except json.JSONDecodeError:
-            print("⚠️  Warning: AZURE_FABRIC_CAPACITY_ADMINISTRATORS is not valid JSON – ignoring")
+            logger.warning("AZURE_FABRIC_CAPACITY_ADMINISTRATORS is not valid JSON – ignoring")
 
     if fabric_workspace_admins:
         administrators.extend(
@@ -120,15 +127,15 @@ def print_step(step_number: int, total_steps: int, step_name: str, **kwargs):
         step_name: Name of the step
         **kwargs: Additional key-value pairs to display
     """
-    print(f"\n{'='*60}")
-    print(f"📋 Step {step_number}/{total_steps}: {step_name}")
-    print(f"{'='*60}")
+    logger.info(f"\n{'='*60}")
+    logger.info(f"📋 Step {step_number}/{total_steps}: {step_name}")
+    logger.info(f"{'='*60}")
     
-    # Print additional details if provided
+    # Log additional details if provided
     if kwargs:
         for key, value in kwargs.items():
             formatted_key = key.replace('_', ' ').title()
-            print(f"   {formatted_key}: {value}")
+            logger.info(f"   {formatted_key}: {value}")
 
 
 def print_steps_summary(solution_name: str, solution_suffix: str, executed_steps: list, failed_steps: list = None, uncompleted_steps: list = None):
@@ -142,28 +149,28 @@ def print_steps_summary(solution_name: str, solution_suffix: str, executed_steps
         failed_steps: Optional list of failed step names
         uncompleted_steps: Optional list of steps that were not reached
     """
-    print(f"\n{'='*60}")
-    print(f"📊 {solution_name} Deployment Summary")
-    print(f"{'='*60}")
-    print(f"Solution Suffix: {solution_suffix}")
-    print(f"\n✅ Successfully Completed Steps ({len(executed_steps)}):")
+    logger.info(f"\n{'='*60}")
+    logger.info(f"📊 {solution_name} Deployment Summary")
+    logger.info(f"{'='*60}")
+    logger.info(f"Solution Suffix: {solution_suffix}")
+    logger.info(f"\n✅ Successfully Completed Steps ({len(executed_steps)}):")
     for i, step in enumerate(executed_steps, 1):
-        print(f"   {i}. {step}")
+        logger.info(f"   {i}. {step}")
     
     if failed_steps:
-        print(f"\n❌ Failed Steps ({len(failed_steps)}):")
+        logger.info(f"\n❌ Failed Steps ({len(failed_steps)}):")
         for i, step_info in enumerate(failed_steps, 1):
             if isinstance(step_info, dict):
                 step_name = step_info.get('step', 'Unknown step')
                 error_msg = step_info.get('error', 'No error details')
-                print(f"   {i}. {step_name}")
-                print(f"      Error: {error_msg}")
+                logger.info(f"   {i}. {step_name}")
+                logger.info(f"      Error: {error_msg}")
             else:
-                print(f"   {i}. {step_info}")
+                logger.info(f"   {i}. {step_info}")
     
     if uncompleted_steps:
-        print(f"\n⏭️  Uncompleted Steps ({len(uncompleted_steps)}):")
+        logger.info(f"\n⏭️  Uncompleted Steps ({len(uncompleted_steps)}):")
         for i, step in enumerate(uncompleted_steps, 1):
-            print(f"   {i}. {step}")
+            logger.info(f"   {i}. {step}")
     
-    print(f"{'='*60}")
+    logger.info(f"{'='*60}")

@@ -6,6 +6,7 @@ This module provides workspace creation and capacity assignment functionality
 for the Unified Data Foundation solution.
 """
 
+import logging
 import sys
 import os
 
@@ -13,6 +14,12 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from fabric_api import FabricApiClient, FabricApiError
+
+# Module-level logger — inherits configuration from the root logger set up
+# by setup_logging() in the entry-point scripts.  No handlers or levels are
+# configured here; this follows the Python convention that library modules
+# only acquire loggers and never configure them.
+logger = logging.getLogger(__name__)
 
 
 def _resume_capacity(
@@ -38,7 +45,7 @@ def _resume_capacity(
     
     credential = fabric_client._credential
     
-    print(f"   ▶️  Resuming capacity '{capacity_name}' "
+    logger.info(f"   ▶️  Resuming capacity '{capacity_name}' "
           f"(subscription={subscription_id}, rg={resource_group})...")
     try:
         mgmt_client = FabricMgmtClient(credential, subscription_id)
@@ -47,7 +54,7 @@ def _resume_capacity(
             capacity_name=capacity_name,
         )
         poller.result()  # blocks until the resume operation completes
-        print(f"   ✅ Capacity '{capacity_name}' is now Active")
+        logger.info(f"   ✅ Capacity '{capacity_name}' is now Active")
     except HttpResponseError as e:
         raise FabricApiError(
             f"Failed to resume capacity '{capacity_name}': {e.message}",
@@ -79,25 +86,25 @@ def setup_workspace(
         FabricApiError: If workspace creation or capacity assignment fails
         SystemExit: If capacity is not found
     """
-    print(f"🏢 Setting up workspace: {workspace_name}")
+    logger.info(f"🏢 Setting up workspace: {workspace_name}")
     
     try:
         # Get capacity ID
-        print(f"   Looking up capacity: {capacity_name}")
+        logger.info(f"   Looking up capacity: {capacity_name}")
         capacity = fabric_client.get_capacity(capacity_name)
         
         if not capacity:
-            print(f"❌ Error: Capacity '{capacity_name}' not found")
-            print(f"   Please ensure the capacity exists and you have access to it.")
+            logger.error(f"Capacity '{capacity_name}' not found")
+            logger.error(f"   Please ensure the capacity exists and you have access to it.")
             raise FabricApiError(f"Capacity '{capacity_name}' not found")
     except FabricApiError:
         raise
     except Exception as e:
-        print(f"❌ Error looking up capacity: {e}")
+        logger.error(f"Error looking up capacity: {e}")
         raise FabricApiError(f"Failed to lookup capacity: {e}")
     
     capacity_id = capacity['id']
-    print(f"   ✅ Found capacity: {capacity_name} ({capacity_id})")
+    logger.info(f"   ✅ Found capacity: {capacity_name} ({capacity_id})")
     
     # Check if capacity is paused and resume if needed
     # Note: Fabric REST API reports paused capacities as "Inactive", while
@@ -110,66 +117,66 @@ def setup_workspace(
                 "resource_group are required to resume it. Set AZURE_SUBSCRIPTION_ID "
                 "and AZURE_RESOURCE_GROUP environment variables."
             )
-        print(f"   ⚠️  Capacity '{capacity_name}' is paused. Attempting to resume...")
+        logger.warning(f"Capacity '{capacity_name}' is paused. Attempting to resume...")
         _resume_capacity(fabric_client, capacity_name, subscription_id, resource_group)
     elif capacity_state != 'Active':
-        print(f"   ⚠️  Capacity state is '{capacity_state}' — proceeding, but operations may fail.")
+        logger.warning(f"Capacity state is '{capacity_state}' — proceeding, but operations may fail.")
     
     try:
         # Check if workspace already exists
-        print(f"   Checking if workspace '{workspace_name}' exists...")
+        logger.info(f"   Checking if workspace '{workspace_name}' exists...")
         workspace = fabric_client.get_workspace(workspace_name)
     except FabricApiError as e:
-        print(f"❌ Error checking workspace existence: {e}")
+        logger.error(f"Error checking workspace existence: {e}")
         raise
     except Exception as e:
-        print(f"❌ Unexpected error checking workspace: {e}")
+        logger.error(f"Unexpected error checking workspace: {e}")
         raise FabricApiError(f"Failed to check workspace: {e}")
     
     if workspace:
         workspace_id = workspace['id']
-        print(f"   ℹ️  Workspace already exists: {workspace_name} ({workspace_id})")
+        logger.info(f"   ℹ️  Workspace already exists: {workspace_name} ({workspace_id})")
         
         # Check if workspace is already assigned to the target capacity
         current_capacity_id = workspace.get('capacityId')
         if current_capacity_id == capacity_id:
-            print(f"   ✅ Workspace already assigned to capacity: {capacity_name}")
+            logger.info(f"   ✅ Workspace already assigned to capacity: {capacity_name}")
         else:
             # Workspace is on a different capacity or no capacity - reassign
-            print(f"   🔄 Assigning workspace to capacity: {capacity_name}")
+            logger.info(f"   🔄 Assigning workspace to capacity: {capacity_name}")
             try:
                 fabric_client.assign_workspace_to_capacity(workspace_id, capacity_id)
-                print(f"   ✅ Successfully assigned workspace to capacity")
+                logger.info(f"   ✅ Successfully assigned workspace to capacity")
             except FabricApiError as e:
                 # On failure, re-fetch the workspace to verify actual capacity assignment
                 try:
                     refreshed = fabric_client.get_workspace(workspace_name)
                 except Exception as refresh_err:
-                    print(f"❌ Error assigning workspace to capacity: {e}")
-                    print(f"   Additionally, failed to verify workspace state: {refresh_err}")
+                    logger.error(f"Error assigning workspace to capacity: {e}")
+                    logger.error(f"   Additionally, failed to verify workspace state: {refresh_err}")
                     raise e from refresh_err
                 if refreshed and refreshed.get('capacityId') == capacity_id:
-                    print(f"   ⚠️  Assignment call failed but workspace is already on the correct capacity. Continuing...")
+                    logger.warning(f"Assignment call failed but workspace is already on the correct capacity. Continuing...")
                 else:
-                    print(f"❌ Error assigning workspace to capacity: {e}")
+                    logger.error(f"Error assigning workspace to capacity: {e}")
                     raise
     else:
         # Create new workspace
-        print(f"   Creating new workspace: {workspace_name}")
+        logger.info(f"   Creating new workspace: {workspace_name}")
         try:
             workspace_id = fabric_client.create_workspace(workspace_name)
-            print(f"   ✅ Created workspace: {workspace_name} ({workspace_id})")
+            logger.info(f"   ✅ Created workspace: {workspace_name} ({workspace_id})")
         except FabricApiError as e:
-            print(f"❌ Error creating workspace: {e}")
+            logger.error(f"Error creating workspace: {e}")
             raise
         
         # Assign workspace to capacity
-        print(f"   🔄 Assigning workspace to capacity: {capacity_name}")
+        logger.info(f"   🔄 Assigning workspace to capacity: {capacity_name}")
         try:
             fabric_client.assign_workspace_to_capacity(workspace_id, capacity_id)
-            print(f"   ✅ Successfully assigned workspace to capacity")
+            logger.info(f"   ✅ Successfully assigned workspace to capacity")
         except FabricApiError as e:
-            print(f"❌ Error assigning new workspace to capacity: {e}")
+            logger.error(f"Error assigning new workspace to capacity: {e}")
             raise
     
     return workspace_id
@@ -213,17 +220,17 @@ Examples:
             workspace_name=args.workspace_name
         )
         
-        print(f"\n🎉 Final Results:")
-        print(f"   Workspace Name: {args.workspace_name}")
-        print(f"   Workspace ID: {workspace_id}")
-        print(f"   Capacity: {args.capacity_name}")
-        print(f"   Status: Ready for use!")
+        logger.info(f"\n🎉 Final Results:")
+        logger.info(f"   Workspace Name: {args.workspace_name}")
+        logger.info(f"   Workspace ID: {workspace_id}")
+        logger.info(f"   Capacity: {args.capacity_name}")
+        logger.info(f"   Status: Ready for use!")
         
     except FabricApiError as e:
-        print(f"❌ Fabric API Error: {e}")
+        logger.error(f"Fabric API Error: {e}")
         sys.exit(1)
     except Exception as e:
-        print(f"❌ Unexpected error: {e}")
+        logger.error(f"Unexpected error: {e}")
         sys.exit(1)
 
 

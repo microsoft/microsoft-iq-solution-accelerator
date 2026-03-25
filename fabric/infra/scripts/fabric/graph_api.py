@@ -18,12 +18,19 @@ Author: Generated for Unified Data Foundation with Fabric (UDFWF) project
 """
 
 import json
+import logging
 import requests
 import time
 import uuid
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Union, Any, Tuple
 from azure.identity import AzureCliCredential, AzureDeveloperCliCredential, ChainedTokenCredential, DefaultAzureCredential
+
+# Module-level logger — inherits level and handler from the root logger
+# configured by setup_logging() in the entry-point scripts.  API-internal
+# messages are emitted at DEBUG via the _log() wrapper so they stay hidden
+# at the default INFO level and only appear with LOG_LEVEL=DEBUG.
+logger = logging.getLogger(__name__)
 
 
 class GraphApiError(Exception):
@@ -68,9 +75,14 @@ class GraphApiClient:
         self._token_expiry = None
     
     def _log(self, message: str, level: str = "INFO") -> None:
-        """Log message with timestamp."""
-        timestamp = datetime.now().isoformat()
-        print(f"[{timestamp}] {level}: {message}")
+        """Log through the standard logging module.
+
+        API-internal messages (level="INFO", the default) are emitted at
+        DEBUG so they only appear when ``LOG_LEVEL=DEBUG``.
+        WARNING and ERROR are forwarded at their natural levels.
+        """
+        _dispatch = {"WARNING": logger.warning, "ERROR": logger.error}
+        _dispatch.get(level.upper(), logger.debug)(message)
     
     def _get_auth_token(self) -> str:
         """
