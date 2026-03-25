@@ -34,7 +34,7 @@ These docs live at `fabric/docs/`. Relative paths from this location:
 | Other docs in same folder | `./DeploymentGuideFabricManual.md` |
 | Install script | `../infra/scripts/fabric/install_fabric_solution.py` |
 | Remove script | `../infra/scripts/fabric/remove_fabric_solution.py` |
-| Helper modules | `../infra/scripts/fabric/helpers/udf_workspace.py`, etc. |
+| Helper modules | `../infra/scripts/fabric/helpers/workspace.py`, etc. |
 | Installer notebook | `../infra/deploy/fabric_solution_installer.ipynb` |
 | Workspace items | `../fabric_workspace/` |
 | Bicep template | `../../infra/main.bicep` |

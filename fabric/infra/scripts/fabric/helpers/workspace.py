@@ -193,7 +193,7 @@ def main():
         epilog="""
 Examples:
   # Create workspace and assign to capacity
-  python udf_workspace.py --capacity-name "MyCapacity" --workspace-name "MyWorkspace"
+  python workspace.py --capacity-name "MyCapacity" --workspace-name "MyWorkspace"
         """
     )
     
