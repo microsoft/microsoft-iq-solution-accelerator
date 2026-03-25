@@ -100,8 +100,10 @@ def setup_workspace(
     print(f"   ✅ Found capacity: {capacity_name} ({capacity_id})")
     
     # Check if capacity is paused and resume if needed
+    # Note: Fabric REST API reports paused capacities as "Inactive", while
+    # the ARM API uses "Paused". We check for both to be safe.
     capacity_state = capacity.get('state', 'Unknown')
-    if capacity_state == 'Paused':
+    if capacity_state in ('Inactive', 'Paused'):
         if not subscription_id or not resource_group:
             raise FabricApiError(
                 f"Capacity '{capacity_name}' is paused but subscription_id and "
