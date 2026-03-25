@@ -15,7 +15,53 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from fabric_api import FabricApiClient, FabricApiError
 
 
-def setup_workspace(fabric_client: FabricApiClient, capacity_name: str, workspace_name: str) -> str:
+def _resume_capacity(
+    fabric_client: FabricApiClient,
+    capacity_name: str,
+    subscription_id: str,
+    resource_group: str,
+) -> None:
+    """
+    Resume a paused Fabric capacity using the azure-mgmt-fabric SDK.
+    
+    Args:
+        fabric_client: Authenticated Fabric API client (credential is reused)
+        capacity_name: Name of the Fabric capacity
+        subscription_id: Azure subscription ID containing the capacity
+        resource_group: Resource group name containing the capacity
+        
+    Raises:
+        FabricApiError: If the resume operation fails
+    """
+    from azure.mgmt.fabric import FabricMgmtClient
+    from azure.core.exceptions import HttpResponseError
+    
+    credential = fabric_client._credential
+    
+    print(f"   ▶️  Resuming capacity '{capacity_name}' "
+          f"(subscription={subscription_id}, rg={resource_group})...")
+    try:
+        mgmt_client = FabricMgmtClient(credential, subscription_id)
+        poller = mgmt_client.fabric_capacities.begin_resume(
+            resource_group_name=resource_group,
+            capacity_name=capacity_name,
+        )
+        poller.result()  # blocks until the resume operation completes
+        print(f"   ✅ Capacity '{capacity_name}' is now Active")
+    except HttpResponseError as e:
+        raise FabricApiError(
+            f"Failed to resume capacity '{capacity_name}': {e.message}",
+            status_code=e.status_code,
+        )
+
+
+def setup_workspace(
+    fabric_client: FabricApiClient,
+    capacity_name: str,
+    workspace_name: str,
+    subscription_id: str = "",
+    resource_group: str = "",
+) -> str:
     """
     Create or retrieve a Fabric workspace and assign it to a capacity.
     
@@ -23,6 +69,8 @@ def setup_workspace(fabric_client: FabricApiClient, capacity_name: str, workspac
         fabric_client: Authenticated Fabric API client
         capacity_name: Name of the capacity to assign
         workspace_name: Name of the workspace to create
+        subscription_id: Azure subscription ID (required to resume a paused capacity)
+        resource_group: Resource group name (required to resume a paused capacity)
         
     Returns:
         str: Workspace ID
@@ -50,6 +98,20 @@ def setup_workspace(fabric_client: FabricApiClient, capacity_name: str, workspac
     
     capacity_id = capacity['id']
     print(f"   ✅ Found capacity: {capacity_name} ({capacity_id})")
+    
+    # Check if capacity is paused and resume if needed
+    capacity_state = capacity.get('state', 'Unknown')
+    if capacity_state == 'Paused':
+        if not subscription_id or not resource_group:
+            raise FabricApiError(
+                f"Capacity '{capacity_name}' is paused but subscription_id and "
+                "resource_group are required to resume it. Set AZURE_SUBSCRIPTION_ID "
+                "and AZURE_RESOURCE_GROUP environment variables."
+            )
+        print(f"   ⚠️  Capacity '{capacity_name}' is paused. Attempting to resume...")
+        _resume_capacity(fabric_client, capacity_name, subscription_id, resource_group)
+    elif capacity_state != 'Active':
+        print(f"   ⚠️  Capacity state is '{capacity_state}' — proceeding, but operations may fail.")
     
     try:
         # Check if workspace already exists

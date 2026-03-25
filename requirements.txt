@@ -5,3 +5,6 @@ azure-identity==1.15.0
 
 # HTTP requests (fabric_api.py, graph_api.py)
 requests==2.31.0
+
+# Azure Resource Manager SDK for Fabric capacity management
+azure-mgmt-fabric>=1.0.0

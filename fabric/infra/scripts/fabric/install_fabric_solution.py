@@ -171,6 +171,8 @@ def main() -> None:
     # Configuration from environment variables
     # ------------------------------------------------------------------
     capacity_name = get_required_env_var("AZURE_FABRIC_CAPACITY_NAME")
+    subscription_id = get_required_env_var("AZURE_SUBSCRIPTION_ID")
+    resource_group = get_required_env_var("AZURE_RESOURCE_GROUP")
     solution_suffix = get_required_env_var("SOLUTION_SUFFIX")
     workspace_name = os.getenv(
         "FABRIC_WORKSPACE_NAME", default_workspace_name(solution_suffix)
@@ -188,6 +190,8 @@ def main() -> None:
     print(f"🏭 {SOLUTION_NAME} – Solution Installer")
     print("=" * 60)
     print(f"Capacity:          {capacity_name}")
+    print(f"Subscription:      {subscription_id}")
+    print(f"Resource Group:    {resource_group}")
     print(f"Workspace:         {workspace_name}")
     print(f"Solution Suffix:   {solution_suffix}")
     print(f"Installer Notebook:{notebook_path}")
@@ -236,6 +240,8 @@ def main() -> None:
             fabric_client=fabric_client,
             capacity_name=capacity_name,
             workspace_name=workspace_name,
+            subscription_id=subscription_id,
+            resource_group=resource_group,
         )
         print("✅ Successfully completed: setup_workspace")
         executed_steps.append("setup_workspace")
