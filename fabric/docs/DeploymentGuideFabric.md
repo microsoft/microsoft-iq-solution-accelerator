@@ -103,8 +103,8 @@ The Fabric deployment entry-point is [`install_fabric_solution.py`](../infra/scr
 
 | Helper Module | Purpose | Key Functions |
 |---------------|---------|---------------|
-| [`udf_workspace.py`](../infra/scripts/fabric/helpers/udf_workspace.py) | Workspace creation, capacity assignment, and auto-resume of paused capacities | `setup_workspace()` |
-| [`udf_workspace_admins.py`](../infra/scripts/fabric/helpers/udf_workspace_admins.py) | Administrator management with Graph API integration and fallback handling | `setup_workspace_administrators()` |
+| [`workspace.py`](../infra/scripts/fabric/helpers/workspace.py) | Workspace creation, capacity assignment, and auto-resume of paused capacities | `setup_workspace()` |
+| [`workspace_admins.py`](../infra/scripts/fabric/helpers/workspace_admins.py) | Administrator management with Graph API integration and fallback handling | `setup_workspace_administrators()` |
 | [`utils.py`](../infra/scripts/fabric/helpers/utils.py) | Common utilities | Notebook encoding, environment variable helpers, step logging |
 
 All Fabric item definitions (lakehouses, notebooks, reports, semantic models, data agent) live in the [`fabric_workspace/`](../fabric_workspace/) folder at the repository root. This folder follows the [Fabric workspace Git format](https://learn.microsoft.com/fabric/cicd/git-integration/git-get-started), enabling [Fabric CI/CD](https://learn.microsoft.com/fabric/cicd/git-integration/intro-to-git-integration) deployment via the [`fabric-launcher`](https://github.com/microsoft/fabric-launcher) library.
@@ -742,7 +742,7 @@ This section documents known limitations in the deployment process and their wor
 - This can result in workspaces that are only accessible to the deployment service principal
 
 **Technical Details**:
-The [`udf_workspace_admins.py`](../infra/scripts/fabric/helpers/udf_workspace_admins.py) helper module implements fallback logic:
+The [`workspace_admins.py`](../infra/scripts/fabric/helpers/workspace_admins.py) helper module implements fallback logic:
 
 ```python
 def detect_principal_type(admin_identifier, graph_client=None):
@@ -772,7 +772,7 @@ def detect_principal_type(admin_identifier, graph_client=None):
 
    The helper module automatically detects whether an identifier is a UPN or object ID and handles accordingly.
 
-2. **Post-Deployment Admin Assignment**: If Graph API permissions cannot be granted, add administrators manually after deployment through the Fabric portal workspace settings, or use the dedicated helper module [`udf_workspace_admins.py`](../infra/scripts/fabric/helpers/udf_workspace_admins.py) with appropriate credentials that have Graph API access.
+2. **Post-Deployment Admin Assignment**: If Graph API permissions cannot be granted, add administrators manually after deployment through the Fabric portal workspace settings, or use the dedicated helper module [`workspace_admins.py`](../infra/scripts/fabric/helpers/workspace_admins.py) with appropriate credentials that have Graph API access.
 
 ---
 

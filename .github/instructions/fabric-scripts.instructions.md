@@ -17,8 +17,8 @@ fabric/infra/scripts/fabric/
     ├── logging_config.py         # setup_logging(), _EmojiFormatter
     ├── config.py                 # SOLUTION_NAME, REPO_ROOT, default_workspace_name()
     ├── utils.py                  # File I/O, env vars, notebook encoding, step formatting
-    ├── udf_workspace.py          # setup_workspace() — create/find workspace, resume capacity
-    └── udf_workspace_admins.py   # setup_workspace_administrators() — Graph API + fallback
+    ├── workspace.py              # setup_workspace() — create/find workspace, resume capacity
+    └── workspace_admins.py       # setup_workspace_administrators() — Graph API + fallback
 ```
 
 ### Entry-point vs library modules
@@ -43,8 +43,8 @@ Optional env vars (user-configurable):
 ### Deployment flow
 
 [`install_fabric_solution.py`](../../fabric/infra/scripts/fabric/install_fabric_solution.py) runs 4 steps:
-1. `setup_workspace` — create/find workspace, assign capacity, resume if paused (via [`udf_workspace.py`](../../fabric/infra/scripts/fabric/helpers/udf_workspace.py))
-2. `setup_administrators` — add admins with Graph API resolution + fallback (via [`udf_workspace_admins.py`](../../fabric/infra/scripts/fabric/helpers/udf_workspace_admins.py))
+1. `setup_workspace` — create/find workspace, assign capacity, resume if paused (via [`workspace.py`](../../fabric/infra/scripts/fabric/helpers/workspace.py))
+2. `setup_administrators` — add admins with Graph API resolution + fallback (via [`workspace_admins.py`](../../fabric/infra/scripts/fabric/helpers/workspace_admins.py))
 3. `upload_installer` — upload [`fabric_solution_installer.ipynb`](../../fabric/infra/deploy/fabric_solution_installer.ipynb) (create or update)
 4. `run_installer` — execute notebook as Fabric job; notebook uses [fabric-launcher](https://github.com/microsoft/fabric-launcher) to deploy items from [`fabric/fabric_workspace/`](../../fabric/fabric_workspace/) via [Fabric Git integration](https://learn.microsoft.com/fabric/cicd/git-integration/intro-to-git-integration)
 
@@ -95,7 +95,7 @@ After any change to `fabric/infra/scripts/fabric/`, review these instruction fil
 ### Relative paths used in the docs (from `fabric/docs/`)
 
 - Scripts: `../infra/scripts/fabric/install_fabric_solution.py`, `../infra/scripts/fabric/remove_fabric_solution.py`
-- Helpers: `../infra/scripts/fabric/helpers/udf_workspace.py`, `udf_workspace_admins.py`, `utils.py`
+- Helpers: `../infra/scripts/fabric/helpers/workspace.py`, `workspace_admins.py`, `utils.py`
 - Installer notebook: `../infra/deploy/fabric_solution_installer.ipynb`
 - Workspace items: `../fabric_workspace/`
 - Repo root: `../../infra/main.bicep`, `../../azure.yaml`, `../../.github/workflows/azure-dev.yml`

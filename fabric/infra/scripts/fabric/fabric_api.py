@@ -303,7 +303,7 @@ class FabricApiClient:
                             if job_status in ['InProgress', 'Running', 'Queued', 'NotStarted']:
                                 elapsed = time.time() - start_time
                                 elapsed_str = self._format_duration(elapsed)
-                                self._log(f"Operation '{operation_display}' status: '{job_status}' ({elapsed_str} elapsed)", level="INFO")
+                                self._log(f"   {operation_display}: {job_status} ({elapsed_str} elapsed)", level="INFO")
                                 continue
                             
                             # If job failed, raise error with details
@@ -344,7 +344,7 @@ class FabricApiClient:
                     # Standard LRO - still in progress
                     elapsed = time.time() - start_time
                     elapsed_str = self._format_duration(elapsed)
-                    self._log(f"Operation '{operation_display}' still in progress ({elapsed_str} elapsed)", level="INFO")
+                    self._log(f"   {operation_display}: in progress ({elapsed_str} elapsed)", level="INFO")
                     
                     # Update check interval from Retry-After header if not explicitly set
                     if not check_interval:
