@@ -40,3 +40,15 @@ find_replace:
     replace_value:
       _ALL_: "$workspace.$id"
     item_type: "Notebook"
+
+
+  # ==========================================================================
+  # DATA AGENT — Lakehouse Reference Replacement
+  # ==========================================================================
+
+  # The Data Agent datasource.json stores the maag_gold lakehouse reference
+  # as artifactId. This must resolve to the deployed lakehouse item ID.
+  - find_value: "a3e8aa1e-8466-9f89-4ce5-fee786c1a3bb"
+    replace_value:
+      _ALL_: "$items.Lakehouse.maag_gold.$id"
+    item_type: "DataAgent"
