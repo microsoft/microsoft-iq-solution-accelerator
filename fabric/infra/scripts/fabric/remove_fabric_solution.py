@@ -41,11 +41,11 @@ if workspace_name and workspace_id:
     workspace_id = None
 
 logger.info(f"🗑️  Starting {SOLUTION_NAME} workspace removal from Microsoft Fabric")
-logger.info(f"📋 Solution suffix: {solution_suffix}")
+logger.info(f"Solution suffix: {solution_suffix}")
 if workspace_name:
-    logger.info(f"📋 Target workspace name: {workspace_name}")
+    logger.info(f"Target workspace name: {workspace_name}")
 else:
-    logger.info(f"📋 Target workspace ID: {workspace_id}")
+    logger.info(f"Target workspace ID: {workspace_id}")
 logger.info("-" * 60)
 
 ##########################
@@ -56,7 +56,7 @@ logger.info("🔐 Authenticating Fabric client...")
 # Initialize Fabric API client
 try:
     fabric_client = create_fabric_client()
-    logger.info("✅ Fabric API client authenticated successfully")
+    logger.info("   Fabric API client authenticated")
 except Exception as e:
     logger.warning(f"Failed to authenticate with Fabric APIs")
     logger.warning(f"   Details: {str(e)}")
@@ -71,7 +71,7 @@ except Exception as e:
 try:
     # If workspace name is provided, look it up to get the ID
     if workspace_name:
-        logger.info(f"🔍 Looking up workspace: '{workspace_name}'")
+        logger.info(f"Looking up workspace: '{workspace_name}'")
         workspaces = fabric_client.list_workspaces()
         workspace = next(
             (w for w in workspaces if w['displayName'].lower() == workspace_name.lower()), None)
@@ -86,10 +86,10 @@ try:
         
         workspace_id = workspace['id']
         workspace_display_name = workspace['displayName']
-        logger.info(f"✅ Found workspace: '{workspace_display_name}' (ID: {workspace_id})")
+        logger.info(f"Found workspace: '{workspace_display_name}' (ID: {workspace_id})")
     else:
         # If workspace ID is provided, verify it exists
-        logger.info(f"🔍 Verifying workspace ID: '{workspace_id}'")
+        logger.info(f"Verifying workspace ID: '{workspace_id}'")
         workspaces = fabric_client.list_workspaces()
         workspace = next(
             (w for w in workspaces if w['id'].lower() == workspace_id.lower()), None)
@@ -103,13 +103,13 @@ try:
             sys.exit(0)
         
         workspace_display_name = workspace['displayName']
-        logger.info(f"✅ Found workspace: '{workspace_display_name}' (ID: {workspace_id})")
+        logger.info(f"Found workspace: '{workspace_display_name}' (ID: {workspace_id})")
 
 except FabricApiError as e:
     if e.status_code == 401:
         logger.warning(f"Unauthorized access to Fabric APIs")
         logger.warning("   Please review your Fabric permissions and licensing:")
-        logger.warning("   📋 Check these resources:")
+        logger.warning("   Check these resources:")
         logger.warning("   • Fabric licenses: https://learn.microsoft.com/en-us/fabric/enterprise/licenses")
         logger.warning("   • Identity support: https://learn.microsoft.com/en-us/rest/api/fabric/articles/identity-support")
         logger.warning("   • Create Entra app: https://learn.microsoft.com/en-us/rest/api/fabric/articles/get-started/create-entra-app")
@@ -137,22 +137,22 @@ except Exception as e:
 ####################
 
 # Proceeding with deletion in unattended mode
-logger.info(f"✅ Proceeding with workspace deletion...")
+logger.info(f"Proceeding with workspace deletion...")
 
 ######################
 # Workspace deletion #
 ######################
 
 try:
-    logger.info(f"🗑️  Deleting workspace: '{workspace_display_name}'")
+    logger.info(f"Deleting workspace: '{workspace_display_name}'")
     fabric_client.delete_workspace(workspace_id)
-    logger.info(f"✅ Workspace '{workspace_display_name}' deleted successfully")
+    logger.info(f"Workspace '{workspace_display_name}' deleted successfully")
 
 except FabricApiError as e:
     if e.status_code == 401:
         logger.warning(f"Unauthorized access to Fabric APIs")
         logger.warning("   Please review your Fabric permissions and licensing:")
-        logger.warning("   📋 Check these resources:")
+        logger.warning("   Check these resources:")
         logger.warning("   • Fabric licenses: https://learn.microsoft.com/en-us/fabric/enterprise/licenses")
         logger.warning("   • Identity support: https://learn.microsoft.com/en-us/rest/api/fabric/articles/identity-support")
         logger.warning("   • Create Entra app: https://learn.microsoft.com/en-us/rest/api/fabric/articles/get-started/create-entra-app")
@@ -182,6 +182,6 @@ except Exception as e:
 
 logger.info("-" * 60)
 logger.info(f"🎉 {SOLUTION_NAME} workspace removal completed successfully!")
-logger.info(f"✅ Deleted workspace: {workspace_display_name}")
-logger.info(f"✅ Workspace ID: {workspace_id}")
+logger.info(f"Deleted workspace: {workspace_display_name}")
+logger.info(f"Workspace ID:      {workspace_id}")
 logger.info("-" * 60)

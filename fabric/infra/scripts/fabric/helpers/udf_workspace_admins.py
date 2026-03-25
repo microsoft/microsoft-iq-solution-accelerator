@@ -82,7 +82,7 @@ def detect_principal_type(admin_identifier, graph_client=None):
 def get_existing_admin_principals(workspace_client: FabricWorkspaceApiClient) -> set:
     """Get set of existing admin principal IDs for duplicate checking."""
     try:
-        logger.info(f"    🔍 Checking existing role assignments...")
+        logger.info(f"    Checking existing role assignments...")
         assignments = workspace_client.list_role_assignments(get_all=True)
         
         existing_principals = set()
@@ -102,7 +102,7 @@ def get_existing_admin_principals(workspace_client: FabricWorkspaceApiClient) ->
                 if upn:
                     existing_principals.add(upn)
         
-        logger.info(f"    📊 Found {admin_count} existing administrator(s)")
+        logger.info(f"    Found {admin_count} existing administrator(s)")
         return existing_principals
         
     except Exception as e:
@@ -115,7 +115,7 @@ def add_workspace_admin(workspace_client, admin_identifier, existing_principals,
     """Add a single workspace administrator with simplified error handling."""
     # Check if already exists
     if admin_identifier.lower() in existing_principals:
-        logger.info(f"    ⏭️ Skipping '{admin_identifier}' - already a workspace administrator")
+        logger.info(f"    Skipping '{admin_identifier}' – already an administrator")
         return {'status': 'skipped', 'message': 'Already exists'}
     
     try:
@@ -123,7 +123,7 @@ def add_workspace_admin(workspace_client, admin_identifier, existing_principals,
         principal_type, object_id, principal_data = detect_principal_type(admin_identifier, graph_client)
         
         if object_id.lower() in existing_principals:
-            logger.info(f"    ⏭️ Skipping '{admin_identifier}' - already a workspace administrator")
+            logger.info(f"    Skipping '{admin_identifier}' – already an administrator")
             existing_principals.add(admin_identifier.lower())  # Prevent future duplicates
             return {'status': 'skipped', 'message': 'Already exists (by object ID)'}
         
@@ -131,11 +131,11 @@ def add_workspace_admin(workspace_client, admin_identifier, existing_principals,
         
         # Handle unknown principal type by trying both ServicePrincipal and User
         if principal_type == "Unknown":
-            logger.info(f"    🔐 Trying to add administrator (type unknown): {admin_identifier} ({display_name})")
+            logger.info(f"    Trying to add administrator (type unknown): {admin_identifier} ({display_name})")
             
             # Try ServicePrincipal first
             try:
-                logger.info(f"    🔄 Attempting as ServicePrincipal...")
+                logger.info(f"    Attempting as ServicePrincipal...")
                 workspace_client.add_role_assignment(
                     principal_id=object_id,
                     principal_type="ServicePrincipal",
@@ -143,7 +143,7 @@ def add_workspace_admin(workspace_client, admin_identifier, existing_principals,
                     display_name=display_name,
                     aad_app_id=principal_data.get('appId')
                 )
-                logger.info(f"    ✅ Successfully added '{admin_identifier}' as ServicePrincipal administrator")
+                logger.info(f"    Added '{admin_identifier}' as ServicePrincipal administrator")
                 existing_principals.add(object_id.lower())
                 existing_principals.add(admin_identifier.lower())
                 return {'status': 'success', 'message': 'Added successfully as ServicePrincipal'}
@@ -152,7 +152,7 @@ def add_workspace_admin(workspace_client, admin_identifier, existing_principals,
                 
                 # Try User as fallback
                 try:
-                    logger.info(f"    🔄 Attempting as User...")
+                    logger.info(f"    Attempting as User...")
                     workspace_client.add_role_assignment(
                         principal_id=object_id,
                         principal_type="User",
@@ -160,7 +160,7 @@ def add_workspace_admin(workspace_client, admin_identifier, existing_principals,
                         display_name=display_name,
                         user_principal_name=principal_data.get('userPrincipalName', admin_identifier)
                     )
-                    logger.info(f"    ✅ Successfully added '{admin_identifier}' as User administrator")
+                    logger.info(f"    Added '{admin_identifier}' as User administrator")
                     existing_principals.add(object_id.lower())
                     existing_principals.add(admin_identifier.lower())
                     return {'status': 'success', 'message': 'Added successfully as User'}
@@ -170,7 +170,7 @@ def add_workspace_admin(workspace_client, admin_identifier, existing_principals,
                     return {'status': 'failed', 'message': error_msg}
         
         else:
-            logger.info(f"    🔐 Adding {principal_type.lower()} administrator: {admin_identifier} ({display_name})")
+            logger.info(f"    Adding {principal_type.lower()} administrator: {admin_identifier} ({display_name})")
             
             # Add role assignment based on type
             if principal_type == "User":
@@ -190,7 +190,7 @@ def add_workspace_admin(workspace_client, admin_identifier, existing_principals,
                     aad_app_id=principal_data.get('appId')
                 )
             
-            logger.info(f"    ✅ Successfully added '{admin_identifier}' as workspace administrator")
+            logger.info(f"    Added '{admin_identifier}' as workspace administrator")
             existing_principals.add(object_id.lower())
             existing_principals.add(admin_identifier.lower())
             return {'status': 'success', 'message': 'Added successfully'}
@@ -225,18 +225,17 @@ def setup_workspace_administrators(workspace_client, fabric_admins: list = None,
     """
     # Validate input
     if not fabric_admins:
-        logger.info("ℹ️ No administrators specified - skipping workspace administrator setup")
+        logger.info("No administrators specified – skipping workspace administrator setup")
         return {'added': 0, 'skipped': 0, 'failed': 0, 'errors': []}
     
     # Clean up whitespace from list items
     admins_to_add = [admin.strip() for admin in fabric_admins if admin and admin.strip()]
     
     if not admins_to_add:
-        logger.info("ℹ️ No valid administrators found - skipping workspace administrator setup")
+        logger.info("No valid administrators found – skipping workspace administrator setup")
         return {'added': 0, 'skipped': 0, 'failed': 0, 'errors': []}
     
-    logger.info(f"📋 Parsed {len(admins_to_add)} administrator(s): {', '.join(admins_to_add)}")
-    logger.info(f"👥 Setting up workspace administrators...")
+    logger.info(f"👥 Setting up {len(admins_to_add)} workspace administrator(s): {', '.join(admins_to_add)}")
     
     # Get existing admin principals for this workspace
     existing_admin_principals = get_existing_admin_principals(workspace_client)
@@ -244,7 +243,7 @@ def setup_workspace_administrators(workspace_client, fabric_admins: list = None,
     workspace_stats = {'added': 0, 'skipped': 0, 'failed': 0, 'errors': []}
     
     # Process administrators (UPNs and object IDs with Graph API resolution)
-    logger.info(f"    👥 Adding administrators...")
+    logger.info(f"    Adding administrators...")
     
     for admin_identifier in admins_to_add:
         result = add_workspace_admin(workspace_client, admin_identifier, existing_admin_principals, graph_client)
@@ -259,7 +258,7 @@ def setup_workspace_administrators(workspace_client, fabric_admins: list = None,
     
     # Print workspace summary
     total_requested = len(admins_to_add)
-    logger.info(f"    📊 Workspace administrators summary - Added: {workspace_stats['added']}, Skipped: {workspace_stats['skipped']}, Failed: {workspace_stats['failed']}, Total: {total_requested}")
+    logger.info(f"    Summary – Added: {workspace_stats['added']}, Skipped: {workspace_stats['skipped']}, Failed: {workspace_stats['failed']}, Total: {total_requested}")
     
     # Show error details if any failures occurred
     if workspace_stats['errors']:
@@ -275,7 +274,7 @@ def setup_workspace_administrators(workspace_client, fabric_admins: list = None,
         logger.error(f"Failed to add workspace administrators")
         return None
     else:
-        logger.info(f"✅ No administrators to add")
+        logger.info(f"No administrators to add")
         return workspace_stats
 
 
