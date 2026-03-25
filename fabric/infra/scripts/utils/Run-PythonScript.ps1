@@ -208,13 +208,9 @@ catch {
     Write-Host ""
     Write-Warning "Troubleshooting tips:"
     @(
-        "1. Ensure you are logged in to Azure CLI: az login",
-        "2. Verify you have appropriate permissions for the operation",
-        "3. Check that all required environment variables are set",
-        "4. Ensure the Python script path is correct and accessible",
-        "5. Verify Python 3.9+ is installed and available in PATH",
-        "6. Check that requirements.txt exists and is accessible",
-        "7. If the Python script started running, review the error output above for details on what failed during execution"
+        "1. Review the error output above for details on what failed",
+        "2. Verify Python 3.9+ is installed and available in PATH",
+        "3. Run 'azd env get-values' to check environment variables are set correctly"
     ) | ForEach-Object { Write-Host $_ -ForegroundColor White }
     exit 1
 }
