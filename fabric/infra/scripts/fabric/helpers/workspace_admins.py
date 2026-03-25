@@ -290,7 +290,7 @@ if __name__ == "__main__":
         epilog="""
 Examples:
   # Add admins by CSV string
-  python udf_workspace_admins.py --workspace-id "12345678-1234-1234-1234-123456789012" --admins-csv "user1@contoso.com,user2@contoso.com,87654321-4321-4321-4321-210987654321"
+  python workspace_admins.py --workspace-id "12345678-1234-1234-1234-123456789012" --admins-csv "user1@contoso.com,user2@contoso.com,87654321-4321-4321-4321-210987654321"
         """
     )
     

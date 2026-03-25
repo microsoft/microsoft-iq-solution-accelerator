@@ -75,8 +75,8 @@ from helpers.utils import (
     print_steps_summary,
     read_file_content,
 )
-from helpers.udf_workspace import setup_workspace
-from helpers.udf_workspace_admins import setup_workspace_administrators
+from helpers.workspace import setup_workspace
+from helpers.workspace_admins import setup_workspace_administrators
 
 
 # ---------------------------------------------------------------------------
