@@ -37,10 +37,16 @@ Environment Variables:
                                                     (defaults to "<SOLUTION_NAME> - <SOLUTION_SUFFIX>").
     FABRIC_WORKSPACE_ADMINISTRATORS      (optional) Comma-separated list of additional
                                                     workspace administrator identities.
+    GITHUB_TOKEN                         (optional) GitHub personal access token. When set,
+                                                    the installer notebook is patched to
+                                                    include the token for private repo access.
 """
 
+import base64
+import json
 import logging
 import os
+import re
 import sys
 from datetime import datetime
 
@@ -67,6 +73,7 @@ from helpers.utils import (
     parse_workspace_administrators,
     print_step,
     print_steps_summary,
+    read_file_content,
 )
 from helpers.udf_workspace import setup_workspace
 from helpers.udf_workspace_admins import setup_workspace_administrators
@@ -99,15 +106,67 @@ def _notebook_path() -> str:
     return os.path.join(REPO_ROOT, "fabric", "infra", "deploy", f"{INSTALLER_NOTEBOOK_NAME}.ipynb")
 
 
-def _upload_installer_notebook(workspace_client, notebook_path: str) -> str:
+def _patch_notebook_for_github_token(notebook_json: dict, github_token: str) -> dict:
+    """Inject ``GITHUB_TOKEN`` into the installer notebook.
+
+    Modifies the notebook *in-place* so that:
+    * A ``GITHUB_TOKEN = "<value>"`` variable assignment is added after the
+      ``GITHUB_BRANCH`` assignment in the configuration cell.
+    * ``github_token=GITHUB_TOKEN`` is added to the ``launcher.download_and_deploy``
+      call.
+
+    Args:
+        notebook_json: Parsed notebook dict (ipynb JSON).
+        github_token: The token value to inject.
+
+    Returns:
+        The mutated *notebook_json* dict.
+    """
+    for cell in notebook_json.get("cells", []):
+        if cell.get("cell_type") != "code":
+            continue
+        source_lines = cell.get("source", [])
+        source_text = "".join(source_lines)
+
+        # -- Inject GITHUB_TOKEN variable after GITHUB_BRANCH line --
+        if "GITHUB_BRANCH" in source_text and "GITHUB_TOKEN" not in source_text:
+            new_lines = []
+            for line in source_lines:
+                new_lines.append(line)
+                if line.lstrip().startswith("GITHUB_BRANCH"):
+                    # Preserve the same indentation
+                    indent = line[: len(line) - len(line.lstrip())]
+                    new_lines.append(f'{indent}GITHUB_TOKEN     = "{github_token}"\n')
+            cell["source"] = new_lines
+
+        # -- Add github_token=GITHUB_TOKEN to download_and_deploy call --
+        source_text = "".join(cell.get("source", []))
+        if "download_and_deploy" in source_text and "github_token" not in source_text:
+            new_lines = []
+            for line in cell["source"]:
+                new_lines.append(line)
+                if "branch" in line and "GITHUB_BRANCH" in line:
+                    indent = line[: len(line) - len(line.lstrip())]
+                    new_lines.append(f"{indent}github_token=GITHUB_TOKEN,\n")
+            cell["source"] = new_lines
+
+    return notebook_json
+
+
+def _upload_installer_notebook(workspace_client, notebook_path: str, github_token: str | None = None) -> str:
     """Upload (or update) the installer notebook in the workspace.
 
     If a notebook with the same name already exists it will be updated in-place;
     otherwise a new notebook is created.
 
+    When *github_token* is provided the notebook is patched in-memory before
+    upload to inject the token variable and pass it to
+    ``launcher.download_and_deploy``.
+
     Args:
         workspace_client: Authenticated :class:`FabricWorkspaceApiClient`.
         notebook_path: Absolute path to the local ``.ipynb`` file.
+        github_token: Optional GitHub token to inject into the notebook.
 
     Returns:
         str: The notebook ID of the uploaded/updated notebook.
@@ -117,7 +176,16 @@ def _upload_installer_notebook(workspace_client, notebook_path: str) -> str:
         FabricApiError: If the Fabric API call fails.
     """
     logger.info(f"   Reading notebook file: {notebook_path}")
-    notebook_base64 = encode_notebook(notebook_path)
+
+    if github_token:
+        logger.info("   Patching notebook with GITHUB_TOKEN")
+        content = read_file_content(notebook_path)
+        notebook_json = json.loads(content)
+        _patch_notebook_for_github_token(notebook_json, github_token)
+        raw_bytes = json.dumps(notebook_json).encode("utf-8")
+        notebook_base64 = base64.b64encode(raw_bytes).decode("utf-8")
+    else:
+        notebook_base64 = encode_notebook(notebook_path)
 
     logger.info(f"   Checking for existing notebook: {INSTALLER_NOTEBOOK_NAME}")
     existing = workspace_client.get_notebook_by_name(INSTALLER_NOTEBOOK_NAME)
@@ -193,6 +261,7 @@ def main() -> None:
         get_required_env_var("AZURE_FABRIC_CAPACITY_ADMINISTRATORS"),
         os.getenv("FABRIC_WORKSPACE_ADMINISTRATORS"),
     )
+    github_token = os.getenv("GITHUB_TOKEN")
 
     notebook_path = _notebook_path()
 
@@ -207,6 +276,7 @@ def main() -> None:
     logger.info(f"Workspace:         {workspace_name}")
     logger.info(f"Solution Suffix:   {solution_suffix}")
     logger.info(f"Installer Notebook: {notebook_path}")
+    logger.info(f"GitHub Token:      {'***' if github_token else 'Not set'}")
     if workspace_administrators:
         logger.info(f"Administrators:    {', '.join(workspace_administrators)}")
     logger.info(f"Start time:        {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
@@ -291,7 +361,7 @@ def main() -> None:
     print_step(3, 4, "Uploading installer notebook",
                notebook=INSTALLER_NOTEBOOK_NAME)
     try:
-        notebook_id = _upload_installer_notebook(workspace_client, notebook_path)
+        notebook_id = _upload_installer_notebook(workspace_client, notebook_path, github_token=github_token)
         logger.info("Successfully completed: upload_installer")
         executed_steps.append("upload_installer")
     except Exception as exc:
