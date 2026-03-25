@@ -10,7 +10,7 @@
 # .platform files are excluded automatically by fabric-cicd.
 #
 # Current GUIDs (source/DEV workspace — main_pipeline.Notebook):
-#   Lakehouse : 1650c6ba-a2fa-44f8-ba66-d4643da39fae (fabriciq_team_lake)
+#   Lakehouse : 3da39fae-d464-ba66-44f8-a2fa1650c6ba
 #   Workspace : 27818fad-0450-42b9-a4a0-db84075ac8d7
 #
 # NOTE: model_customer.Notebook uses different GUIDs (lakehouse 7bc5f01b,
@@ -25,30 +25,18 @@ find_replace:
 
   # Lakehouse GUID used in main_pipeline.Notebook/notebook-content.py
   # (default_lakehouse and lakehouse id fields)
-  - find_value: "1650c6ba-a2fa-44f8-ba66-d4643da39fae"
+  - find_value: "3da39fae-d464-ba66-44f8-a2fa1650c6ba"
     replace_value:
       _ALL_: "$items.Lakehouse.fabriciq_team_lake.$id"
     item_type: "Notebook"
-  
-  # ==========================================================================
-  # NOTEBOOK — Workspace ID Replacement
-  # ==========================================================================
-
-  # Workspace GUID used in main_pipeline.Notebook/notebook-content.py
-  # (default_lakehouse_workspace_id field)
-  - find_value: "27818fad-0450-42b9-a4a0-db84075ac8d7"
-    replace_value:
-      _ALL_: "$workspace.$id"
-    item_type: "Notebook"
-
 
   # ==========================================================================
   # DATA AGENT — Lakehouse Reference Replacement
   # ==========================================================================
 
-  # The Data Agent datasource.json stores the maag_gold lakehouse reference
+  # The Data Agent datasource.json stores the fabriciq_team_lake lakehouse reference
   # as artifactId. This must resolve to the deployed lakehouse item ID.
-  - find_value: "a3e8aa1e-8466-9f89-4ce5-fee786c1a3bb"
+  - find_value: "3da39fae-d464-ba66-44f8-a2fa1650c6ba"
     replace_value:
-      _ALL_: "$items.Lakehouse.maag_gold.$id"
+      _ALL_: "$items.Lakehouse.fabriciq_team_lake.$id"
     item_type: "DataAgent"
