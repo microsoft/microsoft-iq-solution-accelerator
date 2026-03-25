@@ -124,9 +124,9 @@ def _upload_installer_notebook(workspace_client, notebook_path: str) -> str:
 
     if existing:
         notebook_id = existing["id"]
-        logger.info(f"   ℹ️  Notebook already exists ({notebook_id}) – updating definition")
+        logger.info(f"   Notebook already exists ({notebook_id}) – updating definition")
         workspace_client.update_notebook(notebook_id, notebook_base64)
-        logger.info(f"   ✅ Notebook updated: {INSTALLER_NOTEBOOK_NAME}")
+        logger.info(f"   Notebook updated: {INSTALLER_NOTEBOOK_NAME}")
     else:
         logger.info(f"   Creating notebook: {INSTALLER_NOTEBOOK_NAME}")
         workspace_client.create_notebook(INSTALLER_NOTEBOOK_NAME, notebook_base64)
@@ -136,7 +136,7 @@ def _upload_installer_notebook(workspace_client, notebook_path: str) -> str:
                 f"Notebook '{INSTALLER_NOTEBOOK_NAME}' was not found after creation"
             )
         notebook_id = refreshed["id"]
-        logger.info(f"   ✅ Notebook created: {INSTALLER_NOTEBOOK_NAME} ({notebook_id})")
+        logger.info(f"   Notebook created: {INSTALLER_NOTEBOOK_NAME} ({notebook_id})")
 
     return notebook_id
 
@@ -158,7 +158,7 @@ def _run_installer_notebook(workspace_client, notebook_id: str, monitor_interval
     status = result.get("status", "Unknown")
     duration = result.get("duration", "N/A")
 
-    logger.info(f"   📊 Execution result:")
+    logger.info(f"   Execution result:")
     logger.info(f"      Status:   {status}")
     logger.info(f"      Duration: {duration}")
 
@@ -168,7 +168,7 @@ def _run_installer_notebook(workspace_client, notebook_id: str, monitor_interval
             f"Installer notebook finished with status '{status}'. Error: {error_detail}"
         )
 
-    logger.info(f"   ✅ Installer notebook completed successfully")
+    logger.info(f"   Installer notebook completed successfully")
 
 
 # ---------------------------------------------------------------------------
@@ -206,7 +206,7 @@ def main() -> None:
     logger.info(f"Resource Group:    {resource_group}")
     logger.info(f"Workspace:         {workspace_name}")
     logger.info(f"Solution Suffix:   {solution_suffix}")
-    logger.info(f"Installer Notebook:{notebook_path}")
+    logger.info(f"Installer Notebook: {notebook_path}")
     if workspace_administrators:
         logger.info(f"Administrators:    {', '.join(workspace_administrators)}")
     logger.info(f"Start time:        {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
@@ -218,14 +218,14 @@ def main() -> None:
     logger.info("\n🔐 Authenticating clients…")
     try:
         fabric_client = create_fabric_client()
-        logger.info("   ✅ Fabric API client authenticated")
+        logger.info("   Fabric API client authenticated")
     except Exception as exc:
         logger.error(f"Failed to authenticate Fabric API client: {exc}")
         sys.exit(1)
 
     try:
         graph_client = create_graph_client()
-        logger.info("   ✅ Graph API client authenticated")
+        logger.info("   Graph API client authenticated")
     except Exception as exc:
         logger.error(f"Failed to authenticate Graph API client: {exc}")
         sys.exit(1)
@@ -255,16 +255,16 @@ def main() -> None:
             subscription_id=subscription_id,
             resource_group=resource_group,
         )
-        logger.info("✅ Successfully completed: setup_workspace")
+        logger.info("Successfully completed: setup_workspace")
         executed_steps.append("setup_workspace")
     except Exception as exc:
         _abort("setup_workspace", exc)
 
     # Workspace-scoped client required for all subsequent steps
-    logger.info("\n🔐 Creating workspace-scoped Fabric API client…")
+    logger.info("\nCreating workspace-scoped Fabric API client…")
     try:
         workspace_client = create_workspace_fabric_client(workspace_id)
-        logger.info("   ✅ Workspace client authenticated")
+        logger.info("   Workspace client authenticated")
     except Exception as exc:
         _abort("create_workspace_client", exc)
 
@@ -280,7 +280,7 @@ def main() -> None:
             fabric_admins=workspace_administrators,
             graph_client=graph_client,
         )
-        logger.info("✅ Successfully completed: setup_administrators")
+        logger.info("Successfully completed: setup_administrators")
         executed_steps.append("setup_administrators")
     except Exception as exc:
         _abort("setup_administrators", exc)
@@ -292,7 +292,7 @@ def main() -> None:
                notebook=INSTALLER_NOTEBOOK_NAME)
     try:
         notebook_id = _upload_installer_notebook(workspace_client, notebook_path)
-        logger.info("✅ Successfully completed: upload_installer")
+        logger.info("Successfully completed: upload_installer")
         executed_steps.append("upload_installer")
     except Exception as exc:
         _abort("upload_installer", exc)
@@ -304,7 +304,7 @@ def main() -> None:
                notebook_id=notebook_id)
     try:
         _run_installer_notebook(workspace_client, notebook_id)
-        logger.info("✅ Successfully completed: run_installer")
+        logger.info("Successfully completed: run_installer")
         executed_steps.append("run_installer")
     except Exception as exc:
         _abort("run_installer", exc)
@@ -321,10 +321,10 @@ def main() -> None:
     logger.info(f"\n{'='*60}")
     logger.info(f"🎉 {SOLUTION_NAME.upper()} INSTALLATION COMPLETE!")
     logger.info(f"{'='*60}")
-    logger.info(f"📅 Completed:  {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    logger.info(f"🏷️  Suffix:     {solution_suffix}")
-    logger.info(f"☁️  Workspace:  {workspace_name}")
-    logger.info(f"🔗 URL:        {workspace_url}")
+    logger.info(f"Completed:  {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    logger.info(f"Suffix:     {solution_suffix}")
+    logger.info(f"Workspace:  {workspace_name}")
+    logger.info(f"URL:        {workspace_url}")
     logger.info(f"{'='*60}")
 
 

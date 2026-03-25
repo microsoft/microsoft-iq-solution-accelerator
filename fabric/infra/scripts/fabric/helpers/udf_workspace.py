@@ -45,7 +45,7 @@ def _resume_capacity(
     
     credential = fabric_client._credential
     
-    logger.info(f"   ▶️  Resuming capacity '{capacity_name}' "
+    logger.info(f"   Resuming capacity '{capacity_name}' "
           f"(subscription={subscription_id}, rg={resource_group})...")
     try:
         mgmt_client = FabricMgmtClient(credential, subscription_id)
@@ -54,7 +54,7 @@ def _resume_capacity(
             capacity_name=capacity_name,
         )
         poller.result()  # blocks until the resume operation completes
-        logger.info(f"   ✅ Capacity '{capacity_name}' is now Active")
+        logger.info(f"   Capacity '{capacity_name}' is now Active")
     except HttpResponseError as e:
         raise FabricApiError(
             f"Failed to resume capacity '{capacity_name}': {e.message}",
@@ -104,7 +104,7 @@ def setup_workspace(
         raise FabricApiError(f"Failed to lookup capacity: {e}")
     
     capacity_id = capacity['id']
-    logger.info(f"   ✅ Found capacity: {capacity_name} ({capacity_id})")
+    logger.info(f"   Found capacity: {capacity_name} ({capacity_id})")
     
     # Check if capacity is paused and resume if needed
     # Note: Fabric REST API reports paused capacities as "Inactive", while
@@ -135,18 +135,18 @@ def setup_workspace(
     
     if workspace:
         workspace_id = workspace['id']
-        logger.info(f"   ℹ️  Workspace already exists: {workspace_name} ({workspace_id})")
+        logger.info(f"   Workspace already exists: {workspace_name} ({workspace_id})")
         
         # Check if workspace is already assigned to the target capacity
         current_capacity_id = workspace.get('capacityId')
         if current_capacity_id == capacity_id:
-            logger.info(f"   ✅ Workspace already assigned to capacity: {capacity_name}")
+            logger.info(f"   Workspace already assigned to capacity: {capacity_name}")
         else:
             # Workspace is on a different capacity or no capacity - reassign
-            logger.info(f"   🔄 Assigning workspace to capacity: {capacity_name}")
+            logger.info(f"   Assigning workspace to capacity: {capacity_name}")
             try:
                 fabric_client.assign_workspace_to_capacity(workspace_id, capacity_id)
-                logger.info(f"   ✅ Successfully assigned workspace to capacity")
+                logger.info(f"   Workspace assigned to capacity")
             except FabricApiError as e:
                 # On failure, re-fetch the workspace to verify actual capacity assignment
                 try:
@@ -165,16 +165,16 @@ def setup_workspace(
         logger.info(f"   Creating new workspace: {workspace_name}")
         try:
             workspace_id = fabric_client.create_workspace(workspace_name)
-            logger.info(f"   ✅ Created workspace: {workspace_name} ({workspace_id})")
+            logger.info(f"   Created workspace: {workspace_name} ({workspace_id})")
         except FabricApiError as e:
             logger.error(f"Error creating workspace: {e}")
             raise
         
         # Assign workspace to capacity
-        logger.info(f"   🔄 Assigning workspace to capacity: {capacity_name}")
+        logger.info(f"   Assigning workspace to capacity: {capacity_name}")
         try:
             fabric_client.assign_workspace_to_capacity(workspace_id, capacity_id)
-            logger.info(f"   ✅ Successfully assigned workspace to capacity")
+            logger.info(f"   Workspace assigned to capacity")
         except FabricApiError as e:
             logger.error(f"Error assigning new workspace to capacity: {e}")
             raise
