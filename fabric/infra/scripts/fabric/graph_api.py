@@ -74,14 +74,19 @@ class GraphApiClient:
         self._token = None
         self._token_expiry = None
     
-    def _log(self, message: str, level: str = "INFO") -> None:
+    def _log(self, message: str, level: str = "DEBUG") -> None:
         """Log through the standard logging module.
 
-        API-internal messages (level="INFO", the default) are emitted at
-        DEBUG so they only appear when ``LOG_LEVEL=DEBUG``.
-        WARNING and ERROR are forwarded at their natural levels.
+        Most API-internal messages default to DEBUG so they only appear when
+        ``LOG_LEVEL=DEBUG``.  Callers can pass ``level="INFO"`` for messages
+        that should be visible at the default log level.  WARNING and ERROR
+        are forwarded at their natural levels.
         """
-        _dispatch = {"WARNING": logger.warning, "ERROR": logger.error}
+        _dispatch = {
+            "INFO": logger.info,
+            "WARNING": logger.warning,
+            "ERROR": logger.error,
+        }
         _dispatch.get(level.upper(), logger.debug)(message)
     
     def _get_auth_token(self) -> str:

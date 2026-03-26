@@ -35,7 +35,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     name: Build and Static Analysis
-    environment: 'udfwf-build'
+    environment: 'miq-build'
     outputs:
       RESOURCE_GROUP_NAME: ${{ steps.check_create_rg.outputs.RESOURCE_GROUP_NAME }}
       ENV_NAME: ${{ steps.generate_env_name.outputs.ENV_NAME }}
@@ -60,7 +60,7 @@ jobs:
         shell: bash
         run: |
           echo "Generating a unique resource group name..."
-          ACCL_NAME="udf"
+          ACCL_NAME="miq"
           SHORT_UUID=$(uuidgen | cut -d'-' -f1)
           UNIQUE_RG_NAME="arg-${ACCL_NAME}-${SHORT_UUID}"
           echo "RESOURCE_GROUP_NAME=${UNIQUE_RG_NAME}" >> $GITHUB_ENV
@@ -120,7 +120,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     name: Deploy
-    environment: 'udfwf-dev'
+    environment: 'miq-dev'
     needs: build
     outputs:
       SOLUTION_SUFFIX: ${{ steps.azd_params.outputs.SOLUTION_SUFFIX }}
@@ -214,10 +214,10 @@ jobs:
           # Construct URLs
           AZURE_RG_URL="https://portal.azure.com/#@${{ env.AZURE_TENANT_ID }}/resource/subscriptions/${{ env.AZURE_SUBSCRIPTION_ID }}/resourceGroups/${{ env.RESOURCE_GROUP_NAME }}/overview"
           AZURE_FABRIC_CAPACITY_URL="https://portal.azure.com/#@${{ env.AZURE_TENANT_ID }}/resource/subscriptions/${{ env.AZURE_SUBSCRIPTION_ID }}/resourceGroups/${{ env.RESOURCE_GROUP_NAME }}/providers/Microsoft.Fabric/capacities/${{ env.AZURE_FABRIC_CAPACITY_NAME }}/overview"
-          FABRIC_WORKSPACE_NAME="UDF-${{ env.SOLUTION_SUFFIX }}"
+          FABRIC_WORKSPACE_NAME="Microsoft IQ - ${{ env.SOLUTION_SUFFIX }}"
           FABRIC_WORKSPACE_URL="https://app.fabric.microsoft.com"
           
-          echo "# 🚀 Unified Data Foundation Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "# 🚀 Microsoft IQ Deployment Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Deployment completed successfully!** ✅" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
@@ -245,27 +245,25 @@ jobs:
           
           echo "## 📚 What Was Deployed" >> $GITHUB_STEP_SUMMARY
           echo "- 🏗️ **Azure Infrastructure**: Fabric capacity and supporting resources" >> $GITHUB_STEP_SUMMARY
-          echo "- 📁 **Fabric Workspace**: Pre-configured workspace with UDF solution items" >> $GITHUB_STEP_SUMMARY
+          echo "- 📁 **Fabric Workspace**: Pre-configured workspace with Microsoft IQ solution items" >> $GITHUB_STEP_SUMMARY
           echo "- 🔐 **Security Configuration**: Managed identity and admin access setup" >> $GITHUB_STEP_SUMMARY
-          echo "- 📊 **Sample Data**: Lakehouse, notebooks, and data pipelines for the unified data foundation" >> $GITHUB_STEP_SUMMARY
+          echo "- 📊 **Sample Data**: Lakehouse, notebooks, data agents, and ontology model for Microsoft IQ" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           
           echo "## 🚀 Next Steps" >> $GITHUB_STEP_SUMMARY
           echo "1. 🔍 **Navigate to Fabric**: Open the [Fabric Portal](${FABRIC_WORKSPACE_URL}) and locate your workspace" >> $GITHUB_STEP_SUMMARY
-          echo "2. 📖 **Review Documentation**: Check the [deployment guide](https://github.com/${{ github.repository }}/blob/main/docs/DeploymentGuideFabric.md) for detailed usage instructions" >> $GITHUB_STEP_SUMMARY
+          echo "2. 📖 **Review Documentation**: Check the [deployment guide](https://github.com/${{ github.repository }}/blob/main/fabric/docs/DeploymentGuideFabric.md) for detailed usage instructions" >> $GITHUB_STEP_SUMMARY
           echo "3. 🧪 **Explore Samples**: Run the included notebooks and explore the sample workflows" >> $GITHUB_STEP_SUMMARY
           echo "4. 🔧 **Customize**: Adapt the solution for your specific data foundation requirements" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           
           echo "## 🆘 Need Help?" >> $GITHUB_STEP_SUMMARY
-          echo "- 📋 [View FAQs](https://github.com/${{ github.repository }}/blob/main/docs/FAQs.md)" >> $GITHUB_STEP_SUMMARY
-          echo "- 🐛 [Report Issues](https://github.com/${{ github.repository }}/issues)" >> $GITHUB_STEP_SUMMARY
-          echo "- 📖 [Technical Architecture](https://github.com/${{ github.repository }}/blob/main/docs/TechnicalArchitecture.md)" >> $GITHUB_STEP_SUMMARY
+          echo "- � [Report Issues](https://github.com/${{ github.repository }}/issues)" >> $GITHUB_STEP_SUMMARY
 
   cleanup:
     runs-on: ubuntu-latest
     name: Cleanup Resources
-    environment: 'udfwf-dev'
+    environment: 'miq-dev'
     needs: [build, deploy]
     if: always() && needs.build.outputs.RESOURCE_GROUP_NAME != '' && needs.build.outputs.ENV_NAME != ''
     env:
