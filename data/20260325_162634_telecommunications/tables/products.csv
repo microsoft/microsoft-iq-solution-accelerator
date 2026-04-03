@@ -1,0 +1,51 @@
+product_id,product_name,category,price
+PROD0001,Ultra Cord 1,Smartphones,367.88
+PROD0002,Ultra Box 2,Internet Plans,852.02
+PROD0003,Pro Plan 3,Accessories,968.87
+PROD0004,Super Cord 4,TV Packages,1098.54
+PROD0005,Max Cord 5,VoIP Services,679.24
+PROD0006,Pro Cord 6,Smartphones,1161.67
+PROD0007,Pro Phone 7,Internet Plans,673.17
+PROD0008,Basic Plan 8,Accessories,169.57
+PROD0009,Max Phone 9,TV Packages,299.0
+PROD0010,Super Service 10,VoIP Services,251.97
+PROD0011,Pro Service 11,Smartphones,779.58
+PROD0012,Super Plan 12,Internet Plans,1107.45
+PROD0013,Ultra Phone 13,Accessories,1018.09
+PROD0014,Max Cord 14,TV Packages,120.03
+PROD0015,Basic Cord 15,VoIP Services,872.26
+PROD0016,Basic Cord 16,Smartphones,236.67
+PROD0017,Super Plan 17,Internet Plans,329.47
+PROD0018,Pro Box 18,Accessories,811.67
+PROD0019,Super Box 19,TV Packages,727.48
+PROD0020,Super Phone 20,VoIP Services,1049.61
+PROD0021,Ultra Cord 21,Smartphones,233.91
+PROD0022,Basic Phone 22,Internet Plans,916.42
+PROD0023,Super Plan 23,Accessories,871.92
+PROD0024,Ultra Phone 24,TV Packages,675.03
+PROD0025,Basic Phone 25,VoIP Services,580.48
+PROD0026,Pro Service 26,Smartphones,1044.67
+PROD0027,Ultra Plan 27,Internet Plans,406.23
+PROD0028,Ultra Cord 28,Accessories,1148.85
+PROD0029,Pro Plan 29,TV Packages,28.25
+PROD0030,Basic Plan 30,VoIP Services,1125.22
+PROD0031,Ultra Plan 31,Smartphones,1154.87
+PROD0032,Basic Box 32,Internet Plans,149.61
+PROD0033,Super Service 33,Accessories,1199.49
+PROD0034,Max Service 34,TV Packages,579.92
+PROD0035,Basic Box 35,VoIP Services,298.69
+PROD0036,Super Box 36,Smartphones,729.24
+PROD0037,Super Service 37,Internet Plans,253.37
+PROD0038,Super Cord 38,Accessories,1099.0
+PROD0039,Max Box 39,TV Packages,666.97
+PROD0040,Ultra Service 40,VoIP Services,932.86
+PROD0041,Basic Plan 41,Smartphones,462.99
+PROD0042,Pro Service 42,Internet Plans,645.04
+PROD0043,Pro Phone 43,Accessories,437.52
+PROD0044,Max Cord 44,TV Packages,321.26
+PROD0045,Basic Box 45,VoIP Services,620.25
+PROD0046,Pro Cord 46,Smartphones,601.76
+PROD0047,Super Box 47,Internet Plans,127.34
+PROD0048,Pro Plan 48,Accessories,1177.77
+PROD0049,Basic Cord 49,TV Packages,568.69
+PROD0050,Super Plan 50,VoIP Services,1009.28

@@ -1,0 +1,151 @@
+return_id,sale_id,return_date,reason,status,quantity
+RET00001,SALE00845,2026-03-23,Billing Issue,Processed,1
+RET00002,SALE00659,2025-11-18,Defective,Processed,3
+RET00003,SALE00760,2025-10-14,Wrong Product,Processed,5
+RET00004,SALE00738,2026-02-27,Wrong Product,Processed,2
+RET00005,SALE00877,2026-03-08,Defective,Pending,3
+RET00006,SALE00861,2025-11-11,Billing Issue,Pending,1
+RET00007,SALE00606,2025-10-18,Defective,Processed,4
+RET00008,SALE00563,2025-11-08,Customer Dissatisfaction,Processed,1
+RET00009,SALE00256,2026-01-27,Customer Dissatisfaction,Processed,3
+RET00010,SALE00662,2025-12-01,Defective,Processed,1
+RET00011,SALE00235,2026-01-14,Customer Dissatisfaction,Processed,3
+RET00012,SALE00589,2025-10-08,Defective,Processed,4
+RET00013,SALE00874,2026-02-25,Wrong Product,Processed,1
+RET00014,SALE00476,2025-10-14,Customer Dissatisfaction,Processed,3
+RET00015,SALE00835,2025-11-03,Billing Issue,Processed,4
+RET00016,SALE00451,2026-01-30,Defective,Rejected,3
+RET00017,SALE00945,2025-10-31,Defective,Processed,1
+RET00018,SALE00333,2026-03-07,Billing Issue,Processed,1
+RET00019,SALE00830,2025-10-10,Customer Dissatisfaction,Processed,2
+RET00020,SALE00904,2026-03-25,Customer Dissatisfaction,Processed,3
+RET00021,SALE00331,2025-11-08,Billing Issue,Rejected,3
+RET00022,SALE00417,2026-03-18,Wrong Product,Processed,4
+RET00023,SALE00321,2025-12-05,Billing Issue,Processed,3
+RET00024,SALE00433,2026-03-14,Defective,Processed,2
+RET00025,SALE00893,2026-03-07,Customer Dissatisfaction,Pending,3
+RET00026,SALE00614,2026-02-02,Billing Issue,Processed,1
+RET00027,SALE00331,2025-11-01,Wrong Product,Pending,3
+RET00028,SALE00036,2025-10-15,Wrong Product,Rejected,4
+RET00029,SALE00376,2026-02-24,Wrong Product,Processed,1
+RET00030,SALE00267,2025-10-28,Billing Issue,Processed,2
+RET00031,SALE00143,2025-11-20,Wrong Product,Pending,1
+RET00032,SALE00276,2026-02-03,Customer Dissatisfaction,Rejected,1
+RET00033,SALE00300,2025-09-27,Customer Dissatisfaction,Rejected,5
+RET00034,SALE00211,2026-02-21,Customer Dissatisfaction,Processed,3
+RET00035,SALE00166,2026-02-17,Billing Issue,Pending,1
+RET00036,SALE00994,2026-02-26,Customer Dissatisfaction,Processed,2
+RET00037,SALE00166,2026-03-25,Defective,Processed,1
+RET00038,SALE00029,2026-01-06,Defective,Processed,3
+RET00039,SALE00851,2025-12-10,Defective,Pending,1
+RET00040,SALE00256,2026-03-19,Wrong Product,Processed,1
+RET00041,SALE00871,2026-03-24,Defective,Processed,2
+RET00042,SALE00075,2025-11-02,Customer Dissatisfaction,Pending,1
+RET00043,SALE00392,2026-02-25,Wrong Product,Processed,2
+RET00044,SALE00185,2026-03-13,Customer Dissatisfaction,Pending,2
+RET00045,SALE00041,2026-01-28,Customer Dissatisfaction,Processed,1
+RET00046,SALE00425,2026-03-13,Defective,Processed,3
+RET00047,SALE00014,2026-01-29,Defective,Processed,3
+RET00048,SALE00184,2025-10-24,Wrong Product,Pending,5
+RET00049,SALE00862,2026-01-06,Wrong Product,Processed,2
+RET00050,SALE00210,2025-12-20,Billing Issue,Pending,4
+RET00051,SALE00422,2025-10-22,Wrong Product,Processed,1
+RET00052,SALE00915,2025-12-30,Billing Issue,Processed,2
+RET00053,SALE00087,2025-12-28,Defective,Processed,1
+RET00054,SALE00674,2025-10-25,Customer Dissatisfaction,Processed,3
+RET00055,SALE00860,2026-02-20,Billing Issue,Processed,3
+RET00056,SALE00620,2026-03-13,Billing Issue,Processed,1
+RET00057,SALE00323,2026-01-26,Billing Issue,Pending,1
+RET00058,SALE00398,2026-01-23,Customer Dissatisfaction,Pending,1
+RET00059,SALE00671,2025-12-01,Billing Issue,Processed,3
+RET00060,SALE00872,2025-11-03,Customer Dissatisfaction,Pending,3
+RET00061,SALE00147,2025-10-13,Wrong Product,Processed,1
+RET00062,SALE00042,2026-03-23,Customer Dissatisfaction,Processed,1
+RET00063,SALE00664,2026-03-15,Billing Issue,Processed,2
+RET00064,SALE00335,2025-11-22,Defective,Processed,2
+RET00065,SALE00075,2026-03-07,Defective,Processed,1
+RET00066,SALE00962,2026-02-01,Defective,Processed,1
+RET00067,SALE00097,2025-10-15,Customer Dissatisfaction,Processed,2
+RET00068,SALE00043,2026-01-25,Billing Issue,Processed,1
+RET00069,SALE00039,2025-11-16,Billing Issue,Processed,3
+RET00070,SALE00082,2026-03-12,Wrong Product,Processed,2
+RET00071,SALE00304,2026-03-01,Wrong Product,Processed,4
+RET00072,SALE00209,2026-01-07,Defective,Processed,2
+RET00073,SALE00776,2025-12-04,Customer Dissatisfaction,Processed,1
+RET00074,SALE00061,2026-03-13,Defective,Processed,1
+RET00075,SALE00416,2026-03-05,Billing Issue,Processed,2
+RET00076,SALE00388,2025-10-27,Customer Dissatisfaction,Processed,1
+RET00077,SALE00606,2026-01-31,Defective,Processed,1
+RET00078,SALE00845,2026-03-03,Billing Issue,Rejected,4
+RET00079,SALE00247,2026-02-21,Customer Dissatisfaction,Processed,1
+RET00080,SALE00431,2026-03-09,Customer Dissatisfaction,Processed,1
+RET00081,SALE00641,2025-11-10,Wrong Product,Processed,5
+RET00082,SALE00864,2026-03-19,Defective,Processed,2
+RET00083,SALE00712,2026-02-17,Defective,Processed,2
+RET00084,SALE00398,2025-11-17,Billing Issue,Processed,1
+RET00085,SALE00536,2026-01-24,Wrong Product,Processed,4
+RET00086,SALE00629,2026-01-10,Customer Dissatisfaction,Processed,1
+RET00087,SALE00124,2026-03-09,Defective,Processed,1
+RET00088,SALE00935,2026-03-24,Customer Dissatisfaction,Rejected,1
+RET00089,SALE00699,2025-11-01,Billing Issue,Processed,1
+RET00090,SALE00262,2026-03-01,Wrong Product,Processed,1
+RET00091,SALE00485,2026-03-24,Customer Dissatisfaction,Pending,1
+RET00092,SALE00615,2026-01-17,Billing Issue,Rejected,2
+RET00093,SALE00787,2026-01-01,Wrong Product,Rejected,1
+RET00094,SALE00041,2025-10-09,Wrong Product,Processed,1
+RET00095,SALE00315,2026-02-22,Wrong Product,Processed,2
+RET00096,SALE00399,2026-02-27,Billing Issue,Pending,2
+RET00097,SALE00261,2026-01-30,Defective,Rejected,2
+RET00098,SALE00096,2025-10-15,Billing Issue,Pending,4
+RET00099,SALE00970,2026-02-25,Defective,Processed,1
+RET00100,SALE00248,2026-01-06,Billing Issue,Processed,1
+RET00101,SALE00107,2026-01-13,Customer Dissatisfaction,Processed,3
+RET00102,SALE00807,2025-11-13,Wrong Product,Processed,3
+RET00103,SALE00925,2025-11-16,Billing Issue,Pending,3
+RET00104,SALE00762,2025-10-09,Customer Dissatisfaction,Pending,3
+RET00105,SALE00047,2025-11-04,Billing Issue,Rejected,1
+RET00106,SALE00424,2025-11-29,Customer Dissatisfaction,Processed,1
+RET00107,SALE00962,2026-03-16,Customer Dissatisfaction,Rejected,2
+RET00108,SALE00451,2025-10-24,Wrong Product,Pending,2
+RET00109,SALE00250,2026-02-10,Defective,Rejected,1
+RET00110,SALE00848,2026-03-24,Defective,Processed,1
+RET00111,SALE00518,2026-03-17,Defective,Processed,4
+RET00112,SALE00151,2026-01-18,Customer Dissatisfaction,Processed,1
+RET00113,SALE00201,2025-10-13,Defective,Processed,1
+RET00114,SALE00869,2026-02-28,Wrong Product,Pending,2
+RET00115,SALE00167,2026-03-20,Billing Issue,Processed,2
+RET00116,SALE00778,2025-12-31,Wrong Product,Processed,3
+RET00117,SALE00722,2026-03-11,Wrong Product,Processed,5
+RET00118,SALE00252,2025-10-23,Billing Issue,Processed,1
+RET00119,SALE00974,2025-12-24,Defective,Pending,3
+RET00120,SALE00098,2026-01-16,Wrong Product,Processed,2
+RET00121,SALE00892,2026-01-22,Customer Dissatisfaction,Processed,1
+RET00122,SALE00989,2026-03-22,Wrong Product,Processed,3
+RET00123,SALE00911,2026-01-12,Customer Dissatisfaction,Processed,1
+RET00124,SALE00520,2025-10-17,Defective,Processed,1
+RET00125,SALE00697,2026-02-04,Wrong Product,Processed,4
+RET00126,SALE00038,2025-10-31,Customer Dissatisfaction,Processed,1
+RET00127,SALE00162,2026-03-06,Billing Issue,Processed,1
+RET00128,SALE00402,2025-11-10,Customer Dissatisfaction,Rejected,1
+RET00129,SALE00593,2025-11-13,Billing Issue,Pending,1
+RET00130,SALE00188,2026-03-12,Wrong Product,Pending,2
+RET00131,SALE00486,2026-02-17,Customer Dissatisfaction,Processed,1
+RET00132,SALE00334,2026-02-27,Billing Issue,Processed,2
+RET00133,SALE00196,2026-02-23,Defective,Processed,1
+RET00134,SALE00098,2025-12-14,Customer Dissatisfaction,Processed,1
+RET00135,SALE00946,2025-09-28,Wrong Product,Processed,1
+RET00136,SALE00353,2026-02-10,Wrong Product,Processed,3
+RET00137,SALE00212,2025-09-30,Customer Dissatisfaction,Processed,5
+RET00138,SALE00474,2026-03-16,Billing Issue,Pending,4
+RET00139,SALE00944,2025-12-04,Defective,Processed,2
+RET00140,SALE00294,2025-11-06,Wrong Product,Processed,2
+RET00141,SALE00532,2026-02-28,Defective,Processed,2
+RET00142,SALE00902,2025-11-15,Wrong Product,Processed,1
+RET00143,SALE00258,2026-03-11,Billing Issue,Processed,2
+RET00144,SALE00681,2025-10-22,Customer Dissatisfaction,Processed,1
+RET00145,SALE00923,2025-12-30,Billing Issue,Processed,1
+RET00146,SALE00790,2025-11-17,Defective,Pending,2
+RET00147,SALE00278,2025-10-07,Customer Dissatisfaction,Processed,2
+RET00148,SALE00739,2026-02-20,Wrong Product,Processed,2
+RET00149,SALE00556,2026-01-06,Wrong Product,Pending,1
+RET00150,SALE00773,2025-10-08,Wrong Product,Processed,2

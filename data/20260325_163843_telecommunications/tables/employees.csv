@@ -1,0 +1,101 @@
+employee_id,name,department,hire_date
+EMP0001,Robert Jones,Customer Service,2025-12-23
+EMP0002,John Johnson,Sales,2026-03-10
+EMP0003,Mary Miller,Technical Support,2026-03-18
+EMP0004,Jennifer Miller,Sales,2026-03-21
+EMP0005,Patricia Jones,Sales,2026-02-25
+EMP0006,Mary Jones,Technical Support,2025-12-29
+EMP0007,William Moore,Customer Service,2026-01-07
+EMP0008,Barbara Wilson,Customer Service,2026-03-19
+EMP0009,Patricia Johnson,Sales,2026-03-21
+EMP0010,James Wilson,Customer Service,2025-11-09
+EMP0011,Susan Johnson,Sales,2026-03-15
+EMP0012,Michael Davis,Technical Support,2025-10-19
+EMP0013,Elizabeth Moore,Customer Service,2026-01-14
+EMP0014,Joseph Brown,Customer Service,2025-10-31
+EMP0015,Susan Jones,Sales,2026-02-11
+EMP0016,David Jones,Sales,2025-11-09
+EMP0017,Mary Brown,Management,2026-03-11
+EMP0018,Patricia Williams,Technical Support,2025-11-06
+EMP0019,Barbara Williams,Sales,2025-12-15
+EMP0020,James Miller,Technical Support,2026-03-14
+EMP0021,Michael Smith,Sales,2026-03-25
+EMP0022,William Miller,Customer Service,2025-12-02
+EMP0023,Linda Miller,Customer Service,2026-02-21
+EMP0024,Joseph Moore,Sales,2026-03-05
+EMP0025,Patricia Moore,Management,2026-02-10
+EMP0026,Elizabeth Garcia,Sales,2026-03-04
+EMP0027,Jennifer Jones,Management,2026-02-18
+EMP0028,Mary Brown,Customer Service,2026-03-11
+EMP0029,Joseph Miller,Customer Service,2026-03-05
+EMP0030,David Moore,Customer Service,2026-03-21
+EMP0031,William Williams,Management,2025-10-02
+EMP0032,Linda Brown,Technical Support,2025-09-27
+EMP0033,John Brown,Customer Service,2025-11-06
+EMP0034,William Williams,Sales,2026-02-27
+EMP0035,Richard Williams,Customer Service,2026-02-17
+EMP0036,Patricia Davis,Management,2026-03-20
+EMP0037,Joseph Johnson,Technical Support,2025-11-07
+EMP0038,Barbara Brown,Sales,2026-01-11
+EMP0039,John Williams,Customer Service,2026-01-22
+EMP0040,John Johnson,Customer Service,2025-10-11
+EMP0041,David Brown,Customer Service,2025-11-04
+EMP0042,William Garcia,Sales,2025-12-06
+EMP0043,Michael Johnson,Technical Support,2026-01-28
+EMP0044,Joseph Wilson,Technical Support,2026-03-06
+EMP0045,Jennifer Williams,Technical Support,2025-10-05
+EMP0046,Richard Williams,Customer Service,2025-10-19
+EMP0047,Patricia Jones,Sales,2025-12-31
+EMP0048,Jennifer Johnson,Management,2026-01-02
+EMP0049,Jennifer Smith,Sales,2025-10-25
+EMP0050,Robert Williams,Sales,2026-02-20
+EMP0051,John Williams,Customer Service,2025-10-25
+EMP0052,Michael Smith,Technical Support,2026-01-02
+EMP0053,Barbara Miller,Customer Service,2025-11-02
+EMP0054,David Davis,Customer Service,2025-12-12
+EMP0055,Susan Brown,Customer Service,2026-02-03
+EMP0056,Jennifer Miller,Sales,2026-02-17
+EMP0057,David Williams,Sales,2025-10-28
+EMP0058,Linda Johnson,Sales,2026-02-26
+EMP0059,Linda Johnson,Technical Support,2026-03-01
+EMP0060,Joseph Garcia,Technical Support,2025-12-12
+EMP0061,Barbara Wilson,Management,2025-12-03
+EMP0062,William Williams,Sales,2025-10-25
+EMP0063,Elizabeth Moore,Sales,2026-03-16
+EMP0064,William Smith,Sales,2026-02-10
+EMP0065,Robert Moore,Customer Service,2025-12-14
+EMP0066,Barbara Miller,Sales,2026-01-09
+EMP0067,Joseph Moore,Customer Service,2025-11-14
+EMP0068,John Garcia,Sales,2026-03-09
+EMP0069,James Johnson,Sales,2026-03-19
+EMP0070,William Miller,Sales,2026-03-03
+EMP0071,Michael Wilson,Sales,2025-11-07
+EMP0072,Patricia Wilson,Technical Support,2025-10-29
+EMP0073,Joseph Wilson,Customer Service,2026-03-06
+EMP0074,David Moore,Management,2025-11-08
+EMP0075,Patricia Davis,Technical Support,2026-03-15
+EMP0076,Susan Johnson,Customer Service,2026-01-01
+EMP0077,Joseph Moore,Customer Service,2025-12-05
+EMP0078,John Johnson,Customer Service,2026-02-23
+EMP0079,Elizabeth Brown,Sales,2026-02-27
+EMP0080,Mary Moore,Customer Service,2025-11-09
+EMP0081,Jennifer Wilson,Technical Support,2025-10-13
+EMP0082,Linda Smith,Customer Service,2026-01-20
+EMP0083,Patricia Davis,Technical Support,2025-11-27
+EMP0084,Linda Williams,Customer Service,2025-10-31
+EMP0085,John Miller,Sales,2025-12-28
+EMP0086,Jessica Johnson,Management,2026-02-01
+EMP0087,Jennifer Smith,Customer Service,2026-01-02
+EMP0088,Robert Davis,Sales,2026-02-14
+EMP0089,Barbara Davis,Technical Support,2026-03-06
+EMP0090,Richard Miller,Sales,2025-10-29
+EMP0091,Jennifer Wilson,Customer Service,2025-10-26
+EMP0092,Susan Williams,Management,2026-03-05
+EMP0093,John Moore,Sales,2025-10-23
+EMP0094,Susan Moore,Sales,2025-11-13
+EMP0095,Elizabeth Davis,Customer Service,2025-11-18
+EMP0096,Richard Johnson,Customer Service,2025-12-12
+EMP0097,Linda Moore,Customer Service,2025-10-14
+EMP0098,Michael Smith,Management,2026-01-25
+EMP0099,Michael Moore,Technical Support,2026-03-17
+EMP0100,Elizabeth Wilson,Customer Service,2025-12-03

@@ -1,0 +1,17 @@
+{
+  "chat_agent_id": "ChatAgent",
+  "chat_agent_name": "ChatAgent",
+  "tools": [
+    "knowledge_base_retrieve"
+  ],
+  "workiq_tools_count": 3,
+  "created_with": "hybrid_approach",
+  "title_agent_id": "TitleAgent",
+  "title_agent_name": "TitleAgent",
+  "search_index": "knowledge_index",
+  "search_mode": "knowledge_base",
+  "knowledge_base_name": "danlcngcx5m4yb-kb",
+  "mcp_connection_name": "danlcngcx5m4yb-kb-mcp-connection",
+  "search_endpoint": "https://srch-danlcngcx5m4yb.search.windows.net",
+  "sql_mode": "none"
+}

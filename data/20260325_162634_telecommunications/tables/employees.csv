@@ -1,0 +1,201 @@
+employee_id,name,department,hire_date,store_id
+EMP0001,Linda Smith,Sales,2025-12-27,STORE014
+EMP0002,Richard Garcia,Technical Support,2025-11-28,STORE004
+EMP0003,Jessica Davis,Marketing,2025-12-21,STORE004
+EMP0004,Barbara Garcia,Operations,2025-12-10,STORE002
+EMP0005,Richard Jones,Billing,2026-01-08,STORE001
+EMP0006,Jennifer Smith,Sales,2025-10-17,STORE005
+EMP0007,David Brown,Technical Support,2025-12-30,STORE006
+EMP0008,James Jones,Marketing,2025-11-17,STORE011
+EMP0009,Mary Davis,Operations,2026-02-13,STORE012
+EMP0010,Barbara Brown,Billing,2025-11-15,STORE015
+EMP0011,Jennifer Johnson,Sales,2026-03-02,STORE020
+EMP0012,Linda Brown,Technical Support,2025-10-04,STORE009
+EMP0013,William Smith,Marketing,2025-10-17,STORE003
+EMP0014,Linda Miller,Operations,2025-10-18,STORE012
+EMP0015,Barbara Williams,Billing,2025-10-08,STORE011
+EMP0016,Jennifer Brown,Sales,2026-02-25,STORE006
+EMP0017,David Garcia,Technical Support,2025-11-15,STORE004
+EMP0018,James Garcia,Marketing,2026-01-25,STORE013
+EMP0019,Robert Brown,Operations,2025-11-07,STORE013
+EMP0020,Jessica Jones,Billing,2026-02-13,STORE015
+EMP0021,Jennifer Davis,Sales,2025-12-08,STORE009
+EMP0022,Mary Johnson,Technical Support,2025-10-31,STORE013
+EMP0023,Mary Brown,Marketing,2025-12-29,STORE016
+EMP0024,Linda Smith,Operations,2025-11-30,STORE014
+EMP0025,Jessica Smith,Billing,2026-03-02,STORE006
+EMP0026,David Brown,Sales,2026-02-05,STORE004
+EMP0027,Robert Garcia,Technical Support,2026-02-08,STORE005
+EMP0028,Jennifer Garcia,Marketing,2026-01-23,STORE002
+EMP0029,Mary Smith,Operations,2025-12-18,STORE006
+EMP0030,Robert Williams,Billing,2025-12-01,STORE004
+EMP0031,Patricia Garcia,Sales,2025-10-21,STORE014
+EMP0032,John Garcia,Technical Support,2025-11-18,STORE019
+EMP0033,Richard Johnson,Marketing,2026-02-07,STORE016
+EMP0034,David Jones,Operations,2025-12-25,STORE019
+EMP0035,David Williams,Billing,2026-01-28,STORE015
+EMP0036,Jennifer Miller,Sales,2026-02-23,STORE006
+EMP0037,Jessica Garcia,Technical Support,2025-11-11,STORE020
+EMP0038,Jennifer Garcia,Marketing,2025-12-20,STORE013
+EMP0039,Linda Williams,Operations,2025-10-05,STORE012
+EMP0040,Richard Jones,Billing,2026-01-29,STORE020
+EMP0041,Elizabeth Williams,Sales,2025-12-25,STORE001
+EMP0042,Jennifer Smith,Technical Support,2025-10-04,STORE005
+EMP0043,Richard Smith,Marketing,2026-03-01,STORE016
+EMP0044,Jennifer Garcia,Operations,2026-03-14,STORE016
+EMP0045,Linda Johnson,Billing,2025-11-20,STORE004
+EMP0046,Jessica Williams,Sales,2026-01-04,STORE014
+EMP0047,David Johnson,Technical Support,2026-01-21,STORE015
+EMP0048,Linda Garcia,Marketing,2026-01-31,STORE002
+EMP0049,David Williams,Operations,2025-10-19,STORE003
+EMP0050,John Garcia,Billing,2026-02-03,STORE009
+EMP0051,Joseph Smith,Sales,2025-11-10,STORE011
+EMP0052,William Brown,Technical Support,2026-02-21,STORE001
+EMP0053,Linda Johnson,Marketing,2026-02-10,STORE017
+EMP0054,Barbara Jones,Operations,2025-10-09,STORE019
+EMP0055,Patricia Smith,Billing,2025-11-24,STORE019
+EMP0056,Mary Miller,Sales,2025-10-04,STORE008
+EMP0057,Joseph Miller,Technical Support,2025-11-26,STORE011
+EMP0058,Jennifer Miller,Marketing,2025-12-02,STORE017
+EMP0059,Jessica Miller,Operations,2025-11-26,STORE017
+EMP0060,Barbara Miller,Billing,2025-11-13,STORE020
+EMP0061,Patricia Davis,Sales,2025-12-07,STORE004
+EMP0062,Linda Williams,Technical Support,2026-03-14,STORE014
+EMP0063,Joseph Johnson,Marketing,2026-03-06,STORE008
+EMP0064,Mary Jones,Operations,2025-10-30,STORE016
+EMP0065,James Garcia,Billing,2026-01-23,STORE012
+EMP0066,William Johnson,Sales,2025-12-10,STORE013
+EMP0067,John Garcia,Technical Support,2026-03-12,STORE005
+EMP0068,Jennifer Miller,Marketing,2025-12-23,STORE018
+EMP0069,Jennifer Johnson,Operations,2025-10-31,STORE020
+EMP0070,John Garcia,Billing,2026-01-26,STORE002
+EMP0071,Jessica Smith,Sales,2026-03-11,STORE001
+EMP0072,Susan Williams,Technical Support,2026-03-14,STORE006
+EMP0073,Susan Williams,Marketing,2025-10-06,STORE017
+EMP0074,Mary Johnson,Operations,2026-01-11,STORE016
+EMP0075,David Brown,Billing,2026-01-17,STORE016
+EMP0076,Michael Miller,Sales,2025-12-17,STORE006
+EMP0077,William Jones,Technical Support,2025-12-26,STORE003
+EMP0078,Elizabeth Brown,Marketing,2026-02-10,STORE016
+EMP0079,Patricia Smith,Operations,2026-02-17,STORE011
+EMP0080,Richard Davis,Billing,2025-12-07,STORE008
+EMP0081,Robert Smith,Sales,2025-11-07,STORE011
+EMP0082,Barbara Smith,Technical Support,2025-10-16,STORE009
+EMP0083,Susan Johnson,Marketing,2025-12-27,STORE002
+EMP0084,Elizabeth Davis,Operations,2026-02-01,STORE017
+EMP0085,Michael Johnson,Billing,2026-02-27,STORE008
+EMP0086,James Brown,Sales,2026-03-04,STORE018
+EMP0087,Jennifer Jones,Technical Support,2025-12-29,STORE013
+EMP0088,John Davis,Marketing,2025-12-31,STORE013
+EMP0089,Patricia Jones,Operations,2025-11-19,STORE008
+EMP0090,Richard Davis,Billing,2025-11-02,STORE003
+EMP0091,Jessica Jones,Sales,2025-10-14,STORE015
+EMP0092,John Miller,Technical Support,2025-11-01,STORE015
+EMP0093,Jennifer Garcia,Marketing,2025-12-19,STORE019
+EMP0094,Richard Garcia,Operations,2025-11-24,STORE015
+EMP0095,Jennifer Davis,Billing,2026-02-09,STORE003
+EMP0096,Mary Jones,Sales,2025-12-18,STORE016
+EMP0097,Joseph Davis,Technical Support,2025-11-10,STORE015
+EMP0098,William Brown,Marketing,2025-12-14,STORE011
+EMP0099,William Smith,Operations,2026-01-26,STORE004
+EMP0100,Robert Johnson,Billing,2026-02-01,STORE016
+EMP0101,John Garcia,Sales,2025-12-02,STORE001
+EMP0102,Susan Brown,Technical Support,2026-03-11,STORE004
+EMP0103,Mary Miller,Marketing,2026-01-16,STORE013
+EMP0104,Susan Davis,Operations,2026-01-17,STORE014
+EMP0105,Linda Davis,Billing,2026-02-10,STORE002
+EMP0106,Elizabeth Johnson,Sales,2026-01-20,STORE018
+EMP0107,Richard Smith,Technical Support,2026-03-10,STORE018
+EMP0108,Robert Johnson,Marketing,2025-10-16,STORE001
+EMP0109,Joseph Williams,Operations,2025-11-06,STORE003
+EMP0110,Jennifer Brown,Billing,2026-01-31,STORE020
+EMP0111,Michael Williams,Sales,2026-02-12,STORE020
+EMP0112,Mary Miller,Technical Support,2025-12-12,STORE010
+EMP0113,John Miller,Marketing,2025-09-30,STORE017
+EMP0114,Michael Williams,Operations,2026-03-06,STORE018
+EMP0115,William Garcia,Billing,2025-12-09,STORE007
+EMP0116,John Johnson,Sales,2025-10-03,STORE015
+EMP0117,Richard Miller,Technical Support,2026-01-09,STORE011
+EMP0118,David Jones,Marketing,2025-10-30,STORE012
+EMP0119,Joseph Smith,Operations,2025-10-07,STORE002
+EMP0120,Susan Johnson,Billing,2026-03-03,STORE008
+EMP0121,Susan Williams,Sales,2025-10-14,STORE015
+EMP0122,Robert Johnson,Technical Support,2026-03-03,STORE011
+EMP0123,Patricia Johnson,Marketing,2025-09-27,STORE018
+EMP0124,Elizabeth Garcia,Operations,2026-02-16,STORE020
+EMP0125,Susan Jones,Billing,2025-09-29,STORE020
+EMP0126,Richard Davis,Sales,2026-03-10,STORE016
+EMP0127,Jessica Smith,Technical Support,2026-03-03,STORE012
+EMP0128,Jennifer Jones,Marketing,2026-02-14,STORE015
+EMP0129,Richard Williams,Operations,2025-11-29,STORE004
+EMP0130,Richard Smith,Billing,2025-11-22,STORE004
+EMP0131,Richard Garcia,Sales,2025-12-08,STORE008
+EMP0132,Linda Smith,Technical Support,2026-02-12,STORE001
+EMP0133,Jessica Jones,Marketing,2025-10-26,STORE011
+EMP0134,Barbara Smith,Operations,2026-01-10,STORE012
+EMP0135,David Jones,Billing,2025-11-14,STORE010
+EMP0136,Elizabeth Jones,Sales,2026-02-04,STORE018
+EMP0137,Jessica Johnson,Technical Support,2026-01-22,STORE017
+EMP0138,Linda Williams,Marketing,2025-10-05,STORE012
+EMP0139,Elizabeth Davis,Operations,2026-03-13,STORE004
+EMP0140,David Jones,Billing,2025-12-28,STORE002
+EMP0141,Susan Johnson,Sales,2025-11-28,STORE006
+EMP0142,Michael Davis,Technical Support,2025-09-27,STORE016
+EMP0143,Michael Miller,Marketing,2026-02-18,STORE005
+EMP0144,Jessica Garcia,Operations,2025-09-27,STORE014
+EMP0145,Mary Williams,Billing,2025-11-02,STORE004
+EMP0146,John Jones,Sales,2026-01-05,STORE009
+EMP0147,Richard Williams,Technical Support,2025-10-07,STORE020
+EMP0148,James Williams,Marketing,2025-10-11,STORE007
+EMP0149,Michael Brown,Operations,2026-02-08,STORE007
+EMP0150,Mary Brown,Billing,2025-11-28,STORE004
+EMP0151,Mary Davis,Sales,2026-02-17,STORE013
+EMP0152,Mary Garcia,Technical Support,2025-11-05,STORE007
+EMP0153,Michael Jones,Marketing,2025-10-08,STORE015
+EMP0154,Barbara Davis,Operations,2026-02-13,STORE007
+EMP0155,Richard Johnson,Billing,2026-01-02,STORE011
+EMP0156,James Brown,Sales,2026-02-14,STORE004
+EMP0157,Barbara Davis,Technical Support,2026-02-16,STORE014
+EMP0158,Joseph Williams,Marketing,2025-11-08,STORE002
+EMP0159,Jessica Garcia,Operations,2026-01-24,STORE019
+EMP0160,Barbara Williams,Billing,2025-10-11,STORE004
+EMP0161,William Johnson,Sales,2026-01-23,STORE015
+EMP0162,Elizabeth Smith,Technical Support,2026-01-07,STORE015
+EMP0163,Richard Smith,Marketing,2025-11-02,STORE019
+EMP0164,Jennifer Brown,Operations,2026-01-23,STORE017
+EMP0165,Linda Brown,Billing,2025-12-14,STORE005
+EMP0166,Michael Jones,Sales,2025-12-01,STORE016
+EMP0167,Susan Smith,Technical Support,2025-12-30,STORE001
+EMP0168,James Davis,Marketing,2026-02-02,STORE017
+EMP0169,Robert Williams,Operations,2026-03-05,STORE002
+EMP0170,James Brown,Billing,2025-10-26,STORE018
+EMP0171,William Jones,Sales,2025-11-08,STORE014
+EMP0172,William Miller,Technical Support,2026-01-21,STORE019
+EMP0173,Richard Garcia,Marketing,2025-11-12,STORE016
+EMP0174,Joseph Jones,Operations,2025-12-21,STORE017
+EMP0175,Michael Davis,Billing,2026-01-14,STORE006
+EMP0176,Elizabeth Miller,Sales,2026-03-15,STORE019
+EMP0177,Patricia Smith,Technical Support,2026-03-12,STORE006
+EMP0178,Barbara Jones,Marketing,2026-02-21,STORE005
+EMP0179,Elizabeth Johnson,Operations,2026-02-15,STORE004
+EMP0180,Jessica Johnson,Billing,2025-10-20,STORE013
+EMP0181,David Jones,Sales,2025-11-09,STORE020
+EMP0182,David Jones,Technical Support,2026-02-05,STORE020
+EMP0183,William Jones,Marketing,2026-02-20,STORE011
+EMP0184,Michael Williams,Operations,2025-11-05,STORE017
+EMP0185,Linda Smith,Billing,2026-02-24,STORE013
+EMP0186,Richard Garcia,Sales,2026-02-18,STORE014
+EMP0187,Robert Smith,Technical Support,2026-01-09,STORE020
+EMP0188,Jessica Jones,Marketing,2025-10-02,STORE008
+EMP0189,William Miller,Operations,2026-01-15,STORE009
+EMP0190,Richard Miller,Billing,2025-11-19,STORE013
+EMP0191,Mary Brown,Sales,2025-12-30,STORE011
+EMP0192,David Brown,Technical Support,2026-01-07,STORE010
+EMP0193,Jessica Garcia,Marketing,2025-11-17,STORE015
+EMP0194,Elizabeth Williams,Operations,2026-03-03,STORE005
+EMP0195,Jennifer Jones,Billing,2026-02-18,STORE005
+EMP0196,Patricia Davis,Sales,2026-01-30,STORE014
+EMP0197,Robert Jones,Technical Support,2026-03-05,STORE020
+EMP0198,Jennifer Garcia,Marketing,2025-12-31,STORE017
+EMP0199,John Brown,Operations,2025-12-13,STORE010
+EMP0200,Barbara Brown,Billing,2025-12-25,STORE018

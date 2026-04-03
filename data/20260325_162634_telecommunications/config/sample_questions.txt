@@ -1,0 +1,20 @@
+=== SQL QUESTIONS (Fabric Data) ===
+1. How many new customers signed up in the past 90 days, grouped by region?  
+2. What is the total sales amount and quantity sold per product category in the last quarter?  
+3. Which employees generated the highest sales revenue this month, and what stores are they assigned to?  
+4. How many service requests were submitted and closed in the last 30 days, broken down by service type?  
+5. What is the average response time for repair service requests in the last month, grouped by employee department?
+
+=== DOCUMENT QUESTIONS (AI Search) ===
+1. What are the key guidelines for shipping and delivery according to the shipping delivery guidelines document?  
+2. What policies does the retail sales policy document specify for handling product returns and refunds?  
+3. What best practices are recommended in the employee conduct performance document for managing customer interactions?  
+4. How is customer data privacy addressed in the data privacy security document?  
+5. What maintenance procedures are outlined in the equipment network maintenance document for reducing service downtime?
+
+=== COMBINED INSIGHT QUESTIONS ===
+1. Based on our recent sales data, are we complying with the retail sales policy requirements for promotions and discounts?  
+2. How do our service request response times compare with the standards defined in the customer service support document?  
+3. Are shipment delays reflected in our sales shipment data in line with the shipping delivery guidelines, and what could be causing these delays?  
+4. According to the product quality maintenance document, do our sales figures for specific categories indicate any quality concerns raised in recent service requests?  
+5. How does employee performance data align with the conduct and performance standards outlined in the employee conduct performance document?

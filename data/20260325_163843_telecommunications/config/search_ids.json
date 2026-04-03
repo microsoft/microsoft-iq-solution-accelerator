@@ -1,0 +1,16 @@
+{
+  "index_name": "knowledge_index",
+  "knowledge_base_name": "dahc2f652i2nio-kb",
+  "knowledge_source_name": "dahc2f652i2nio-ks",
+  "document_count": 15,
+  "pdf_files": [
+    "customer_service_policy.pdf",
+    "data_privacy_security_policy.pdf",
+    "employee_conduct_safety_manual.pdf",
+    "network_maintenance_guidelines.pdf",
+    "pricing_billing_policy.pdf",
+    "quality_control_manual.pdf",
+    "return_refund_policy.pdf",
+    "sales_operations_manual.pdf"
+  ]
+}

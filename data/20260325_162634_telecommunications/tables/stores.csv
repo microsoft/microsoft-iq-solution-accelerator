@@ -1,0 +1,21 @@
+store_id,store_name,city,status,open_date
+STORE001,New York Store 1,Philadelphia,Open,2025-09-18
+STORE002,New York Store 2,Los Angeles,Closed,2025-04-22
+STORE003,San Antonio Store 3,New York,Under Renovation,2025-04-21
+STORE004,New York Store 4,San Diego,Open,2025-04-22
+STORE005,New York Store 5,New York,Closed,2025-07-26
+STORE006,San Antonio Store 6,Chicago,Under Renovation,2025-04-14
+STORE007,Los Angeles Store 7,San Antonio,Open,2025-07-13
+STORE008,Los Angeles Store 8,San Antonio,Closed,2025-05-22
+STORE009,Houston Store 9,San Diego,Under Renovation,2025-06-13
+STORE010,Philadelphia Store 10,New York,Open,2025-05-09
+STORE011,San Diego Store 11,San Antonio,Closed,2025-05-27
+STORE012,New York Store 12,San Antonio,Under Renovation,2025-09-11
+STORE013,Phoenix Store 13,Chicago,Open,2025-09-04
+STORE014,San Diego Store 14,Philadelphia,Closed,2025-07-17
+STORE015,New York Store 15,Houston,Under Renovation,2025-06-20
+STORE016,San Diego Store 16,Chicago,Open,2025-08-22
+STORE017,Los Angeles Store 17,Phoenix,Closed,2025-06-11
+STORE018,Philadelphia Store 18,Phoenix,Under Renovation,2025-08-06
+STORE019,San Antonio Store 19,San Diego,Open,2025-04-15
+STORE020,New York Store 20,Chicago,Closed,2025-05-15

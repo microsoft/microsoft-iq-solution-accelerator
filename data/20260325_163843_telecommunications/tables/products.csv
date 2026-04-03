@@ -1,0 +1,51 @@
+product_id,product_name,type,monthly_fee,contract_length_months
+PROD0001,Mobile Plan 1,Postpaid,127.01,12
+PROD0002,Mobile Plan 2,Postpaid,48.54,12
+PROD0003,Mobile Plan 3,Postpaid,89.67,12
+PROD0004,Mobile Plan 4,Data-only,61.61,24
+PROD0005,Mobile Plan 5,Data-only,69.7,24
+PROD0006,Mobile Plan 6,Postpaid,45.69,12
+PROD0007,Mobile Plan 7,Postpaid,89.56,12
+PROD0008,Mobile Plan 8,Postpaid,89.07,24
+PROD0009,Mobile Plan 9,Family Plan,115.03,24
+PROD0010,Mobile Plan 10,Postpaid,96.91,24
+PROD0011,Mobile Plan 11,Data-only,114.91,0
+PROD0012,Mobile Plan 12,Prepaid,38.79,12
+PROD0013,Mobile Plan 13,Prepaid,33.37,12
+PROD0014,Mobile Plan 14,Postpaid,142.58,12
+PROD0015,Mobile Plan 15,Prepaid,54.86,0
+PROD0016,Mobile Plan 16,Postpaid,57.57,12
+PROD0017,Mobile Plan 17,Prepaid,68.26,12
+PROD0018,Mobile Plan 18,Postpaid,23.96,12
+PROD0019,Mobile Plan 19,Prepaid,109.29,12
+PROD0020,Mobile Plan 20,Postpaid,56.01,0
+PROD0021,Mobile Plan 21,Postpaid,83.85,0
+PROD0022,Mobile Plan 22,Postpaid,52.98,0
+PROD0023,Mobile Plan 23,Family Plan,103.85,24
+PROD0024,Mobile Plan 24,Postpaid,130.65,24
+PROD0025,Mobile Plan 25,Data-only,56.13,12
+PROD0026,Mobile Plan 26,Prepaid,60.24,12
+PROD0027,Mobile Plan 27,Prepaid,72.07,12
+PROD0028,Mobile Plan 28,Postpaid,51.84,12
+PROD0029,Mobile Plan 29,Family Plan,74.32,12
+PROD0030,Mobile Plan 30,Data-only,53.61,12
+PROD0031,Mobile Plan 31,Postpaid,115.33,24
+PROD0032,Mobile Plan 32,Postpaid,129.4,24
+PROD0033,Mobile Plan 33,Family Plan,27.83,12
+PROD0034,Mobile Plan 34,Prepaid,125.5,24
+PROD0035,Mobile Plan 35,Prepaid,47.21,12
+PROD0036,Mobile Plan 36,Data-only,91.26,24
+PROD0037,Mobile Plan 37,Family Plan,115.12,12
+PROD0038,Mobile Plan 38,Prepaid,75.84,12
+PROD0039,Mobile Plan 39,Data-only,50.44,12
+PROD0040,Mobile Plan 40,Data-only,119.42,12
+PROD0041,Mobile Plan 41,Prepaid,47.63,12
+PROD0042,Mobile Plan 42,Prepaid,62.12,12
+PROD0043,Mobile Plan 43,Postpaid,148.79,12
+PROD0044,Mobile Plan 44,Family Plan,27.35,12
+PROD0045,Mobile Plan 45,Data-only,96.67,24
+PROD0046,Mobile Plan 46,Postpaid,52.98,12
+PROD0047,Mobile Plan 47,Prepaid,135.85,12
+PROD0048,Mobile Plan 48,Family Plan,149.85,12
+PROD0049,Mobile Plan 49,Postpaid,140.91,12
+PROD0050,Mobile Plan 50,Prepaid,131.16,24

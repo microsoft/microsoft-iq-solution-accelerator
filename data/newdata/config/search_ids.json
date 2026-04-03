@@ -1,0 +1,18 @@
+{
+  "index_name": "knowledge_index",
+  "knowledge_base_name": "danlcngcx5m4yb-kb",
+  "knowledge_source_name": "danlcngcx5m4yb-ks",
+  "blob_container_name": "danlcngcx5m4yb-documents",
+  "document_count": 6,
+  "pdf_files": [
+    "delivery_operations.pdf",
+    "inventory_logistics.pdf",
+    "supplier_management.pdf"
+  ],
+  "blob_urls": {
+    "delivery_operations.pdf": "https://stdanlcngcx5m4yb.blob.core.windows.net//danlcngcx5m4yb-documents/delivery_operations.pdf",
+    "inventory_logistics.pdf": "https://stdanlcngcx5m4yb.blob.core.windows.net//danlcngcx5m4yb-documents/inventory_logistics.pdf",
+    "supplier_management.pdf": "https://stdanlcngcx5m4yb.blob.core.windows.net//danlcngcx5m4yb-documents/supplier_management.pdf"
+  },
+  "storage_endpoint": "https://stdanlcngcx5m4yb.blob.core.windows.net/"
+}

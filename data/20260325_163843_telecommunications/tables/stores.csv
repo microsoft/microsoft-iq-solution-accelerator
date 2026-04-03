@@ -1,0 +1,21 @@
+store_id,city,store_type,store_size
+STORE001,New York,Retail,Small
+STORE002,New York,Franchise,Medium
+STORE003,Los Angeles,Retail,Medium
+STORE004,New York,Retail,Small
+STORE005,Philadelphia,Retail,Medium
+STORE006,Chicago,Retail,Medium
+STORE007,Philadelphia,Retail,Medium
+STORE008,New York,Retail,Large
+STORE009,Philadelphia,Retail,Medium
+STORE010,New York,Outlet,Small
+STORE011,New York,Outlet,Medium
+STORE012,New York,Franchise,Medium
+STORE013,Philadelphia,Retail,Large
+STORE014,Philadelphia,Franchise,Medium
+STORE015,Philadelphia,Retail,Medium
+STORE016,Houston,Retail,Large
+STORE017,Phoenix,Retail,Medium
+STORE018,Phoenix,Retail,Medium
+STORE019,Los Angeles,Retail,Medium
+STORE020,Chicago,Retail,Small
