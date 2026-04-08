@@ -160,7 +160,7 @@ Write-Info "Starting Python script execution..."
 try {
     # Calculate paths
     $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
-    $RepoRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $ScriptDir)))
+    $RepoRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $ScriptDir))
     
     # Set default requirements path if not provided
     if ([string]::IsNullOrWhiteSpace($RequirementsPath)) {

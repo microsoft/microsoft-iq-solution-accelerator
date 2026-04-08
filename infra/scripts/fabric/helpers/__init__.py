@@ -1,5 +1,5 @@
 """
-Unified Data Foundation Helper Modules
+Microsoft IQ Helper Modules
 
-This package contains helper modules for deploying the Unified Data Foundation solution to Microsoft Fabric.
+This package contains helper modules for deploying the Microsoft IQ solution to Microsoft Fabric.
 """

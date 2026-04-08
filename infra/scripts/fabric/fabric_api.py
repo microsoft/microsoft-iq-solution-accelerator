@@ -6,7 +6,7 @@ It focuses on core API operations including authentication, request management, 
 low-level methods for Fabric resources (workspaces, folders, notebooks, items).
 
 This library adheres strictly to Fabric API operations and does not contain business logic
-or project-specific transformations. For UDFWF-specific functionality, see udfwf_utils.py.
+or project-specific transformations.
 
 Core Features:
 - Authentication management with Azure CLI credentials
@@ -18,7 +18,7 @@ Core Features:
 Dependencies:
     pip install requests azure-identity azure-storage-file-datalake
 
-Author: Generated for Unified Data Foundation with Fabric (UDFWF) project
+Author: Microsoft IQ Solution Accelerator
 """
 
 import json

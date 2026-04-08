@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Unified Data Foundation Solution Installer
+Microsoft IQ Solution Installer
 
-This script provides a simplified deployment entry-point for the Unified Data Foundation
+This script provides a simplified deployment entry-point for the Microsoft IQ
 solution. It performs only the minimum steps needed to bootstrap the solution:
 
     1. setup_workspace        - Create and configure the Fabric workspace/capacity
@@ -10,12 +10,12 @@ solution. It performs only the minimum steps needed to bootstrap the solution:
     3. upload_installer       - Upload the installer notebook to the workspace
     4. run_installer          - Execute the installer notebook end-to-end
 
-The installer notebook (udf_solution_installer.ipynb) handles the remaining
+The installer notebook (fabric_solution_installer.ipynb) handles the remaining
 solution-specific steps (lakehouse creation, data ingestion, notebook deployment,
 post-deployment tasks, …) once it has been uploaded and started.
 
 Usage:
-    python install_udf_solution.py
+    python install_fabric_solution.py
 
 Environment Variables:
     The following variables are automatically set by 'azd' from main.bicep outputs and
@@ -101,9 +101,9 @@ ALL_DEPLOYMENT_STEPS = [
 def _notebook_path() -> str:
     """Return the absolute path to the installer notebook file.
 
-    The notebook lives at ``<repo-root>/fabric/infra/deploy/fabric_solution_installer.ipynb``.
+    The notebook lives at ``<repo-root>/infra/fabric/deploy/fabric_solution_installer.ipynb``.
     """
-    return os.path.join(REPO_ROOT, "fabric", "infra", "deploy", f"{INSTALLER_NOTEBOOK_NAME}.ipynb")
+    return os.path.join(REPO_ROOT, "infra", "fabric", "deploy", f"{INSTALLER_NOTEBOOK_NAME}.ipynb")
 
 
 def _patch_notebook_for_github_token(notebook_json: dict, github_token: str) -> dict:
