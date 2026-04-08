@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "3256081767704687690",
+  "name": "inventory_demandforecast_has_product_product",
+  "namespaceType": "Imported",
+  "source": {
+    "entityTypeId": "39852113086678"
+  },
+  "target": {
+    "entityTypeId": "93334388812376"
+  }
+}

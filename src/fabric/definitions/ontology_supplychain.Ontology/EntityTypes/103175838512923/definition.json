@@ -1,0 +1,65 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/entityType/1.0.0/schema.json",
+  "id": "103175838512923",
+  "namespace": "usertypes",
+  "baseEntityTypeId": null,
+  "name": "product_productcategory",
+  "entityIdParts": [
+    "3255858940180132300"
+  ],
+  "displayNamePropertyId": null,
+  "namespaceType": "Imported",
+  "visibility": "Visible",
+  "properties": [
+    {
+      "id": "3255858940180132300",
+      "name": "ProductCategoryID",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "String"
+    },
+    {
+      "id": "3255858964941370335",
+      "name": "ProductLineID",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "BigInt"
+    },
+    {
+      "id": "3255858985298807889",
+      "name": "CategoryName",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "String"
+    },
+    {
+      "id": "3255859012061004063",
+      "name": "CategoryDescription",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "String"
+    },
+    {
+      "id": "3255859034332792491",
+      "name": "IsActive",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "Boolean"
+    },
+    {
+      "id": "3255859056008101753",
+      "name": "CreatedBy",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "String"
+    },
+    {
+      "id": "3255859081665624791",
+      "name": "CreatedDate",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "DateTime"
+    }
+  ],
+  "timeseriesProperties": []
+}

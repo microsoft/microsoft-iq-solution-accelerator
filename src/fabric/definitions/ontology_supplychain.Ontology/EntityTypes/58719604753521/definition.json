@@ -1,0 +1,128 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/entityType/1.0.0/schema.json",
+  "id": "58719604753521",
+  "namespace": "usertypes",
+  "baseEntityTypeId": null,
+  "name": "inventory_inventorytransactions",
+  "entityIdParts": [
+    "3255856710533022592"
+  ],
+  "displayNamePropertyId": null,
+  "namespaceType": "Imported",
+  "visibility": "Visible",
+  "properties": [
+    {
+      "id": "3255856710533022592",
+      "name": "TransactionID",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "String"
+    },
+    {
+      "id": "3255856733402926280",
+      "name": "ProductID",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "String"
+    },
+    {
+      "id": "3255856754514183906",
+      "name": "WarehouseID",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "BigInt"
+    },
+    {
+      "id": "3255856773805531561",
+      "name": "TransactionType",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "String"
+    },
+    {
+      "id": "3255856795898391184",
+      "name": "TransactionDate",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "DateTime"
+    },
+    {
+      "id": "3255856816124076790",
+      "name": "Quantity",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "BigInt"
+    },
+    {
+      "id": "3255856837986342364",
+      "name": "UnitCost",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "Double"
+    },
+    {
+      "id": "3255856860268428815",
+      "name": "TotalValue",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "Double"
+    },
+    {
+      "id": "3255856886553890934",
+      "name": "ReferenceNumber",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "String"
+    },
+    {
+      "id": "3255856913744924256",
+      "name": "ReasonCode",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "String"
+    },
+    {
+      "id": "3255856938341238754",
+      "name": "StockBefore",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "BigInt"
+    },
+    {
+      "id": "3255856963188806871",
+      "name": "StockAfter",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "BigInt"
+    },
+    {
+      "id": "3255856984157618525",
+      "name": "ProcessedBy",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "String"
+    },
+    {
+      "id": "3255857008017945203",
+      "name": "Notes",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "String"
+    },
+    {
+      "id": "3255857030688006822",
+      "name": "CreatedBy",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "String"
+    },
+    {
+      "id": "3255857055390453125",
+      "name": "CreatedDate",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "DateTime"
+    }
+  ],
+  "timeseriesProperties": []
+}

@@ -1,0 +1,156 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/entityType/1.0.0/schema.json",
+  "id": "93334388812376",
+  "namespace": "usertypes",
+  "baseEntityTypeId": null,
+  "name": "product_product",
+  "entityIdParts": [
+    "3255858437437811614"
+  ],
+  "displayNamePropertyId": null,
+  "namespaceType": "Imported",
+  "visibility": "Visible",
+  "properties": [
+    {
+      "id": "3255858437437811614",
+      "name": "ProductID",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "String"
+    },
+    {
+      "id": "3255858461068699950",
+      "name": "ProductName",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "String"
+    },
+    {
+      "id": "3255858482435214988",
+      "name": "ProductDescription",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "String"
+    },
+    {
+      "id": "3255858511455929143",
+      "name": "BrandName",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "String"
+    },
+    {
+      "id": "3255858532164011917",
+      "name": "ProductNumber",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "String"
+    },
+    {
+      "id": "3255858551886698316",
+      "name": "Color",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "String"
+    },
+    {
+      "id": "3255858576773918769",
+      "name": "ProductModel",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "String"
+    },
+    {
+      "id": "3255858600250454727",
+      "name": "ProductCategoryID",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "String"
+    },
+    {
+      "id": "3255858623163833537",
+      "name": "ProductLineID",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "BigInt"
+    },
+    {
+      "id": "3255858643406455136",
+      "name": "ListPrice",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "Double"
+    },
+    {
+      "id": "3255858668375373291",
+      "name": "StandardCost",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "Double"
+    },
+    {
+      "id": "3255858690769944677",
+      "name": "Weight",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "Double"
+    },
+    {
+      "id": "3255858711121387421",
+      "name": "WeightUom",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "String"
+    },
+    {
+      "id": "3255858733437334193",
+      "name": "ProductStatus",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "String"
+    },
+    {
+      "id": "3255858758841967078",
+      "name": "CreatedDate",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "DateTime"
+    },
+    {
+      "id": "3255858778971300490",
+      "name": "SellStartDate",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "DateTime"
+    },
+    {
+      "id": "3255858803167734050",
+      "name": "SellEndDate",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "DateTime"
+    },
+    {
+      "id": "3255858824987634042",
+      "name": "UpdatedDate",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "DateTime"
+    },
+    {
+      "id": "3255858848164495482",
+      "name": "CreatedBy",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "String"
+    },
+    {
+      "id": "3255858869657033832",
+      "name": "UpdatedBy",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "String"
+    }
+  ],
+  "timeseriesProperties": []
+}
