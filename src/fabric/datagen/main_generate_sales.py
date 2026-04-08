@@ -319,15 +319,9 @@ def copy_csv_files(output_dest_path):
     product_dest.mkdir(parents=True, exist_ok=True)
     
     product_files = [
-        "ProductCategory_Samples.csv",
-        "ProductCategory_Samples_Camping.csv", 
         "ProductCategory_Samples_Combined.csv",
-        "ProductCategory_Samples_Kitchen.csv",
-        "ProductCategory_Samples_Ski.csv",
-        "Product_Samples_Camping.csv",
         "Product_Samples_Combined.csv",
-        "Product_Samples_Kitchen.csv",
-        "Product_Samples_Ski.csv"
+        "ProductLine_Sample.csv"
     ]
     
     print(f"\n📦 Copying product files to {product_dest.resolve()}...")

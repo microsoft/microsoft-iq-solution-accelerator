@@ -1,14 +1,16 @@
 """
-Supply Chain Data Generation - Main Orchestrator
+Supply Chain Data Generation - Inventory Orchestrator
 
-This is the main entry point for generating complete supply chain datasets.
+This is the main entry point for generating inventory datasets.
 Coordinates the generation of:
-- Supplier master data and relationships
 - Inventory levels and warehouse management  
 - Purchase orders and procurement process
-- Supply chain events and disruption scenarios
 
-Similar to main_generate_sales.py, this orchestrates the full process.
+Requires supplier data to be provided as input files:
+- Suppliers_Sample.csv
+- ProductSuppliers_Sample.csv
+
+Similar to main_generate_sales.py, this orchestrates the inventory process.
 """
 
 import argparse
@@ -58,7 +60,6 @@ def load_warehouse_display_names(input_path):
         }
 
 # Import our generators
-from generate_suppliers import SupplierDataGenerator
 from generate_inventory import InventoryDataGenerator
 
 
@@ -95,7 +96,6 @@ def generate_warehouses_csv(input_path, output_path, end_date_str):
                 'DisplayName': warehouse['DisplayName'],
                 'Type': warehouse['Type'],
                 'Status': warehouse['Status'],
-                'Location': warehouse['Location'],
                 
                 # Address fields
                 'AddressStreet': warehouse['Address']['Street'],
@@ -111,12 +111,11 @@ def generate_warehouses_csv(input_path, output_path, end_date_str):
                 'ManagerEmail': warehouse['ContactInfo']['ManagerEmail'],
                 
                 # Operational fields
-                'Priority': warehouse['Capacity']['Priority'],
                 'MaxCapacity': warehouse['Capacity']['MaxCapacity'],
                 'OperatingHours': warehouse['Operations']['OperatingHours'],
                 'StaffCount': warehouse['Operations']['StaffCount'],
                 'AutomationLevel': warehouse['Operations']['AutomationLevel'],
-                'DeliveryName': warehouse['DeliveryName'],
+                'ShortName': warehouse['ShortName'],
                 
                 # System fields - add small random variance per warehouse
                 'CreatedBy': warehouse.get('CreatedBy', 'system'),
@@ -288,7 +287,7 @@ def generate_summary_report(results, args):
     duration_days = (datetime.strptime(args.end_date, '%Y-%m-%d').date() - 
                     datetime.strptime(args.start_date, '%Y-%m-%d').date()).days
     
-    summary_content = f"""# Supply Chain Data Generation Summary
+    summary_content = f"""# Inventory Data Generation Summary
 
 **Date Range**: {args.start_date} to {args.end_date}  
 **Duration**: {duration_days} days  
@@ -298,126 +297,46 @@ def generate_summary_report(results, args):
 
 ### **Total Summary**
 - **Total Records Generated**: {total_records:,}
-- **Suppliers**: {supplier_totals.get('suppliers', 0)} suppliers with backup relationships
-- **Product-Supplier Mappings**: {supplier_totals.get('product_suppliers', 0)} relationships
+- **Suppliers**: 5 suppliers loaded from CSV files
+- **Product-Supplier Mappings**: 75 relationships
 - **Inventory Records**: {inventory_totals.get('inventory', 0)} stock locations
 - **Purchase Orders**: {inventory_totals.get('purchase_orders', 0)} procurement orders  
 - **PO Line Items**: {inventory_totals.get('purchase_order_items', 0)} order details
 - **Inventory Transactions**: {inventory_totals.get('inventory_transactions', 0)} movement records
 - **Demand Forecasts**: {inventory_totals.get('demand_forecasts', 0)} predictive analytics records
-- **Supply Chain Events**: {supplier_totals.get('supply_chain_events', 0)} disruption scenarios
 
 ### **Supplier Network**
 
-| Supplier Type | Configuration | Lead Time Strategy |
-|---------------|---------------|-------------------|
-| 🏢 Primary | Category-specific suppliers | 7-21 days (optimized) |  
-| 🔄 Backup | Multi-category coverage | 14-35 days (resilience) |
+| Supplier | Type | Category | Lead Time |
+|----------|------|----------|-----------|
+| Contoso Ltd | Primary | Camping | 10 days |  
+| Proseware Inc | Primary | Kitchen | 10 days |
+| Alpine Ski House | Primary | Ski | 12 days |
+| Worldwide Importers | Secondary | Multi-category | 21 days |
 
 ### **Domain Coverage**
 
-| Product Category | Primary Supplier | Backup Coverage | Integration Status |
-|------------------|------------------|-----------------|-------------------|
-| 🏕️ Camping | Contoso Camping Equipment | Worldwide Importers | ✅ Connected |
-| 🍳 Kitchen | Contoso Kitchen | Worldwide Importers | ✅ Connected |  
-| ⛷️ Ski | Contoso Ski Equipment | Worldwide + Fabrikam | ✅ Connected |
-
-## 📦 Inventory Intelligence
-
-### **Stock Management Ready**
-- **Sales-Driven Levels**: Real sales transaction analysis for realistic inventory
-- **Safety Stock Calculations**: 2-4 weeks average demand coverage  
-- **Reorder Points**: Automatic replenishment triggers configured
-- **Multi-Warehouse**: Main, Backup, and Regional distribution centers
-- **Real-Time Status**: Active, LowStock, OutOfStock, Excess classifications
-
-### **Procurement Operations**
-- **Purchase Orders**: {inventory_totals.get('purchase_orders', 0)} orders spanning 90-day historical period
-- **Supplier Integration**: Direct mapping to product catalog and lead times
-- **Order Status Tracking**: Draft → Sent → Confirmed → InTransit → Delivered
-- **Cost Management**: Wholesale pricing 60-80% of retail with supplier variations
-
-### **Transaction Audit Trail**  
-- **Complete Visibility**: {inventory_totals.get('inventory_transactions', 0)} inventory movements across all transaction types
-- **Receipt Tracking**: Purchase order receipts with reference numbers
-- **Sales Integration**: Outbound movements linked to customer orders
-- **Adjustments**: Cycle counts, transfers, damages, returns all tracked
-- **Financial Impact**: Unit costs and total values for all movements
-
-## 🚨 Supply Chain Risk Management
-
-### **Disruption Modeling**
-- **Event Types**: Weather, Political, Economic, Pandemic, Transport, Supplier
-- **Geographic Coverage**: Local, Regional, National, Global impact zones  
-- **Severity Levels**: Low → Medium → High → Critical classifications
-- **Status Tracking**: Active → Monitoring → Resolved workflow
-- **Impact Assessment**: Supplier downtime, delays, cost increases, availability
-
-### **Recovery Planning**
-- **Multi-Tier Suppliers**: {suppliers_info} supplier relationships
-- **Lead Time Buffers**: Variable delivery windows with reliability scoring
-- **Emergency Orders**: Priority processing for critical stock situations
-- **Mitigation Actions**: Alternative sourcing, expedited shipping, transfers
-
-## 🎯 Key Business Benefits
-
-### **Analytical Capabilities**
-- **Demand Forecasting**: Sales velocity analysis drives inventory planning
-- **Supplier Performance**: Lead time tracking and reliability scoring  
-- **Cost Optimization**: Wholesale vs retail margin analysis across suppliers
-- **Risk Assessment**: Supply chain vulnerability identification and mitigation
-
-### **Operational Excellence**  
-- **Inventory Optimization**: Right-sized stock levels based on actual demand
-- **Procurement Efficiency**: Automated reorder triggers and supplier selection
-- **Financial Control**: Complete cost tracking from wholesale to retail
-- **Compliance Ready**: Full audit trail for inventory movements and relationships
-
-### **Data Integration**
-- **Customer→Sales→Inventory**: Complete order fulfillment visibility
-- **Supplier→Purchase→Receipt**: End-to-end procurement lifecycle  
-- **Product→Category→Supplier**: Comprehensive product sourcing intelligence
-- **Finance→Cost→Margin**: Complete financial supply chain analysis
+| Product Category | Primary Supplier | Secondary Coverage | Status |
+|------------------|------------------|--------------------|--------|
+| 🏕️ Camping | Contoso Ltd | Worldwide Importers | ✅ Active |
+| 🍳 Kitchen | Proseware Inc | Worldwide Importers | ✅ Active |  
+| ⛷️ Ski | Alpine Ski House | Worldwide Importers | ✅ Active |
 
 ## 📋 Generated Files
 
-### **Supplier Data** (`output/suppliers/`)
-- `Suppliers.csv` - {supplier_totals.get('suppliers', 0)} supplier records with backup relationships
-- `ProductSuppliers.csv` - {supplier_totals.get('product_suppliers', 0)} product-to-supplier mappings with pricing
-- `SupplyChainEvents.csv` - {supplier_totals.get('supply_chain_events', 0)} disruption events and scenarios
-
 ### **Inventory Data** (`output/inventory/`)  
-- `Inventory.csv` - {inventory_totals.get('inventory', 0)} current stock levels across warehouses
-- `InventoryTransactions.csv` - {inventory_totals.get('inventory_transactions', 0)} complete movement audit trail
-- `PurchaseOrders.csv` - {inventory_totals.get('purchase_orders', 0)} procurement orders with supplier details  
-- `PurchaseOrderItems.csv` - {inventory_totals.get('purchase_order_items', 0)} line items with specifications
-- `DemandForecast.csv` - {inventory_totals.get('demand_forecasts', 0)} predictive analytics with seasonal patterns
-
-## 🚀 Next Steps
-
-### **Microsoft Fabric Integration**
-1. **Schema Creation**: Execute `model_suppliers.ipynb` and `model_inventory.ipynb`
-2. **Data Loading**: Import CSV files using Files → Tables pattern  
-3. **Analytics Setup**: Connect Power BI for supply chain dashboards
-
-### **Advanced Analytics Opportunities**
-- **Inventory Optimization**: ABC analysis and demand forecasting models
-- **Supplier Scorecarding**: Performance metrics and vendor management  
-- **Risk Analytics**: Supply chain vulnerability mapping and scenario planning
-- **Cost Management**: Margin analysis and procurement savings opportunities
-
----
-
-*Generated by Supply Chain Data Generator v1.0*  
-*Generation Parameters: {args.num_orders} orders, {args.num_transactions} transactions, {args.num_events} events*  
-*Integration Status: ✅ Sales Data Connected*  
-*Business Realism: ✅ Demand-Driven Inventory*  
-*Ready for Analytics: ✅ Full Schema Support*"""
+- `Inventory.csv` - {inventory_totals.get('inventory', 0)} stock levels across warehouses
+- `InventoryTransactions.csv` - {inventory_totals.get('inventory_transactions', 0)} movement audit trail
+- `PurchaseOrders.csv` - {inventory_totals.get('purchase_orders', 0)} procurement orders  
+- `PurchaseOrderItems.csv` - {inventory_totals.get('purchase_order_items', 0)} line items with details
+- `DemandForecast.csv` - {inventory_totals.get('demand_forecasts', 0)} predictive analytics records
+- `Warehouses.csv` - 3 distribution center configurations
+"""
 
     # Write the summary file
     base_path = Path(__file__).parent
     output_path = base_path / "output"
-    summary_file = output_path / "sample_supplychain_data_summary.md"
+    summary_file = output_path / "sample_inventory_data_summary.md"
     
     with open(summary_file, 'w', encoding='utf-8') as f:
         f.write(summary_content)
@@ -445,10 +364,11 @@ def print_summary(results):
     # Supplier data
     if 'suppliers' in results:
         supplier_results = results['suppliers']
-        print("\n🏭 SUPPLIER DATA:")
+        print("\n🏭 SUPPLIER DATA (Generated but not saved):")
         print(f"   • Suppliers: {len(supplier_results['suppliers'])} records")
         print(f"   • Product-Supplier Mappings: {len(supplier_results['product_suppliers'])} records")
         print(f"   • Supply Chain Events: {len(supplier_results['supply_chain_events'])} records")
+        print(f"   ⚠️  Note: Supplier CSV files disabled - data generated in memory only")
     
     # Inventory data  
     if 'inventory' in results:
@@ -460,8 +380,9 @@ def print_summary(results):
         print(f"   • Inventory Transactions: {len(inventory_results['inventory_transactions'])} records")
     
     print("\n💾 OUTPUT LOCATIONS:")
-    print(f"   • Supplier Data: output/suppliers/")
+    # print(f"   • Supplier Data: output/suppliers/")  # DISABLED
     print(f"   • Inventory Data: output/inventory/")
+    print(f"   • Supplychain Data: DISABLED (not saved to files)")
     
     print("\n🎯 NEXT STEPS:")
     print("   1. Review generated CSV files")
@@ -777,15 +698,26 @@ def copy_data_to_dest_path(output_dest_path):
         # Create destination directory if it doesn't exist
         infra_dir.mkdir(parents=True, exist_ok=True)
         
-        # Copy suppliers files to supplychain subfolder
-        suppliers_src = output_dir / "supplychain"
+        # Copy suppliers files to supplychain subfolder from input directory
+        input_dir = current_dir / "input"
         suppliers_dest = infra_dir / "supplychain"
-        if suppliers_src.exists():
-            suppliers_dest.mkdir(exist_ok=True)
-            for file_path in suppliers_src.glob("*.csv"):
-                dest_file = suppliers_dest / file_path.name
-                shutil.copy2(file_path, dest_file)
-                print(f"✅ Copied: {file_path.name} → supplychain/")
+        suppliers_dest.mkdir(exist_ok=True)
+        
+        supplychain_files = [
+            "Suppliers_Sample.csv",
+            "ProductSuppliers_Sample.csv",
+            "SupplyChainEvents_Sample.csv", 
+            "SupplyChainEventImpacts_Sample.csv"
+        ]
+        
+        for filename in supplychain_files:
+            src_file = input_dir / filename
+            if src_file.exists():
+                dest_file = suppliers_dest / filename
+                shutil.copy2(src_file, dest_file)
+                print(f"✅ Copied: {filename} → supplychain/")
+            else:
+                print(f"⚠️  Warning: {filename} not found in input directory")
         
         # Copy inventory files to inventory subfolder
         inventory_src = output_dir / "inventory" 
@@ -798,11 +730,11 @@ def copy_data_to_dest_path(output_dest_path):
                 print(f"✅ Copied: {file_path.name} → inventory/")
         
         # Copy summary file to infra/data root
-        summary_src = output_dir / "sample_supplychain_data_summary.md"
+        summary_src = output_dir / "sample_inventory_data_summary.md"
         if summary_src.exists():
-            summary_dest = infra_dir / "sample_supplychain_data_summary.md"
+            summary_dest = infra_dir / "sample_inventory_data_summary.md"
             shutil.copy2(summary_src, summary_dest)
-            print(f"✅ Copied: sample_supplychain_data_summary.md → data/")
+            print(f"✅ Copied: sample_inventory_data_summary.md → data/")
         
         print(f"📁 All files organized in: {infra_dir}")
         
@@ -925,11 +857,11 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  python main_generate_supplychain.py -s 2025-01-01 -e 2026-04-30
-  python main_generate_supplychain.py -s 2025-01-01 -e 2026-03-02 --inventory-only --num-orders 50
-  python main_generate_supplychain.py -s 2025-01-01 -e 2026-04-30 --auto-scale  # Auto-calculate based on sales data
-  python main_generate_supplychain.py -s 2025-01-01 -e 2026-04-30 --auto-scale --graph
-  python main_generate_supplychain.py -s 2025-01-01 -e 2026-04-30 --graph --num-orders 25 --num-transactions 800
+  python main_generate_inventory.py -s 2025-01-01 -e 2026-04-30
+  python main_generate_inventory.py -s 2025-01-01 -e 2026-03-02 --num-orders 50
+  python main_generate_inventory.py -s 2025-01-01 -e 2026-04-30 --auto-scale  # Auto-calculate based on sales data
+  python main_generate_inventory.py -s 2025-01-01 -e 2026-04-30 --auto-scale --graph
+  python main_generate_inventory.py -s 2025-01-01 -e 2026-04-30 --graph --num-orders 25 --num-transactions 800
         """
     )
     
@@ -945,12 +877,6 @@ Examples:
         type=str,
         required=True,
         help='End date for analysis (YYYY-MM-DD)'
-    )
-    
-    parser.add_argument(
-        '--inventory-only',
-        action='store_true',
-        help='Generate only inventory data (requires existing supplier data)'
     )
     
     parser.add_argument(
@@ -1029,23 +955,8 @@ Examples:
     try:
         results = {}
         
-        # Phase 1: Supplier Data Generation
-        if not args.inventory_only:
-            print("🏭 Phase 1: Generating Supplier Foundation...")
-            print("-" * 50)
-            
-            supplier_generator = SupplierDataGenerator()
-            supplier_results = supplier_generator.generate_all_supplier_data(
-                start_date=datetime.strptime(args.start_date, '%Y-%m-%d'),
-                end_date=datetime.strptime(args.end_date, '%Y-%m-%d'),
-                num_events=args.num_events
-            )
-            results['suppliers'] = supplier_results
-            
-            print("✅ Phase 1 completed successfully!")
-        
-        # Phase 2: Inventory Data Generation
-        print("\n📦 Phase 2: Generating Inventory Intelligence...")
+        # Generate Inventory Data (uses input supplier files)
+        print("\n📦 Generating Inventory Intelligence...")
         print("-" * 50)
         
         # First, generate warehouse master data from configuration
@@ -1069,7 +980,7 @@ Examples:
         )
         results['inventory'] = inventory_results
         
-        print("✅ Phase 2 completed successfully!")
+        print("✅ Inventory generation completed successfully!")
         
         # Generate summary report
         summary_file = generate_summary_report(results, args)
@@ -1092,7 +1003,8 @@ Examples:
     except FileNotFoundError as e:
         print(f"\n❌ File not found: {e}")
         print("Make sure you have:")
-        print("   • suppliers.json in input/ directory")
+        print("   • Suppliers_Sample.csv in input/ directory")
+        print("   • ProductSuppliers_Sample.csv in input/ directory")
         print("   • warehouses.json in input/ directory")
         print("   • Product sample files in input/ directory") 
         print("   • Generated sales data (for inventory analysis)")
@@ -1100,7 +1012,7 @@ Examples:
         
     except Exception as e:
         print(f"\n❌ Error during generation: {e}")
-        print("\nFor help, run: python main_generate_supplychain.py --help")
+        print("\nFor help, run: python main_generate_inventory.py --help")
         return 1
 
 
