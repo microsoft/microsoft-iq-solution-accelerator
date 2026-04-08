@@ -1,6 +1,6 @@
 ---
-description: "Use when editing deployment guides under fabric/docs/. Covers document structure, script and workspace references, relative link conventions, and source of truth for DeploymentGuideFabric.md and DeploymentGuideFabricManual.md."
-applyTo: "fabric/docs/Deployment*.md"
+description: "Use when editing deployment guides under docs/fabric/. Covers document structure, script and workspace references, relative link conventions, and source of truth for DeploymentGuideFabric.md and DeploymentGuideFabricManual.md."
+applyTo: "docs/fabric/Deployment*.md"
 ---
 
 # Deployment documentation — structure and references
@@ -23,20 +23,20 @@ Main deployment guide. Section structure:
 
 ### DeploymentGuideFabricManual.md — Manual portal deployment
 
-Simplified guide for importing [`fabric_solution_installer.ipynb`](../../fabric/infra/deploy/fabric_solution_installer.ipynb) directly in [Microsoft Fabric](https://app.fabric.microsoft.com). Sections: When to Use, Prerequisites, 3-step install (create workspace → download notebook → import & run), Deployment Verification, Troubleshooting, Cleanup, Next Steps, Additional Resources.
+Simplified guide for importing [`fabric_solution_installer.ipynb`](../../infra/fabric/deploy/fabric_solution_installer.ipynb) directly in [Microsoft Fabric](https://app.fabric.microsoft.com). Sections: When to Use, Prerequisites, 3-step install (create workspace → download notebook → import & run), Deployment Verification, Troubleshooting, Cleanup, Next Steps, Additional Resources.
 
 ## Relative path conventions
 
-These docs live at `fabric/docs/`. Relative paths from this location:
+These docs live at `docs/fabric/`. Relative paths from this location:
 
 | Target | Relative path |
 |---|---|
 | Other docs in same folder | `./DeploymentGuideFabricManual.md` |
-| Install script | `../infra/scripts/fabric/install_fabric_solution.py` |
-| Remove script | `../infra/scripts/fabric/remove_fabric_solution.py` |
-| Helper modules | `../infra/scripts/fabric/helpers/workspace.py`, etc. |
-| Installer notebook | `../infra/deploy/fabric_solution_installer.ipynb` |
-| Workspace items | `../fabric_workspace/` |
+| Install script | `../../infra/scripts/fabric/install_fabric_solution.py` |
+| Remove script | `../../infra/scripts/fabric/remove_fabric_solution.py` |
+| Helper modules | `../../infra/scripts/fabric/helpers/workspace.py`, etc. |
+| Installer notebook | `../../infra/fabric/deploy/fabric_solution_installer.ipynb` |
+| Workspace items | `../../fabric/fabric_workspace/` |
 | Bicep template | `../../infra/main.bicep` |
 | AZD config | `../../azure.yaml` |
 | CI/CD workflow | `../../.github/workflows/azure-dev.yml` |
@@ -46,11 +46,11 @@ These docs live at `fabric/docs/`. Relative paths from this location:
 
 | What | Authoritative source |
 |---|---|
-| Script behavior & env vars | Python files in [`fabric/infra/scripts/fabric/`](../../fabric/infra/scripts/fabric/) |
+| Script behavior & env vars | Python files in [`infra/scripts/fabric/`](../../infra/scripts/fabric/) |
 | Workspace items (lakehouse, notebooks, agents, ontology) | [`fabric/fabric_workspace/`](../../fabric/fabric_workspace/) folder structure |
 | Azure infrastructure | [`infra/main.bicep`](../../infra/main.bicep) |
 | azd hooks & orchestration | [`azure.yaml`](../../azure.yaml) |
-| Solution name & defaults | [`fabric/infra/scripts/fabric/helpers/config.py`](../../fabric/infra/scripts/fabric/helpers/config.py) |
+| Solution name & defaults | [`infra/scripts/fabric/helpers/config.py`](../../infra/scripts/fabric/helpers/config.py) |
 
 When these sources change, the deployment docs must be updated to match.
 
