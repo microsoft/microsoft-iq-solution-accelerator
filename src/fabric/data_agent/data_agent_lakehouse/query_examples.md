@@ -11,7 +11,7 @@ This document provides example natural language questions and their correspondin
 **Example Query**:
 
 ```sql
--- Customer Segmentation: count by relationship tier, customer type, and region
+-- 1. Customer Segmentation: count by relationship tier, customer type, and region
 SELECT
     rt.CustomerRelationshipTypeName     AS RelationshipTier,
     c.CustomerTypeID                    AS CustomerType,
@@ -38,7 +38,7 @@ ORDER BY TotalCustomers DESC, l.Region;
 **Example Query**:
 
 ```sql
--- Sales revenue and units by product category, year-to-date
+-- 2. Sales revenue and units by product category, year-to-date
 SELECT
     p.CategoryName                                          AS Category,
     COUNT(DISTINCT o.OrderID)                               AS Orders,
@@ -64,7 +64,7 @@ ORDER BY NetRevenue DESC;
 **Example Query**:
 
 ```sql
--- Products at or below reorder point across active warehouses
+-- 3. Products at or below reorder point across active warehouses
 SELECT
     i.ProductName,
     i.ProductCategory               AS Category,
@@ -80,48 +80,16 @@ WHERE w.Status = 'Active'
   AND i.AvailableStock <= i.ReorderPoint
 ORDER BY i.AvailableStock ASC;
 ```
-
 ---
 
-## Example 4: Supplier Reliability and Lead Time Analysis
-
-**Question**: I want to evaluate how reliable our suppliers are and whether their lead times are putting us at risk. Can you show me each supplier's reliability score, their average lead time per product category, how many products they supply, and flag any suppliers that are currently disrupted or have a reliability score below 70?
-
-**Example Query**:
-
-```sql
--- Supplier reliability scores and average lead time per category
-SELECT
-    s.SupplierName,
-    s.SupplierType,
-    s.ProductCategory,
-    s.Status                        AS SupplierStatus,
-    s.ReliabilityScore,
-    CASE
-        WHEN s.ReliabilityScore >= 85 THEN 'Good'
-        WHEN s.ReliabilityScore >= 70 THEN 'Acceptable'
-        ELSE 'AT RISK'
-    END                             AS ReliabilityRating,
-    AVG(ps.LeadTimeDays)            AS AvgLeadTimeDays,
-    COUNT(DISTINCT ps.ProductName)  AS ProductsSupplied
-FROM supplychain.suppliers s
-JOIN supplychain.productsuppliers ps ON s.SupplierName = ps.SupplierName
-WHERE s.Status = 'Active'
-  AND ps.Status = 'Active'
-GROUP BY s.SupplierName, s.SupplierType, s.ProductCategory, s.Status, s.ReliabilityScore
-ORDER BY s.ReliabilityScore ASC, s.ProductCategory;
-```
-
----
-
-## Example 5: Supply Chain Risk Assessment with Inventory Impact
+## Example 4: Supply Chain Risk Assessment with Inventory Impact
 
 **Question**: Are there any active or monitored supply chain disruptions we should be worried about? For each disruption, I want to know the severity, which suppliers and product categories are affected, expected delivery delays, estimated revenue impact, and the recommended action.
 
 **Example Query**:
 
 ```sql
--- Active and monitored supply chain disruptions with supplier details
+-- 4. Active and monitored supply chain disruptions with supplier details
 SELECT
     e.EventName,
     e.DisruptionType,
@@ -149,4 +117,35 @@ ORDER BY
         ELSE 4
     END,
     e.StartDate DESC;
+```
+
+---
+
+## Example 5: Supplier Reliability and Lead Time Analysis
+
+**Question**: I want to evaluate how reliable our suppliers are and whether their lead times are putting us at risk. Can you show me each supplier's reliability score, their average lead time per product category, how many products they supply, and flag any suppliers that are currently disrupted or have a reliability score below 70?
+
+**Example Query**:
+
+```sql
+-- 5. Supplier reliability scores and average lead time per category
+SELECT
+    s.SupplierName,
+    s.SupplierType,
+    s.ProductCategory,
+    s.Status                        AS SupplierStatus,
+    s.ReliabilityScore,
+    CASE
+        WHEN s.ReliabilityScore >= 85 THEN 'Good'
+        WHEN s.ReliabilityScore >= 70 THEN 'Acceptable'
+        ELSE 'AT RISK'
+    END                             AS ReliabilityRating,
+    AVG(ps.LeadTimeDays)            AS AvgLeadTimeDays,
+    COUNT(DISTINCT ps.ProductName)  AS ProductsSupplied
+FROM supplychain.suppliers s
+JOIN supplychain.productsuppliers ps ON s.SupplierName = ps.SupplierName
+WHERE s.Status = 'Active'
+  AND ps.Status = 'Active'
+GROUP BY s.SupplierName, s.SupplierType, s.ProductCategory, s.Status, s.ReliabilityScore
+ORDER BY s.ReliabilityScore ASC, s.ProductCategory;
 ```

@@ -2,7 +2,6 @@
 
 ## Prerequisites  
 Ensure configuration files exist in `input/` directory:
-- `suppliers.json` - Supplier master data
 - `warehouses.json` - Warehouse locations and details
 
 ```bash
@@ -26,16 +25,17 @@ cd src\datagen
 python main_generate_sales.py -s 2020-01-01 -e 2026-03-31 --enable-growth --copydata .\output_copydata\data --graph --no-display
 ```
 
-### Supply Chain Data (Recent Period)
+### Inventory Data (Recent Period)
 
 **Auto-Scale (Recommended)** - Analyzes recent sales data automatically:
 
 ```bash
-python main_generate_supplychain.py -s 2025-01-01 -e 2026-03-31 --auto-scale --copydata .\output_copydata\data --graph --no-display
+python main_generate_inventory.py -s 2025-01-01 -e 2026-03-31 --auto-scale --copydata .\output_copydata\data --graph --no-display
 ```
 
 **Manual Parameters** - If you want to produce independent data without sales history:
+
 ```bash
-python main_generate_supplychain.py -s 2025-01-01 -e 2026-03-31 --num-orders 125 --num-transactions 2000 --copydata .\output_copydata\data --graph --no-display
+python main_generate_inventory.py -s 2025-01-01 -e 2026-03-31 --num-orders 125 --num-transactions 2000 --copydata .\output_copydata\data 
 ```
 
