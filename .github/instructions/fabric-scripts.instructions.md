@@ -1,6 +1,6 @@
 ---
-description: "Use when editing Python files under fabric/infra/scripts/fabric/. Covers module architecture, deployment flow, logging conventions, environment variables, and documentation sync with DeploymentGuideFabric.md and DeploymentGuideFabricManual.md."
-applyTo: "fabric/infra/scripts/fabric/**/*.py"
+description: "Use when editing Python files under infra/scripts/fabric/. Covers module architecture, deployment flow, logging conventions, environment variables, and documentation sync with DeploymentGuideFabric.md and DeploymentGuideFabricManual.md."
+applyTo: "infra/scripts/fabric/**/*.py"
 ---
 
 # Fabric deployment scripts — conventions and documentation sync
@@ -8,7 +8,7 @@ applyTo: "fabric/infra/scripts/fabric/**/*.py"
 ## Module architecture
 
 ```text
-fabric/infra/scripts/fabric/
+infra/scripts/fabric/
 ├── install_fabric_solution.py    # Entry-point: azd postprovision hook (4-step bootstrap)
 ├── remove_fabric_solution.py     # Entry-point: azd predown hook (workspace removal)
 ├── fabric_api.py                 # Fabric REST API client (workspaces, notebooks, roles, LROs)
@@ -30,7 +30,7 @@ fabric/infra/scripts/fabric/
 
 ### Key constants and environment variables
 
-From [`helpers/config.py`](../../fabric/infra/scripts/fabric/helpers/config.py):
+From [`helpers/config.py`](../../infra/scripts/fabric/helpers/config.py):
 - `SOLUTION_NAME = "Microsoft IQ"`
 - `default_workspace_name(suffix)` → `"Microsoft IQ - {suffix}"`
 
@@ -42,13 +42,13 @@ Optional env vars (user-configurable):
 
 ### Deployment flow
 
-[`install_fabric_solution.py`](../../fabric/infra/scripts/fabric/install_fabric_solution.py) runs 4 steps:
-1. `setup_workspace` — create/find workspace, assign capacity, resume if paused (via [`workspace.py`](../../fabric/infra/scripts/fabric/helpers/workspace.py))
-2. `setup_administrators` — add admins with Graph API resolution + fallback (via [`workspace_admins.py`](../../fabric/infra/scripts/fabric/helpers/workspace_admins.py))
-3. `upload_installer` — upload [`fabric_solution_installer.ipynb`](../../fabric/infra/deploy/fabric_solution_installer.ipynb) (create or update)
+[`install_fabric_solution.py`](../../infra/scripts/fabric/install_fabric_solution.py) runs 4 steps:
+1. `setup_workspace` — create/find workspace, assign capacity, resume if paused (via [`workspace.py`](../../infra/scripts/fabric/helpers/workspace.py))
+2. `setup_administrators` — add admins with Graph API resolution + fallback (via [`workspace_admins.py`](../../infra/scripts/fabric/helpers/workspace_admins.py))
+3. `upload_installer` — upload [`fabric_solution_installer.ipynb`](../../infra/fabric/deploy/fabric_solution_installer.ipynb) (create or update)
 4. `run_installer` — execute notebook as Fabric job; notebook uses [fabric-launcher](https://github.com/microsoft/fabric-launcher) to deploy items from [`fabric/fabric_workspace/`](../../fabric/fabric_workspace/) via [Fabric Git integration](https://learn.microsoft.com/fabric/cicd/git-integration/intro-to-git-integration)
 
-[`remove_fabric_solution.py`](../../fabric/infra/scripts/fabric/remove_fabric_solution.py) runs as `azd down` predown hook: looks up workspace by name or `FABRIC_WORKSPACE_ID`, deletes it unattended, exits 0 on all errors.
+[`remove_fabric_solution.py`](../../infra/scripts/fabric/remove_fabric_solution.py) runs as `azd down` predown hook: looks up workspace by name or `FABRIC_WORKSPACE_ID`, deletes it unattended, exits 0 on all errors.
 
 ## Documentation and instructions sync
 
@@ -56,8 +56,8 @@ When modifying scripts in this folder, check and update **both** the deployment 
 
 ### Deployment guides
 
-- [`fabric/docs/DeploymentGuideFabric.md`](../../fabric/docs/DeploymentGuideFabric.md) — Automated deployment guide (`azd`). Sections: §1 Prerequisites, §2 Deployment Overview (two-phase architecture, helper module table, idempotency), §3 Deployment Options (6 environments), §4 Deployment Commands, §5 Deployment Results (Azure resources + Fabric Components), §6 Advanced Configuration (infra, workspace, admin, optional vars, Python env), §7 Known Limitations, §8 Environment Cleanup, §9 Additional Resources.
-- [`fabric/docs/DeploymentGuideFabricManual.md`](../../fabric/docs/DeploymentGuideFabricManual.md) — Manual portal-only guide. Import and run [`fabric_solution_installer.ipynb`](../../fabric/infra/deploy/fabric_solution_installer.ipynb) directly in Fabric. Sections: prerequisites, 3-step install, verification, troubleshooting, cleanup, next steps.
+- [`docs/fabric/DeploymentGuideFabric.md`](../../docs/fabric/DeploymentGuideFabric.md) — Automated deployment guide (`azd`). Sections: §1 Prerequisites, §2 Deployment Overview (two-phase architecture, helper module table, idempotency), §3 Deployment Options (6 environments), §4 Deployment Commands, §5 Deployment Results (Azure resources + Fabric Components), §6 Advanced Configuration (infra, workspace, admin, optional vars, Python env), §7 Known Limitations, §8 Environment Cleanup, §9 Additional Resources.
+- [`docs/fabric/DeploymentGuideFabricManual.md`](../../docs/fabric/DeploymentGuideFabricManual.md) — Manual portal-only guide. Import and run [`fabric_solution_installer.ipynb`](../../infra/fabric/deploy/fabric_solution_installer.ipynb) directly in Fabric. Sections: prerequisites, 3-step install, verification, troubleshooting, cleanup, next steps.
 
 ### CI/CD workflow
 
@@ -70,7 +70,7 @@ When modifying scripts in this folder, check and update **both** the deployment 
 
 ### Copilot instruction files
 
-After any change to `fabric/infra/scripts/fabric/`, review these instruction files and update them if the change affects the documented architecture, module list, env vars, deployment flow, or logging conventions:
+After any change to `infra/scripts/fabric/`, review these instruction files and update them if the change affects the documented architecture, module list, env vars, deployment flow, or logging conventions:
 
 - [`.github/instructions/fabric-scripts.instructions.md`](./fabric-scripts.instructions.md) — this file (module architecture, deployment flow, env vars, logging)
 - [`.github/instructions/fabric-deployment-docs.instructions.md`](./fabric-deployment-docs.instructions.md) — deployment guide structure, relative paths, source of truth
@@ -92,12 +92,12 @@ After any change to `fabric/infra/scripts/fabric/`, review these instruction fil
 | Renamed or moved a script file | `azure.yaml` hooks + `azure-dev.yml` if referenced |
 | Changed `Run-PythonScript.ps1` flags | `azure.yaml` hooks + §6 Python Environment |
 
-### Relative paths used in the docs (from `fabric/docs/`)
+### Relative paths used in the docs (from `docs/fabric/`)
 
-- Scripts: `../infra/scripts/fabric/install_fabric_solution.py`, `../infra/scripts/fabric/remove_fabric_solution.py`
-- Helpers: `../infra/scripts/fabric/helpers/workspace.py`, `workspace_admins.py`, `utils.py`
-- Installer notebook: `../infra/deploy/fabric_solution_installer.ipynb`
-- Workspace items: `../fabric_workspace/`
+- Scripts: `../../infra/scripts/fabric/install_fabric_solution.py`, `../../infra/scripts/fabric/remove_fabric_solution.py`
+- Helpers: `../../infra/scripts/fabric/helpers/workspace.py`, `workspace_admins.py`, `utils.py`
+- Installer notebook: `../../infra/fabric/deploy/fabric_solution_installer.ipynb`
+- Workspace items: `../../fabric/fabric_workspace/`
 - Repo root: `../../infra/main.bicep`, `../../azure.yaml`, `../../.github/workflows/azure-dev.yml`
 
 ## Fabric workspace items deployed by installer
@@ -174,4 +174,4 @@ logger.info("      Status: Completed")            # detail, 6 spaces
 
 `setup_logging()` pins `azure`, `urllib3`, `requests`, and `msal` loggers to
 WARNING. If adding a new noisy dependency, suppress it the same way in
-[`helpers/logging_config.py`](../../fabric/infra/scripts/fabric/helpers/logging_config.py).
+[`helpers/logging_config.py`](../../infra/scripts/fabric/helpers/logging_config.py).
