@@ -73,7 +73,7 @@ fabric_workspace/
 
 When adding, removing, or renaming items, update:
 
-- [`fabric/docs/DeploymentGuideFabric.md`](../../fabric/docs/DeploymentGuideFabric.md) — §5 Deployment Results > Fabric Components (folder structure, item counts, notebook table, domain table)
-- [`fabric/docs/DeploymentGuideFabricManual.md`](../../fabric/docs/DeploymentGuideFabricManual.md) — installer outcome list and Deployment Verification section
+- [`docs/fabric/DeploymentGuideFabric.md`](../../docs/fabric/DeploymentGuideFabric.md) — §5 Deployment Results > Fabric Components (folder structure, item counts, notebook table, domain table)
+- [`docs/fabric/DeploymentGuideFabricManual.md`](../../docs/fabric/DeploymentGuideFabricManual.md) — installer outcome list and Deployment Verification section
 
 Also review [`.github/instructions/fabric-workspace.instructions.md`](./fabric-workspace.instructions.md) (this file) and [`.github/instructions/fabric-scripts.instructions.md`](./fabric-scripts.instructions.md) to keep the item inventory and counts current.
