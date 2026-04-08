@@ -1,12 +1,11 @@
 {
   "warehouses": [
     {
-      "WarehouseID": "Main",
+      "WarehouseID": "WH_100",
       "WarehouseName": "Main Distribution Center",
       "DisplayName": "Kansas City, MO",
       "Type": "Main",
       "Status": "Active",
-      "Location": "Kansas City, MO, USA",
       "Address": {
         "Street": "1234 Main Street",
         "City": "Kansas City",
@@ -21,11 +20,10 @@
         "ManagerEmail": "sarah.johnson@contoso.com"
       },
       "Capacity": {
-        "Priority": 0.7,
         "MaxCapacity": 100000,
         "Description": "Primary distribution hub with highest inventory allocation"
       },
-      "DeliveryName": "Main Warehouse",
+      "ShortName": "Main Warehouse",
       "Operations": {
         "OperatingHours": "24/7",
         "StaffCount": 150,
@@ -35,12 +33,11 @@
       "CreatedBy": "system"
     },
     {
-      "WarehouseID": "Backup",
+      "WarehouseID": "WH_200",
       "WarehouseName": "Backup Distribution Center", 
       "DisplayName": "Memphis, TN",
       "Type": "Backup",
       "Status": "Active",
-      "Location": "Memphis, TN, USA",
       "Address": {
         "Street": "5678 Oak Avenue",
         "City": "Memphis",
@@ -55,11 +52,10 @@
         "ManagerEmail": "michael.chen@contoso.com"
       },
       "Capacity": {
-        "Priority": 0.2,
         "MaxCapacity": 50000,
         "Description": "Secondary distribution center for overflow and backup operations"
       },
-      "DeliveryName": "Backup Warehouse",
+      "ShortName": "Backup Warehouse",
       "Operations": {
         "OperatingHours": "Mon-Fri 6AM-10PM",
         "StaffCount": 75,
@@ -69,12 +65,11 @@
       "CreatedBy": "system"
     },
     {
-      "WarehouseID": "Regional",
+      "WarehouseID": "WH_500",
       "WarehouseName": "Regional Distribution Center",
       "DisplayName": "Atlanta, GA", 
       "Type": "Regional",
       "Status": "Active",
-      "Location": "Atlanta, GA, USA",
       "Address": {
         "Street": "9012 Elm Street",
         "City": "Atlanta",
@@ -89,11 +84,10 @@
         "ManagerEmail": "jessica.williams@contoso.com"
       },
       "Capacity": {
-        "Priority": 0.1,
         "MaxCapacity": 30000,
         "Description": "Regional fulfillment center for local distribution"
       },
-      "DeliveryName": "Regional DC",
+      "ShortName": "Regional DC",
       "Operations": {
         "OperatingHours": "Mon-Sat 7AM-8PM",
         "StaffCount": 45,
@@ -108,9 +102,8 @@
     "lastUpdated": "2026-03-09",
     "description": "Warehouse configuration for supply chain data generation",
     "validation": {
-      "requiredFields": ["WarehouseID", "DisplayName", "Type", "Status", "DeliveryName"],
-      "totalPrioritySum": 1.0,
-      "notes": "Priority values should sum to 1.0 for proper inventory distribution"
+      "requiredFields": ["WarehouseID", "DisplayName", "Type", "Status", "ShortName"],
+      "notes": "All warehouses must have required fields for proper configuration"
     }
   }
 }

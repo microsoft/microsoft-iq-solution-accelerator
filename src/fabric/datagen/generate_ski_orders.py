@@ -323,7 +323,7 @@ def generate_ski_orders(start_date, end_date, order_start_number):
             # Create order record
             orders.append({
                 "OrderID": order_id,
-                "SalesChannelID": account['CustomerAccountName'],
+                "ProductLineName": "Ski",
                 "OrderNumber": order_number,
                 "CustomerID": customer_id,
                 "CustomerAccountID": account_id,

@@ -6,7 +6,7 @@
 .DESCRIPTION
     Interactive data generation workflow that guides you through:
     1. Generates realistic sales data across all product categories  
-    2. Auto-scales and generates supply chain data based on sales volume
+    2. Auto-scales and generates inventory data based on sales volume
     3. Integrates sales patterns with inventory management and procurement
     
     Simply run: .\Run-DataGeneration.ps1
@@ -17,7 +17,7 @@
     # Interactive mode with guided prompts and smart defaults
     
 .NOTES
-    Author: GitHub Copilot
+    Authors: Doc Gail Zhou and GitHub Copilot
     Date: March 6, 2026
     Requires: Python 3.x with required packages (pandas, numpy, matplotlib)
 #>
@@ -54,10 +54,9 @@ Write-Host @"
 ║                        🏢 COMPREHENSIVE DATA GENERATION SUITE 🏢                    ║
 ║                                                                                      ║
 ║  🏭 Phase 1: Sales Data Generation (All Product Categories)                         ║
-║  📦 Phase 2: Supply Chain Automation (Auto-Scaled to Sales Volume)                  ║
-║  🔗 Phase 3: Data Integration & Analytics                                           ║
-║                                                                                     ║
-║  📊 Generates: Sales → Orders → Inventory → Procurement → Supply Chain Events       ║
+║  📦 Phase 2: Inventory Data Generation (Auto-Scaled to Sales Volume)                ║
+║                                                                                      ║
+║  📊 Generates: Sales → Orders → Inventory → Purchase Orders                         ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 "@ -ForegroundColor Cyan
 
@@ -77,8 +76,8 @@ function Test-DateFormat {
 # Calculate smart defaults for two-phase generation
 $DefaultSalesStartDate = "2025-01-01"  # default start date for sales data
 $DefaultSalesEndDate = "2026-04-30"    # default end date for sales data
-$DefaultSupplyStartDate = "2025-07-01" # default start date for supply data
-$DefaultSupplyEndDate = "2026-04-30"   # default end date for supply data
+$DefaultInventoryStartDate = "2025-07-01" # default start date for inventory data
+$DefaultInventoryEndDate = "2026-04-30"   # default end date for inventory data
 
 # Helper: calculate human-readable duration label from two date strings
 function Get-DurationLabel($startStr, $endStr) {
@@ -101,26 +100,26 @@ Write-Host ""
 
 Write-Host "   🎯 Two-Phase Strategy:" -ForegroundColor Yellow
 Write-Host "   • 📈 Sales Data: Long history for trend analysis" -ForegroundColor Gray
-Write-Host "   • 📦 Supply Chain: Recent period for current operations" -ForegroundColor Gray
+Write-Host "   • 📦 Inventory Data: Recent period for current operations" -ForegroundColor Gray
 Write-Host ""
 
 # Date range input with defaults
 $salesLabel  = Get-DurationLabel $DefaultSalesStartDate  $DefaultSalesEndDate
-$supplyLabel = Get-DurationLabel $DefaultSupplyStartDate $DefaultSupplyEndDate
+$inventoryLabel = Get-DurationLabel $DefaultInventoryStartDate $DefaultInventoryEndDate
 Write-Host "📅 Date Range Setup:" -ForegroundColor Cyan
 Write-Host "   📈 Sales Data Default: $DefaultSalesStartDate to $DefaultSalesEndDate ($salesLabel)" -ForegroundColor Green
-Write-Host "   📦 Supply Chain Default: $DefaultSupplyStartDate to $DefaultSupplyEndDate ($supplyLabel)" -ForegroundColor Green
+Write-Host "   📦 Inventory Data Default: $DefaultInventoryStartDate to $DefaultInventoryEndDate ($inventoryLabel)" -ForegroundColor Green
 Write-Host ""
 
 $UseDefaults = Read-Host "   Use default date ranges? (Press Enter for YES, or type 'no')"
 if ($UseDefaults -eq "" -or $UseDefaults -eq "Y" -or $UseDefaults -eq "y") {
     $SalesStartDate = $DefaultSalesStartDate
     $SalesEndDate = $DefaultSalesEndDate
-    $SupplyStartDate = $DefaultSupplyStartDate
-    $SupplyEndDate = $DefaultSupplyEndDate
+    $InventoryStartDate = $DefaultInventoryStartDate
+    $InventoryEndDate = $DefaultInventoryEndDate
     Write-Host "   ✅ Using defaults:" -ForegroundColor Green
     Write-Host "      Sales:  $SalesStartDate to $SalesEndDate ($salesLabel)" -ForegroundColor White
-    Write-Host "      Supply: $SupplyStartDate to $SupplyEndDate ($supplyLabel)" -ForegroundColor White
+    Write-Host "      Inventory: $InventoryStartDate to $InventoryEndDate ($inventoryLabel)" -ForegroundColor White
 } else {
     Write-Host "   📝 Custom date ranges:" -ForegroundColor Yellow
     Write-Host ""
@@ -154,32 +153,32 @@ if ($UseDefaults -eq "" -or $UseDefaults -eq "Y" -or $UseDefaults -eq "y") {
     
     Write-Host ""
     
-    # Get supply chain start date
-    Write-Host "   📦 Supply Chain Period:" -ForegroundColor Blue
+    # Get inventory start date
+    Write-Host "   📦 Inventory Data Period:" -ForegroundColor Blue
     do {
-        $SupplyStartDate = Read-Host "      Supply chain start date (YYYY-MM-DD)"
-        if (-not (Test-DateFormat $SupplyStartDate)) {
+        $InventoryStartDate = Read-Host "      Inventory data start date (YYYY-MM-DD)"
+        if (-not (Test-DateFormat $InventoryStartDate)) {
             Write-Warning "      ⚠️  Invalid date format. Please use YYYY-MM-DD format."
-            $SupplyStartDate = $null
+            $InventoryStartDate = $null
         }
-    } while (-not $SupplyStartDate)
+    } while (-not $InventoryStartDate)
     
-    # Get supply chain end date  
+    # Get inventory end date  
     do {
-        $SupplyEndDate = Read-Host "      Supply chain end date (YYYY-MM-DD)"
-        if (-not (Test-DateFormat $SupplyEndDate)) {
+        $InventoryEndDate = Read-Host "      Inventory data end date (YYYY-MM-DD)"
+        if (-not (Test-DateFormat $InventoryEndDate)) {
             Write-Warning "      ⚠️  Invalid date format. Please use YYYY-MM-DD format."
-            $SupplyEndDate = $null
+            $InventoryEndDate = $null
         } else {
             # Validate end date is after start date
-            $supplyStartDt = [DateTime]::ParseExact($SupplyStartDate, "yyyy-MM-dd", $null)
-            $supplyEndDt = [DateTime]::ParseExact($SupplyEndDate, "yyyy-MM-dd", $null)
-            if ($supplyEndDt -le $supplyStartDt) {
+            $inventoryStartDt = [DateTime]::ParseExact($InventoryStartDate, "yyyy-MM-dd", $null)
+            $inventoryEndDt = [DateTime]::ParseExact($InventoryEndDate, "yyyy-MM-dd", $null)
+            if ($inventoryEndDt -le $inventoryStartDt) {
                 Write-Warning "      ⚠️  End date must be after start date."
-                $SupplyEndDate = $null
+                $InventoryEndDate = $null
             }
         }
-    } while (-not $SupplyEndDate)
+    } while (-not $InventoryEndDate)
 }
 
 Write-Host ""
@@ -214,9 +213,9 @@ $salesStartDt = [DateTime]::ParseExact($SalesStartDate, "yyyy-MM-dd", $null)
 $salesEndDt = [DateTime]::ParseExact($SalesEndDate, "yyyy-MM-dd", $null)
 $salesDuration = ($salesEndDt - $salesStartDt).Days
 
-$supplyStartDt = [DateTime]::ParseExact($SupplyStartDate, "yyyy-MM-dd", $null) 
-$supplyEndDt = [DateTime]::ParseExact($SupplyEndDate, "yyyy-MM-dd", $null)
-$supplyDuration = ($supplyEndDt - $supplyStartDt).Days
+$inventoryStartDt = [DateTime]::ParseExact($InventoryStartDate, "yyyy-MM-dd", $null) 
+$inventoryEndDt = [DateTime]::ParseExact($InventoryEndDate, "yyyy-MM-dd", $null)
+$inventoryDuration = ($inventoryEndDt - $inventoryStartDt).Days
 
 Write-Host ""
 Write-Info "🗓️  Final Configuration:"
@@ -224,10 +223,10 @@ Write-Host "   📈 Sales Data Period:" -ForegroundColor Cyan
 Write-Host "     • Start Date: $SalesStartDate" -ForegroundColor White
 Write-Host "     • End Date:   $SalesEndDate" -ForegroundColor White  
 Write-Host "     • Duration:   $salesDuration days" -ForegroundColor White
-Write-Host "   📦 Supply Chain Period:" -ForegroundColor Blue
-Write-Host "     • Start Date: $SupplyStartDate" -ForegroundColor White
-Write-Host "     • End Date:   $SupplyEndDate" -ForegroundColor White  
-Write-Host "     • Duration:   $supplyDuration days" -ForegroundColor White
+Write-Host "   📦 Inventory Data Period:" -ForegroundColor Blue
+Write-Host "     • Start Date: $InventoryStartDate" -ForegroundColor White
+Write-Host "     • End Date:   $InventoryEndDate" -ForegroundColor White  
+Write-Host "     • Duration:   $inventoryDuration days" -ForegroundColor White
 Write-Host "   ⚙️  Generation Options:" -ForegroundColor Yellow
 Write-Host "     • Growth:     $(if($EnableGrowth) {'Enabled ✅'} else {'Disabled'})" -ForegroundColor White
 Write-Host "     • Graphs:     $(if($GenerateGraphs) {'Enabled ✅'} else {'Disabled'})" -ForegroundColor White
@@ -282,42 +281,41 @@ try {
     Write-Success "✅ Phase 1 completed successfully!"
     Write-Host ""
     
-    # Phase 2: Supply Chain Data Generation  
-    Write-Host "📦 PHASE 2: SUPPLY CHAIN DATA GENERATION (AUTO-SCALED)" -ForegroundColor Blue -BackgroundColor Black
+    Write-Host "📦 PHASE 2: INVENTORY DATA GENERATION (AUTO-SCALED)" -ForegroundColor Blue -BackgroundColor Black
     Write-Host "═" * 80 -ForegroundColor Blue
     
-    Write-Info "   Auto-scaling supply chain parameters based on sales volume..."
+    Write-Info "   Auto-scaling inventory parameters based on sales volume..."
     Write-Info "   • 🏭 Suppliers & product-supplier relationships"
     Write-Info "   • 📦 Inventory levels based on sales velocity"
     Write-Info "   • 📋 Purchase orders scaled to sales demand"
     Write-Info "   • 🔄 Inventory transactions (2-3x sales volume)"
-    Write-Info "   • 🚨 Supply chain risk events & scenarios"
+    Write-Info "   • 🚨 Supplier risk events & inventory scenarios"
     Write-Host ""
     
-    # Build supply chain command with auto-scale
-    $SupplyArgs = @(
-        "main_generate_supplychain.py"
-        "-s", $SupplyStartDate
-        "-e", $SupplyEndDate
+    # Build inventory command with auto-scale
+    $InventoryArgs = @(
+        "main_generate_inventory.py"
+        "-s", $InventoryStartDate
+        "-e", $InventoryEndDate
         "--auto-scale"
     )
     
     if ($GenerateGraphs) { 
-        $SupplyArgs += "--graph"
-        $SupplyArgs += "--no-display"  # Prevent GUI windows in automation
+        $InventoryArgs += "--graph"
+        $InventoryArgs += "--no-display"  # Prevent GUI windows in automation
     }
-    if ($CopyData) { $SupplyArgs += "--copydata"; $SupplyArgs += $CopyDataPath }
+    if ($CopyData) { $InventoryArgs += "--copydata"; $InventoryArgs += $CopyDataPath }
     
-    Write-Host "   Executing: python $($SupplyArgs -join ' ')" -ForegroundColor Gray
+    Write-Host "   Executing: python $($InventoryArgs -join ' ')" -ForegroundColor Gray
     Write-Host ""
     
-    # Ensure UTF-8 encoding for supply chain generation
+    # Ensure UTF-8 encoding for inventory generation
     $env:PYTHONIOENCODING = "utf-8"
     
-    # Execute supply chain generation
-    $SupplyResult = & python -X utf8 @SupplyArgs
+    # Execute inventory generation
+    $InventoryResult = & python -X utf8 @InventoryArgs
     if ($LASTEXITCODE -ne 0) {
-        throw "Supply chain data generation failed with exit code $LASTEXITCODE"
+        throw "Inventory data generation failed with exit code $LASTEXITCODE"
     }
     
     Write-Host ""
@@ -334,7 +332,7 @@ try {
     
     # Check if summary files exist and display key metrics
     $SalesSummary = "output\sample_sales_data_summary.md"
-    $SupplySummary = "output\sample_supplychain_data_summary.md" 
+    $InventorySummary = "output\sample_inventory_data_summary.md" 
     
     if (Test-Path $SalesSummary) {
         $SalesContent = Get-Content $SalesSummary -Raw
@@ -349,24 +347,24 @@ try {
         }
     }
     
-    if (Test-Path $SupplySummary) {
-        $SupplyContent = Get-Content $SupplySummary -Raw  
-        if ($SupplyContent -match "Purchase Orders.*?(\d+)" ) {
+    if (Test-Path $InventorySummary) {
+        $InventoryContent = Get-Content $InventorySummary -Raw  
+        if ($InventoryContent -match "Purchase Orders.*?(\d+)" ) {
             Write-Host "   📋 Purchase Orders: $($Matches[1])" -ForegroundColor White
         }
-        if ($SupplyContent -match "Inventory Transactions.*?(\d{1,3}(?:,\d{3})*)" ) {
+        if ($InventoryContent -match "Inventory Transactions.*?(\d{1,3}(?:,\d{3})*)" ) {
             Write-Host "   🔄 Inventory Transactions: $($Matches[1])" -ForegroundColor White
         }
-        if ($SupplyContent -match "Suppliers.*?(\d+)" ) {
+        if ($InventoryContent -match "Suppliers.*?(\d+)" ) {
             Write-Host "   🏭 Suppliers: $($Matches[1])" -ForegroundColor White
         }
     }
     
     Write-Host ""
     Write-Info "   📁 Output locations:"
-    Write-Host "     • Sales data: output/[camping|kitchen|ski]/" -ForegroundColor Gray
-    Write-Host "     • Supply chain: output/[supplychain|inventory]/" -ForegroundColor Gray  
-    Write-Host "     • Summary reports: output/sample_*_summary.md" -ForegroundColor Gray
+    Write-Host "     • Sales data: output/sales/[camping|kitchen|ski]/" -ForegroundColor Gray
+    Write-Host "     • Finance data: output/finance/[camping|kitchen|ski]/" -ForegroundColor Gray
+    Write-Host "     • Inventory data: output/inventory/" -ForegroundColor Gray  
     
     if ($GenerateGraphs) {
         Write-Host "     • Analytics graphs: output/*.png" -ForegroundColor Gray
@@ -381,7 +379,7 @@ try {
     Write-Host "═" * 80 -ForegroundColor Green
     Write-Host ""
     Write-Success "✨ Your integrated business dataset is ready for analysis!"
-    Write-Host "   Sales: $salesDuration days | Supply Chain: $supplyDuration days | Sales → Supply Chain → Analytics" -ForegroundColor Gray
+    Write-Host "   Sales: $salesDuration days | Inventory: $inventoryDuration days | Sales → Inventory → Analytics" -ForegroundColor Gray
     Write-Host ""
     
 } catch {

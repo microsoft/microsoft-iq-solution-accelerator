@@ -6,7 +6,7 @@ The supply chain generator automatically calculates optimal parameters based on 
 > **Required Parameters**: All commands require explicit start and end date parameters (`-s` and `-e`) to ensure deterministic, reproducible results.
 
 ```bash
-python main_generate_supplychain.py --auto-scale -s 2025-01-01 -e 2026-03-31 --copydata .\output_copydata\data
+python main_generate_inventory.py --auto-scale -s 2025-01-01 -e 2026-03-31 --copydata .\output_copydata\data
 ```
 
 **What the --auto-scale does:**
@@ -51,10 +51,10 @@ The PowerShell script handles the complete workflow automatically:
 You can override auto-calculated parameters with specific values:
 ```bash
 # Custom parameters with required date range
-python main_generate_supplychain.py -s 2025-01-01 -e 2026-03-31 --num-orders 50 --num-transactions 800
+python main_generate_inventory.py -s 2025-01-01 -e 2026-03-31 --num-orders 50 --num-transactions 800
 
 # Full manual control with additional options
-python main_generate_supplychain.py -s 2025-01-01 -e 2026-03-31 --num-orders 125 --num-transactions 2000 --copydata .\output_copydata\data --graph --no-display
+python main_generate_inventory.py -s 2025-01-01 -e 2026-03-31 --num-orders 125 --num-transactions 2000 --copydata .\output_copydata\data --graph --no-display
 ```
 
 ## Benefits

@@ -415,7 +415,7 @@ def generate_camping_orders(start_date, end_date, order_start_number, enable_gro
             # Create order record
             orders.append({
                 "OrderID": order_id,
-                "SalesChannelID": camping_account['CustomerAccountName'],
+                "ProductLineName": "Camping",
                 "OrderNumber": order_number,
                 "CustomerID": customer_id,
                 "CustomerAccountID": account_id,
