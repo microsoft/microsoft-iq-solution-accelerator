@@ -6,7 +6,7 @@ This document provides a comprehensive overview of all database schemas and tabl
 
 - **Total Notebooks**: 6
 - **Total Schemas**: 6
-- **Total Tables**: 22
+- **Total Tables**: 23
 
 ---
 
@@ -19,8 +19,9 @@ This document provides a comprehensive overview of all database schemas and tabl
 | model_customer.ipynb | customer | CustomerRelationshipType | Customer relationship classifications |
 | model_customer.ipynb | customer | Location | Geographic location data |
 | model_customer.ipynb | customer | CustomerAccount | Customer account management |
+| model_product.ipynb | product | ProductLine | Product line definitions (Camping, Kitchen, Ski) |
 | model_product.ipynb | product | Product | Product catalog and specifications |
-| model_product.ipynb | product | ProductCategory | Product categorization (Camping, Kitchen, Ski) |
+| model_product.ipynb | product | ProductCategory | Product categorization by product line |
 | model_sales.ipynb | sales | Order | Sales order headers |
 | model_sales.ipynb | sales | OrderLine | Sales order line items |
 | model_sales.ipynb | sales | OrderPayment | Payment transaction details |
@@ -44,7 +45,7 @@ This document provides a comprehensive overview of all database schemas and tabl
 | Schema Name | Number of Tables | Notebooks |
 |-------------|-------------------|-----------|
 | customer | 5 | model_customer.ipynb |
-| product | 2 | model_product.ipynb |
+| product | 3 | model_product.ipynb |
 | sales | 3 | model_sales.ipynb |
 | finance | 3 | model_finance.ipynb |
 | inventory | 6 | model_inventory.ipynb |
@@ -56,7 +57,7 @@ This document provides a comprehensive overview of all database schemas and tabl
 
 ### Core Business Operations
 - **Customer Management**: 5 tables for customer data, relationships, and accounts
-- **Product Catalog**: 2 tables for products and categories
+- **Product Catalog**: 3 tables for product lines, products, and categories
 - **Sales Processing**: 3 tables for orders, line items, and payments
 - **Financial Operations**: 3 tables for invoicing, accounts, and payments
 
@@ -74,19 +75,3 @@ This document provides a comprehensive overview of all database schemas and tabl
 - **Supplier Relationships**: 2 tables for supplier master data and product mappings
 - **Risk Management**: 1 table for disruptions, events, and impact tracking
 
----
-
-## Integration Points
-
-The schema design supports cross-domain integration through foreign key relationships:
-
-- **Product** tables link to **Sales**, **Inventory**, and **Supplychain**
-- **Customer** tables link to **Sales** and **Finance**
-- **Supplier** information feeds **Purchase Orders** in the inventory schema
-- **Disruption** events in supplychain impact **Inventory** planning accuracy
-- **Warehouse** data connects inventory management with purchase order delivery
-
----
-
-*Generated on: March 13, 2026*
-*Source: C:\Repos\Code\Explore\solutionroot\fabric_iq\src\fabric\notebooks\schema\*
