@@ -26,7 +26,7 @@ from datetime import datetime
 from pathlib import Path
 
 # Load environment from azd + project .env
-from load_env import load_all_env, get_required_env, get_data_folder, print_env_status
+from foundry.scripts.load_env import load_all_env, get_required_env, get_data_folder, print_env_status
 load_all_env()
 
 from azure.identity import DefaultAzureCredential

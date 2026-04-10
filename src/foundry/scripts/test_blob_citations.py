@@ -17,7 +17,7 @@ import json
 from pathlib import Path
 
 # Load environment from azd + project .env
-from load_env import load_all_env, get_data_folder
+from foundry.scripts.load_env import load_all_env, get_data_folder
 load_all_env()
 
 from azure.identity import DefaultAzureCredential

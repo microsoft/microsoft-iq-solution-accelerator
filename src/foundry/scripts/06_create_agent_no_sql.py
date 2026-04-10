@@ -34,7 +34,7 @@ args = parser.parse_args()
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Load environment from azd + project .env
-from load_env import load_all_env, get_data_folder
+from foundry.scripts.load_env import load_all_env, get_data_folder
 load_all_env()
 
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
