@@ -1,0 +1,514 @@
+CustomerID,CustomerTypeID,CustomerRelationshipTypeID,DateOfBirth,CustomerEstablishedDate,IsActive,FirstName,LastName,Gender,PrimaryPhone,SecondaryPhone,PrimaryEmail,SecondaryEmail,CreatedBy
+CID-001,Individual,VIP,3/18/1960,2/8/2021,TRUE,Tsehayetu,Abera,Female,(985) 555-0158,,tsehayetu@contoso.com,,Sales
+CID-002,Government,Local,1/14/1960,5/19/2018,FALSE,Antra,Abola,Female,(765) 555-0191,(470) 555-0206,antra@contoso.com,,Services
+CID-003,Business,SMB,12/28/1964,9/22/2020,TRUE,Ida,Abolina,Female,(717) 555-0103,,ida@contoso.com,,Sales
+CID-004,Individual,Standard,5/11/1996,3/11/2019,TRUE,Deniz,Acar,Male,(952) 555-0195,,deniz@contoso.com,,Sales
+CID-005,Individual,Premium,12/7/1976,5/24/2019,TRUE,Guner,Aktas,Male,(843) 555-0165,,guner@contoso.com,,Sales
+CID-006,Individual,VIP,4/29/1950,9/30/2018,TRUE,Danaite,Alemseged,Female,(959) 555-0102,,danaite@contoso.com,,Sales
+CID-007,Individual,Standard,2/1/1986,1/27/2021,TRUE,Asmerom,Ambaye,Male,(860) 555-0107,(701) 555-0262,asmerom@contoso.com,,Sales
+CID-008,Business,SMB,12/30/1957,4/14/2018,TRUE,Kiana,Anderson,Female,(941) 555-0114,,kiana@contoso.com,,Sales
+CID-009,Individual,Standard,10/2/1964,5/22/2021,FALSE,Jakob,Anhalt,Male,(657) 555-0130,,jakob@contoso.com,,Sales
+CID-010,Business,Partner,2/3/1986,2/1/2020,TRUE,Elisabeth,Arcouet,Female,(740) 555-0144,,elisabeth@contoso.com,,Sales
+CID-011,Individual,Premium,4/29/1953,2/26/2020,TRUE,Enric,Argilaguet,Male,(914) 555-0170,,enric@contoso.com,,Sales
+CID-012,Government,State,5/12/1970,6/14/2018,TRUE,Ernest,Arquimbau,Male,(469) 555-0156,,ernest@contoso.com,,Services
+CID-013,Business,SMB,9/10/1955,5/2/2020,TRUE,Murat,Arslan,Male,(956) 555-0173,,murat@contoso.com,,Sales
+CID-014,Individual,Standard,4/5/1960,6/4/2019,FALSE,Winta,Asemelash,Female,(816) 555-0117,,winta@contoso.com,,Sales
+CID-015,Individual,Standard,3/13/1950,10/11/2018,TRUE,Gokce,Aslan,Female,(731) 555-0192,(508) 555-0213,gokce@contoso.com,,Sales
+CID-016,Individual,Standard,2/4/1969,6/1/2019,TRUE,Abbi,Atkins,Female,(330) 555-0197,,abbi@contoso.com,,Sales
+CID-017,Individual,VIP,9/16/1962,10/19/2019,TRUE,Diana,Aunina,Male,(657) 555-0144,,diana@contoso.com,,Sales
+CID-018,Individual,Premium,9/15/1953,9/5/2019,TRUE,Nils,Aunins,Female,(609) 555-0168,,nils@contoso.com,,Sales
+CID-019,Individual,VIP,4/12/1975,6/13/2018,TRUE,Claude,Aupry,Male,(516) 555-0103,,claude@contoso.com,,Services
+CID-020,Individual,VIP,5/11/1941,3/5/2018,TRUE,Hasan,Aydin,Male,(425) 555-0122,,hasan@contoso.com,,Sales
+CID-021,Individual,Premium,8/31/1960,1/19/2021,TRUE,Jonas,Baar,Male,(207) 555-0131,(314) 555-0277,jonas@contoso.com,,Sales
+CID-022,Individual,Premium,2/25/1935,2/14/2021,TRUE,Anna,Baginska,Female,(478) 555-0117,,anna@contoso.com,,Sales
+CID-023,Individual,VIP,11/8/1995,9/24/2018,TRUE,Georgijs,Baltins,Male,(925) 555-0139,(251) 555-0214,georgijs@contoso.com,,Sales
+CID-024,Individual,Premium,5/19/1924,3/9/2021,TRUE,Malik,Barden,Male,(434) 555-0172,,malik@contoso.com,,Sales
+CID-025,Individual,Standard,11/2/1989,9/3/2018,TRUE,Carmelo,Barese,Male,(815) 555-0173,(405) 555-0202,carmelo@contoso.com,,Sales
+CID-026,Business,SMB,1/26/1958,1/30/2019,TRUE,Rebecca,Baresi,Female,(773) 555-0105,,rebecca@contoso.com,,Sales
+CID-027,Individual,Standard,5/5/1993,4/21/2019,TRUE,Genevieve,Beauchesne,Female,(503) 555-0162,,genevieve@contoso.com,,Sales
+CID-028,Individual,VIP,1/9/1976,9/3/2020,TRUE,Claude,Beaulieu,Female,(478) 555-0110,(716) 555-0231,claude@contoso.com,claude@fabrikam.com,Sales
+CID-029,Individual,Premium,11/10/1929,4/22/2021,TRUE,Robin,Becker,Male,(434) 555-0103,,robin@contoso.com,,Sales
+CID-030,Individual,Standard,1/24/1981,11/9/2020,TRUE,Noel,Belisle,Male,(989) 555-0182,,noel@contoso.com,,Sales
+CID-031,Individual,Premium,6/13/1964,7/12/2019,TRUE,Omar,Bennett,Male,(775) 555-0169,(267) 555-0261,omar@contoso.com,,Sales
+CID-032,Individual,Premium,9/9/1952,10/14/2020,TRUE,Kahsay,Bereket,Male,(973) 555-0121,(440) 555-0281,kahsay@contoso.com,,Sales
+CID-033,Individual,Standard,2/11/1962,6/1/2020,TRUE,Eden,Berhe,Female,(720) 555-0183,,eden@contoso.com,,Sales
+CID-034,Government,Local,11/28/1996,5/27/2018,TRUE,Marie,Berthelette,Female,(608) 555-0110,,marie@contoso.com,,Services
+CID-035,Government,State,9/2/1996,10/28/2019,TRUE,Pol,Bertolich,Male,(870) 555-0102,,pol@contoso.com,pol@fabrikam.com,Services
+CID-036,Business,SMB,8/25/1990,8/20/2021,TRUE,Francesca,Bianchi,Female,(401) 555-0186,,francesca@contoso.com,,Sales
+CID-037,Individual,Premium,8/28/1965,9/12/2019,TRUE,Jausma,Bite,Male,(920) 555-0196,(769) 555-0277,jausma@contoso.com,,Sales
+CID-038,Individual,Premium,11/5/1991,3/30/2020,TRUE,Ales,Bizjak,Male,(224) 555-0172,,ales@contoso.com,,Sales
+CID-039,Individual,VIP,6/5/1981,5/13/2020,TRUE,Jana,Blazkova,Female,(940) 555-0173,,jana@contoso.com,,Sales
+CID-040,Individual,Premium,12/5/1986,8/5/2019,TRUE,Emma,Blug,Female,(409) 555-0146,,emma@contoso.com,,Sales
+CID-041,Individual,Premium,8/13/1928,10/19/2020,TRUE,Gilbert,Bonsaint,Male,(352) 555-0146,,gilbert@contoso.com,gilbert@fabrikam.com,Sales
+CID-042,Individual,VIP,3/26/1970,11/26/2019,TRUE,Wojciech,Borkowski,Male,(904) 555-0186,,wojciech@contoso.com,,Sales
+CID-043,Individual,Standard,2/8/1959,6/5/2021,TRUE,Maurice,Boule,Male,(254) 555-0124,,maurice@contoso.com,,Services
+CID-044,Government,Local,1/6/1954,1/30/2021,TRUE,Alexis,Bourgeois,Female,(843) 555-0124,,alexis@contoso.com,,Services
+CID-045,Individual,Standard,8/28/1983,12/11/2021,TRUE,Archie,Boyle,Male,(385) 555-0177,,archie@contoso.com,,Services
+CID-046,Individual,Premium,9/13/1951,5/24/2021,TRUE,Tomaz,Bozic,Male,(430) 555-0140,(559) 555-0203,tomaz@contoso.com,,Services
+CID-047,Individual,Premium,5/10/1974,2/11/2019,TRUE,Danielle,Brasseur,Female,(240) 555-0177,,danielle@contoso.com,,Sales
+CID-048,Individual,Premium,6/28/1972,2/3/2019,TRUE,Amala,Braun,Female,(508) 555-0147,,amala@contoso.com,,Sales
+CID-049,Individual,Standard,10/25/1956,12/16/2019,TRUE,Leonie,Briegel,Female,(812) 555-0109,,leonie@contoso.com,,Sales
+CID-050,Individual,Standard,10/10/1976,12/5/2019,TRUE,Quincy,Brooks,Male,(443) 555-0174,,quincy@contoso.com,,Sales
+CID-051,Government,Local,7/31/1946,1/31/2020,TRUE,Angel,Brown,Female,(213) 555-0184,,angel@contoso.com,,Services
+CID-052,Business,SMB,12/7/1997,5/14/2019,TRUE,Camille,Brunelle,Female,(775) 555-0144,,camille@contoso.com,,Sales
+CID-053,Government,State,11/17/1986,8/31/2020,TRUE,Filippa,Bruno,Female,(769) 555-0163,,filippa@contoso.com,,Services
+CID-054,Business,SMB,2/28/1959,3/23/2018,TRUE,Yuksel,Bulut,Male,(337) 555-0101,(740) 555-0268,yuksel@contoso.com,,Services
+CID-055,Individual,Standard,3/16/1954,8/27/2019,TRUE,Pavel,Bures,Male,(515) 555-0141,,pavel@contoso.com,,Sales
+CID-056,Government,Federal,7/10/1969,2/11/2020,TRUE,Jaroslava,Buresova,Female,(318) 555-0174,(458) 555-0285,jaroslava@contoso.com,,Services
+CID-057,Individual,Standard,12/28/1965,6/21/2020,TRUE,Victoria,Burke,Female,(928) 555-0117,,victoria@contoso.com,,Sales
+CID-058,Individual,Premium,6/4/1962,12/31/2018,TRUE,Klaus,Buzov,Male,(714) 555-0189,,klaus@contoso.com,klaus@fabrikam.com,Sales
+CID-059,Individual,Premium,2/4/1963,6/12/2018,TRUE,Martin,Cahua,Male,(601) 555-0105,(870) 555-0296,martin@contoso.com,martin@fabrikam.com,Sales
+CID-060,Individual,Standard,12/22/1982,12/7/2020,TRUE,Tuna,Cakir,Male,(847) 555-0147,,tuna@contoso.com,,Sales
+CID-061,Individual,Premium,6/26/1998,5/26/2019,TRUE,Quinn,Campbell,Female,(401) 555-0159,,quinn@contoso.com,,Sales
+CID-062,Individual,VIP,2/14/1981,9/14/2021,TRUE,Seyhan,Can,Male,(860) 555-0101,,seyhan@contoso.com,,Sales
+CID-063,Business,Partner,4/27/1934,4/26/2018,TRUE,Sam,Cantrell,Female,(951) 555-0178,(909) 555-0281,sam@contoso.com,,Services
+CID-064,Individual,Standard,7/29/1987,7/29/2020,TRUE,Cataldo,Capon,Male,(364) 555-0106,(325) 555-0231,cataldo@contoso.com,,Sales
+CID-065,Individual,VIP,3/11/1993,12/3/2018,TRUE,Christian,Cartier,Male,(718) 555-0145,,christian@contoso.com,,Sales
+CID-066,Individual,Premium,2/14/1973,5/30/2020,TRUE,Pere,Castellsegui,Male,(336) 555-0111,(814) 555-0259,pere@contoso.com,,Sales
+CID-067,Individual,Standard,1/3/1995,1/7/2020,TRUE,Gianni,Castiglione,Male,(580) 555-0142,,gianni@contoso.com,,Sales
+CID-068,Business,SMB,7/29/1960,4/19/2020,TRUE,Hanife,Celik,Female,(219) 555-0162,(414) 555-0287,hanife@contoso.com,,Sales
+CID-069,Individual,VIP,2/15/1947,5/27/2018,TRUE,Izabella,Celma,Male,(878) 555-0180,(215) 555-0255,izabella@contoso.com,,Services
+CID-070,Government,Local,11/27/1977,9/8/2021,TRUE,Sarmis,Celms,Male,(978) 555-0184,,sarmis@contoso.com,,Services
+CID-071,Business,SMB,8/28/1955,3/19/2019,TRUE,Hana,Cermakova,Female,(209) 555-0168,,hana@contoso.com,,Sales
+CID-072,Individual,Premium,5/27/1952,4/16/2020,TRUE,Ivana,Cervenkova,Female,(419) 555-0179,,ivana@contoso.com,,Sales
+CID-073,Individual,Standard,9/5/1927,11/2/2020,TRUE,Hacer,Cetin,Female,(978) 555-0127,,hacer@contoso.com,,Sales
+CID-074,Business,SMB,10/28/1945,7/31/2020,TRUE,Alain,Charon,Male,(510) 555-0192,,alain@contoso.com,,Sales
+CID-075,Business,SMB,3/17/1965,10/14/2018,TRUE,Alexandre,Chauvin,Male,(667) 555-0175,,alexandre@contoso.com,,Sales
+CID-076,Business,SMB,2/15/1987,12/21/2019,TRUE,Josef,Cizek,Male,(463) 555-0129,,josef@contoso.com,josef@fabrikam.com,Sales
+CID-077,Business,SMB,8/28/1972,2/11/2021,TRUE,Hailey,Clark,Female,(609) 555-0115,(865) 555-0297,hailey@contoso.com,,Sales
+CID-078,Individual,Standard,5/8/1982,4/25/2019,TRUE,Bartomeu,Collelldemont,Male,(920) 555-0173,,bartomeu@contoso.com,bartomeu@fabrikam.com,Sales
+CID-079,Individual,Premium,2/20/1953,1/22/2018,TRUE,Diego,Conticini,Male,(361) 555-0151,,diego@contoso.com,,Sales
+CID-080,Individual,Standard,12/21/1970,10/4/2021,TRUE,Hayden,Cook,Female,(518) 555-0136,,hayden@contoso.com,,Sales
+CID-081,Business,SMB,4/14/1943,11/14/2019,FALSE,Liane,Cormier,Female,(954) 555-0166,,liane@contoso.com,,Sales
+CID-082,Individual,VIP,7/17/1969,6/24/2020,TRUE,Pupetta,Costa,Female,(814) 555-0146,,pupetta@contoso.com,,Sales
+CID-083,Individual,Premium,4/9/1979,11/16/2018,TRUE,Gilbert,Coupart,Male,(931) 555-0176,(720) 555-0267,gilbert@contoso.com,gilbert@fabrikam.com,Sales
+CID-084,Individual,Premium,6/21/1977,5/6/2018,TRUE,Ingrid,Cranz,Female,(478) 555-0120,,ingrid@contoso.com,,Sales
+CID-085,Individual,Standard,8/11/1975,10/4/2018,TRUE,Maciej,Czarnecki,Male,(337) 555-0136,,maciej@contoso.com,,Sales
+CID-086,Individual,Standard,8/21/1929,5/12/2021,TRUE,Joanna,Dabrowska,Female,(251) 555-0154,(210) 555-0246,joanna@contoso.com,,Sales
+CID-087,Business,SMB,6/11/1981,7/13/2018,TRUE,Mikolaj,Dabrowski,Male,(954) 555-0119,,mikolaj@contoso.com,mikolaj@fabrikam.com,Sales
+CID-088,Individual,Standard,12/6/1966,11/27/2019,TRUE,Beca,Davies,Female,(947) 555-0169,(702) 555-0269,beca@contoso.com,,Sales
+CID-089,Business,SMB,6/19/1935,8/2/2021,TRUE,Alain,Davignon,Male,(630) 555-0101,,alain@contoso.com,alain@fabrikam.com,Sales
+CID-090,Individual,Standard,12/25/1982,2/26/2018,TRUE,Liam,Davis,Male,(808) 555-0115,,liam@contoso.com,,Services
+CID-091,Individual,Standard,6/22/1984,8/19/2021,TRUE,Benito,Dellucci,Male,(603) 555-0168,(339) 555-0253,benito@contoso.com,,Sales
+CID-092,Business,SMB,10/8/1966,4/1/2021,TRUE,Merve,Demir,Female,(254) 555-0144,(239) 555-0246,merve@contoso.com,,Services
+CID-093,Business,SMB,2/1/1966,1/19/2018,TRUE,Isabelle,Deniger,Female,(931) 555-0186,(712) 555-0254,isabelle@contoso.com,,Sales
+CID-094,Individual,Standard,1/13/1986,10/25/2021,TRUE,Montserrat,Desriols,Female,(267) 555-0112,(334) 555-0229,montserrat@contoso.com,montserrat@fabrikam.com,Sales
+CID-095,Business,SMB,7/2/1977,9/21/2018,TRUE,Esteve,Desvalls,Male,(804) 555-0199,,esteve@contoso.com,,Sales
+CID-096,Individual,Premium,10/18/1932,3/4/2020,TRUE,Gabriel,Diaz,Male,(231) 555-0151,,gabriel@contoso.com,,Sales
+CID-097,Individual,Premium,7/12/1957,4/23/2018,TRUE,Vlasta,Divisova,Female,(817) 555-0118,,vlasta@contoso.com,,Services
+CID-098,Individual,Standard,3/27/1988,9/12/2021,TRUE,Fadime,Dogan,Female,(281) 555-0169,,fadime@contoso.com,,Sales
+CID-099,Individual,Premium,9/7/1993,6/26/2019,TRUE,Rene,Dolejsi,Female,(508) 555-0178,,rene@contoso.com,,Sales
+CID-100,Individual,Premium,2/12/1958,10/9/2019,TRUE,Albert,Dubois,Male,(606) 555-0108,,albert@contoso.com,,Sales
+CID-101,Individual,Standard,12/30/1949,8/2/2019,TRUE,Maciej,Dudek,Male,(970) 555-0103,,maciej@contoso.com,,Services
+CID-102,Individual,VIP,11/7/1952,12/24/2020,TRUE,Ewa,Dudzinska,Female,(314) 555-0181,,ewa@contoso.com,,Sales
+CID-103,Individual,VIP,4/6/1983,8/8/2021,TRUE,Daina,Dumina,Male,(206) 555-0119,,daina@contoso.com,,Sales
+CID-104,Individual,Standard,3/31/1973,1/25/2018,FALSE,Laimonis,Dumins,Male,(530) 555-0174,,laimonis@contoso.com,,Sales
+CID-105,Government,Local,11/18/1957,1/1/2018,TRUE,Audrey,Dumoulin,Female,(631) 555-0121,,audrey@contoso.com,,Services
+CID-106,Individual,Premium,12/13/1976,6/29/2020,TRUE,Coralie,Duperre,Female,(972) 555-0176,,coralie@contoso.com,,Sales
+CID-107,Individual,Premium,10/19/1948,2/6/2018,TRUE,Aline,Dupuy,Female,(571) 555-0194,,aline@contoso.com,aline@fabrikam.com,Sales
+CID-108,Business,SMB,8/29/1942,5/21/2018,TRUE,Dominique,Dutertre,Male,(567) 555-0167,,dominique@contoso.com,,Sales
+CID-109,Individual,Standard,3/12/1967,10/10/2019,TRUE,Zdenek,Dvorak,Male,(605) 555-0193,(321) 555-0243,zdenek@contoso.com,,Sales
+CID-110,Individual,Standard,3/22/1981,7/7/2018,TRUE,Niks,Dzenis,Female,(619) 555-0134,(505) 555-0200,niks@contoso.com,,Sales
+CID-111,Individual,Premium,11/3/1958,2/25/2021,TRUE,Logan,Edwards,Male,(716) 555-0130,,logan@contoso.com,,Services
+CID-112,Individual,Premium,3/29/1948,1/1/2018,TRUE,Simons,Eglitis,Female,(432) 555-0152,,simons@contoso.com,,Sales
+CID-113,Government,Local,1/7/1984,7/1/2019,TRUE,Werner,Eitner,Male,(970) 555-0165,(702) 555-0200,werner@contoso.com,,Services
+CID-114,Business,SMB,5/31/1969,7/13/2018,TRUE,Daniel,Elfyn,Male,(714) 555-0109,(218) 555-0260,daniel@contoso.com,,Sales
+CID-115,Individual,Premium,4/5/1975,12/4/2019,TRUE,Bethan,Elis,Female,(559) 555-0165,,bethan@contoso.com,,Sales
+CID-116,Business,SMB,4/28/1955,4/14/2018,TRUE,Turgay,Elmas,Male,(929) 555-0195,(339) 555-0299,turgay@contoso.com,,Sales
+CID-117,Business,SMB,3/9/1950,7/12/2021,TRUE,Elke,Endemann,Female,(601) 555-0115,,elke@contoso.com,elke@fabrikam.com,Sales
+CID-118,Individual,Premium,2/4/1946,3/12/2020,TRUE,YishaK,Epherem,Male,(859) 555-0130,,yishak@contoso.com,,Sales
+CID-119,Business,Premier,4/6/1965,7/30/2020,TRUE,Tatjana,Erjavec,Female,(479) 555-0187,,tatjana@contoso.com,tatjana@fabrikam.com,Services
+CID-120,Individual,Premium,3/26/1948,1/4/2018,TRUE,Quarantino,Esposito,Male,(551) 555-0110,,quarantino@contoso.com,,Sales
+CID-121,Business,SMB,3/13/1934,2/18/2019,TRUE,Jamie,Evans,Female,(205) 555-0170,(480) 555-0278,jamie@contoso.com,,Services
+CID-122,Business,SMB,1/3/1978,10/13/2021,TRUE,Giselle,Faber,Female,(432) 555-0180,,giselle@contoso.com,,Sales
+CID-123,Individual,Standard,7/10/1963,1/3/2021,TRUE,Giorgia,Fanucci,Female,(810) 555-0174,,giorgia@contoso.com,,Sales
+CID-124,Individual,Premium,2/23/1985,10/10/2021,TRUE,Amleset,Fitwi,Female,(310) 555-0191,,amleset@contoso.com,,Sales
+CID-125,Individual,Standard,9/30/1961,6/28/2020,TRUE,Annette,Flamand,Female,(704) 555-0170,,annette@contoso.com,,Sales
+CID-126,Individual,Standard,8/7/1952,7/7/2018,TRUE,Elizabeth,Flores,Female,(478) 555-0123,,elizabeth@contoso.com,,Sales
+CID-127,Business,SMB,7/6/1997,8/6/2021,TRUE,Sara,Folgueroles,Female,(909) 555-0118,,sara@contoso.com,,Sales
+CID-128,Business,SMB,9/28/1974,2/14/2018,TRUE,Carme,Fontbernat,Female,(985) 555-0149,(407) 555-0211,carme@contoso.com,,Sales
+CID-129,Individual,Standard,5/31/1962,3/24/2018,TRUE,Michal,Formanek,Male,(657) 555-0174,,michal@contoso.com,,Sales
+CID-130,Individual,Standard,8/4/1987,2/20/2021,TRUE,Renata,Fuchsova,Female,(725) 555-0111,,renata@contoso.com,,Sales
+CID-131,Individual,Standard,11/10/1931,12/24/2018,TRUE,Isabel,Garcia,Female,(725) 555-0126,,isabel@contoso.com,,Sales
+CID-132,Individual,Standard,10/29/1985,12/25/2020,TRUE,Amelie,Garner,Female,(706) 555-0165,(323) 555-0269,amelie@contoso.com,,Sales
+CID-133,Individual,VIP,9/1/1969,7/24/2020,TRUE,Niklas,Gasper,Male,(601) 555-0101,,niklas@contoso.com,,Services
+CID-134,Individual,Premium,11/12/1991,1/10/2019,TRUE,Hiwot,Gebre Gergis,Female,(706) 555-0129,(435) 555-0222,hiwot@contoso.com,,Sales
+CID-135,Government,State,12/25/1979,6/11/2018,TRUE,Aberehet,Gebre Tsadik,Female,(410) 555-0137,,aberehet@contoso.com,,Services
+CID-136,Individual,Premium,5/12/1952,11/4/2021,TRUE,Lelia,Genovese,Female,(952) 555-0124,(307) 555-0226,lelia@contoso.com,,Sales
+CID-137,Individual,Premium,8/12/1950,10/18/2019,TRUE,Wolde Mariam,Girmay,Male,(434) 555-0109,,wolde mariam@contoso.com,,Sales
+CID-138,Business,SMB,6/12/1952,10/13/2021,TRUE,Meaza,Goitom,Female,(985) 555-0196,(484) 555-0254,meaza@contoso.com,,Sales
+CID-139,Individual,Premium,2/14/1979,4/26/2021,TRUE,Milan,Golob,Male,(304) 555-0146,,milan@contoso.com,,Services
+CID-140,Government,State,4/26/1962,11/18/2018,TRUE,Mateo,Gomez,Male,(860) 555-0179,,mateo@contoso.com,,Services
+CID-141,Government,State,6/5/1964,3/26/2019,TRUE,Aaron,Gonzales,Male,(843) 555-0121,(319) 555-0296,aaron@contoso.com,,Services
+CID-142,Individual,Standard,1/17/1941,11/2/2020,TRUE,Kasper,Graf,Male,(712) 555-0183,,kasper@contoso.com,,Sales
+CID-143,Individual,Standard,10/20/1987,7/3/2018,TRUE,Fiamma,Greco,Female,(856) 555-0126,,fiamma@contoso.com,,Sales
+CID-144,Individual,Standard,11/11/1922,4/21/2018,TRUE,Manon,Griffiths,Female,(303) 555-0179,,manon@contoso.com,,Sales
+CID-145,Individual,Standard,2/25/1974,5/23/2019,TRUE,Jacqueline,Grondin,Female,(626) 555-0131,,jacqueline@contoso.com,,Sales
+CID-146,Individual,Premium,11/18/1952,8/6/2021,FALSE,Marta,Guanyavents,Female,(417) 555-0165,,marta@contoso.com,marta@fabrikam.com,Sales
+CID-147,Individual,Premium,4/23/1961,10/22/2018,TRUE,Louisa,Guenther,Female,(214) 555-0139,,louisa@contoso.com,,Sales
+CID-148,Individual,Standard,4/16/1954,6/22/2020,FALSE,Charlie,Guibord,Male,(380) 555-0175,,charlie@contoso.com,,Sales
+CID-149,Individual,VIP,8/18/1923,5/23/2021,TRUE,Ayse,Guler,Female,(740) 555-0109,,ayse@contoso.com,,Sales
+CID-150,Individual,Premium,6/5/1991,8/31/2020,TRUE,Meltem,Gumus,Female,(812) 555-0147,,meltem@contoso.com,,Services
+CID-151,Government,Local,2/1/1931,9/24/2019,TRUE,Faruk,Gunes,Male,(934) 555-0138,,faruk@contoso.com,,Services
+CID-152,Individual,Standard,11/10/1973,11/16/2020,TRUE,Halit,Gungor,Male,(330) 555-0165,,halit@contoso.com,,Sales
+CID-153,Individual,Standard,1/26/1981,1/3/2020,TRUE,Killian,Gunther,Male,(518) 555-0135,,killian@contoso.com,,Sales
+CID-154,Individual,Standard,1/12/1959,6/8/2021,TRUE,Tito,Guzmán,Male,(619) 555-0156,,tito@contoso.com,,Sales
+CID-155,Government,Local,4/1/1974,11/17/2018,TRUE,Renata,Hall,Female,(404) 555-0165,,renata@contoso.com,renata@fabrikam.com,Services
+CID-156,Individual,Standard,5/16/1968,7/1/2020,TRUE,Frantisek,Hanak,Male,(954) 555-0114,,frantisek@contoso.com,,Sales
+CID-157,Individual,Standard,12/2/1973,6/10/2021,TRUE,Jacob,Hancock,Male,(214) 555-0127,,jacob@contoso.com,,Sales
+CID-158,Business,SMB,9/1/1940,3/13/2019,TRUE,Daniela,Hanzlova,Female,(520) 555-0123,,daniela@contoso.com,,Sales
+CID-159,Individual,VIP,9/21/1951,2/20/2020,TRUE,Libby,Harrison,Female,(501) 555-0177,,libby@contoso.com,libby@fabrikam.com,Sales
+CID-160,Business,SMB,11/4/1958,11/27/2021,TRUE,Maja,Hartmann,Female,(603) 555-0187,,maja@contoso.com,,Sales
+CID-161,Individual,Premium,4/6/1961,12/12/2020,FALSE,Marta,Havrankova,Female,(626) 555-0157,,marta@contoso.com,,Sales
+CID-162,Individual,Standard,2/13/1965,8/29/2021,TRUE,Hannah,Haynes,Female,(608) 555-0169,,hannah@contoso.com,,Sales
+CID-163,Individual,VIP,11/1/1980,7/28/2021,TRUE,Josephine,Hebert,Female,(270) 555-0144,(435) 555-0273,josephine@contoso.com,josephine@fabrikam.com,Sales
+CID-164,Individual,Standard,9/21/1992,12/27/2019,TRUE,Jule,Heinrich,Female,(231) 555-0177,,jule@contoso.com,,Sales
+CID-165,Individual,Standard,10/7/1987,1/31/2018,TRUE,Detlef,Hembrock,Male,(540) 555-0179,,detlef@contoso.com,,Services
+CID-166,Business,Partner,12/29/1980,12/3/2018,TRUE,Felix,Henderson,Male,(786) 555-0195,,felix@contoso.com,,Sales
+CID-167,Individual,VIP,1/3/1950,7/2/2018,TRUE,Briana,Hernandez,Female,(630) 555-0119,,briana@contoso.com,,Sales
+CID-168,Individual,Premium,11/3/1973,11/12/2020,TRUE,Coralie,Hetu,Female,(224) 555-0137,,coralie@contoso.com,,Sales
+CID-169,Individual,Standard,10/2/1985,6/28/2019,TRUE,Ana,Hocevar,Female,(725) 555-0122,,ana@contoso.com,,Services
+CID-170,Individual,Standard,5/26/1996,1/2/2021,TRUE,Vaclav,Holy,Male,(517) 555-0115,,vaclav@contoso.com,vaclav@fabrikam.com,Sales
+CID-171,Individual,Premium,6/28/1944,10/30/2020,TRUE,Tereza,Horackova,Female,(714) 555-0168,,tereza@contoso.com,,Sales
+CID-172,Individual,VIP,9/12/1973,10/22/2019,TRUE,Janez,Horvat,Male,(607) 555-0177,(714) 555-0257,janez@contoso.com,janez@fabrikam.com,Sales
+CID-173,Individual,Premium,5/15/1951,6/9/2018,TRUE,Karel,Hovorka,Male,(817) 555-0194,(978) 555-0270,karel@contoso.com,,Sales
+CID-174,Individual,Premium,11/16/1984,11/3/2020,TRUE,Avery,Howard,Female,(762) 555-0169,,avery@contoso.com,,Sales
+CID-175,Individual,Standard,2/12/1953,4/16/2021,TRUE,Jarmila,Hrdlickova,Female,(414) 555-0113,(937) 555-0262,jarmila@contoso.com,,Sales
+CID-176,Individual,Premium,5/23/1933,2/16/2019,TRUE,Aljosa,Hribar,Female,(734) 555-0145,,aljosa@contoso.com,aljosa@fabrikam.com,Sales
+CID-177,Individual,Standard,5/28/1983,10/8/2020,TRUE,Andreja,Hrovat,Female,(970) 555-0114,,andreja@contoso.com,,Sales
+CID-178,Individual,Standard,11/19/1942,2/22/2018,TRUE,Jose,Huaman,Male,(307) 555-0116,,jose@contoso.com,,Sales
+CID-179,Government,Local,6/19/1978,2/12/2019,TRUE,Shawn,Hughes,Male,(650) 555-0153,,shawn@contoso.com,,Services
+CID-180,Individual,Premium,5/20/1995,4/26/2020,TRUE,Aidan,Hunt,Male,(307) 555-0197,(303) 555-0244,aidan@contoso.com,aidan@fabrikam.com,Sales
+CID-181,Individual,Standard,12/3/1970,11/11/2020,TRUE,Cai,Huws,Male,(910) 555-0126,,cai@contoso.com,cai@fabrikam.com,Sales
+CID-182,Individual,Standard,4/30/1957,11/19/2020,FALSE,Vlastimil,Hybl,Male,(470) 555-0177,(435) 555-0216,vlastimil@contoso.com,,Services
+CID-183,Government,State,4/26/1950,12/4/2019,TRUE,Gerolamo,Iadanza,Male,(305) 555-0196,(559) 555-0295,gerolamo@contoso.com,,Services
+CID-184,Business,SMB,7/31/1988,9/17/2018,TRUE,Christiane,Ingenpass,Female,(859) 555-0130,,christiane@contoso.com,,Sales
+CID-185,Individual,Premium,7/31/1960,5/13/2021,TRUE,Jessie,Irwin,Male,(929) 555-0191,(571) 555-0267,jessie@contoso.com,jessie@fabrikam.com,Sales
+CID-186,Individual,Standard,10/24/1957,12/18/2020,TRUE,Anthony,Ivanov,Male,(409) 555-0153,,anthony@contoso.com,,Sales
+CID-187,Business,SMB,6/7/1942,2/15/2020,TRUE,Abigail,Jackson,Female,(717) 555-0186,(430) 555-0239,abigail@contoso.com,,Services
+CID-188,Individual,Premium,8/13/1955,11/1/2020,TRUE,Alena,Jankova,Female,(970) 555-0139,,alena@contoso.com,,Sales
+CID-189,Individual,Standard,7/22/1986,8/6/2021,FALSE,Nikola,Janu,Male,(870) 555-0183,(707) 555-0228,nikola@contoso.com,,Sales
+CID-190,Individual,Standard,12/9/1977,4/29/2020,TRUE,Hannah,Jarvis,Female,(973) 555-0104,,hannah@contoso.com,hannah@fabrikam.com,Sales
+CID-191,Individual,Standard,10/24/1984,12/20/2018,FALSE,Hanna,Jasinska,Female,(740) 555-0128,,hanna@contoso.com,hanna@fabrikam.com,Sales
+CID-192,Business,SMB,8/24/1957,1/3/2021,TRUE,Aira,Jaunzema,Female,(432) 555-0121,(773) 555-0244,aira@contoso.com,aira@fabrikam.com,Sales
+CID-193,Government,Federal,11/5/1973,5/22/2020,TRUE,Irena,Jaworska,Female,(802) 555-0188,,irena@contoso.com,,Services
+CID-194,Individual,Standard,3/4/1975,9/17/2020,TRUE,Casey,Jensen,Male,(364) 555-0100,,casey@contoso.com,casey@fabrikam.com,Sales
+CID-195,Individual,Premium,9/18/1989,6/18/2021,FALSE,Alenka,Jereb,Female,(773) 555-0143,,alenka@contoso.com,,Sales
+CID-196,Individual,Standard,1/23/1989,10/14/2020,TRUE,Tanja,Jerman,Female,(434) 555-0174,,tanja@contoso.com,,Sales
+CID-197,Business,Premier,1/3/1952,3/23/2021,TRUE,Riley,Johnson,Male,(318) 555-0187,,riley@contoso.com,,Sales
+CID-198,Business,Premier,7/21/1966,1/24/2021,TRUE,Natasha,Jones,Female,(318) 555-0189,,natasha@contoso.com,,Sales
+CID-199,Business,SMB,5/15/1951,10/21/2018,TRUE,Karl,Kadenbach,Male,(218) 555-0198,,karl@contoso.com,,Sales
+CID-200,Business,SMB,11/10/1992,7/28/2018,TRUE,Jacek,Kalinowski,Male,(228) 555-0145,,jacek@contoso.com,,Sales
+CID-201,Individual,Standard,9/30/1986,9/28/2021,TRUE,Daniela,Kanepa,Female,(720) 555-0157,(405) 555-0226,daniela@contoso.com,daniela@fabrikam.com,Sales
+CID-202,Individual,Standard,7/21/1964,1/16/2021,TRUE,Niklavs,Kaneps,Male,(502) 555-0100,,niklavs@contoso.com,,Services
+CID-203,Individual,VIP,6/29/1957,3/28/2020,TRUE,Havva,Kara,Female,(724) 555-0128,(225) 555-0289,havva@contoso.com,,Sales
+CID-204,Business,Premier,11/7/1950,1/25/2019,TRUE,Pinar,Karaca,Female,(209) 555-0128,,pinar@contoso.com,,Sales
+CID-205,Individual,VIP,3/4/1953,11/21/2018,TRUE,Gregor,Kastelic,Male,(503) 555-0150,,gregor@contoso.com,,Sales
+CID-206,Individual,Standard,7/13/1957,7/28/2020,TRUE,Ilga,Kaulina,Male,(623) 555-0102,,ilga@contoso.com,,Sales
+CID-207,Individual,Premium,5/1/1959,6/7/2020,TRUE,Rok,Kavcic,Male,(715) 555-0134,,rok@contoso.com,,Sales
+CID-208,Individual,VIP,8/1/1990,3/26/2021,TRUE,Ibrahim,Kaya,Male,(731) 555-0190,,ibrahim@contoso.com,,Sales
+CID-209,Individual,Standard,7/4/1958,10/30/2019,TRUE,Faruk,Keskin,Male,(757) 555-0183,,faruk@contoso.com,,Sales
+CID-210,Individual,Standard,12/5/1997,9/25/2019,TRUE,Xaver,Kiefer,Male,(484) 555-0119,,xaver@contoso.com,xaver@fabrikam.com,Services
+CID-211,Individual,Premium,5/8/1967,7/31/2019,TRUE,Ramazan,Kilic,Male,(380) 555-0138,,ramazan@contoso.com,,Sales
+CID-212,Individual,Premium,3/22/1949,4/17/2018,TRUE,Madison,Kim,Female,(909) 555-0118,,madison@contoso.com,,Sales
+CID-213,Individual,Premium,6/6/1996,5/17/2018,TRUE,Adrian,King,Female,(464) 555-0190,,adrian@contoso.com,,Sales
+CID-214,Individual,Standard,2/6/1955,3/4/2019,TRUE,William,Kirby,Male,(661) 555-0142,,william@contoso.com,,Sales
+CID-215,Business,Premier,7/30/1965,9/4/2019,TRUE,Beatrise,Klavina,Female,(580) 555-0112,,beatrise@contoso.com,,Sales
+CID-216,Individual,Standard,12/26/1977,6/29/2020,TRUE,Berend,Klein,Male,(715) 555-0156,,berend@contoso.com,berend@fabrikam.com,Sales
+CID-217,Individual,Standard,9/23/1933,3/29/2020,TRUE,Mojca,Klemencic,Female,(413) 555-0191,,mojca@contoso.com,,Services
+CID-218,Business,SMB,9/23/1969,5/21/2018,TRUE,Friedrich,Knerich,Male,(316) 555-0152,,friedrich@contoso.com,,Sales
+CID-219,Individual,Premium,12/8/1982,1/11/2021,TRUE,Jozefa,Knez,Female,(305) 555-0182,,jozefa@contoso.com,,Sales
+CID-220,Business,Premier,7/28/1983,6/26/2018,TRUE,Carla,Kobusch,Female,(737) 555-0141,,carla@contoso.com,carla@fabrikam.com,Sales
+CID-221,Individual,Premium,5/20/1924,7/17/2018,TRUE,Mahmut,Koc,Male,(848) 555-0125,,mahmut@contoso.com,,Sales
+CID-222,Individual,Standard,1/25/1934,9/16/2019,TRUE,Dominique,Koch,Male,(402) 555-0127,,dominique@contoso.com,,Sales
+CID-223,Individual,VIP,6/22/1979,11/22/2019,TRUE,Vlasta,Koci,Female,(571) 555-0119,,vlasta@contoso.com,,Sales
+CID-224,Individual,Standard,1/21/1960,12/15/2021,TRUE,Lilly,Koenig,Female,(772) 555-0138,,lilly@contoso.com,,Sales
+CID-225,Individual,Premium,4/2/1961,2/5/2019,TRUE,Eggert,Kohler,Male,(918) 555-0178,,eggert@contoso.com,eggert@fabrikam.com,Sales
+CID-226,Individual,Standard,1/23/1963,4/16/2019,TRUE,Tomas,Kohout,Male,(917) 555-0125,(916) 555-0279,tomas@contoso.com,,Sales
+CID-227,Government,Local,9/21/1997,8/6/2018,TRUE,Marija,Kolar,Female,(304) 555-0126,,marija@contoso.com,,Services
+CID-228,Individual,Premium,1/11/1990,7/17/2020,TRUE,Petr,Konecny,Male,(213) 555-0137,,petr@contoso.com,,Sales
+CID-229,Business,SMB,10/4/1976,9/24/2019,TRUE,Vera,Kopecka,Female,(440) 555-0142,,vera@contoso.com,,Sales
+CID-230,Individual,Premium,3/22/1993,8/8/2020,TRUE,Irena,Koren,Female,(931) 555-0163,,irena@contoso.com,irena@fabrikam.com,Sales
+CID-231,Business,SMB,12/5/1977,6/24/2020,TRUE,Safak,Korkmaz,Male,(816) 555-0141,,safak@contoso.com,,Services
+CID-232,Individual,Standard,1/10/1987,6/24/2018,TRUE,Stanislav,Korosec,Male,(803) 555-0164,,stanislav@contoso.com,,Sales
+CID-233,Individual,VIP,3/30/1954,1/23/2018,TRUE,Jozi,Kos,Male,(818) 555-0171,(614) 555-0289,jozi@contoso.com,,Sales
+CID-234,Individual,Standard,6/3/1969,8/23/2018,TRUE,Maja,Kosir,Female,(316) 555-0146,,maja@contoso.com,,Sales
+CID-235,Individual,Premium,9/15/1947,11/2/2020,TRUE,Robert,Kotnik,Male,(913) 555-0110,,robert@contoso.com,,Sales
+CID-236,Business,Partner,11/2/1997,1/29/2021,TRUE,Andrej,Kovac,Male,(614) 555-0111,(773) 555-0262,andrej@contoso.com,,Sales
+CID-237,Individual,Premium,4/18/1985,7/17/2020,TRUE,Anton,Kovacic,Male,(315) 555-0136,(351) 555-0225,anton@contoso.com,anton@fabrikam.com,Sales
+CID-238,Individual,Standard,2/25/1974,6/7/2019,TRUE,Adrian,Kowalczyk,Male,(309) 555-0152,,adrian@contoso.com,,Sales
+CID-239,Individual,VIP,4/14/1966,3/7/2019,TRUE,Beata,Kowalska,Female,(415) 555-0179,,beata@contoso.com,,Services
+CID-240,Individual,Premium,6/14/1983,3/3/2020,TRUE,Zdenka,Kozakova,Female,(919) 555-0188,,zdenka@contoso.com,,Services
+CID-241,Government,Local,3/9/1996,6/17/2019,TRUE,Jan,Kozlowski,Male,(510) 555-0153,,jan@contoso.com,,Services
+CID-242,Government,Local,5/2/1986,9/5/2020,TRUE,Ivan,Krajnc,Male,(508) 555-0103,,ivan@contoso.com,,Services
+CID-243,Government,State,4/25/1965,8/9/2021,TRUE,Branko,Kralj,Male,(386) 555-0195,,branko@contoso.com,,Services
+CID-244,Individual,Premium,12/12/1954,3/20/2020,TRUE,Elsa,Kramer,Female,(208) 555-0110,(440) 555-0225,elsa@contoso.com,,Sales
+CID-245,Individual,Premium,4/18/1933,7/1/2020,TRUE,Edna,Krastina,Female,(781) 555-0144,,edna@contoso.com,,Sales
+CID-246,Government,Federal,11/30/1993,12/29/2021,TRUE,Ralf,Krause,Male,(940) 555-0127,,ralf@contoso.com,,Services
+CID-247,Individual,Premium,3/31/1976,8/20/2021,TRUE,Joanna,Krawczyk,Female,(831) 555-0156,(830) 555-0272,joanna@contoso.com,joanna@fabrikam.com,Sales
+CID-248,Government,Local,2/10/1980,5/20/2020,TRUE,Alex,Krejci,Female,(248) 555-0124,,alex@contoso.com,,Services
+CID-249,Government,Local,2/29/1988,6/24/2019,TRUE,Ella,Kreslina,Male,(318) 555-0128,,ella@contoso.com,ella@fabrikam.com,Services
+CID-250,Business,SMB,9/23/1984,10/20/2020,TRUE,Agrita,Krieva,Male,(630) 555-0113,,agrita@contoso.com,,Sales
+CID-251,Individual,Premium,5/9/1964,10/10/2021,TRUE,Darta,Krievina,Male,(269) 555-0129,(559) 555-0283,darta@contoso.com,,Sales
+CID-252,Individual,Standard,3/7/1953,8/19/2021,TRUE,Ronalds,Krievins,Male,(929) 555-0166,,ronalds@contoso.com,,Sales
+CID-253,Business,SMB,4/4/1966,8/15/2018,TRUE,Heiko,Krueger,Male,(765) 555-0129,,heiko@contoso.com,,Sales
+CID-254,Individual,Premium,5/7/1929,6/13/2021,TRUE,Beatrise,Kruze,Female,(425) 555-0144,,beatrise@contoso.com,,Sales
+CID-255,Individual,VIP,4/4/1970,5/22/2020,TRUE,Ondrej,Kubat,Male,(405) 555-0188,,ondrej@contoso.com,ondrej@fabrikam.com,Sales
+CID-256,Individual,Standard,2/5/1960,6/10/2020,TRUE,Marcela,Kubatova,Female,(478) 555-0146,,marcela@contoso.com,,Services
+CID-257,Government,State,7/27/1964,11/2/2020,TRUE,Adrianna,Kucharska,Female,(704) 555-0163,,adrianna@contoso.com,,Services
+CID-258,Individual,Standard,7/5/1985,7/29/2018,TRUE,Andrzej,Kucharski,Male,(860) 555-0137,,andrzej@contoso.com,,Sales
+CID-259,Individual,Premium,7/2/1994,1/11/2020,TRUE,Franciska,Kuhar,Female,(414) 555-0188,,franciska@contoso.com,,Sales
+CID-260,Individual,Standard,6/6/1978,2/1/2019,TRUE,Alida,Kundzina,Female,(208) 555-0121,,alida@contoso.com,,Sales
+CID-261,Individual,Standard,7/26/1989,1/28/2021,TRUE,Conrad,Kutzsche,Male,(770) 555-0140,,conrad@contoso.com,,Sales
+CID-262,Government,State,1/13/1994,1/31/2018,TRUE,Hanna,Kwiatkowska,Female,(573) 555-0156,(224) 555-0211,hanna@contoso.com,,Services
+CID-263,Individual,Standard,5/21/1949,1/21/2019,FALSE,Maureen,Labrecque,Female,(816) 555-0190,,maureen@contoso.com,,Sales
+CID-264,Individual,Standard,4/17/1954,10/11/2019,TRUE,Alain,Lacombe,Male,(623) 555-0100,,alain@contoso.com,,Sales
+CID-265,Business,Premier,5/20/1988,11/25/2018,TRUE,Gilbert,Lacroix,Male,(832) 555-0152,,gilbert@contoso.com,gilbert@fabrikam.com,Sales
+CID-266,Business,Premier,10/30/1946,4/4/2021,TRUE,Katja,Lah,Female,(715) 555-0133,(312) 555-0218,katja@contoso.com,,Sales
+CID-267,Individual,Premium,12/18/1947,8/9/2020,TRUE,Theodore,Lamy,Male,(205) 555-0116,,theodore@contoso.com,,Sales
+CID-268,Business,Premier,4/29/1958,1/28/2021,TRUE,Anna,Lange,Female,(562) 555-0142,,anna@contoso.com,,Sales
+CID-269,Individual,Premium,10/13/1978,9/13/2019,TRUE,Aisma,Lapsa,Male,(801) 555-0103,(567) 555-0258,aisma@contoso.com,aisma@fabrikam.com,Sales
+CID-270,Individual,Standard,8/9/1982,4/11/2021,TRUE,Andre,Lawson,Male,(201) 555-0170,,andre@contoso.com,,Sales
+CID-271,Business,SMB,12/16/1944,6/11/2018,TRUE,Denise,Lebatelier,Female,(701) 555-0172,(352) 555-0222,denise@contoso.com,,Sales
+CID-272,Business,SMB,2/26/1989,2/15/2020,TRUE,Bernadette,Leblanc,Female,(716) 555-0134,,bernadette@contoso.com,,Sales
+CID-273,Business,Partner,5/28/1959,7/10/2021,TRUE,Mikaela,Lee,Female,(209) 555-0123,(425) 555-0269,mikaela@contoso.com,,Sales
+CID-274,Government,State,8/27/1965,10/1/2018,TRUE,Kayla,Lewis,Female,(978) 555-0149,(607) 555-0210,kayla@contoso.com,kayla@fabrikam.com,Services
+CID-275,Individual,Standard,1/28/1950,1/3/2018,TRUE,Aleksandra,Lice,Female,(858) 555-0142,,aleksandra@contoso.com,,Sales
+CID-276,Individual,Premium,3/5/1954,11/17/2020,TRUE,Geraint,Llwyd,Male,(951) 555-0131,,geraint@contoso.com,,Sales
+CID-277,Business,Partner,7/5/1998,11/22/2018,TRUE,Valeria,Lo Duca,Female,(603) 555-0127,,valeria@contoso.com,,Sales
+CID-278,Individual,Standard,9/23/1991,7/28/2020,TRUE,Ernst,Loetzsch,Male,(218) 555-0198,,ernst@contoso.com,,Sales
+CID-279,Business,SMB,3/24/1954,5/29/2018,TRUE,Palmira,Loggia,Female,(310) 555-0158,(916) 555-0211,palmira@contoso.com,,Services
+CID-280,Business,SMB,5/20/1982,6/24/2019,TRUE,Francesca,Lombo,Female,(256) 555-0103,(512) 555-0233,francesca@contoso.com,francesca@fabrikam.com,Services
+CID-281,Business,Premier,4/11/1968,5/3/2019,TRUE,Markus,Long,Male,(219) 555-0138,(516) 555-0216,markus@contoso.com,,Sales
+CID-282,Individual,Standard,7/19/1927,4/1/2020,TRUE,Gerardina,Longo,Female,(301) 555-0103,(806) 555-0200,gerardina@contoso.com,,Services
+CID-283,Individual,VIP,10/5/1956,12/24/2020,TRUE,Eugenia,Lopez,Female,(254) 555-0129,,eugenia@contoso.com,eugenia@fabrikam.com,Sales
+CID-284,Individual,VIP,8/10/1967,12/22/2018,TRUE,Lacombe,Luc,Male,(937) 555-0174,,lacombe@contoso.com,lacombe@fabrikam.com,Sales
+CID-285,Individual,Premium,12/17/1967,6/29/2021,TRUE,Noemi,Lucchesi,Female,(341) 555-0111,(478) 555-0284,noemi@contoso.com,,Sales
+CID-286,Individual,Premium,9/9/1959,8/23/2018,TRUE,Nikolajs,Lusis,Male,(805) 555-0135,,nikolajs@contoso.com,,Sales
+CID-287,Individual,VIP,3/17/1949,8/15/2018,TRUE,Courtney,Lynch,Female,(224) 555-0189,,courtney@contoso.com,,Sales
+CID-288,Individual,Premium,9/9/1995,8/29/2021,TRUE,Jan,Macek,Male,(704) 555-0170,,jan@contoso.com,,Sales
+CID-289,Individual,Standard,2/10/1923,2/18/2018,TRUE,Jakub,Maciejewski,Male,(878) 555-0100,,jakub@contoso.com,,Sales
+CID-290,Individual,Premium,11/8/1987,4/28/2018,TRUE,Terezija,Majcen,Female,(414) 555-0189,,terezija@contoso.com,,Sales
+CID-291,Individual,Premium,5/31/1986,2/23/2018,TRUE,Filip,Majewski,Male,(843) 555-0105,,filip@contoso.com,filip@fabrikam.com,Sales
+CID-292,Individual,Standard,12/2/1967,7/19/2019,TRUE,Luis,Mamani,Male,(360) 555-0143,(917) 555-0262,luis@contoso.com,,Services
+CID-293,Business,Premier,1/8/1984,12/3/2020,FALSE,Thomas,Margand,Male,(737) 555-0123,(575) 555-0272,thomas@contoso.com,,Sales
+CID-294,Individual,VIP,9/8/1990,2/22/2018,TRUE,Marie,Markova,Female,(413) 555-0118,,marie@contoso.com,,Sales
+CID-295,Individual,VIP,2/22/1974,7/12/2019,TRUE,Henri,Marquis,Male,(463) 555-0117,(518) 555-0252,henri@contoso.com,,Sales
+CID-296,Individual,Premium,5/12/1979,1/30/2021,TRUE,Blake,Martin,Male,(432) 555-0129,,blake@contoso.com,,Sales
+CID-297,Business,SMB,1/24/1953,1/8/2018,TRUE,Violet,Martinez,Female,(864) 555-0141,,violet@contoso.com,,Sales
+CID-298,Individual,VIP,7/17/1923,5/17/2020,TRUE,Calimero,Mazzanti,Male,(262) 555-0173,(978) 555-0292,calimero@contoso.com,,Sales
+CID-299,Individual,Premium,2/21/1952,2/2/2019,TRUE,Parker,McLean,Male,(815) 555-0111,,parker@contoso.com,parker@fabrikam.com,Sales
+CID-300,Individual,Standard,8/14/1978,3/7/2021,TRUE,Natasa,Medved,Female,(510) 555-0193,,natasa@contoso.com,natasa@fabrikam.com,Sales
+CID-301,Individual,VIP,7/12/1992,11/6/2019,TRUE,Daniel,Mengestab,Male,(615) 555-0138,,daniel@contoso.com,,Sales
+CID-302,Individual,VIP,6/11/1977,1/22/2019,TRUE,Emel,Mert,Female,(860) 555-0120,,emel@contoso.com,,Sales
+CID-303,Individual,Premium,2/2/1971,4/21/2018,TRUE,Marie,Methot,Female,(862) 555-0128,,marie@contoso.com,,Sales
+CID-304,Individual,Premium,4/27/1984,9/6/2019,TRUE,Ariane,Meyer,Female,(623) 555-0161,(641) 555-0219,ariane@contoso.com,,Sales
+CID-305,Business,SMB,3/23/1931,1/17/2018,TRUE,Habtu,Michael,Male,(509) 555-0114,,habtu@contoso.com,,Sales
+CID-306,Government,Local,6/11/1986,4/20/2021,TRUE,Dominik,Michalski,Male,(907) 555-0151,,dominik@contoso.com,dominik@fabrikam.com,Services
+CID-307,Individual,Standard,8/3/1966,6/2/2020,TRUE,Anna,Michnova,Female,(660) 555-0153,,anna@contoso.com,,Sales
+CID-308,Individual,Premium,7/29/1980,6/25/2019,TRUE,Aleganesh,Mihertab,Female,(930) 555-0102,,aleganesh@contoso.com,,Services
+CID-309,Business,SMB,9/5/1955,6/20/2018,TRUE,Lisandro,Milanesi,Male,(567) 555-0142,(307) 555-0285,lisandro@contoso.com,,Services
+CID-310,Individual,Standard,10/16/1957,2/13/2019,TRUE,Martina,Milani,Female,(770) 555-0137,,martina@contoso.com,,Sales
+CID-311,Individual,Standard,5/3/1955,1/10/2020,TRUE,Davide,Milano,Male,(713) 555-0132,,davide@contoso.com,,Sales
+CID-312,Individual,Premium,3/10/1938,11/2/2021,TRUE,Caleb,Miller,Male,(432) 555-0110,(602) 555-0250,caleb@contoso.com,,Sales
+CID-313,Individual,VIP,10/21/1974,4/26/2021,TRUE,Jordan,Mitchell,Male,(351) 555-0181,,jordan@contoso.com,jordan@fabrikam.com,Sales
+CID-314,Government,Local,11/27/1960,5/7/2020,TRUE,Joze,Mlakar,Male,(727) 555-0197,,joze@contoso.com,,Services
+CID-315,Business,SMB,9/20/1951,8/18/2018,TRUE,Gabriel,Moeller,Male,(425) 555-0187,(737) 555-0220,gabriel@contoso.com,,Sales
+CID-316,Individual,Premium,10/26/1957,4/29/2018,TRUE,Coralie,Monjeau,Female,(231) 555-0165,,coralie@contoso.com,,Services
+CID-317,Individual,Premium,9/2/1982,3/25/2021,TRUE,Laura,Montfulleda,Female,(660) 555-0105,,laura@contoso.com,,Sales
+CID-318,Individual,Standard,11/16/1979,2/23/2020,TRUE,Preston,Morales,Male,(240) 555-0156,(971) 555-0258,preston@contoso.com,,Services
+CID-319,Individual,Premium,8/19/1993,4/10/2019,TRUE,Juan,Morgan,Male,(412) 555-0154,,juan@contoso.com,,Sales
+CID-320,Individual,Standard,4/20/1942,4/14/2018,TRUE,Remy,Morris,Female,(870) 555-0115,,remy@contoso.com,remy@fabrikam.com,Sales
+CID-321,Individual,Standard,10/5/1964,11/29/2019,TRUE,Rowan,Murphy,Male,(641) 555-0127,,rowan@contoso.com,,Sales
+CID-322,Business,SMB,7/21/1959,6/24/2018,TRUE,Rory,Nguyen,Male,(808) 555-0191,,rory@contoso.com,,Sales
+CID-323,Individual,Standard,4/28/1953,1/15/2020,TRUE,Camille,Nicole,Female,(702) 555-0148,(385) 555-0251,camille@contoso.com,,Sales
+CID-324,Individual,VIP,1/23/1979,12/15/2021,TRUE,Franc,Novak,Male,(915) 555-0157,,franc@contoso.com,,Sales
+CID-325,Government,Local,3/24/1970,3/3/2021,TRUE,Lidia,Nowakowska,Female,(608) 555-0131,,lidia@contoso.com,,Services
+CID-326,Business,SMB,4/24/1947,11/15/2021,TRUE,Klara,Nowicka,Female,(781) 555-0168,,klara@contoso.com,,Sales
+CID-327,Individual,Premium,2/19/1965,10/27/2019,TRUE,Conrad,Nuber,Male,(304) 555-0152,,conrad@contoso.com,,Sales
+CID-328,Individual,Standard,1/31/1980,2/2/2018,TRUE,Martin,Oblak,Male,(870) 555-0138,,martin@contoso.com,,Sales
+CID-329,Individual,Premium,8/13/1977,2/24/2018,TRUE,Engin,Oguz,Male,(925) 555-0170,,engin@contoso.com,engin@fabrikam.com,Services
+CID-330,Individual,Standard,5/31/1961,6/3/2019,TRUE,Anna,Ostrowska,Female,(517) 555-0102,,anna@contoso.com,,Sales
+CID-331,Individual,VIP,4/30/1980,1/26/2020,TRUE,Roman,Ostrowski,Male,(916) 555-0191,,roman@contoso.com,,Sales
+CID-332,Business,SMB,2/20/1966,1/12/2018,TRUE,Brigitte,Otto,Female,(253) 555-0178,,brigitte@contoso.com,,Sales
+CID-333,Individual,Standard,11/15/1971,12/21/2019,TRUE,Grace,Owens,Female,(269) 555-0105,,grace@contoso.com,grace@fabrikam.com,Sales
+CID-334,Individual,Standard,1/17/1924,7/9/2019,TRUE,Derya,Ozcan,Female,(502) 555-0137,(667) 555-0232,derya@contoso.com,,Sales
+CID-335,Individual,VIP,11/15/1979,1/8/2019,TRUE,Huseyin,Ozdemir,Male,(402) 555-0192,,huseyin@contoso.com,,Sales
+CID-336,Individual,Premium,12/11/1985,4/29/2019,TRUE,Salih,Ozkan,Male,(605) 555-0166,,salih@contoso.com,,Sales
+CID-337,Business,SMB,5/25/1973,8/30/2020,TRUE,Ahmet,Ozturk,Male,(209) 555-0183,,ahmet@contoso.com,,Sales
+CID-338,Business,SMB,2/3/1989,6/5/2021,TRUE,Olafs,Paegle,Male,(667) 555-0103,,olafs@contoso.com,,Sales
+CID-339,Individual,Premium,6/13/1950,9/15/2019,TRUE,Imelda,Pagnotto,Female,(702) 555-0184,,imelda@contoso.com,,Sales
+CID-340,Individual,Standard,3/21/1954,11/3/2018,TRUE,Irma,Palermo,Female,(308) 555-0107,,irma@contoso.com,,Sales
+CID-341,Individual,VIP,10/19/1964,4/2/2019,TRUE,Ariane,Panetier,Female,(218) 555-0176,,ariane@contoso.com,,Sales
+CID-342,Individual,Standard,4/17/1962,6/9/2018,TRUE,Olga,Panicucci,Female,(725) 555-0108,,olga@contoso.com,,Sales
+CID-343,Individual,Standard,4/6/1994,11/27/2018,TRUE,Aled,Parri,Male,(217) 555-0170,(682) 555-0210,aled@contoso.com,,Sales
+CID-344,Individual,Standard,7/18/1960,2/15/2020,TRUE,Anne,Patel,Female,(464) 555-0197,,anne@contoso.com,,Sales
+CID-345,Individual,Premium,9/4/1922,8/13/2018,TRUE,David,Paulet,Male,(937) 555-0123,,david@contoso.com,,Sales
+CID-346,Individual,Premium,12/12/1953,9/9/2020,TRUE,Petra,Pavlic,Female,(504) 555-0143,,petra@contoso.com,,Sales
+CID-347,Individual,Standard,4/24/1968,12/30/2019,TRUE,Jerzy,Pawlak,Male,(201) 555-0109,(417) 555-0267,jerzy@contoso.com,,Sales
+CID-348,Individual,Premium,8/12/1978,12/4/2020,TRUE,Marek,Pawlowski,Male,(765) 555-0171,,marek@contoso.com,,Sales
+CID-349,Individual,Premium,12/7/1977,5/22/2021,TRUE,Rene,Pelletier,Male,(214) 555-0188,,rene@contoso.com,,Sales
+CID-350,Individual,Premium,8/10/1971,12/18/2020,TRUE,Michael,Peltier,Male,(715) 555-0125,(940) 555-0253,michael@contoso.com,,Services
+CID-351,Individual,Standard,10/25/1968,10/6/2019,TRUE,Matjaz,Petek,Male,(940) 555-0142,(575) 555-0223,matjaz@contoso.com,,Sales
+CID-352,Business,SMB,9/13/1955,9/8/2019,TRUE,Gebhard,Peters,Male,(564) 555-0168,,gebhard@contoso.com,gebhard@fabrikam.com,Sales
+CID-353,Individual,Premium,4/18/1956,7/14/2018,TRUE,Romain Petit,Petit,Male,(240) 555-0117,(224) 555-0256,romain petit@contoso.com,,Sales
+CID-354,Individual,Standard,5/4/1921,5/4/2019,TRUE,Nina,Petric,Female,(717) 555-0112,,nina@contoso.com,,Sales
+CID-355,Individual,Standard,7/6/1972,6/6/2018,TRUE,Jayden,Phillips,Female,(305) 555-0177,(706) 555-0212,jayden@contoso.com,,Sales
+CID-356,Individual,VIP,8/11/1981,9/2/2019,TRUE,Ortensia,Piazza,Female,(952) 555-0117,,ortensia@contoso.com,,Sales
+CID-357,Individual,VIP,7/21/1931,6/3/2021,TRUE,Anna,Pidecabanyes,Female,(424) 555-0150,(470) 555-0257,anna@contoso.com,,Sales
+CID-358,Individual,Standard,8/14/1955,2/16/2019,TRUE,Isotta,Pinto,Female,(320) 555-0126,,isotta@contoso.com,,Sales
+CID-359,Government,Local,2/5/1978,5/13/2021,TRUE,Maria,Piotrowska,Female,(620) 555-0108,(480) 555-0227,maria@contoso.com,,Services
+CID-360,Individual,Premium,5/24/1973,1/7/2021,TRUE,Barbara,Pirc,Female,(818) 555-0195,,barbara@contoso.com,,Sales
+CID-361,Individual,Standard,9/21/1948,5/4/2018,TRUE,Ritums,Podnieks,Female,(803) 555-0196,,ritums@contoso.com,,Sales
+CID-362,Individual,Standard,1/18/1958,4/16/2019,TRUE,Jiri,Polak,Male,(351) 555-0145,,jiri@contoso.com,,Sales
+CID-363,Individual,Standard,9/7/1957,5/26/2021,TRUE,Zuzana,Polaskova,Female,(864) 555-0197,(949) 555-0289,zuzana@contoso.com,zuzana@fabrikam.com,Services
+CID-364,Individual,Premium,1/24/1966,5/31/2019,TRUE,Matiass,Polis,Male,(207) 555-0179,,matiass@contoso.com,matiass@fabrikam.com,Sales
+CID-365,Government,State,12/26/1965,2/1/2021,TRUE,Marko,Potocnik,Male,(941) 555-0147,(901) 555-0259,marko@contoso.com,marko@fabrikam.com,Services
+CID-366,Individual,Standard,6/17/1960,1/28/2019,TRUE,Joseph,Price,Male,(430) 555-0144,,joseph@contoso.com,,Services
+CID-367,Government,Local,6/2/1993,9/21/2021,TRUE,Libuse,Prikrylova,Female,(919) 555-0168,(206) 555-0274,libuse@contoso.com,,Services
+CID-368,Government,Local,5/2/1978,8/31/2019,TRUE,Joana,Puigxoriguer,Female,(240) 555-0119,,joana@contoso.com,joana@fabrikam.com,Services
+CID-369,Individual,Premium,10/2/1997,9/6/2020,TRUE,Ilgonis,Purmals,Female,(510) 555-0181,,ilgonis@contoso.com,ilgonis@fabrikam.com,Sales
+CID-370,Individual,Standard,7/22/1948,6/27/2018,TRUE,Majda,Pusnik,Female,(341) 555-0173,(701) 555-0214,majda@contoso.com,,Sales
+CID-371,Individual,Standard,8/6/1952,9/16/2021,TRUE,Rosa,Pérez,Female,(667) 555-0162,(540) 555-0206,rosa@contoso.com,,Sales
+CID-372,Individual,Premium,3/19/1989,3/12/2021,TRUE,Jesus,Quispe,Male,(401) 555-0176,,jesus@contoso.com,jesus@fabrikam.com,Sales
+CID-373,Individual,Standard,7/21/1967,6/24/2019,TRUE,Bozena,Radova,Female,(505) 555-0154,,bozena@contoso.com,,Sales
+CID-374,Individual,Premium,4/22/1995,10/5/2018,TRUE,Riley,Ramirez,Male,(754) 555-0118,,riley@contoso.com,,Sales
+CID-375,Individual,Standard,5/15/1959,8/21/2018,TRUE,Hollie,Rees,Female,(269) 555-0152,(732) 555-0264,hollie@contoso.com,,Services
+CID-376,Individual,Standard,11/29/1971,1/18/2021,TRUE,Marta,Reixachdamunt,Female,(248) 555-0113,(480) 555-0225,marta@contoso.com,,Sales
+CID-377,Business,SMB,10/17/1971,5/7/2021,TRUE,John,Rhys,Male,(308) 555-0143,,john@contoso.com,,Sales
+CID-378,Individual,Premium,8/30/1974,12/28/2018,TRUE,Tomas,Richardson,Male,(785) 555-0164,,tomas@contoso.com,,Sales
+CID-379,Business,Premier,1/10/1955,3/17/2019,TRUE,Blaise,Richer,Male,(315) 555-0142,,blaise@contoso.com,,Services
+CID-380,Individual,Premium,7/20/1993,1/26/2018,TRUE,Luca,Richter,Male,(775) 555-0122,(802) 555-0239,luca@contoso.com,,Sales
+CID-381,Individual,Standard,11/19/1949,1/25/2018,TRUE,Maksims,Riekstins,Male,(931) 555-0181,(517) 555-0215,maksims@contoso.com,,Sales
+CID-382,Individual,Premium,8/12/1988,11/18/2021,TRUE,Clara,Rieradevall,Female,(401) 555-0154,,clara@contoso.com,,Sales
+CID-383,Individual,Standard,12/28/1975,5/22/2019,TRUE,Nathan,Rigby,Male,(803) 555-0191,,nathan@contoso.com,nathan@fabrikam.com,Sales
+CID-384,Business,SMB,5/8/1962,8/17/2021,TRUE,Jerome,Rivard,Male,(714) 555-0132,,jerome@contoso.com,,Sales
+CID-385,Business,Premier,8/18/1952,9/24/2021,TRUE,Amari,Rivera,Female,(252) 555-0151,,amari@contoso.com,,Services
+CID-386,Business,SMB,6/12/1979,9/24/2018,TRUE,Maya,Robinson,Female,(878) 555-0148,,maya@contoso.com,,Sales
+CID-387,Individual,Standard,3/13/1983,4/6/2019,TRUE,Andree,Rocher,Female,(276) 555-0125,(419) 555-0296,andree@contoso.com,,Sales
+CID-388,Individual,Standard,11/8/1928,4/1/2019,TRUE,Hazel,Rodriguez,Female,(443) 555-0197,(214) 555-0268,hazel@contoso.com,,Sales
+CID-389,Business,SMB,1/23/1971,10/15/2021,TRUE,Juana,Rojas,Female,(540) 555-0198,,juana@contoso.com,,Sales
+CID-390,Business,SMB,12/16/1962,12/27/2020,TRUE,Benito,Romani,Male,(646) 555-0179,,benito@contoso.com,,Sales
+CID-391,Government,State,6/14/1995,10/3/2020,TRUE,Valeria,Romano,Female,(980) 555-0176,,valeria@contoso.com,,Services
+CID-392,Individual,Standard,9/12/1967,5/12/2020,TRUE,Henry,Ross,Male,(530) 555-0186,(812) 555-0276,henry@contoso.com,,Sales
+CID-393,Individual,VIP,1/31/1983,12/6/2021,TRUE,Kazimirs,Roze,Female,(608) 555-0115,,kazimirs@contoso.com,,Sales
+CID-394,Business,Premier,5/30/1946,5/6/2019,FALSE,Bostjan,Rozman,Male,(252) 555-0134,,bostjan@contoso.com,,Sales
+CID-395,Individual,Standard,12/6/1995,12/8/2020,TRUE,Lorenzo,Russo,Male,(661) 555-0145,,lorenzo@contoso.com,,Sales
+CID-396,Government,Local,11/5/1923,7/18/2019,TRUE,Benigno,Sabbatini,Male,(832) 555-0154,(704) 555-0232,benigno@contoso.com,,Services
+CID-397,Business,SMB,4/25/1966,1/30/2021,TRUE,Jan,Sachweh,Male,(775) 555-0184,(475) 555-0271,jan@contoso.com,jan@fabrikam.com,Sales
+CID-398,Individual,Premium,5/3/1973,8/4/2018,TRUE,Filip,Safranek,Male,(949) 555-0184,,filip@contoso.com,,Sales
+CID-399,Business,SMB,9/20/1970,7/13/2019,TRUE,Diego,Sagese,Male,(339) 555-0105,,diego@contoso.com,,Services
+CID-400,Business,Premier,3/28/1940,6/8/2018,TRUE,Emine,Sahin,Female,(609) 555-0163,(586) 555-0237,emine@contoso.com,,Sales
+CID-401,Individual,Standard,2/15/1988,5/4/2019,TRUE,Dakota,Sanchez,Male,(618) 555-0176,,dakota@contoso.com,,Sales
+CID-402,Government,State,5/24/1990,4/1/2020,TRUE,Sarmis,Saulitis,Male,(603) 555-0186,,sarmis@contoso.com,,Services
+CID-403,Individual,Standard,12/28/1996,6/19/2021,TRUE,Kai,Schmitt,Male,(810) 555-0120,(212) 555-0211,kai@contoso.com,,Sales
+CID-404,Business,SMB,5/28/1951,3/4/2020,TRUE,Izaak,Schmitz,Male,(469) 555-0122,,izaak@contoso.com,,Sales
+CID-405,Individual,VIP,5/3/1966,1/5/2018,TRUE,Lea,Schneider,Female,(415) 555-0146,,lea@contoso.com,,Sales
+CID-406,Business,Premier,3/15/1958,12/27/2018,TRUE,Ashley,Schroeder,Female,(646) 555-0150,(978) 555-0224,ashley@contoso.com,,Sales
+CID-407,Individual,Standard,9/23/1988,4/4/2019,TRUE,Nickolaus,Schulz,Male,(651) 555-0106,,nickolaus@contoso.com,,Services
+CID-408,Individual,VIP,1/5/1977,9/5/2018,TRUE,Helga,Schustereit,Female,(314) 555-0147,(463) 555-0266,helga@contoso.com,,Sales
+CID-409,Government,Local,11/3/1969,8/3/2020,TRUE,Miloslav,Sedlar,Male,(564) 555-0190,,miloslav@contoso.com,,Services
+CID-410,Individual,VIP,2/2/1983,2/26/2019,TRUE,Gunay,Sen,Male,(571) 555-0156,,gunay@contoso.com,,Sales
+CID-411,Individual,Premium,7/6/1971,1/15/2018,FALSE,Xavier,Serradelarca,Male,(959) 555-0120,,xavier@contoso.com,,Sales
+CID-412,Government,Local,8/23/1998,1/6/2020,TRUE,Julia,Serradesanferm,Female,(419) 555-0139,,julia@contoso.com,julia@fabrikam.com,Services
+CID-413,Government,Local,4/26/1996,2/19/2021,TRUE,Anja,Sever,Female,(503) 555-0144,,anja@contoso.com,,Services
+CID-414,Individual,Standard,5/3/1961,10/4/2018,TRUE,Ermenegildo,Siciliani,Male,(402) 555-0148,(909) 555-0292,ermenegildo@contoso.com,,Sales
+CID-415,Individual,Premium,4/14/1946,3/29/2019,TRUE,Fabiola,Siciliano,Female,(606) 555-0191,,fabiola@contoso.com,,Sales
+CID-416,Individual,Premium,7/9/1929,11/14/2021,TRUE,Vladimir,Sima,Male,(252) 555-0140,,vladimir@contoso.com,,Sales
+CID-417,Individual,Standard,2/19/1986,8/10/2021,FALSE,Hanno,Simon,Male,(240) 555-0157,,hanno@contoso.com,,Sales
+CID-418,Individual,Standard,11/27/1923,8/21/2019,TRUE,Demet,Simsek,Female,(989) 555-0105,(401) 555-0268,demet@contoso.com,,Sales
+CID-419,Individual,Premium,6/14/1953,3/22/2019,TRUE,Bernd,Skopura,Male,(864) 555-0137,(201) 555-0238,bernd@contoso.com,bernd@fabrikam.com,Sales
+CID-420,Business,Partner,3/19/1991,7/29/2018,TRUE,Matej,Skorepa,Male,(386) 555-0113,,matej@contoso.com,,Sales
+CID-421,Business,SMB,11/20/1932,12/15/2019,TRUE,Teodors,Skujins,Male,(646) 555-0102,(870) 555-0290,teodors@contoso.com,,Sales
+CID-422,Business,SMB,8/14/1959,10/29/2018,TRUE,Liam,Small,Male,(810) 555-0123,,liam@contoso.com,liam@fabrikam.com,Sales
+CID-423,Individual,Standard,6/16/1923,5/31/2021,TRUE,Ludmila,Smidova,Female,(225) 555-0117,,ludmila@contoso.com,,Sales
+CID-424,Individual,Standard,3/3/1953,1/3/2018,TRUE,Reed,Smith,Male,(850) 555-0187,,reed@contoso.com,,Services
+CID-425,Individual,VIP,12/20/1990,9/16/2020,TRUE,Dominika,Sobczak,Female,(843) 555-0134,(980) 555-0222,dominika@contoso.com,,Sales
+CID-426,Individual,Standard,9/27/1932,1/21/2021,TRUE,Lluis,Sobregrau,Male,(717) 555-0100,,lluis@contoso.com,,Sales
+CID-427,Individual,Premium,4/14/1980,6/4/2019,TRUE,Krystyna,Sokolowska,Female,(612) 555-0144,,krystyna@contoso.com,,Sales
+CID-428,Business,SMB,4/8/1946,12/22/2021,TRUE,Eric,Solomon,Male,(530) 555-0197,,eric@contoso.com,eric@fabrikam.com,Sales
+CID-429,Individual,Premium,1/24/1990,5/8/2019,TRUE,Rudolf,Spousta,Male,(812) 555-0192,,rudolf@contoso.com,rudolf@fabrikam.com,Sales
+CID-430,Individual,Premium,11/21/1985,6/12/2021,TRUE,Grigorijs,Sprogis,Female,(772) 555-0124,(818) 555-0294,grigorijs@contoso.com,,Sales
+CID-431,Individual,Premium,9/4/1985,9/12/2019,TRUE,Lenka,Stastna,Female,(218) 555-0153,,lenka@contoso.com,,Sales
+CID-432,Business,SMB,8/2/1971,3/30/2021,TRUE,Mia,Steele,Female,(551) 555-0141,,mia@contoso.com,,Sales
+CID-433,Individual,Standard,6/9/1953,11/27/2018,TRUE,Tyler,Stein,Male,(832) 555-0154,,tyler@contoso.com,,Sales
+CID-434,Individual,Standard,1/16/1923,11/29/2018,TRUE,Veronika,Stejskalova,Female,(267) 555-0188,,veronika@contoso.com,,Sales
+CID-435,Individual,VIP,11/14/1964,2/19/2018,TRUE,Benjamin,Stuart,Male,(308) 555-0105,,benjamin@contoso.com,,Sales
+CID-436,Business,Premier,5/16/1978,5/12/2020,TRUE,Marc,Surinyach,Male,(229) 555-0169,,marc@contoso.com,,Sales
+CID-437,Individual,Premium,12/1/1996,9/29/2018,TRUE,Miroslav,Svoboda,Male,(312) 555-0138,,miroslav@contoso.com,,Sales
+CID-438,Business,Premier,9/4/1990,8/3/2019,TRUE,Katerina,Sykorova,Female,(959) 555-0109,,katerina@contoso.com,,Sales
+CID-439,Business,Premier,8/1/1965,6/29/2021,TRUE,Bernadette,Sylvain,Female,(254) 555-0117,,bernadette@contoso.com,,Sales
+CID-440,Individual,Standard,8/12/1976,7/14/2019,TRUE,Isaac,Talbot,Male,(415) 555-0172,,isaac@contoso.com,,Sales
+CID-441,Individual,VIP,9/19/1932,11/27/2019,TRUE,Lisa,Taylor,Female,(217) 555-0103,,lisa@contoso.com,lisa@fabrikam.com,Sales
+CID-442,Government,Local,6/8/1970,1/18/2021,TRUE,Hulya,Tekin,Female,(718) 555-0139,(725) 555-0285,hulya@contoso.com,,Services
+CID-443,Individual,Standard,4/25/1940,3/22/2019,TRUE,Kiros,Teklay,Male,(210) 555-0108,,kiros@contoso.com,,Sales
+CID-444,Individual,Premium,7/7/1995,10/13/2020,TRUE,Yordanos,Tesfaye,Female,(614) 555-0103,,yordanos@contoso.com,,Sales
+CID-445,Business,SMB,6/12/1995,5/2/2021,TRUE,Cora,Thomas,Female,(769) 555-0115,,cora@contoso.com,,Sales
+CID-446,Government,Local,12/2/1977,3/8/2021,TRUE,Monica,Thompson,Female,(586) 555-0198,,monica@contoso.com,monica@fabrikam.com,Services
+CID-447,Government,State,7/9/1972,12/23/2018,TRUE,Piotr,Tomaszewski,Male,(352) 555-0104,(727) 555-0294,piotr@contoso.com,,Sales
+CID-448,Business,SMB,6/6/1976,10/1/2018,TRUE,Milena,Tomazic,Female,(934) 555-0178,,milena@contoso.com,,Sales
+CID-449,Individual,Premium,1/29/1981,11/8/2020,TRUE,Stanislav,Tomek,Male,(603) 555-0101,(860) 555-0252,stanislav@contoso.com,,Sales
+CID-450,Individual,Standard,11/8/1973,11/7/2018,TRUE,Rhodri,Tomos,Male,(425) 555-0112,(609) 555-0227,rhodri@contoso.com,rhodri@fabrikam.com,Sales
+CID-451,Business,SMB,1/25/1957,5/19/2020,TRUE,Rafel,Tornafoch,Male,(909) 555-0141,,rafel@contoso.com,,Sales
+CID-452,Individual,Standard,3/8/1950,6/3/2018,FALSE,Devon,Torres,Male,(484) 555-0173,,devon@contoso.com,,Sales
+CID-453,Individual,Standard,4/24/1951,9/12/2019,TRUE,Jose,Torrez,Male,(716) 555-0194,,jose@contoso.com,,Sales
+CID-454,Government,State,1/14/1961,6/1/2020,TRUE,Isabella,Toscano,Female,(475) 555-0107,,isabella@contoso.com,,Services
+CID-455,Individual,Standard,11/20/1991,3/7/2020,FALSE,Mattia,Trentini,Male,(347) 555-0162,,mattia@contoso.com,,Services
+CID-456,Individual,Premium,7/21/1973,5/5/2018,TRUE,Maximilian,Tropschuh,Male,(904) 555-0108,,maximilian@contoso.com,,Sales
+CID-457,Individual,Premium,11/22/1957,10/9/2021,TRUE,Kidane,Tsehaye,Male,(509) 555-0110,(225) 555-0243,kidane@contoso.com,,Sales
+CID-458,Individual,Premium,8/5/1937,7/20/2021,TRUE,Esra,Turan,Female,(443) 555-0141,(509) 555-0267,esra@contoso.com,,Sales
+CID-459,Individual,VIP,8/21/1982,9/11/2019,TRUE,Teodors,Turins,Female,(630) 555-0112,,teodors@contoso.com,teodors@fabrikam.com,Sales
+CID-460,Individual,Premium,7/9/1960,9/2/2018,TRUE,Matej,Turk,Male,(918) 555-0136,,matej@contoso.com,matej@fabrikam.com,Sales
+CID-461,Individual,Standard,3/11/1988,4/27/2020,TRUE,Ellis,Turner,Female,(385) 555-0172,(304) 555-0240,ellis@contoso.com,ellis@fabrikam.com,Sales
+CID-462,Individual,Standard,1/8/1953,3/26/2019,TRUE,Adalberto,Udinese,Male,(734) 555-0101,(212) 555-0290,adalberto@contoso.com,,Sales
+CID-463,Business,SMB,8/8/1987,7/18/2020,TRUE,Lodovico,Udinesi,Male,(860) 555-0155,,lodovico@contoso.com,,Sales
+CID-464,Individual,Premium,12/29/1954,6/24/2021,TRUE,Melis,Unal,Female,(330) 555-0122,(720) 555-0291,melis@contoso.com,,Sales
+CID-465,Government,Local,10/7/1954,6/4/2019,TRUE,Ivana,Ursic,Female,(469) 555-0139,,ivana@contoso.com,,Sales
+CID-466,Individual,Premium,8/25/1941,3/10/2021,TRUE,Adam,Vacha,Male,(609) 555-0128,,adam@contoso.com,,Sales
+CID-467,Individual,Premium,7/17/1976,12/28/2018,TRUE,Alena,Valentova,Female,(762) 555-0189,,alena@contoso.com,,Sales
+CID-468,Business,SMB,2/2/1981,1/8/2018,TRUE,Filips,Vanags,Female,(702) 555-0168,(602) 555-0268,filips@contoso.com,,Sales
+CID-469,Individual,Premium,4/18/1966,4/23/2019,TRUE,Blanka,Vejvodova,Female,(806) 555-0188,(334) 555-0294,blanka@contoso.com,,Sales
+CID-470,Government,Local,12/8/1952,10/7/2021,TRUE,Marjan,Vidmar,Male,(959) 555-0149,,marjan@contoso.com,,Services
+CID-471,Individual,Standard,12/26/1966,5/10/2019,TRUE,Laimonis,Viksna,Female,(934) 555-0154,,laimonis@contoso.com,,Sales
+CID-472,Government,State,7/2/1958,4/4/2018,TRUE,Alfons,Vitols,Female,(769) 555-0101,,alfons@contoso.com,alfons@fabrikam.com,Services
+CID-473,Individual,Premium,10/2/1958,4/12/2020,TRUE,Immanuel,Vogel,Male,(612) 555-0112,(623) 555-0212,immanuel@contoso.com,,Sales
+CID-474,Business,Premier,10/14/1986,12/21/2021,TRUE,Nicole,Wagner,Female,(516) 555-0191,,nicole@contoso.com,,Sales
+CID-475,Individual,Standard,9/7/1990,11/28/2020,TRUE,Sophie,Walter,Female,(478) 555-0169,,sophie@contoso.com,,Sales
+CID-476,Government,Local,6/27/1979,8/16/2019,TRUE,Oscar,Ward,Male,(725) 555-0157,,oscar@contoso.com,,Services
+CID-477,Individual,Premium,6/3/1970,7/6/2018,TRUE,Hannah,Weber,Female,(443) 555-0181,,hannah@contoso.com,,Sales
+CID-478,Individual,Premium,2/17/1959,1/24/2020,TRUE,Christoph,Werner,Male,(386) 555-0183,,christoph@contoso.com,,Sales
+CID-479,Government,State,3/11/1987,4/3/2018,TRUE,Artur,Wieczorek,Male,(719) 555-0168,,artur@contoso.com,,Sales
+CID-480,Individual,Standard,10/5/1954,3/27/2018,TRUE,Jennifer,Wilkins,Female,(775) 555-0158,,jennifer@contoso.com,,Sales
+CID-481,Individual,Premium,9/23/1950,2/13/2018,TRUE,Dylan,Williams,Male,(601) 555-0187,,dylan@contoso.com,,Sales
+CID-482,Individual,Standard,12/21/1961,5/17/2018,TRUE,Adrian,Wilske,Male,(217) 555-0188,,adrian@contoso.com,,Sales
+CID-483,Individual,Standard,4/3/1981,2/25/2019,TRUE,Olivia,Wilson,Female,(269) 555-0154,,olivia@contoso.com,,Sales
+CID-484,Individual,VIP,5/6/1990,3/15/2018,TRUE,Zofia,Wisniewska,Female,(920) 555-0148,,zofia@contoso.com,,Services
+CID-485,Individual,Standard,2/3/1955,3/25/2021,TRUE,Justyna,Wojciechowska,Female,(458) 555-0106,,justyna@contoso.com,,Sales
+CID-486,Government,Federal,9/23/1955,7/2/2021,TRUE,Abreham,Wolday,Male,(254) 555-0182,,abreham@contoso.com,abreham@fabrikam.com,Services
+CID-487,Individual,Standard,10/27/1951,6/20/2018,TRUE,Gebre Egziabher,Wolde Mariam,Male,(601) 555-0150,,gebre egziabher@contoso.com,gebre egziabher@fabrikam.com,Sales
+CID-488,Individual,Standard,12/1/1963,6/19/2018,TRUE,Klarissa,Wolf,Female,(364) 555-0181,(616) 555-0204,klarissa@contoso.com,klarissa@fabrikam.com,Sales
+CID-489,Government,State,8/28/1965,5/21/2020,TRUE,Lara,Wolfe,Female,(803) 555-0179,(224) 555-0246,lara@contoso.com,,Services
+CID-490,Business,Premier,5/24/1995,4/3/2021,TRUE,Gabriel,Woods,Male,(409) 555-0141,(425) 555-0218,gabriel@contoso.com,,Services
+CID-491,Individual,Premium,4/19/1952,4/1/2019,TRUE,Blazej,Wozniak,Male,(929) 555-0162,,blazej@contoso.com,,Sales
+CID-492,Individual,Premium,12/3/1981,8/1/2020,TRUE,Lois,Wyn,Female,(661) 555-0176,,lois@contoso.com,,Sales
+CID-493,Individual,Premium,11/30/1968,2/29/2020,TRUE,Agnieszka,Wysocka,Female,(208) 555-0126,(936) 555-0298,agnieszka@contoso.com,,Sales
+CID-494,Individual,Premium,6/5/1950,9/5/2019,TRUE,Jakub,Wysocki,Male,(212) 555-0133,(612) 555-0254,jakub@contoso.com,,Sales
+CID-495,Individual,Premium,4/24/1951,3/24/2021,TRUE,Yigit,Yalcin,Male,(270) 555-0124,(660) 555-0297,yigit@contoso.com,,Sales
+CID-496,Individual,Standard,4/17/1945,6/7/2020,TRUE,Kerem,Yavuz,Male,(207) 555-0123,,kerem@contoso.com,,Sales
+CID-497,Individual,Premium,8/24/1994,12/15/2018,TRUE,Mehmet,Yildirim,Male,(781) 555-0105,,mehmet@contoso.com,,Sales
+CID-498,Individual,Standard,4/26/1988,4/11/2021,TRUE,Elif,Yildiz,Female,(954) 555-0124,,elif@contoso.com,,Sales
+CID-499,Government,Federal,11/10/1956,1/10/2018,TRUE,Ali,Yilmaz,Male,(662) 555-0123,,ali@contoso.com,,Services
+CID-500,Government,Federal,11/29/1993,12/27/2021,TRUE,Miha,Zagar,Male,(248) 555-0197,,miha@contoso.com,,Services
+CID-501,Individual,Standard,10/5/1969,7/12/2021,TRUE,Milos,Zahradnicek,Male,(952) 555-0102,,milos@contoso.com,milos@fabrikam.com,Services
+CID-502,Individual,Premium,10/28/1962,6/24/2021,TRUE,Mateja,Zajc,Female,(386) 555-0137,(931) 555-0282,mateja@contoso.com,mateja@fabrikam.com,Sales
+CID-503,Individual,VIP,6/4/1976,10/29/2019,TRUE,Jakub,Zawadzki,Male,(716) 555-0177,,jakub@contoso.com,jakub@fabrikam.com,Sales
+CID-504,Business,SMB,1/29/1937,6/30/2019,TRUE,Antonin,Zelinka,Male,(419) 555-0147,,antonin@contoso.com,,Sales
+CID-505,Individual,Premium,4/17/1952,5/9/2018,TRUE,Aira,Zeltina,Male,(229) 555-0153,,aira@contoso.com,,Sales
+CID-506,Individual,VIP,6/4/1951,8/24/2019,TRUE,Irbe,Ziemele,Female,(708) 555-0193,,irbe@contoso.com,,Services
+CID-507,Government,Local,1/13/1937,8/28/2019,TRUE,Mia,Zimmermann,Female,(702) 555-0119,,mia@contoso.com,mia@fabrikam.com,Services
+CID-508,Business,Premier,5/27/1977,11/23/2018,TRUE,Ilga,Zirne,Male,(503) 555-0195,(907) 555-0262,ilga@contoso.com,,Sales
+CID-509,Government,Local,10/2/1996,9/6/2020,TRUE,Sonja,Zorko,Female,(775) 555-0158,,sonja@contoso.com,,Services
+CID-510,Business,Partner,10/17/1948,2/8/2019,TRUE,Luka,Zupan,Male,(484) 555-0100,,luka@contoso.com,,Sales
+CID-511,Individual,VIP,5/12/1955,9/21/2019,TRUE,Jozica,Zupanc,Female,(617) 555-0162,(860) 555-0270,jozica@contoso.com,,Sales
+CID-512,Individual,VIP,3/1/1995,10/14/2021,TRUE,Jozef,Zupancic,Male,(737) 555-0155,,jozef@contoso.com,,Sales
+CID-513,Government,Local,3/13/1975,12/19/2019,TRUE,Alida,Zvirbule,Male,(727) 555-0134,,alida@contoso.com,,Services

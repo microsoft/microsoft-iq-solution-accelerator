@@ -1,0 +1,13 @@
+ProductCategoryID,ProductLineID,ProductLineName,CategoryName,CategoryDescription,IsActive,CreatedBy,CreatedDate
+201,PL_20,Kitchen,Coffee Makers,Coffee Makers for home and business kitchens.,TRUE,system,1/1/2018
+202,PL_20,Kitchen,Cutlery,Cutlery for home and business kitchens.,TRUE,system,1/1/2018
+203,PL_20,Kitchen,Cups & Mugs,Cups & Mugs for home and business kitchens.,TRUE,system,1/1/2018
+204,PL_20,Kitchen,Serving Dishes,Serving Dishes for home and business kitchens.,TRUE,system,1/1/2018
+205,PL_20,Kitchen,Ice Cream Dishes,Ice Cream Dishes for home and business kitchens.,TRUE,system,1/1/2018
+206,PL_20,Kitchen,Mixing Bowls,Mixing Bowls for home and business kitchens.,TRUE,system,1/1/2018
+207,PL_20,Kitchen,Bakeware,Bakeware for home and business kitchens.,TRUE,system,1/1/2018
+208,PL_20,Kitchen,Storage Containers,Storage Containers for home and business kitchens.,TRUE,system,1/1/2018
+209,PL_20,Kitchen,Cooking Utensils,Cooking Utensils for home and business kitchens.,TRUE,system,1/1/2018
+210,PL_20,Kitchen,Measuring Tools,Measuring Tools for home and business kitchens.,TRUE,system,1/1/2018
+211,PL_20,Kitchen,Small Appliances,Small Appliances for home and business kitchens.,TRUE,system,1/1/2018
+212,PL_20,Kitchen,Cutting Boards,Cutting Boards for home and business kitchens.,TRUE,system,1/1/2018

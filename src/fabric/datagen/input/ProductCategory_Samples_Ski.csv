@@ -1,0 +1,11 @@
+ProductCategoryID,ProductLineID,ProductLineName,CategoryName,CategoryDescription,IsActive,CreatedBy,CreatedDate
+301,PL_30,Ski,Alpine Skis,Alpine Skis for winter sports and cold weather activities.,TRUE,system,1/1/2018
+302,PL_30,Ski,Cross-Country Skis,Cross-Country Skis for winter sports and cold weather activities.,TRUE,system,1/1/2018
+303,PL_30,Ski,Ski Boots,Ski Boots for winter sports and cold weather activities.,TRUE,system,1/1/2018
+304,PL_30,Ski,Ski Poles,Ski Poles for winter sports and cold weather activities.,TRUE,system,1/1/2018
+305,PL_30,Ski,Ski Apparel,Ski Apparel for winter sports and cold weather activities.,TRUE,system,1/1/2018
+306,PL_30,Ski,Safety Equipment,Safety Equipment for winter sports and cold weather activities.,TRUE,system,1/1/2018
+307,PL_30,Ski,Ski Accessories,Ski Accessories for winter sports and cold weather activities.,TRUE,system,1/1/2018
+308,PL_30,Ski,Ski Maintenance,Ski Maintenance for winter sports and cold weather activities.,TRUE,system,1/1/2018
+309,PL_30,Ski,Snowboards & Equipment,Snowboards & Equipment for winter sports and cold weather activities.,TRUE,system,1/1/2018
+310,PL_30,Ski,Winter Footwear,Winter Footwear for winter sports and cold weather activities.,TRUE,system,1/1/2018
