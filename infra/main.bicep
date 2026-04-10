@@ -70,16 +70,6 @@ resource resourceGroupTags 'Microsoft.Resources/tags@2021-04-01' = {
   }
 }
 
-// var userAssignedIdentityResourceName = 'id-${solutionSuffix}'
-// module userAssignedIdentity 'br/public:avm/res/managed-identity/user-assigned-identity:0.4.1' = {
-//   name: take('avm.res.managed-identity.user-assigned-identity.${userAssignedIdentityResourceName}', 64)
-//   params: {
-//     name: userAssignedIdentityResourceName
-//     location: location
-//     enableTelemetry: enableTelemetry
-//   }
-// }
-
 var fabricCapacityResourceName = useExistingFabricCapacity ? existingFabricCapacityName : 'fc${solutionSuffix}'
 var fabricCapacityDefaultAdmins = deployer().?userPrincipalName == null
   ? [deployer().objectId]
