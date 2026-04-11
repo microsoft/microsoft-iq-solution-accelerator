@@ -10,8 +10,9 @@
   "title_agent_name": "TitleAgent",
   "search_index": "knowledge_index",
   "search_mode": "knowledge_base",
-  "knowledge_base_name": "danlcngcx5m4yb-kb",
-  "mcp_connection_name": "danlcngcx5m4yb-kb-mcp-connection",
-  "search_endpoint": "https://srch-danlcngcx5m4yb.search.windows.net",
-  "sql_mode": "none"
+  "knowledge_base_name": "daer4nzccsrpd3-kb",
+  "mcp_connection_name": "daer4nzccsrpd3-kb-mcp-connection",
+  "search_endpoint": "https://srch-daer4nzccsrpd3.search.windows.net",
+  "sql_mode": "none",
+  "knowledge_base_endpoint": "https://aisa-daer4nzccsrpd3.services.ai.azure.com/api/projects/aifp-daer4nzccsrpd3/knowledgeBase/daer4nzccsrpd3-kb"
 }

@@ -40,13 +40,15 @@ def load_azd_env():
     Returns True if azd env was found and loaded.
     """
     script_dir = Path(__file__).parent
-    azure_dir = script_dir.parent / ".azure"
+    azure_dir = script_dir.parent.parent.parent / ".azure"  # Go up three levels: scripts->foundry->src->project root
     
     # Get environment name from config.json or AZURE_ENV_NAME
     env_name = os.environ.get("AZURE_ENV_NAME", "")
     
-    if not env_name and (azure_dir / "config.json").exists():
-        with open(azure_dir / "config.json") as f:
+    config_file = azure_dir / "config.json"
+    
+    if not env_name and config_file.exists():
+        with open(config_file) as f:
             config = json.load(f)
             env_name = config.get("defaultEnvironment", "")
     
@@ -54,6 +56,7 @@ def load_azd_env():
         return False
     
     env_file = azure_dir / env_name / ".env"
+    
     if env_file.exists():
         load_dotenv(env_file, override=True)
         return True
@@ -69,7 +72,7 @@ def load_project_env():
     Returns True if .env was found and loaded.
     """
     script_dir = Path(__file__).parent
-    project_root = script_dir.parent
+    project_root = script_dir.parent.parent.parent  # Go up three levels to project root
     env_file = project_root / ".env"
     
     if env_file.exists():
@@ -103,18 +106,10 @@ def get_required_env(var_name, description=None):
 
 
 def get_data_folder():
-    """Get data folder path with proper validation."""
-    data_folder = os.getenv("DATA_FOLDER")
-    if not data_folder:
-        raise ValueError("DATA_FOLDER environment variable not set")
-    
-    # Convert to absolute path if relative
-    if not os.path.isabs(data_folder):
-        script_dir = Path(__file__).parent
-        project_root = script_dir.parent
-        data_folder = str(project_root / data_folder)
-    
-    return data_folder
+    """Get data folder path - always use src/foundry/data."""
+    script_dir = Path(__file__).parent
+    data_folder = script_dir.parent / "data"
+    return str(data_folder)
 
 
 def print_env_status():
@@ -125,7 +120,7 @@ def print_env_status():
     print(f"  AZURE_AI_AGENT_ENDPOINT: {os.getenv('AZURE_AI_AGENT_ENDPOINT', 'Not set')}")
     print(f"  AZURE_AI_SEARCH_ENDPOINT: {os.getenv('AZURE_AI_SEARCH_ENDPOINT', 'Not set')}")
     print(f"  AZURE_STORAGE_BLOB_ENDPOINT: {os.getenv('AZURE_STORAGE_BLOB_ENDPOINT', 'Not set')}")
-    print(f"  DATA_FOLDER: {os.getenv('DATA_FOLDER', 'Not set')}")
+    print(f"  DATA_FOLDER: {get_data_folder()} (fixed path)")
 
 
 if __name__ == "__main__":
