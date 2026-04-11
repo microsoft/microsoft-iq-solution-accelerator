@@ -1,8 +1,8 @@
 {
   "index_name": "knowledge_index",
-  "knowledge_base_name": "danlcngcx5m4yb-kb",
-  "knowledge_source_name": "danlcngcx5m4yb-ks",
-  "blob_container_name": "danlcngcx5m4yb-documents",
+  "knowledge_base_name": "daer4nzccsrpd3-kb",
+  "knowledge_source_name": "daer4nzccsrpd3-ks",
+  "blob_container_name": "daer4nzccsrpd3-documents",
   "document_count": 6,
   "pdf_files": [
     "delivery_operations.pdf",
@@ -10,9 +10,9 @@
     "supplier_management.pdf"
   ],
   "blob_urls": {
-    "delivery_operations.pdf": "https://stdanlcngcx5m4yb.blob.core.windows.net//danlcngcx5m4yb-documents/delivery_operations.pdf",
-    "inventory_logistics.pdf": "https://stdanlcngcx5m4yb.blob.core.windows.net//danlcngcx5m4yb-documents/inventory_logistics.pdf",
-    "supplier_management.pdf": "https://stdanlcngcx5m4yb.blob.core.windows.net//danlcngcx5m4yb-documents/supplier_management.pdf"
+    "delivery_operations.pdf": "https://stdaer4nzccsrpd3.blob.core.windows.net//daer4nzccsrpd3-documents/delivery_operations.pdf",
+    "inventory_logistics.pdf": "https://stdaer4nzccsrpd3.blob.core.windows.net//daer4nzccsrpd3-documents/inventory_logistics.pdf",
+    "supplier_management.pdf": "https://stdaer4nzccsrpd3.blob.core.windows.net//daer4nzccsrpd3-documents/supplier_management.pdf"
   },
-  "storage_endpoint": "https://stdanlcngcx5m4yb.blob.core.windows.net/"
+  "storage_endpoint": "https://stdaer4nzccsrpd3.blob.core.windows.net/"
 }
