@@ -217,14 +217,7 @@ def create_index(index_client):
         SearchField(name="page_url", type=SearchFieldDataType.String, filterable=True),
         # File size and metadata for citations
         SearchField(name="file_size", type=SearchFieldDataType.Int32, filterable=True),
-        SearchField(name="last_modified", type=SearchFieldDataType.DateTimeOffset, filterable=True),
-        SearchField(
-            name="embedding",
-            type=SearchFieldDataType.Collection(SearchFieldDataType.Single),
-            searchable=True,
-            vector_search_dimensions=dimensions,
-            vector_search_profile_name="default-profile"
-        ),
+        SearchField(name="last_modified", type=SearchFieldDataType.DateTimeOffset, filterable=True)
     ]
     
     # Integrated vectorizer for query-time embedding
@@ -360,10 +353,6 @@ def chunk_text_by_sentences(text, max_size=CHUNK_SIZE, overlap=CHUNK_OVERLAP):
 # Embedding Generation
 # ============================================================================
 
-def get_embedding(client, text):
-    """Generate embedding for text using OpenAI client."""
-    response = client.embeddings.create(input=[text], model=EMBEDDING_MODEL)
-    return response.data[0].embedding
 
 # ============================================================================
 # Main
@@ -423,9 +412,6 @@ def main():
                 # ID format: filename_pagenumber_chunknumber
                 doc_id = f"{pdf_path.stem}_p{page_num}_c{chunk_idx}"
                 
-                print(f"  Generating embedding for {doc_id}...", end=" ", flush=True)
-                embedding = get_embedding(openai_client, chunk)
-                print("[OK]")
                 
                 # Create page URL for direct access (blob storage + page fragment)
                 page_url = f"{blob_url}#page={page_num}" if blob_url else ""
@@ -440,8 +426,7 @@ def main():
                     "blob_url": blob_url,
                     "page_url": page_url,
                     "file_size": file_stats.st_size,
-                    "last_modified": datetime.fromtimestamp(file_stats.st_mtime).isoformat() + 'Z',
-                    "embedding": embedding
+                    "last_modified": datetime.fromtimestamp(file_stats.st_mtime).isoformat() + 'Z'
                 }
                 documents.append(doc)
     

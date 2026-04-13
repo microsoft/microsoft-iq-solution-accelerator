@@ -3,16 +3,32 @@
   "knowledge_base_name": "daer4nzccsrpd3-kb",
   "knowledge_source_name": "daer4nzccsrpd3-ks",
   "blob_container_name": "daer4nzccsrpd3-documents",
-  "document_count": 6,
+  "document_count": 32,
   "pdf_files": [
     "delivery_operations.pdf",
+    "delivery_operations_manual.pdf",
+    "environmental_safety_compliance_policy.pdf",
     "inventory_logistics.pdf",
-    "supplier_management.pdf"
+    "inventory_management_standards.pdf",
+    "quality_control_manual.pdf",
+    "supplier_management.pdf",
+    "supplier_onboarding_approval_process.pdf",
+    "supplier_performance_evaluation_framework.pdf",
+    "supplier_terms_and_conditions.pdf",
+    "supply_chain_risk_management.pdf"
   ],
   "blob_urls": {
     "delivery_operations.pdf": "https://stdaer4nzccsrpd3.blob.core.windows.net//daer4nzccsrpd3-documents/delivery_operations.pdf",
+    "delivery_operations_manual.pdf": "https://stdaer4nzccsrpd3.blob.core.windows.net//daer4nzccsrpd3-documents/delivery_operations_manual.pdf",
+    "environmental_safety_compliance_policy.pdf": "https://stdaer4nzccsrpd3.blob.core.windows.net//daer4nzccsrpd3-documents/environmental_safety_compliance_policy.pdf",
     "inventory_logistics.pdf": "https://stdaer4nzccsrpd3.blob.core.windows.net//daer4nzccsrpd3-documents/inventory_logistics.pdf",
-    "supplier_management.pdf": "https://stdaer4nzccsrpd3.blob.core.windows.net//daer4nzccsrpd3-documents/supplier_management.pdf"
+    "inventory_management_standards.pdf": "https://stdaer4nzccsrpd3.blob.core.windows.net//daer4nzccsrpd3-documents/inventory_management_standards.pdf",
+    "quality_control_manual.pdf": "https://stdaer4nzccsrpd3.blob.core.windows.net//daer4nzccsrpd3-documents/quality_control_manual.pdf",
+    "supplier_management.pdf": "https://stdaer4nzccsrpd3.blob.core.windows.net//daer4nzccsrpd3-documents/supplier_management.pdf",
+    "supplier_onboarding_approval_process.pdf": "https://stdaer4nzccsrpd3.blob.core.windows.net//daer4nzccsrpd3-documents/supplier_onboarding_approval_process.pdf",
+    "supplier_performance_evaluation_framework.pdf": "https://stdaer4nzccsrpd3.blob.core.windows.net//daer4nzccsrpd3-documents/supplier_performance_evaluation_framework.pdf",
+    "supplier_terms_and_conditions.pdf": "https://stdaer4nzccsrpd3.blob.core.windows.net//daer4nzccsrpd3-documents/supplier_terms_and_conditions.pdf",
+    "supply_chain_risk_management.pdf": "https://stdaer4nzccsrpd3.blob.core.windows.net//daer4nzccsrpd3-documents/supply_chain_risk_management.pdf"
   },
   "storage_endpoint": "https://stdaer4nzccsrpd3.blob.core.windows.net/"
 }
