@@ -1,4 +1,4 @@
-metadata name = 'Unified data foundation with Fabric solution accelerator'
+metadata name = 'Microsoft IQ solution accelerator'
 metadata description = '''CSA CTO Gold Standard Solution Accelerator for Unified Data Foundation with Fabric.
 '''
 @minLength(1)
@@ -69,16 +69,6 @@ resource resourceGroupTags 'Microsoft.Resources/tags@2021-04-01' = {
     )
   }
 }
-
-// var userAssignedIdentityResourceName = 'id-${solutionSuffix}'
-// module userAssignedIdentity 'br/public:avm/res/managed-identity/user-assigned-identity:0.4.1' = {
-//   name: take('avm.res.managed-identity.user-assigned-identity.${userAssignedIdentityResourceName}', 64)
-//   params: {
-//     name: userAssignedIdentityResourceName
-//     location: location
-//     enableTelemetry: enableTelemetry
-//   }
-// }
 
 var fabricCapacityResourceName = useExistingFabricCapacity ? existingFabricCapacityName : 'fc${solutionSuffix}'
 var fabricCapacityDefaultAdmins = deployer().?userPrincipalName == null

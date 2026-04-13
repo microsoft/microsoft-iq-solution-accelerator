@@ -2,7 +2,7 @@
 """
 Common Utility Functions
 
-This module provides common utility functions used across the Unified Data Foundation deployment scripts.
+This module provides common utility functions used across the Microsoft IQ deployment scripts.
 """
 
 import base64

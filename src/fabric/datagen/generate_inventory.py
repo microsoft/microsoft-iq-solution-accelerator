@@ -61,7 +61,11 @@ class InventoryDataGenerator:
         # Process warehouse configuration for easy access
         self.active_warehouses = [wh for wh in self.warehouses_config['warehouses'] if wh.get('Status', 'Active') == 'Active']
         self.warehouse_locations = [wh['WarehouseID'] for wh in self.active_warehouses]
-        self.warehouse_weights = [wh['Capacity']['Priority'] for wh in self.active_warehouses]
+        
+        # Calculate weights from MaxCapacity instead of Priority 
+        max_capacities = [wh['Capacity']['MaxCapacity'] for wh in self.active_warehouses]
+        total_capacity = sum(max_capacities)
+        self.warehouse_weights = [cap / total_capacity for cap in max_capacities]
         
         print(f"✅ Inventory generator initialized")
         print(f"📁 Input: {self.input_path}")
@@ -77,12 +81,12 @@ class InventoryDataGenerator:
             print("⚠️  warehouses.json not found, using default warehouse configuration")
             return {
                 'warehouses': [
-                    {'WarehouseID': 'Main', 'DisplayName': 'Kansas City, MO', 
-                     'Capacity': {'Priority': 0.7}, 'DeliveryName': 'Main Warehouse'},
-                    {'WarehouseID': 'Backup', 'DisplayName': 'Memphis, TN',
-                     'Capacity': {'Priority': 0.2}, 'DeliveryName': 'Backup Warehouse'},
-                    {'WarehouseID': 'Regional', 'DisplayName': 'Atlanta, GA',
-                     'Capacity': {'Priority': 0.1}, 'DeliveryName': 'Regional DC'}
+                    {'WarehouseID': 'WH_100', 'DisplayName': 'Kansas City, MO', 
+                     'Capacity': {'MaxCapacity': 100000}, 'ShortName': 'Main Warehouse'},
+                    {'WarehouseID': 'WH_200', 'DisplayName': 'Memphis, TN',
+                     'Capacity': {'MaxCapacity': 50000}, 'ShortName': 'Backup Warehouse'},
+                    {'WarehouseID': 'WH_500', 'DisplayName': 'Atlanta, GA',
+                     'Capacity': {'MaxCapacity': 30000}, 'ShortName': 'Regional DC'}
                 ]
             }
             
@@ -92,19 +96,14 @@ class InventoryDataGenerator:
         print(f"📋 Loaded {len(config['warehouses'])} warehouses from config")
         return config
         
-    def _get_product_category(self, product):
-        """Get product category from BrandName or other fields."""
-        # Try to determine category from BrandName first
-        brand_name = product.get('BrandName', '')
-        if 'Camping' in brand_name:
-            return 'Camping'
-        elif 'Kitchen' in brand_name:
-            return 'Kitchen'
-        elif 'Ski' in brand_name:
-            return 'Ski'
-        else:
-            # Fallback to explicit Category field
-            return product.get('Category', product.get('ProductCategory', 'General'))
+    def _map_warehouse_id(self, warehouse_location):
+        """Map legacy warehouse names to proper WarehouseID format."""
+        warehouse_mapping = {
+            'Main': 'WH_100',
+            'Backup': 'WH_200', 
+            'Regional': 'WH_500'
+        }
+        return warehouse_mapping.get(warehouse_location, warehouse_location)
         
     def _load_sales_data(self):
         """Load sales data from all categories to analyze demand patterns."""
@@ -112,7 +111,7 @@ class InventoryDataGenerator:
         
         # Load sales data from each category
         for category in ['camping', 'kitchen', 'ski']:
-            sales_path = self.output_path / category / "sales"
+            sales_path = self.output_path / "sales" / category
             if sales_path.exists():
                 # Load OrderLine files (have ProductId and Quantity)
                 orderline_files = list(sales_path.glob("*OrderLine*.csv"))
@@ -184,22 +183,24 @@ class InventoryDataGenerator:
             return pd.DataFrame()
             
     def _load_suppliers_data(self):
-        """Load generated supplier data."""
-        suppliers_path = self.output_path / "supplychain"
-        
+        """Load supplier data from input files."""
         suppliers_data = {}
         
-        # Load suppliers
-        suppliers_file = suppliers_path / "Suppliers.csv"
+        # Load suppliers from input directory
+        suppliers_file = self.input_path / "Suppliers_Sample.csv"
         if suppliers_file.exists():
             suppliers_data['suppliers'] = pd.read_csv(suppliers_file)
             print(f"🏭 Loaded {len(suppliers_data['suppliers'])} suppliers")
+        else:
+            print("⚠️  Suppliers_Sample.csv not found in input directory")
             
-        # Load product-supplier mappings
-        product_suppliers_file = suppliers_path / "ProductSuppliers.csv"
+        # Load product-supplier mappings from input directory
+        product_suppliers_file = self.input_path / "ProductSuppliers_Sample.csv"
         if product_suppliers_file.exists():
             suppliers_data['product_suppliers'] = pd.read_csv(product_suppliers_file)
             print(f"🔗 Loaded {len(suppliers_data['product_suppliers'])} product-supplier mappings")
+        else:
+            print("⚠️  ProductSuppliers_Sample.csv not found in input directory")
             
         return suppliers_data
         
@@ -386,9 +387,8 @@ class InventoryDataGenerator:
         
         # Process each product
         for _, product in self.products_data.iterrows():
-            product_id = product.get('ProductID', inventory_id * 100)
-            product_name = product.get('ProductName', product.get('Name', f'Product {product_id}'))
-            category = self._get_product_category(product)
+            product_id = product['ProductID']
+            product_name = product['ProductName']
             
             # Get velocity data for this product or use defaults
             if product_id in velocity_data:
@@ -434,7 +434,7 @@ class InventoryDataGenerator:
                     
             if avg_cost == 0.0:
                 # Estimate from retail price if available
-                retail_price = product.get('Price', random.uniform(25, 500))
+                retail_price = product['ListPrice']
                 avg_cost = float(retail_price) * random.uniform(0.65, 0.75)
                 
             # Create record for main warehouse (most products)
@@ -444,8 +444,7 @@ class InventoryDataGenerator:
                 'InventoryID': inventory_id,
                 'ProductID': product_id,
                 'ProductName': product_name,
-                'ProductCategory': category,
-                'WarehouseLocation': main_warehouse,
+                'WarehouseID': self._map_warehouse_id(main_warehouse),
                 'CurrentStock': current_stock,
                 'ReservedStock': reserved_stock,
                 'AvailableStock': available_stock,
@@ -469,7 +468,7 @@ class InventoryDataGenerator:
                 backup_record = record.copy()
                 backup_record.update({
                     'InventoryID': inventory_id,
-                    'WarehouseLocation': 'Backup',
+                    'WarehouseID': self._map_warehouse_id('Backup'),
                     'CurrentStock': backup_stock,
                     'ReservedStock': 0,
                     'AvailableStock': backup_stock,
@@ -548,10 +547,10 @@ class InventoryDataGenerator:
                 'ActualDeliveryDate': actual_delivery.strftime('%Y-%m-%d') if actual_delivery else None,
                 'Status': status,
                 'TotalOrderValue': 0.0,  # Will calculate from line items
-                'DeliveryLocation': random.choice([wh['DeliveryName'] for wh in self.active_warehouses]),
+                'DeliveryLocation': random.choice([wh['ShortName'] for wh in self.active_warehouses]),
                 'OrderedBy': random.choice(['buyer1', 'buyer2', 'supply_manager']),
                 'Priority': priority,
-                'Notes': f"Order for {supplier['ProductCategory']} products" if supplier['ProductCategory'] != 'Multi' else "Multi-category order",
+                'Notes': f"Order for {supplier.get('CategoryName', 'Unknown')} products" if supplier.get('CategoryName', 'Multi') != 'Multi' else "Multi-category order",
                 'CreatedBy': 'system',
                 'CreatedDate': order_date.strftime('%Y-%m-%d')
             }
@@ -646,7 +645,6 @@ class InventoryDataGenerator:
                     'PurchaseOrderNumber': po_number,
                     'ProductID': product['ProductID'],
                     'ProductName': product['ProductName'],
-                    'ProductCategory': product['ProductCategory'],
                     'QuantityOrdered': quantity_ordered,
                     'QuantityReceived': quantity_received,
                     'UnitCost': unit_cost,
@@ -768,14 +766,24 @@ class InventoryDataGenerator:
             stock_before = random.randint(max(0, current_stock - 100), current_stock + 100)
             stock_after = stock_before + quantity
             
-            total_value = quantity * unit_cost
+            # Ensure stock never goes negative
+            if stock_after < 0:
+                stock_after = 0
+                # Adjust quantity to match the stock change
+                quantity = stock_after - stock_before
+            
+            # Calculate total value as absolute monetary value
+            total_value = abs(quantity * unit_cost)
+            
+            # Look up product information
+            product = self.products_data[self.products_data['ProductID'] == inventory_record['ProductID']].iloc[0] if not self.products_data.empty else None
+            product_name = product['ProductName'] if product is not None else f"Product {inventory_record['ProductID']}"
             
             record = {
                 'TransactionID': transaction_id,
                 'ProductID': inventory_record['ProductID'],
-                'ProductName': inventory_record['ProductName'],
-                'ProductCategory': inventory_record['ProductCategory'],
-                'WarehouseLocation': inventory_record['WarehouseLocation'],
+                'ProductName': product_name,
+                'WarehouseID': inventory_record['WarehouseID'],
                 'TransactionType': transaction_type,
                 'TransactionDate': transaction_date.strftime('%Y-%m-%d'),
                 'Quantity': quantity,
@@ -785,8 +793,8 @@ class InventoryDataGenerator:
                 'ReasonCode': reason_code,
                 'StockBefore': stock_before,
                 'StockAfter': stock_after,
-                'ProcessedBy': random.choice(['warehouse1', 'warehouse2', 'system']),
-                'Notes': f"Transaction processed for {inventory_record['WarehouseLocation']} location",
+                'ProcessedBy': 'System',
+                'Notes': f"Transaction processed for {inventory_record['WarehouseID']} location",
                 'CreatedBy': 'system',
                 'CreatedDate': transaction_date.strftime('%Y-%m-%d')
             }
@@ -839,9 +847,8 @@ class InventoryDataGenerator:
         if isinstance(self.products_data, pd.DataFrame) and not self.products_data.empty:
             for _, product in self.products_data.iterrows():
                 all_products.append({
-                    'ProductID': product.get('ProductID', product.get('Id', forecast_id * 100)),
-                    'ProductName': product.get('ProductName', product.get('Name', f'Product {forecast_id}')),
-                    'ProductCategory': self._get_product_category(product)
+                    'ProductID': product['ProductID'],
+                    'ProductName': product['ProductName']
                 })
                 
         if not all_products:
@@ -865,17 +872,8 @@ class InventoryDataGenerator:
                 confidence = random.uniform(60, 80)   # Lower confidence for new products
             
             # Seasonal patterns by category
-            seasonal_multipliers = {
-                'Camping': [0.7, 0.8, 1.2, 1.4, 1.5, 1.3, 1.2, 1.1, 1.0, 0.9, 0.8, 0.7],  # Peak spring/summer
-                'Kitchen': [1.0, 0.9, 1.0, 1.1, 1.0, 0.9, 0.8, 0.9, 1.0, 1.2, 1.4, 1.6],  # Peak holidays
-                'Ski': [1.6, 1.5, 1.3, 0.8, 0.6, 0.5, 0.4, 0.5, 0.7, 1.0, 1.2, 1.4],     # Peak winter
-                'General': [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]  # Flat demand
-            }
+            # Simplified demand patterns - no seasonal complexity
             
-            category = product['ProductCategory']
-            if category not in seasonal_multipliers:
-                category = 'General'
-                
             # Generate 3 months of FUTURE forecasts (beyond historical data)
             # Use historical period (start_date to end_date) for analysis
             # Generate forecasts starting AFTER the historical period
@@ -894,10 +892,6 @@ class InventoryDataGenerator:
                     forecast_year += 1
                 
                 forecast_date = datetime(forecast_year, forecast_month, 1)
-                
-                # Get seasonal multiplier for this month
-                month_index = (forecast_date.month - 1) % 12
-                seasonal_mult = seasonal_multipliers[category][month_index]
                 
                 # Calculate trend based on actual recent sales performance
                 sales_trend = self._calculate_recent_sales_trend(product_id)
@@ -926,7 +920,6 @@ class InventoryDataGenerator:
                     'ForecastID': forecast_id,
                     'ProductID': product_id,
                     'ProductName': product['ProductName'],
-                    'ProductCategory': product['ProductCategory'],
                     'ForecastDate': forecast_date,
                     'ForecastPeriod': 'Monthly',
                     'PredictedDemand': predicted_demand,
@@ -957,7 +950,6 @@ class InventoryDataGenerator:
                             'ForecastID': forecast_id,
                             'ProductID': product_id,
                             'ProductName': product['ProductName'],
-                            'ProductCategory': product['ProductCategory'],
                             'ForecastDate': week_date,
                             'ForecastPeriod': 'Weekly',
                             'PredictedDemand': weekly_demand,

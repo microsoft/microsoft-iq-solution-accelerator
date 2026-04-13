@@ -1,8 +1,8 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
 
-name: microsoft-iq
+name: microsoft-iq-solution-accelerator
 metadata:
-  template: microsoft-iq@1.0
+  template: microsoft-iq-solution-accelerator@1.0
 
 requiredVersions:
   azd: ">=1.23.11"
@@ -10,9 +10,6 @@ requiredVersions:
 infra:
   provider: bicep
   path: infra
-  parameters:
-    solutionName: ${AZURE_ENV_NAME}
-    location: ${AZURE_LOCATION}
 
 hooks:
   postprovision:
