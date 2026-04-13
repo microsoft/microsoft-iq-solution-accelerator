@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-UDF Workspace Administrators Setup Module
+Microsoft IQ Workspace Administrators Setup Module
 
 This module provides functionality to add administrators to a Fabric workspace
-for the Unified Data Foundation solution.
+for the Microsoft IQ solution.
 """
 
 import logging

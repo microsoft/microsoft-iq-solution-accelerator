@@ -1,0 +1,8 @@
+SupplierID,SupplierName,SupplierType,Status,ProductLineName,PrimarySupplierID,LeadTimeDays,ReliabilityScore,Location,ContactEmail,CreatedBy,CreatedDate
+1,Contoso Ltd,Primary,Active,Camping,,10,95,"Denver, CO, USA",orders@contoso.com,system,1/2/2018
+2,Proseware Inc,Primary,Active,Kitchen,,10,93,"Portland, OR, USA",orders@proseware.com,system,1/2/2018
+3,Alpine Ski House,Primary,Active,Ski,,12,96,"Aspen, CO, USA",orders@alpineskihouse.com,system,1/2/2018
+4,Worldwide Importers,Secondary,Active,Camping,1,21,85,"Vancouver, BC, Canada",wholesale@wideworldimporters.com,system,1/2/2018
+5,Fabrikam,Secondary,Active,Ski,3,14,90,"Salt Lake City, UT, USA",supply@fabrikam.com,system,1/2/2018
+6,Worldwide Importers,Secondary,Active,Kitchen,2,21,85,"Vancouver, BC, Canada",wholesale@wideworldimporters.com,system,1/2/2018
+7,Worldwide Importers,Secondary,Active,Ski,3,21,85,"Vancouver, BC, Canada",wholesale@wideworldimporters.com,system,1/2/2018

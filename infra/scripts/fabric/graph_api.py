@@ -3,7 +3,7 @@ Microsoft Graph API Client Library
 
 This module provides a pure Python client for interacting with Microsoft Graph REST APIs.
 It focuses on user and service principal lookups to support identity management operations
-in the Unified Data Foundation with Fabric (UDFWF) project.
+in the Microsoft IQ solution.
 
 Core Features:
 - Authentication management with Azure CLI credentials
@@ -14,7 +14,7 @@ Core Features:
 Dependencies:
     pip install requests azure-identity
 
-Author: Generated for Unified Data Foundation with Fabric (UDFWF) project
+Author: Microsoft IQ Solution Accelerator
 """
 
 import json
