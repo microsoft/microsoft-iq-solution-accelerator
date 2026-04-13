@@ -1,5 +1,12 @@
 # Fabric notebook source
 
+# METADATA ********************
+
+# META {
+# META   "kernel_info": {
+# META     "name": "synapse_pyspark"
+# META   }
+# META }
 
 # MARKDOWN ********************
 
@@ -48,6 +55,13 @@ pdf['AvgOrderValue'] = pdf['AvgOrderValue'].apply(lambda x: f"{x:,.2f}")
 
 print(pdf)
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # MARKDOWN ********************
 
 # ## Get Data Summary
@@ -81,6 +95,13 @@ for schema in sorted(os.listdir(root)):
 summary_df = pd.DataFrame(results, columns=["Schema", "Table", "Row Count"])
 display(summary_df)
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # MARKDOWN ********************
 
 # List Schema and Tables
@@ -102,3 +123,10 @@ for schema in sorted(os.listdir(root)):
         if table in EXCLUDE_ENTRIES or any(table.endswith(ext) for ext in EXCLUDE_EXTENSIONS):
             continue
         print(f"  - {table}")
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }

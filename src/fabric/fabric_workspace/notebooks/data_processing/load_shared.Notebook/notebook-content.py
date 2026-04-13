@@ -1,5 +1,12 @@
 # Fabric notebook source
 
+# METADATA ********************
+
+# META {
+# META   "kernel_info": {
+# META     "name": "synapse_pyspark"
+# META   }
+# META }
 
 # MARKDOWN ********************
 
@@ -31,6 +38,13 @@ SCHEMA_NAME = "shared"
 # Ensure schema exists
 spark.sql(f"CREATE DATABASE IF NOT EXISTS {SCHEMA_NAME}")
 print(f"✅Loading '{SCHEMA_NAME}' schema")
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
 
 # CELL ********************
 
@@ -104,9 +118,23 @@ dimdate_count = len(rows)
 
 print(f"DimDate populated: {dimdate_count:,} rows ({start_date.date()} to {end_date.date()})")
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 # Summary
 total_records = dimdate_count
 print(f"📊Shared schema: 1 table, {total_records:,} records loaded")
 print(f"   - DimDate: {dimdate_count:,} records (includes 6 months future for forecasting)")
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }

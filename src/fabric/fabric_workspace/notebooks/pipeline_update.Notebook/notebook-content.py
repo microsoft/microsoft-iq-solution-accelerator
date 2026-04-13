@@ -1,5 +1,12 @@
 # Fabric notebook source
 
+# METADATA ********************
+
+# META {
+# META   "kernel_info": {
+# META     "name": "synapse_pyspark"
+# META   }
+# META }
 
 # MARKDOWN ********************
 
@@ -22,6 +29,13 @@
 
 #%run truncate_all_tables
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # MARKDOWN ********************
 
 # ## Uncomment only if you also want to drop all scehame and tables
@@ -29,6 +43,13 @@
 # CELL ********************
 
 #%run drop_all_tables
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
 
 # MARKDOWN ********************
 
@@ -38,6 +59,13 @@
 
 #%run create_scheme_tables
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # MARKDOWN ********************
 
 # ### Load Data to all tables
@@ -45,3 +73,10 @@
 # CELL ********************
 
 #%run load_data_all_tables
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
