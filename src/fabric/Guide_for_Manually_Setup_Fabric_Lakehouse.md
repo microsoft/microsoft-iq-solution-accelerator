@@ -18,7 +18,7 @@ This step has been automated. This document provides a way that user can manuall
 
 ## Step 2. Upload the `data` subfolder to the lakehouse
 
-1. From this repo, locate `fabric/infra/data`.
+1. From this repo, locate `infra/fabric/data`.
 2. In Fabric Lakehouse, go to `Files`.
 3. Upload the full `data` folder (not individual files one by one).
 
@@ -50,6 +50,8 @@ After upload, your lakehouse path should look like:
    `pipeline_update.ipynb`
 
    `reset_or_debug.ipynb`
+
+   `sample_data_query.ipynb`
 
 3. Then upload notebook files from subfolders as well:
    - `data_management`
