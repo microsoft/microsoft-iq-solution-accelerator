@@ -1,5 +1,12 @@
 # Fabric notebook source
 
+# METADATA ********************
+
+# META {
+# META   "kernel_info": {
+# META     "name": "synapse_pyspark"
+# META   }
+# META }
 
 # MARKDOWN ********************
 
@@ -43,6 +50,13 @@
 # SCHEMA_NAME = "shared"
 # TABLES = ["DimDate"]
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # MARKDOWN ********************
 
 # ## Truncate Tables
@@ -56,6 +70,13 @@ for table in TABLES:
     except Exception as e:
         print(f"⚠️ Skipped {table} (truncate not supported)")
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # MARKDOWN ********************
 
 # ## Load Data - uncomment and swap the code below if you want to run a different model
@@ -63,6 +84,13 @@ for table in TABLES:
 # CELL ********************
 
 # %run load_customer
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
 
 # MARKDOWN ********************
 
@@ -80,6 +108,13 @@ for table in TABLES:
     except Exception as e:
         print(f"⚠️ Skipped {table} (drop failed: {str(e)[:50]}...)")
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # MARKDOWN ********************
 
 # ## Recreate Tables only if needed - and swap the code below with your own model
@@ -87,3 +122,10 @@ for table in TABLES:
 # CELL ********************
 
 # %run model_customer
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
