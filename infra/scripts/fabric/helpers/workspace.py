@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-UDF Workspace Setup Module
+Microsoft IQ Workspace Setup Module
 
 This module provides workspace creation and capacity assignment functionality 
-for the Unified Data Foundation solution.
+for the Microsoft IQ solution.
 """
 
 import logging
