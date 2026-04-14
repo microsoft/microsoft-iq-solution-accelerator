@@ -27,16 +27,16 @@ find_replace:
   # (default_lakehouse and lakehouse id fields)
   - find_value: "3da39fae-d464-ba66-44f8-a2fa1650c6ba"
     replace_value:
-      _ALL_: "$items.Lakehouse.fabriciq_team_lake.$id"
+      _ALL_: "$items.Lakehouse.miqsdata.$id"
     item_type: "Notebook"
 
   # ==========================================================================
   # DATA AGENT — Lakehouse Reference Replacement
   # ==========================================================================
 
-  # The Data Agent datasource.json stores the fabriciq_team_lake lakehouse reference
+  # The Data Agent datasource.json stores the miqsdata lakehouse reference
   # as artifactId. This must resolve to the deployed lakehouse item ID.
   - find_value: "3da39fae-d464-ba66-44f8-a2fa1650c6ba"
     replace_value:
-      _ALL_: "$items.Lakehouse.fabriciq_team_lake.$id"
+      _ALL_: "$items.Lakehouse.miqsdata.$id"
     item_type: "DataAgent"
