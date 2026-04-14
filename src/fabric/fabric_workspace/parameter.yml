@@ -25,7 +25,7 @@ find_replace:
 
   # Lakehouse GUID used in pipeline_main.Notebook/notebook-content.py
   # (default_lakehouse and lakehouse id fields)
-  - find_value: "3da39fae-d464-ba66-44f8-a2fa1650c6ba"
+  - find_value: "e6cd0b76-50e8-498f-9cd0-89251fae70c2"
     replace_value:
       _ALL_: "$items.Lakehouse.miqsdata.$id"
     item_type: "Notebook"
@@ -36,7 +36,7 @@ find_replace:
 
   # The Data Agent datasource.json stores the miqsdata lakehouse reference
   # as artifactId. This must resolve to the deployed lakehouse item ID.
-  - find_value: "3da39fae-d464-ba66-44f8-a2fa1650c6ba"
+  - find_value: "e6cd0b76-50e8-498f-9cd0-89251fae70c2"
     replace_value:
       _ALL_: "$items.Lakehouse.miqsdata.$id"
     item_type: "DataAgent"
