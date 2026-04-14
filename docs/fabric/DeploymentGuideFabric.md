@@ -94,7 +94,7 @@ This phase is orchestrated by [`install_fabric_solution.py`](../infra/scripts/fa
 2. **Workspace Administrators**: Adds administrators to the workspace (using Graph API resolution with fallback)
 3. **Upload Installer Notebook**: Uploads [`fabric_solution_installer.ipynb`](../infra/deploy/fabric_solution_installer.ipynb) to the workspace (creates or updates if already exists)
 4. **Run Installer Notebook**: Executes [`fabric_solution_installer.ipynb`](../infra/deploy/fabric_solution_installer.ipynb) end-to-end inside Fabric. The notebook uses the [`fabric-launcher`](https://github.com/microsoft/fabric-launcher) library to pull the solution directly from GitHub and deploy all Fabric items leveraging [Fabric's Git integration and CI/CD capabilities](https://learn.microsoft.com/fabric/cicd/git-integration/intro-to-git-integration). The Fabric items (lakehouses, notebooks, reports, semantic models, data agent) are defined in the [`fabric_workspace/`](../fabric_workspace/) folder at the repository root, which is structured to match the [Fabric workspace Git format](https://learn.microsoft.com/fabric/cicd/git-integration/git-get-started). The notebook then runs the following post-deployment tasks:
-   - Run `main_pipeline` notebook: creates lakehouse tables from ingested CSV data
+   - Run `pipeline_main` notebook: creates lakehouse tables from ingested CSV data
    - Deploy `ontology_supplychain` ontology item with logical ID resolution and eventhouse URI mapping
    - Move installer notebook to the notebooks folder
 
@@ -343,9 +343,9 @@ your-workspace/
     ├── data_processing/      # Domain data loaders (customer, finance, sales, …)
     ├── query_samples/        # Ad-hoc query notebooks (Python & SQL)
     ├── schema/               # Schema model definitions per domain
-    ├── main_pipeline/        # Orchestration entry-point
-    ├── update_pipeline/      # Pipeline update utility
-    └── truncate_or_drop_table_by_name/
+    ├── pipeline_main/        # Orchestration entry-point
+    ├── pipeline_update/      # Pipeline update utility
+    └── reset_or_debug/       # Debug and reset utility
 ```
 
 ![Screenshot of resulting Fabric workspace folder structure](./images/deployment/fabric/fabric_workspace_folders.png)
@@ -387,7 +387,7 @@ Sample data is uploaded into the lakehouse during deployment to enable immediate
 | **data_processing/** | 6 | Domain data loaders: `load_customer`, `load_finance`, `load_inventory`, `load_product`, `load_sales`, `load_supplychain` |
 | **query_samples/** | 4 | Ad-hoc queries: `get_data_summary`, `list_schema_tables`, `order_counts`, `sql_order_counts` (SQL) |
 | **schema/** | 6 | Schema model definitions: `model_customer`, `model_finance`, `model_inventory`, `model_product`, `model_sales`, `model_supplychain` |
-| *(root)* | 3 | Pipeline orchestration: `main_pipeline`, `update_pipeline`, `truncate_or_drop_table_by_name` |
+| *(root)* | 4 | Pipeline orchestration: `pipeline_main`, `pipeline_update`, `reset_or_debug`, `sampe_data_query` |
 
 ![Screenshot of resulting Fabric notebooks](./images/deployment/fabric/fabric_notebooks.png)
 
