@@ -1,5 +1,5 @@
 {
   "auto-binding": {
-    "lakehouse": "on"
+    "lakehouse": "off"
   }
 }
