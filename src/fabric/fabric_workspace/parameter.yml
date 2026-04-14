@@ -34,7 +34,7 @@ find_replace:
   # NOTEBOOK — Workspace ID Replacement
   # ==========================================================================
 
-  # Workspace GUID used in notebook-content.py files
+  # Workspace GUID used in pipeline_main.Notebook/notebook-content.py files
   # Matches default_lakehouse_workspace_id field and replaces with target workspace ID
   - find_value: "27818fad-0450-42b9-a4a0-db84075ac8d7"
     replace_value:
