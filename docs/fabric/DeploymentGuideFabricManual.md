@@ -38,7 +38,7 @@ Download the [fabric_solution_installer.ipynb](../infra/deploy/fabric_solution_i
 The installer notebook will:
 
 - ✅ Install required Python packages
-- ✅ Create the `fabriciq_team_lake` lakehouse
+- ✅ Create the `miqsdata` lakehouse
 - ✅ Deploy and configure all solution notebooks (23 notebooks)
 - ✅ Upload sample data files across 6 business domains
 - ✅ Deploy AI data agents and ontology semantic model
@@ -50,7 +50,7 @@ The installer notebook will:
 
 After the notebook completes, verify the following items exist in your workspace:
 
-- **✅ Lakehouse**: `fabriciq_team_lake` with tables across 6 business domains (customer, product, sales, finance, inventory, supplychain)
+- **✅ Lakehouse**: `miqsdata` with tables across 6 business domains (customer, product, sales, finance, inventory, supplychain)
 - **✅ Notebooks**: 23 notebooks organized in `data_management/`, `data_processing/`, `query_samples/`, `schema/`, and root pipeline notebooks
 - **✅ Sample Data**: CSV files loaded in the lakehouse Files section
 - **✅ Data Agents**: `data_agent_lakehouse` and `data_agent_ontology` for natural language querying
