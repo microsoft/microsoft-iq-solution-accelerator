@@ -42,7 +42,7 @@ After upload, your lakehouse path should look like:
    - `query_samples`
    - `schema`
 
-2. Upload all notebooks from `fabric/src/fabric/notebooks`, such as 
+2. Upload all notebooks from `src/fabric/notebooks`, such as 
 
    `pipeline_main.ipynb`
 
