@@ -1,8 +1,8 @@
 # Fabric Setup and Pipeline Run Guide (Manual)
 
-This guide walks through the full process of setting up Fabric workspace,  running data pipeline,  and validating results.
+This guide walks through the full process of setting up a Fabric workspace, running data pipelines, and validating results.
 
-This step has been automated. This document provides a way that user can manually set up the Fabric Workspace and run the the pipelines to upload data and run pipeline notebook to populate all the tables in fabric lakehouse which is the foundation for Fabric Ontology. 
+This step has been automated. This document provides a way that the user can manually set up the Fabric Workspace, upload data, and run the pipelines to create schema and populate all the tables in the fabric lakehouse. 
 
 ## Prerequisites
 
@@ -30,9 +30,8 @@ After upload, your lakehouse path should look like:
 - `Files/data/product`
 - `Files/data/sales/<product_line>s` (for example `Files/data/sales/camping` or `Files/data/sales/kitchen`)
 - `Files/data/supplychain`
-- `Files/data/shared`
 
-**Important**: data loading notebooks use paths like `Files/data/customer`, `Files/data/product`.  If folder names change, load steps will fail. The way to correct the problem is to synchronize the code and file structure under `data` folder. 
+**Important**: Data loading notebooks use paths like `Files/data/customer`, `Files/data/product`. If folder names change, load steps will fail. The way to correct the problem is to synchronize the code and file structure under the `data` folder.
 
 ## Step 3. Upload notebooks to Fabric
 
@@ -61,20 +60,20 @@ After upload, your lakehouse path should look like:
 
 ## Step 4. Attach lakehouse and run the main pipeline
 
-For first time data loading, follow below steps:
+For first-time data loading, follow these steps:
 
 1. Open `pipeline_main.ipynb` in Fabric.
 2. Attach the lakehouse you created (for example `miqdata`) to the notebook session.
 3. Run the notebook top-to-bottom.
 
-If you need to update a portion of the schema or data or data loading code, you can use below programs:
+If you need to update a portion of the schema, data, or data loading code, you can use the following programs:
 
 1. `pipeline_update.ipynb`: designed to re-load entire data after code or data updates
 2. `reset_or_debug.ipynb`: designed to reset or debug tables associated with one particular schema. 
 
 ## Step 5. Expected output and validation
 
-During a successful run of `main_pipeline`, you will get a lot of messages. The last step is loading all the data to Fabric Lakehouse. You will be getting something similar to below: 
+During a successful run of `main_pipeline`, you will get plenty of messages. The last step is loading all the data to Fabric Lakehouse. You will get something similar to the following: 
 
 ```text
 ✅Loading 'customer' schema from: Files/data/customer
