@@ -65,7 +65,7 @@ The notebook uses [fabric-launcher](https://github.com/microsoft/fabric-launcher
 - Download source code from the GitHub repository
 - Deploy Fabric items from [`src/fabric/fabric_workspace/`](../../src/fabric/fabric_workspace/)
 - Load sample data into the lakehouse
-- Execute post-deployment tasks (run main_pipeline notebook, deploy ontology, move items to folders)
+- Execute post-deployment tasks (run pipeline_main notebook, deploy ontology, move items to folders)
 
 **Key configuration in the notebook:**
 - `GITHUB_OWNER`, `GITHUB_REPO`, `GITHUB_BRANCH` — source repository settings
