@@ -3,14 +3,14 @@
 # ============================================================================
 # Handles environment-specific value replacement when deploying to target
 # environments via the fabric-cicd library.
-# See: https://microsoft.github.io/fabric-cicd/0.1.12/how_to/parameterization/
+# See: https://microsoft.github.io/fabric-cicd/0.3.1/how_to/parameterization/
 #
 # find_replace: replaces every instance of find_value in every file matching
 # the optional item_type / item_name / file_path filters.
 # .platform files are excluded automatically by fabric-cicd.
 #
 # Current GUIDs (source/DEV workspace — pipeline_main.Notebook):
-#   Lakehouse : 3da39fae-d464-ba66-44f8-a2fa1650c6ba
+#   Lakehouse : e6cd0b76-50e8-498f-9cd0-89251fae70c2
 #   Workspace : 27818fad-0450-42b9-a4a0-db84075ac8d7
 #
 # NOTE: model_customer.Notebook uses different GUIDs (lakehouse 7bc5f01b,
@@ -28,6 +28,17 @@ find_replace:
   - find_value: "e6cd0b76-50e8-498f-9cd0-89251fae70c2"
     replace_value:
       _ALL_: "$items.Lakehouse.miqsdata.$id"
+    item_type: "Notebook"
+
+  # ==========================================================================
+  # NOTEBOOK — Workspace ID Replacement
+  # ==========================================================================
+
+  # Workspace GUID used in notebook-content.py files
+  # Matches default_lakehouse_workspace_id field and replaces with target workspace ID
+  - find_value: "27818fad-0450-42b9-a4a0-db84075ac8d7"
+    replace_value:
+      _ALL_: "$workspace.$id"
     item_type: "Notebook"
 
   # ==========================================================================
