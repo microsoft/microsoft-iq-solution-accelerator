@@ -94,8 +94,9 @@ This phase is orchestrated by [`install_fabric_solution.py`](../infra/scripts/fa
 2. **Workspace Administrators**: Adds administrators to the workspace (using Graph API resolution with fallback)
 3. **Upload Installer Notebook**: Uploads [`fabric_solution_installer.ipynb`](../infra/deploy/fabric_solution_installer.ipynb) to the workspace (creates or updates if already exists)
 4. **Run Installer Notebook**: Executes [`fabric_solution_installer.ipynb`](../infra/deploy/fabric_solution_installer.ipynb) end-to-end inside Fabric. The notebook uses the [`fabric-launcher`](https://github.com/microsoft/fabric-launcher) library to pull the solution directly from GitHub and deploy all Fabric items leveraging [Fabric's Git integration and CI/CD capabilities](https://learn.microsoft.com/fabric/cicd/git-integration/intro-to-git-integration). The Fabric items (lakehouses, notebooks, reports, semantic models, data agent) are defined in the [`fabric_workspace/`](../fabric_workspace/) folder at the repository root, which is structured to match the [Fabric workspace Git format](https://learn.microsoft.com/fabric/cicd/git-integration/git-get-started). The notebook then runs the following post-deployment tasks:
-   - Run `run_bronze_to_silver` notebook: convert and standardize data from Bronze to Silver lakehouse
-   - Run `run_silver_to_gold` notebook: segment and aggregate data from Silver to Gold lakehouse
+   - Run `main_pipeline` notebook: creates lakehouse tables from ingested CSV data
+   - Deploy `ontology_supplychain` ontology item with logical ID resolution and eventhouse URI mapping
+   - Move installer notebook to the notebooks folder
 
 #### Deployment Architecture
 
@@ -334,7 +335,7 @@ your-workspace/
 │   ├── data_agent_lakehouse/
 │   └── data_agent_ontology/
 ├── fabric_ontology/          # Ontology semantic model
-│   └── ontology_semantic_model/
+│   └── ontology_supplychain/
 ├── lakehouses/               # Fabric lakehouse
 │   └── fabriciq_team_lake/
 └── notebooks/                # Data pipelines & utilities (23 notebooks)
@@ -403,7 +404,7 @@ Two [Fabric Data Agents](https://learn.microsoft.com/fabric/data-science/ai-agen
 
 | Item | Purpose |
 |------|---------|
-| `ontology_semantic_model` | Ontology-based semantic model providing a business-friendly view of the underlying lakehouse data |
+| `ontology_supplychain` | Ontology-based semantic model providing a business-friendly view of the underlying lakehouse data |
 
 ---
 

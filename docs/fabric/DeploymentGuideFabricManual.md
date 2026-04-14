@@ -54,7 +54,7 @@ After the notebook completes, verify the following items exist in your workspace
 - **✅ Notebooks**: 23 notebooks organized in `data_management/`, `data_processing/`, `query_samples/`, `schema/`, and root pipeline notebooks
 - **✅ Sample Data**: CSV files loaded in the lakehouse Files section
 - **✅ Data Agents**: `data_agent_lakehouse` and `data_agent_ontology` for natural language querying
-- **✅ Ontology**: `ontology_semantic_model` providing a business-friendly semantic layer
+- **✅ Ontology**: `ontology_supplychain` providing a business-friendly semantic layer
 
 All items are deployed from the [`fabric_workspace/`](../fabric_workspace/) folder in the repository.
 
