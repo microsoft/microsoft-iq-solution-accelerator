@@ -1,0 +1,96 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "4db450b2-53c2-4be7-b1b4-6204e7275742",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "ProductID",
+        "targetPropertyId": "3255858437437811614"
+      },
+      {
+        "sourceColumnName": "ProductName",
+        "targetPropertyId": "3255858461068699950"
+      },
+      {
+        "sourceColumnName": "ProductDescription",
+        "targetPropertyId": "3255858482435214988"
+      },
+      {
+        "sourceColumnName": "BrandName",
+        "targetPropertyId": "3255858511455929143"
+      },
+      {
+        "sourceColumnName": "ProductNumber",
+        "targetPropertyId": "3255858532164011917"
+      },
+      {
+        "sourceColumnName": "Color",
+        "targetPropertyId": "3255858551886698316"
+      },
+      {
+        "sourceColumnName": "ProductModel",
+        "targetPropertyId": "3255858576773918769"
+      },
+      {
+        "sourceColumnName": "ProductCategoryID",
+        "targetPropertyId": "3255858600250454727"
+      },
+      {
+        "sourceColumnName": "ProductLineID",
+        "targetPropertyId": "3255858623163833537"
+      },
+      {
+        "sourceColumnName": "ListPrice",
+        "targetPropertyId": "3255858643406455136"
+      },
+      {
+        "sourceColumnName": "StandardCost",
+        "targetPropertyId": "3255858668375373291"
+      },
+      {
+        "sourceColumnName": "Weight",
+        "targetPropertyId": "3255858690769944677"
+      },
+      {
+        "sourceColumnName": "WeightUom",
+        "targetPropertyId": "3255858711121387421"
+      },
+      {
+        "sourceColumnName": "ProductStatus",
+        "targetPropertyId": "3255858733437334193"
+      },
+      {
+        "sourceColumnName": "CreatedDate",
+        "targetPropertyId": "3255858758841967078"
+      },
+      {
+        "sourceColumnName": "SellStartDate",
+        "targetPropertyId": "3255858778971300490"
+      },
+      {
+        "sourceColumnName": "SellEndDate",
+        "targetPropertyId": "3255858803167734050"
+      },
+      {
+        "sourceColumnName": "UpdatedDate",
+        "targetPropertyId": "3255858824987634042"
+      },
+      {
+        "sourceColumnName": "CreatedBy",
+        "targetPropertyId": "3255858848164495482"
+      },
+      {
+        "sourceColumnName": "UpdatedBy",
+        "targetPropertyId": "3255858869657033832"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "27818fad-0450-42b9-a4a0-db84075ac8d7",
+      "itemId": "4118a141-e905-4be6-9980-6ef912c064a3",
+      "sourceTableName": "product",
+      "sourceSchema": "product"
+    }
+  }
+}

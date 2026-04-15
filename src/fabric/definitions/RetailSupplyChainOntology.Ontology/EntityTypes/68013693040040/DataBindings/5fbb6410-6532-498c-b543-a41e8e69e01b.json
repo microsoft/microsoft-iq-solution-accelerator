@@ -1,0 +1,68 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "5fbb6410-6532-498c-b543-a41e8e69e01b",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "PurchaseOrderItemID",
+        "targetPropertyId": "3255857124469145134"
+      },
+      {
+        "sourceColumnName": "PurchaseOrderID",
+        "targetPropertyId": "3255857148271341963"
+      },
+      {
+        "sourceColumnName": "ProductID",
+        "targetPropertyId": "3255857169767313288"
+      },
+      {
+        "sourceColumnName": "QuantityOrdered",
+        "targetPropertyId": "3255857195427513493"
+      },
+      {
+        "sourceColumnName": "QuantityReceived",
+        "targetPropertyId": "3255857217612749915"
+      },
+      {
+        "sourceColumnName": "UnitCost",
+        "targetPropertyId": "3255857244582136659"
+      },
+      {
+        "sourceColumnName": "LineTotal",
+        "targetPropertyId": "3255857265700095695"
+      },
+      {
+        "sourceColumnName": "Status",
+        "targetPropertyId": "3255857287650065660"
+      },
+      {
+        "sourceColumnName": "ExpectedDate",
+        "targetPropertyId": "3255857310887785528"
+      },
+      {
+        "sourceColumnName": "ReceivedDate",
+        "targetPropertyId": "3255857333454107214"
+      },
+      {
+        "sourceColumnName": "Notes",
+        "targetPropertyId": "3255857353666008359"
+      },
+      {
+        "sourceColumnName": "CreatedBy",
+        "targetPropertyId": "3255857381300915594"
+      },
+      {
+        "sourceColumnName": "CreatedDate",
+        "targetPropertyId": "3255857403548472730"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "27818fad-0450-42b9-a4a0-db84075ac8d7",
+      "itemId": "4118a141-e905-4be6-9980-6ef912c064a3",
+      "sourceTableName": "purchaseorderitems",
+      "sourceSchema": "inventory"
+    }
+  }
+}
