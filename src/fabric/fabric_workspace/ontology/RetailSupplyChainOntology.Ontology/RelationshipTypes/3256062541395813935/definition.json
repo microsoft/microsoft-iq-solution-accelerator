@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "3256062541395813935",
+  "name": "inventory_purchaseorderitems_has_inventory_purchaseorders",
+  "namespaceType": "Imported",
+  "source": {
+    "entityTypeId": "68013693040040"
+  },
+  "target": {
+    "entityTypeId": "76613014325428"
+  }
+}
