@@ -1,0 +1,68 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "ba7a6664-63ac-4a03-800a-c89e2522e2c8",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "InventoryID",
+        "targetPropertyId": "3255856378677985305"
+      },
+      {
+        "sourceColumnName": "ProductID",
+        "targetPropertyId": "3255856399509717921"
+      },
+      {
+        "sourceColumnName": "WarehouseID",
+        "targetPropertyId": "3255856426030328326"
+      },
+      {
+        "sourceColumnName": "CurrentStock",
+        "targetPropertyId": "3255856446404106278"
+      },
+      {
+        "sourceColumnName": "ReservedStock",
+        "targetPropertyId": "3255856471483353007"
+      },
+      {
+        "sourceColumnName": "SafetyStockLevel",
+        "targetPropertyId": "3255856490649446618"
+      },
+      {
+        "sourceColumnName": "ReorderPoint",
+        "targetPropertyId": "3255856514289103472"
+      },
+      {
+        "sourceColumnName": "MaxStockLevel",
+        "targetPropertyId": "3255856533133182266"
+      },
+      {
+        "sourceColumnName": "LastUpdated",
+        "targetPropertyId": "3255856554661627454"
+      },
+      {
+        "sourceColumnName": "AverageCost",
+        "targetPropertyId": "3255856576302303536"
+      },
+      {
+        "sourceColumnName": "Status",
+        "targetPropertyId": "3255856598265558412"
+      },
+      {
+        "sourceColumnName": "CreatedBy",
+        "targetPropertyId": "3255856620636120478"
+      },
+      {
+        "sourceColumnName": "CreatedDate",
+        "targetPropertyId": "3255856642887921731"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "27818fad-0450-42b9-a4a0-db84075ac8d7",
+      "itemId": "4118a141-e905-4be6-9980-6ef912c064a3",
+      "sourceTableName": "inventory",
+      "sourceSchema": "inventory"
+    }
+  }
+}

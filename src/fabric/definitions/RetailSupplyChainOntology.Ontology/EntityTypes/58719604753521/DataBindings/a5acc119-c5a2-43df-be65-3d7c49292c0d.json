@@ -1,0 +1,80 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "a5acc119-c5a2-43df-be65-3d7c49292c0d",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "TransactionID",
+        "targetPropertyId": "3255856710533022592"
+      },
+      {
+        "sourceColumnName": "ProductID",
+        "targetPropertyId": "3255856733402926280"
+      },
+      {
+        "sourceColumnName": "WarehouseID",
+        "targetPropertyId": "3255856754514183906"
+      },
+      {
+        "sourceColumnName": "TransactionType",
+        "targetPropertyId": "3255856773805531561"
+      },
+      {
+        "sourceColumnName": "TransactionDate",
+        "targetPropertyId": "3255856795898391184"
+      },
+      {
+        "sourceColumnName": "Quantity",
+        "targetPropertyId": "3255856816124076790"
+      },
+      {
+        "sourceColumnName": "UnitCost",
+        "targetPropertyId": "3255856837986342364"
+      },
+      {
+        "sourceColumnName": "TotalValue",
+        "targetPropertyId": "3255856860268428815"
+      },
+      {
+        "sourceColumnName": "ReferenceNumber",
+        "targetPropertyId": "3255856886553890934"
+      },
+      {
+        "sourceColumnName": "ReasonCode",
+        "targetPropertyId": "3255856913744924256"
+      },
+      {
+        "sourceColumnName": "StockBefore",
+        "targetPropertyId": "3255856938341238754"
+      },
+      {
+        "sourceColumnName": "StockAfter",
+        "targetPropertyId": "3255856963188806871"
+      },
+      {
+        "sourceColumnName": "ProcessedBy",
+        "targetPropertyId": "3255856984157618525"
+      },
+      {
+        "sourceColumnName": "Notes",
+        "targetPropertyId": "3255857008017945203"
+      },
+      {
+        "sourceColumnName": "CreatedBy",
+        "targetPropertyId": "3255857030688006822"
+      },
+      {
+        "sourceColumnName": "CreatedDate",
+        "targetPropertyId": "3255857055390453125"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "27818fad-0450-42b9-a4a0-db84075ac8d7",
+      "itemId": "4118a141-e905-4be6-9980-6ef912c064a3",
+      "sourceTableName": "inventorytransactions",
+      "sourceSchema": "inventory"
+    }
+  }
+}

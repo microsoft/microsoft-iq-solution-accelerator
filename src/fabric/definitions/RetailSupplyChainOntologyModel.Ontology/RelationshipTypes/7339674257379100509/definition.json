@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "7339674257379100509",
+  "name": "supplychain_supplychaineventimpacts_has_supplychain_supplychainevents",
+  "namespaceType": "Imported",
+  "source": {
+    "entityTypeId": "152306081606557"
+  },
+  "target": {
+    "entityTypeId": "137163213319114"
+  }
+}

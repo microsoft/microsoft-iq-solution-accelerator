@@ -1,0 +1,80 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "269fc61c-0456-4f08-974b-edf4b842698d",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "EventID",
+        "targetPropertyId": "3255860546730925828"
+      },
+      {
+        "sourceColumnName": "DisruptionType",
+        "targetPropertyId": "3255860565054795606"
+      },
+      {
+        "sourceColumnName": "EventName",
+        "targetPropertyId": "3255860587749600926"
+      },
+      {
+        "sourceColumnName": "Description",
+        "targetPropertyId": "3255860608760694898"
+      },
+      {
+        "sourceColumnName": "Severity",
+        "targetPropertyId": "3255860629807073586"
+      },
+      {
+        "sourceColumnName": "Status",
+        "targetPropertyId": "3255860652402143618"
+      },
+      {
+        "sourceColumnName": "StartDate",
+        "targetPropertyId": "3255860672944019301"
+      },
+      {
+        "sourceColumnName": "EndDate",
+        "targetPropertyId": "3255860696209051518"
+      },
+      {
+        "sourceColumnName": "GeographicArea",
+        "targetPropertyId": "3255860715407167126"
+      },
+      {
+        "sourceColumnName": "IndustryImpact",
+        "targetPropertyId": "3255860739518561817"
+      },
+      {
+        "sourceColumnName": "PredictedDuration",
+        "targetPropertyId": "3255860759635278600"
+      },
+      {
+        "sourceColumnName": "ActualDuration",
+        "targetPropertyId": "3255860780259699223"
+      },
+      {
+        "sourceColumnName": "AlertLevel",
+        "targetPropertyId": "3255860802022126372"
+      },
+      {
+        "sourceColumnName": "ReportedBy",
+        "targetPropertyId": "3255860823236694823"
+      },
+      {
+        "sourceColumnName": "CreatedBy",
+        "targetPropertyId": "3255860847789877292"
+      },
+      {
+        "sourceColumnName": "CreatedDate",
+        "targetPropertyId": "3255860868579621241"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "27818fad-0450-42b9-a4a0-db84075ac8d7",
+      "itemId": "4118a141-e905-4be6-9980-6ef912c064a3",
+      "sourceTableName": "supplychainevents",
+      "sourceSchema": "supplychain"
+    }
+  }
+}

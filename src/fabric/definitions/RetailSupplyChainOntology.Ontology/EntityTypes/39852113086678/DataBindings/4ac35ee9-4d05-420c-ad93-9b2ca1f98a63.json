@@ -1,0 +1,80 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "4ac35ee9-4d05-420c-ad93-9b2ca1f98a63",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "ForecastID",
+        "targetPropertyId": "3255855849503018855"
+      },
+      {
+        "sourceColumnName": "ProductID",
+        "targetPropertyId": "3255855878433023510"
+      },
+      {
+        "sourceColumnName": "WarehouseID",
+        "targetPropertyId": "3255855901369572294"
+      },
+      {
+        "sourceColumnName": "ForecastDate",
+        "targetPropertyId": "3255855923517181195"
+      },
+      {
+        "sourceColumnName": "ForecastPeriod",
+        "targetPropertyId": "3255855951845840917"
+      },
+      {
+        "sourceColumnName": "PredictedDemand",
+        "targetPropertyId": "3255855971502567331"
+      },
+      {
+        "sourceColumnName": "ConfidenceLevel",
+        "targetPropertyId": "3255855994202568396"
+      },
+      {
+        "sourceColumnName": "SeasonalMultiplier",
+        "targetPropertyId": "3255856016371595149"
+      },
+      {
+        "sourceColumnName": "TrendDirection",
+        "targetPropertyId": "3255856038098734493"
+      },
+      {
+        "sourceColumnName": "BaselineDemand",
+        "targetPropertyId": "3255856059588987939"
+      },
+      {
+        "sourceColumnName": "MethodUsed",
+        "targetPropertyId": "3255856079920023798"
+      },
+      {
+        "sourceColumnName": "ForecastHorizon",
+        "targetPropertyId": "3255856102477715064"
+      },
+      {
+        "sourceColumnName": "ActualDemand",
+        "targetPropertyId": "3255856124209795703"
+      },
+      {
+        "sourceColumnName": "AccuracyScore",
+        "targetPropertyId": "3255856148236978209"
+      },
+      {
+        "sourceColumnName": "CreatedBy",
+        "targetPropertyId": "3255856170006472658"
+      },
+      {
+        "sourceColumnName": "CreatedDate",
+        "targetPropertyId": "3255856189137041376"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "27818fad-0450-42b9-a4a0-db84075ac8d7",
+      "itemId": "4118a141-e905-4be6-9980-6ef912c064a3",
+      "sourceTableName": "demandforecast",
+      "sourceSchema": "inventory"
+    }
+  }
+}

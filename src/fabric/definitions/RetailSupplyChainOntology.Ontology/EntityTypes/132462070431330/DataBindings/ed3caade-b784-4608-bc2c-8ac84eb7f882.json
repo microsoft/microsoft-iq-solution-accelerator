@@ -1,0 +1,60 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "ed3caade-b784-4608-bc2c-8ac84eb7f882",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "ProductSupplierID",
+        "targetPropertyId": "3255859674283048712"
+      },
+      {
+        "sourceColumnName": "ProductID",
+        "targetPropertyId": "3255859698302341366"
+      },
+      {
+        "sourceColumnName": "SupplierID",
+        "targetPropertyId": "3255859723186130807"
+      },
+      {
+        "sourceColumnName": "SupplierProductCode",
+        "targetPropertyId": "3255859743531644956"
+      },
+      {
+        "sourceColumnName": "WholesaleCost",
+        "targetPropertyId": "3255859763014503341"
+      },
+      {
+        "sourceColumnName": "MinOrderQuantity",
+        "targetPropertyId": "3255859784329841968"
+      },
+      {
+        "sourceColumnName": "MaxOrderQuantity",
+        "targetPropertyId": "3255859807370944975"
+      },
+      {
+        "sourceColumnName": "LeadTimeDays",
+        "targetPropertyId": "3255859829388956359"
+      },
+      {
+        "sourceColumnName": "Status",
+        "targetPropertyId": "3255859845553563307"
+      },
+      {
+        "sourceColumnName": "CreatedBy",
+        "targetPropertyId": "3255859865890565376"
+      },
+      {
+        "sourceColumnName": "CreatedDate",
+        "targetPropertyId": "3255859887891702129"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "27818fad-0450-42b9-a4a0-db84075ac8d7",
+      "itemId": "4118a141-e905-4be6-9980-6ef912c064a3",
+      "sourceTableName": "productsuppliers",
+      "sourceSchema": "supplychain"
+    }
+  }
+}
