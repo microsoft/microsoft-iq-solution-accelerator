@@ -38,12 +38,8 @@ You can modify the data models and notebooks in different folders under the `src
 
 | Customization Area | Description |
 |---|---|
-| [Customize Schema](./src/fabric/notebooks/schema) | Modify data models, schemas, and table definitions |
-| [Customize Fabric Data Agent](./docs/FabricDataAgentGuide.md) | Configure natural language query capabilities |
-| [Update Data Management Notebooks](./src/fabric/notebooks/data_management) | Adjust data lifecycle and management processes |
-| [Update Bronze to Silver Processing](./src/fabric/notebooks/bronze_to_silver) | Modify raw data validation and transformation logic |
-| [Update Silver to Gold Processing](./src/fabric/notebooks/silver_to_gold) | Customize data enrichment and aggregation |
-| [Update Runner Notebooks](./src/fabric/notebooks) | Adjust orchestration when notebooks are added or removed |
+| [Customize Fabric Data Agent](./docs/fabric/fabric_data_agent/README.md) | Customize Data Agent |
+| TBD | Text Here|
 
 ## Resources
 
@@ -135,17 +131,8 @@ TBD
 <details>
   <summary>Click to learn more about what value this solution provides</summary>
 
-  - **Build Modern Lakehouse Architecture** <br/>Demonstrate how organizations can unify, govern, and analyze data across multiple domains and platforms using modern lakehouse architecture and robust governance, enabling rapid development of analytics solutions for diverse business needs. The solution accelerator provides a complete set of sample data for testing. 
-
-  - **Processing Raw Source Data in Bronze Lakehouse and Validate in Silver Lakehouse, and Enrich Data In Gold Lakehouse** <br/>
-    Provide core solution with domain models, data processing and data management code with automated execution to copy raw source data in Bronze lakehouse to populate Silver Lakehouse data models and then Gold Lakehouse Data models, to prepare data for analysis. 
-
-  - **Seamless Integration with Azure Databricks with Data Mirroring and Shortcut, Microsoft Purview for Data Governance**<br/>
-
-    Provide architecture options to integrate with Azure Databricks and Microsoft Purview for data governance. 
-
-  - **Semantic Models and Power BI Dashboards** <br/>
-    Provide Semantic Models and Power BI Dashboards for Sales Analysis, such as year-over-year sales analysis, best-selling products, and sales distribution across customer segments. 
+  - **TBD** <br/> TEXT 
+  - **TBD** <br/> Text
 
 </details>
 
