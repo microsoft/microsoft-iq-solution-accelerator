@@ -41,13 +41,22 @@ find_replace:
       _ALL_: "$workspace.$id"
     item_type: "Notebook"
   
+
   # ==========================================================================
-  # DATA AGENT — Lakehouse Reference Replacement
+  # SEMANTIC MODEL — SQL Endpoint Replacement
   # ==========================================================================
 
-  # The Data Agent datasource.json stores the miqsadata lakehouse reference
-  # as artifactId. This must resolve to the deployed lakehouse item ID.
-  - find_value: "e6cd0b76-50e8-498f-9cd0-89251fae70c2"
+  # SQL endpoint URL used by SemanticModel items to connect to the lakehouse.
+  # Each Fabric lakehouse exposes a SQL Analytics Endpoint that allows
+  # Power BI semantic models and other tools to query lakehouse data via T-SQL.
+  #
+  # The endpoint format is: <workspace-guid>-<lakehouse-guid>.datawarehouse.fabric.microsoft.com
+  # This replacement ensures semantic models connect to the correct lakehouse
+  # SQL endpoint in the target environment.
+  #
+  # Source endpoint (DEV): ccllgusga4suzkb52t4j7lpn7y-vwhycj2qas4ufjfa3ocaowwi24.datawarehouse.fabric.microsoft.com
+  # Target: Dynamically resolved from miqsadata lakehouse's SQL endpoint property
+  - find_value: "ccllgusga4suzkb52t4j7lpn7y-vwhycj2qas4ufjfa3ocaowwi24.datawarehouse.fabric.microsoft.com"
     replace_value:
-      _ALL_: "$items.Lakehouse.miqsadata.$id"
-    item_type: "DataAgent"
+      _ALL_: "$items.Lakehouse.miqsadata.$sqlendpoint"
+    item_type: "SemanticModel"
