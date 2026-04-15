@@ -7,16 +7,15 @@ TBD
 - **TBD** — TBD
 - **TBD** — TBD
 
-<br/>
+<<br/>
 
 <div align="center">
 
-
 [**SOLUTION OVERVIEW**](#solution-overview) \| [**QUICK DEPLOY**](#quick-deploy) \| [**BUSINESS SCENARIO**](#business-use-case) \| [**SUPPORTING DOCUMENTATION**](#supporting-documentation)
-
 
 </div>
 <br/>
+
 
 <h2 id="solution-overview"><img src="./docs/images/readme/solution-overview.png" width="48" />
 Solution overview
