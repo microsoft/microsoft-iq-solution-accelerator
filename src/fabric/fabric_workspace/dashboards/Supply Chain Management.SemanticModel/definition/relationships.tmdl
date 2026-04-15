@@ -1,0 +1,57 @@
+relationship 99881d21-60ae-7ea0-a990-08bc1efbf85e
+	fromColumn: 'inventory demandforecast'.ProductID
+	toColumn: 'product product'.ProductID
+
+relationship 7baccaeb-dc09-8dfe-ec04-fc2fe616b0f6
+	crossFilteringBehavior: bothDirections
+	fromColumn: 'inventory inventory'.ProductID
+	toColumn: 'product product'.ProductID
+
+relationship a78d7a4b-1da3-a8b5-c0f8-94bb0876c283
+	fromColumn: 'inventory inventorytransactions'.ProductID
+	toColumn: 'product product'.ProductID
+
+relationship 0e37a820-db01-2c3d-11c1-85f20ba7ab81
+	fromColumn: 'supplychain productsuppliers'.ProductID
+	toColumn: 'product product'.ProductID
+
+relationship 2ad8b55f-0bfc-2a74-2310-a69df9fa51fe
+	fromColumn: 'supplychain productsuppliers'.SupplierID
+	toColumn: 'supplychain suppliers'.SupplierID
+
+relationship d87e3a62-dbc1-c5eb-9354-a70f98344159
+	fromColumn: 'inventory purchaseorderitems'.ProductID
+	toColumn: 'product product'.ProductID
+
+relationship 207b4705-5b30-16ca-b5de-6bdd1e45de36
+	crossFilteringBehavior: bothDirections
+	fromColumn: 'inventory purchaseorders'.SupplierID
+	toColumn: 'supplychain suppliers'.SupplierID
+
+relationship 2c3f8845-5b74-7787-41c3-b33b88452c14
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'inventory purchaseorderitems'.PurchaseOrderItemID
+	toColumn: 'inventory purchaseorders'.PurchaseOrderID
+
+relationship 89559694-fa1c-4249-a576-b74aa80e7478
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Date.Date
+	toColumn: LocalDateTable_7e30d256-b63a-4b21-ac46-9f542615784c.Date
+
+relationship 825c9dd7-a627-3d7a-8272-8faa20b61d79
+	fromColumn: 'inventory demandforecast'.ForecastDate
+	toColumn: Date.Date
+
+relationship c016b373-ff71-b012-7eca-21d10166dd4e
+	fromColumn: 'inventory purchaseorders'.OrderDate
+	toColumn: Date.Date
+
+relationship 64aec540-6424-02e4-62a2-b3063508593e
+	fromColumn: 'product product'.ProductCategoryID
+	toColumn: 'product productcategory'.ProductCategoryID
+
+relationship d4bccfeb-af24-90c5-86f1-0ddffc066464
+	fromColumn: 'inventory inventory'.WarehouseID
+	toColumn: 'inventory warehouses'.WarehouseID
+
