@@ -62,11 +62,9 @@ The knowledge base will be populated with your documents:
 ## 🔧 Getting Started
 
 1. **Deploy**: Run `azd up` to deploy all infrastructure and create agents
-2. **Add Documents**: Upload your PDF files to `src/foundry/data/documents/` folder
-3. **Index Documents**: Run `python src/foundry/scripts/01_upload_to_search.py` (if not done during deployment)
-4. **Access**: Open Azure AI Foundry Studio in the Azure portal
-5. **Chat**: Navigate to the Playground and select your "ChatAgent"
-6. **Ask Questions**: Start with document discovery questions to see what's available
+2. **Access**: Open Azure AI Foundry Studio in the Azure portal
+3. **Chat**: Navigate to the Playground and select your "ChatAgent"
+4. **Ask Questions**: Start with document discovery questions to see what's available
 
 ## 💡 Tips for Best Results
 
