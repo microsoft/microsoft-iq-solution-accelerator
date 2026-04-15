@@ -38,7 +38,6 @@ The knowledge base will be populated with your documents:
 *After uploading your documents, try questions like these based on typical business content:*
 
 ### Document Discovery
-- "What documents are available in the knowledge base?"
 - "Show me the supplier onboarding process"
 - "Find information about evaluation criteria or approval processes"
 
