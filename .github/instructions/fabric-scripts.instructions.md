@@ -70,7 +70,7 @@ The notebook uses [fabric-launcher](https://github.com/microsoft/fabric-launcher
 **Key configuration in the notebook:**
 - `GITHUB_OWNER`, `GITHUB_REPO`, `GITHUB_BRANCH` — source repository settings
 - `GITHUB_FABRIC_WORKSPACE_PATH` — path to workspace items in repo (default: `"src/fabric/fabric_workspace"`)
-- `LAKEHOUSE_NAME` — target lakehouse for data ingestion (default: `"miqsdata"`)
+- `LAKEHOUSE_NAME` — target lakehouse for data ingestion (default: `"miqsadata"`)
 - `DATA_FOLDERS` — mapping of source data folders to lakehouse target paths
 - `item_type_stages` — deployment order (Lakehouse/Ontology first, then Notebook/DataAgent)
 
@@ -151,7 +151,7 @@ The installer notebook ([`fabric_solution_installer.ipynb`](../../infra/fabric/d
 
 **Current deployed items:**
 
-- **1 lakehouse**: `miqsdata` — 22 tables across 6 domains (customer, product, sales, finance, inventory, supplychain), [shortcut](https://learn.microsoft.com/fabric/onelake/onelake-shortcuts-overview)-enabled
+- **1 lakehouse**: `miqsadata` — 22 tables across 6 domains (customer, product, sales, finance, inventory, supplychain), [shortcut](https://learn.microsoft.com/fabric/onelake/onelake-shortcuts-overview)-enabled
 - **23 notebooks**: data_management (4), data_processing (6), query_samples (4), schema (6), root (3)
 - **2 AI data agents**: `data_agent_lakehouse` (NL query over lakehouse), `data_agent_ontology` (ontology-based)
 - **1 ontology model**: `ontology_semantic_model`

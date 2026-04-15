@@ -47,7 +47,7 @@ fabric_workspace/
 ├── fabric_ontology/
 │   └── ontology_semantic_model.Ontology/ # Business-friendly semantic layer
 ├── lakehouses/
-│   └── miqsdata.Lakehouse/     # Unified data store (shortcut-enabled)
+│   └── miqsadata.Lakehouse/     # Unified data store (shortcut-enabled)
 └── notebooks/                    # 23 notebooks
     ├── data_management/ (4)      # create_scheme_tables, drop_all_tables, load_data_all_tables, truncate_all_tables
     ├── data_processing/ (6)      # load_customer, load_finance, load_inventory, load_product, load_sales, load_supplychain

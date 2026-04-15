@@ -337,7 +337,7 @@ your-workspace/
 ├── fabric_ontology/          # Ontology semantic model
 │   └── ontology_supplychain/
 ├── lakehouses/               # Fabric lakehouse
-│   └── miqsdata/
+│   └── miqsadata/
 └── notebooks/                # Data pipelines & utilities (23 notebooks)
     ├── data_management/      # Table operations (create, drop, load, truncate)
     ├── data_processing/      # Domain data loaders (customer, finance, sales, …)
@@ -356,7 +356,7 @@ The solution deploys a single lakehouse that serves as the unified data store:
 
 | Name | Purpose |
 |------|---------|
-| `miqsdata` | Unified data lakehouse with schema-on-read tables across 6 business domains |
+| `miqsadata` | Unified data lakehouse with schema-on-read tables across 6 business domains |
 
 The lakehouse is configured with [shortcut](https://learn.microsoft.com/fabric/onelake/onelake-shortcuts-overview) support for external data sources (OneLake, ADLS Gen2, Dataverse, Amazon S3, Google Cloud Storage, Azure Blob Storage, OneDrive/SharePoint).
 
@@ -397,7 +397,7 @@ Two [Fabric Data Agents](https://learn.microsoft.com/fabric/data-science/ai-agen
 
 | Agent | Purpose |
 |-------|---------|
-| `data_agent_lakehouse` | Query the `miqsdata` lakehouse tables using natural language. Includes comprehensive AI instructions covering all 22 tables and 6 business domains |
+| `data_agent_lakehouse` | Query the `miqsadata` lakehouse tables using natural language. Includes comprehensive AI instructions covering all 22 tables and 6 business domains |
 | `data_agent_ontology` | Query data through the ontology semantic model |
 
 #### Ontology
