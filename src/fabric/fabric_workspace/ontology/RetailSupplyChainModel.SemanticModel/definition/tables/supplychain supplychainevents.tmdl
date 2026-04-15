@@ -1,0 +1,179 @@
+table 'supplychain supplychainevents'
+	lineageTag: 56868248-e78e-4fb7-8602-845f1b1ea3fc
+
+	column EventID
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(8000)
+		lineageTag: 0038998f-2b0f-4d33-bcd2-0bc7e3865693
+		summarizeBy: none
+		sourceColumn: EventID
+
+		annotation SummarizationSetBy = Automatic
+
+	column DisruptionType
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: b8a40a25-6eda-4bcf-ab39-ddb69f15bd5a
+		summarizeBy: none
+		sourceColumn: DisruptionType
+
+		annotation SummarizationSetBy = Automatic
+
+	column EventName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 8f51b935-8215-4da3-b4c5-48ce27fb6aac
+		summarizeBy: none
+		sourceColumn: EventName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Description
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 5c12dd01-5d00-4790-b99b-9fb58167a902
+		summarizeBy: none
+		sourceColumn: Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column Severity
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 4189874d-6fb9-415d-8199-fffc1b1e961b
+		summarizeBy: none
+		sourceColumn: Severity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 707dbfef-6cb1-49c1-85e8-55943862a8ee
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column StartDate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 2038fa99-1bc8-41f9-8a6d-346b9e1b83fa
+		summarizeBy: none
+		sourceColumn: StartDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column EndDate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 9db5781d-8a9c-478d-bd59-468008776d1b
+		summarizeBy: none
+		sourceColumn: EndDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column GeographicArea
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: d6942027-283e-4f36-8afe-6efce87574b6
+		summarizeBy: none
+		sourceColumn: GeographicArea
+
+		annotation SummarizationSetBy = Automatic
+
+	column IndustryImpact
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 67bd6aae-ca12-4ec5-9712-3a487918ec71
+		summarizeBy: none
+		sourceColumn: IndustryImpact
+
+		annotation SummarizationSetBy = Automatic
+
+	column PredictedDuration
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: e2bc3f0d-9e33-4022-bb93-43a064d4f9e7
+		summarizeBy: none
+		sourceColumn: PredictedDuration
+
+		annotation SummarizationSetBy = Automatic
+
+	column ActualDuration
+		dataType: double
+		formatString: 0
+		sourceProviderType: decimal(5, 2)
+		lineageTag: 301effb2-08ff-45c2-a1db-15eb144b8e5c
+		summarizeBy: none
+		sourceColumn: ActualDuration
+
+		annotation SummarizationSetBy = Automatic
+
+	column AlertLevel
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 044f0217-0456-4ee2-9e43-ac41009fb767
+		summarizeBy: none
+		sourceColumn: AlertLevel
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReportedBy
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: f4751bc3-3533-403a-ba34-b4f80ea5f978
+		summarizeBy: none
+		sourceColumn: ReportedBy
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedBy
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 68e25890-ae19-4a39-a403-37a2e745542b
+		summarizeBy: none
+		sourceColumn: CreatedBy
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: ad166aff-42da-4114-b897-1cdfffb2fb00
+		summarizeBy: none
+		sourceColumn: CreatedDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column SupplierID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 2302a4fb-2647-4188-b773-fcef73dc86eb
+		summarizeBy: none
+		sourceColumn: SupplierID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'supplychain supplychainevents' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database(SQLEndpoint, DatabaseName),
+				    supplychain_supplychainevents = Source{[Schema="supplychain",Item="supplychainevents"]}[Data]
+				in
+				    supplychain_supplychainevents
+
+	annotation PBI_ResultType = Table
+

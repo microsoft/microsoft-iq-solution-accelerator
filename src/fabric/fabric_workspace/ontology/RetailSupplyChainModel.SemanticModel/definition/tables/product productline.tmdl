@@ -1,0 +1,64 @@
+table 'product productline'
+	lineageTag: 986ebac0-d76b-4378-a397-f6dca912693c
+
+	column ProductLineID
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(8000)
+		lineageTag: 9e610db6-7a9b-4b22-986b-5c91fe55d3be
+		summarizeBy: none
+		sourceColumn: ProductLineID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductLineName
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(8000)
+		lineageTag: a798a08e-bd1d-487e-a2b7-8684ae9512d7
+		summarizeBy: none
+		sourceColumn: ProductLineName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Description
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 8f3520dc-8fdd-43e5-963d-5156c1ba16ec
+		summarizeBy: none
+		sourceColumn: Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedBy
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: caab7237-dfc4-467a-b15d-ff8efbdee70e
+		summarizeBy: none
+		sourceColumn: CreatedBy
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: d5b9c93f-8072-479d-b41e-921fa71de0d1
+		summarizeBy: none
+		sourceColumn: CreatedDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition 'product productline' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database(SQLEndpoint, DatabaseName),
+				    product_productline = Source{[Schema="product",Item="productline"]}[Data]
+				in
+				    product_productline
+
+	annotation PBI_ResultType = Exception
+

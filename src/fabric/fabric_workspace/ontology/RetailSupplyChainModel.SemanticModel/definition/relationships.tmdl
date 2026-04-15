@@ -1,0 +1,72 @@
+relationship 6b30d66e-0c09-2905-c8c8-0487616817c2
+	fromColumn: 'product product'.ProductLineID
+	toColumn: 'product productline'.ProductLineID
+
+relationship 9b9c7f12-28db-b823-d225-7724e85392a1
+	fromColumn: 'product product'.ProductCategoryID
+	toColumn: 'product productcategory'.ProductCategoryID
+
+relationship 75f99f77-6eba-e702-37b3-f87b812633f7
+	fromColumn: 'inventory inventory'.ProductID
+	toColumn: 'product product'.ProductID
+
+relationship f97e1f13-c3b0-0060-0079-811110134f6d
+	fromColumn: 'inventory inventory'.WarehouseID
+	toColumn: 'inventory warehouses'.WarehouseID
+
+relationship 32c316a3-79a3-2a1c-71f4-088a4cb00986
+	fromColumn: 'inventory inventorytransactions'.ProductID
+	toColumn: 'product product'.ProductID
+
+relationship 5da24192-00f5-5bce-f50d-73ce3df7a0cf
+	fromColumn: 'inventory inventorytransactions'.WarehouseID
+	toColumn: 'inventory warehouses'.WarehouseID
+
+relationship 29d6a9e5-ecb4-93b3-fdad-c123df45e5c8
+	fromColumn: 'inventory purchaseorders'.SupplierID
+	toColumn: 'supplychain suppliers'.SupplierID
+
+relationship 4939d659-dc64-7b09-4055-7ea0eba398af
+	fromColumn: 'inventory purchaseorderitems'.PurchaseOrderID
+	toColumn: 'inventory purchaseorders'.PurchaseOrderID
+
+relationship 6a35987e-55de-3cfa-7564-544d01484761
+	fromColumn: 'inventory purchaseorderitems'.ProductID
+	toColumn: 'product product'.ProductID
+
+relationship 01d6c560-7950-e225-4453-1e32140cf578
+	fromColumn: 'inventory demandforecast'.ProductID
+	toColumn: 'product product'.ProductID
+
+relationship e7364dc0-4a95-dc64-6a3e-e71af0b47fc6
+	fromColumn: 'inventory demandforecast'.WarehouseID
+	toColumn: 'inventory warehouses'.WarehouseID
+
+relationship 0346937b-0641-c467-a523-ad1ce8d07e79
+	fromColumn: 'supplychain productsuppliers'.ProductID
+	toColumn: 'product product'.ProductID
+
+relationship d614e7f1-6602-484b-111e-2c0ee15eaaf0
+	fromColumn: 'supplychain productsuppliers'.SupplierID
+	toColumn: 'supplychain suppliers'.SupplierID
+
+relationship 2f64dd07-38e8-c6a5-ee17-45276b36ceb0
+	fromColumn: 'supplychain supplychaineventimpacts'.EventID
+	toColumn: 'supplychain supplychainevents'.EventID
+
+relationship 2e05226d-efa7-f651-68c1-18e2b1417b55
+	fromColumn: 'supplychain supplychaineventimpacts'.SupplierID
+	toColumn: 'supplychain suppliers'.SupplierID
+
+relationship 9e738aff-da18-3d72-92f9-7c7a001b55db
+	fromColumn: 'inventory inventorytransactions'.TransactionDate
+	toColumn: 'shared dimdate'.FullDate
+
+relationship 40837a21-d69b-a831-1b62-3d285dd56871
+	fromColumn: 'inventory purchaseorders'.OrderDate
+	toColumn: 'shared dimdate'.FullDate
+
+relationship 495945a3-6721-5bc5-7cd7-c0a0554152ee
+	fromColumn: 'inventory demandforecast'.ForecastDate
+	toColumn: 'shared dimdate'.FullDate
+

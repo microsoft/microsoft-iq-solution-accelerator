@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "7339775390734674187",
+  "name": "inventory_purchaseorders_has_supplychain_suppliers",
+  "namespaceType": "Imported",
+  "source": {
+    "entityTypeId": "267800503319730"
+  },
+  "target": {
+    "entityTypeId": "166279558638797"
+  }
+}

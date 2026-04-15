@@ -1,0 +1,76 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "137e6d04-7e6d-4714-bc0c-09cb0d0dfb39",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "DateKey",
+        "targetPropertyId": "3255859305084741546"
+      },
+      {
+        "sourceColumnName": "FullDate",
+        "targetPropertyId": "3255859330284574471"
+      },
+      {
+        "sourceColumnName": "Year",
+        "targetPropertyId": "3255859351944099171"
+      },
+      {
+        "sourceColumnName": "Quarter",
+        "targetPropertyId": "3255859372142404418"
+      },
+      {
+        "sourceColumnName": "QuarterName",
+        "targetPropertyId": "3255859396107006563"
+      },
+      {
+        "sourceColumnName": "Month",
+        "targetPropertyId": "3255859416520667602"
+      },
+      {
+        "sourceColumnName": "MonthName",
+        "targetPropertyId": "3255859437160807519"
+      },
+      {
+        "sourceColumnName": "WeekOfYear",
+        "targetPropertyId": "3255859459909654371"
+      },
+      {
+        "sourceColumnName": "DayOfMonth",
+        "targetPropertyId": "3255859481315406378"
+      },
+      {
+        "sourceColumnName": "DayOfWeek",
+        "targetPropertyId": "3255859504135013275"
+      },
+      {
+        "sourceColumnName": "DayName",
+        "targetPropertyId": "3255859523481501811"
+      },
+      {
+        "sourceColumnName": "IsWeekend",
+        "targetPropertyId": "3255859543785204806"
+      },
+      {
+        "sourceColumnName": "IsHoliday",
+        "targetPropertyId": "3255859565399904622"
+      },
+      {
+        "sourceColumnName": "FiscalYear",
+        "targetPropertyId": "3255859587192780846"
+      },
+      {
+        "sourceColumnName": "FiscalQuarter",
+        "targetPropertyId": "3255859607298783210"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "27818fad-0450-42b9-a4a0-db84075ac8d7",
+      "itemId": "4118a141-e905-4be6-9980-6ef912c064a3",
+      "sourceTableName": "dimdate",
+      "sourceSchema": "shared"
+    }
+  }
+}
