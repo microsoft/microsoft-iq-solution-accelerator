@@ -27,7 +27,7 @@ find_replace:
   # (default_lakehouse and lakehouse id fields)
   - find_value: "e6cd0b76-50e8-498f-9cd0-89251fae70c2"
     replace_value:
-      _ALL_: "$items.Lakehouse.miqsdata.$id"
+      _ALL_: "$items.Lakehouse.miqsadata.$id"
     item_type: "Notebook"
 
   # ==========================================================================
@@ -45,9 +45,9 @@ find_replace:
   # DATA AGENT — Lakehouse Reference Replacement
   # ==========================================================================
 
-  # The Data Agent datasource.json stores the miqsdata lakehouse reference
+  # The Data Agent datasource.json stores the miqsadata lakehouse reference
   # as artifactId. This must resolve to the deployed lakehouse item ID.
   - find_value: "e6cd0b76-50e8-498f-9cd0-89251fae70c2"
     replace_value:
-      _ALL_: "$items.Lakehouse.miqsdata.$id"
+      _ALL_: "$items.Lakehouse.miqsadata.$id"
     item_type: "DataAgent"
