@@ -1,0 +1,124 @@
+table 'supplychain supplychaineventimpacts'
+	lineageTag: c8375e24-251f-4ea1-956b-412749ca9d15
+
+	column ImpactID
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(8000)
+		lineageTag: 26fa8ca4-cd43-4569-8e19-2ce54c32cff4
+		summarizeBy: none
+		sourceColumn: ImpactID
+
+		annotation SummarizationSetBy = Automatic
+
+	column EventID
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(8000)
+		lineageTag: 417456d0-4364-47cd-b7cd-5079fef1cd6c
+		summarizeBy: none
+		sourceColumn: EventID
+
+		annotation SummarizationSetBy = Automatic
+
+	column SupplierID
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(8000)
+		lineageTag: acc7fc3a-8825-4b9f-8f34-4c9bb7f721dc
+		summarizeBy: none
+		sourceColumn: SupplierID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ImpactLevel
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 0511fc99-e8e3-4836-85b0-c21263df3989
+		summarizeBy: none
+		sourceColumn: ImpactLevel
+
+		annotation SummarizationSetBy = Automatic
+
+	column DeliveryDelay
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 43d0e9b3-d1c9-44d5-a4a7-544a2f56b67f
+		summarizeBy: sum
+		sourceColumn: DeliveryDelay
+
+		annotation SummarizationSetBy = Automatic
+
+	column CostIncrease
+		dataType: double
+		sourceProviderType: decimal(5, 2)
+		lineageTag: 3f419358-03cc-4e53-bbdd-0cd3ccd16ed8
+		summarizeBy: sum
+		sourceColumn: CostIncrease
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column AlternativeAction
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: e533f604-6317-44b3-b5c0-3d92413727a4
+		summarizeBy: none
+		sourceColumn: AlternativeAction
+
+		annotation SummarizationSetBy = Automatic
+
+	column EstimatedRevenueImpact
+		dataType: double
+		sourceProviderType: decimal(12, 2)
+		lineageTag: 44c3d1b7-5ae1-4dd6-8b68-ca96655fb6de
+		summarizeBy: sum
+		sourceColumn: EstimatedRevenueImpact
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CreatedBy
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 69fb43c4-0972-4e4d-a834-b1de55f8e7e2
+		summarizeBy: none
+		sourceColumn: CreatedBy
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: a6fccbae-0839-4f4f-a456-44d613abeede
+		summarizeBy: none
+		sourceColumn: CreatedDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ProductLineName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 0d3de113-8c08-41ad-bf50-c638a3d7d154
+		summarizeBy: none
+		sourceColumn: ProductLineName
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'supplychain supplychaineventimpacts' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database(SQLEndpoint, DatabaseName),
+				    supplychain_supplychaineventimpacts = Source{[Schema="supplychain",Item="supplychaineventimpacts"]}[Data]
+				in
+				    supplychain_supplychaineventimpacts
+
+	annotation PBI_ResultType = Table
+

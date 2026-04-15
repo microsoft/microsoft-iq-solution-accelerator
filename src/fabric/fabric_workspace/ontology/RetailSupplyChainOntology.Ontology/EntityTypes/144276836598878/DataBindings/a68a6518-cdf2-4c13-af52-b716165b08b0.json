@@ -1,0 +1,64 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "a68a6518-cdf2-4c13-af52-b716165b08b0",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "SupplierID",
+        "targetPropertyId": "3255859955211516862"
+      },
+      {
+        "sourceColumnName": "SupplierName",
+        "targetPropertyId": "3255859980629320481"
+      },
+      {
+        "sourceColumnName": "SupplierType",
+        "targetPropertyId": "3255860000172797968"
+      },
+      {
+        "sourceColumnName": "Status",
+        "targetPropertyId": "3255860019775843131"
+      },
+      {
+        "sourceColumnName": "ProductCategory",
+        "targetPropertyId": "3255860043383584135"
+      },
+      {
+        "sourceColumnName": "PrimarySupplierID",
+        "targetPropertyId": "3255860063768046422"
+      },
+      {
+        "sourceColumnName": "LeadTimeDays",
+        "targetPropertyId": "3255860085426288039"
+      },
+      {
+        "sourceColumnName": "ReliabilityScore",
+        "targetPropertyId": "3255860105590718231"
+      },
+      {
+        "sourceColumnName": "Location",
+        "targetPropertyId": "3255860127430272625"
+      },
+      {
+        "sourceColumnName": "ContactEmail",
+        "targetPropertyId": "3255860152447118339"
+      },
+      {
+        "sourceColumnName": "CreatedBy",
+        "targetPropertyId": "3255860171650583231"
+      },
+      {
+        "sourceColumnName": "CreatedDate",
+        "targetPropertyId": "3255860193563386289"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "27818fad-0450-42b9-a4a0-db84075ac8d7",
+      "itemId": "4118a141-e905-4be6-9980-6ef912c064a3",
+      "sourceTableName": "suppliers",
+      "sourceSchema": "supplychain"
+    }
+  }
+}

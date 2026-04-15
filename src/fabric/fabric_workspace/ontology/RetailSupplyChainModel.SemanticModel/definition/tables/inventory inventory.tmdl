@@ -1,0 +1,166 @@
+table 'inventory inventory'
+	lineageTag: e65a211f-02a9-48bc-8aa9-4e0ee8ea6b50
+
+	column InventoryID
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(8000)
+		lineageTag: 417dd058-db72-4b92-a780-feec7fcd216a
+		summarizeBy: none
+		sourceColumn: InventoryID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductID
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(8000)
+		lineageTag: de20abe5-0d93-417a-b5b2-c909414b9ebc
+		summarizeBy: none
+		sourceColumn: ProductID
+
+		annotation SummarizationSetBy = Automatic
+
+	column WarehouseID
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(8000)
+		lineageTag: b7edd6e8-300a-40b8-afb8-b9793b1a5ead
+		summarizeBy: none
+		sourceColumn: WarehouseID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CurrentStock
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 6e91796e-a3ec-4ea0-8fa8-2fa3646347f2
+		summarizeBy: sum
+		sourceColumn: CurrentStock
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReservedStock
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: c707c49a-f9d0-4a83-b57c-4bb0512fc613
+		summarizeBy: sum
+		sourceColumn: ReservedStock
+
+		annotation SummarizationSetBy = Automatic
+
+	column SafetyStockLevel
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 230eea2b-d1fd-48a2-9ff1-8c82606dedd4
+		summarizeBy: sum
+		sourceColumn: SafetyStockLevel
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReorderPoint
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: d689b885-ff93-4f32-84fd-e9f39c44ea7c
+		summarizeBy: sum
+		sourceColumn: ReorderPoint
+
+		annotation SummarizationSetBy = Automatic
+
+	column MaxStockLevel
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 18201d4a-6830-418a-a9d4-8f32a179ef1d
+		summarizeBy: sum
+		sourceColumn: MaxStockLevel
+
+		annotation SummarizationSetBy = Automatic
+
+	column LastUpdated
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 962dca1c-1b24-453d-8cd2-7c282e357a58
+		summarizeBy: none
+		sourceColumn: LastUpdated
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column AverageCost
+		dataType: double
+		sourceProviderType: decimal(10, 2)
+		lineageTag: d55e46aa-8899-4bc2-875c-b25ec78b5576
+		summarizeBy: sum
+		sourceColumn: AverageCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Status
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 6c876c94-b17b-4eb2-9ebe-05da6549e4dc
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedBy
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 9c017b9a-72ce-4024-b391-485e4772d887
+		summarizeBy: none
+		sourceColumn: CreatedBy
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 331d12b2-ddc4-41b0-9ec1-7d135384329c
+		summarizeBy: none
+		sourceColumn: CreatedDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ProductName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: cbf50d8d-565c-4f91-80c3-7aa2e119e267
+		summarizeBy: none
+		sourceColumn: ProductName
+
+		annotation SummarizationSetBy = Automatic
+
+	column AvailableStock
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 4a8d7b8d-95b7-415d-b22c-b26163b5e5d7
+		summarizeBy: sum
+		sourceColumn: AvailableStock
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'inventory inventory' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database(SQLEndpoint, DatabaseName),
+				    inventory_inventory = Source{[Schema="inventory",Item="inventory"]}[Data]
+				in
+				    inventory_inventory
+
+	annotation PBI_ResultType = Exception
+
