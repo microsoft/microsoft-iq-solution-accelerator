@@ -8,11 +8,11 @@
   "created_with": "hybrid_approach",
   "title_agent_id": "TitleAgent",
   "title_agent_name": "TitleAgent",
-  "search_index": "damynuiv657gue-documents",
+  "search_index": "daienzzfd3llsq-documents",
   "search_mode": "knowledge_base",
-  "knowledge_base_name": "damynuiv657gue-kb",
-  "mcp_connection_name": "damynuiv657gue-kb-mcp-connection",
-  "search_endpoint": "https://srch-damynuiv657gue.search.windows.net",
+  "knowledge_base_name": "daienzzfd3llsq-kb",
+  "mcp_connection_name": "daienzzfd3llsq-kb-mcp-connection",
+  "search_endpoint": "https://srch-daienzzfd3llsq.search.windows.net",
   "sql_mode": "none",
   "knowledge_base_endpoint": "https://aisa-daer4nzccsrpd3.services.ai.azure.com/api/projects/aifp-daer4nzccsrpd3/knowledgeBase/daer4nzccsrpd3-kb"
 }

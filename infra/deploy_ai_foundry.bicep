@@ -51,7 +51,6 @@ param searchServiceLocation string = resourceGroup().location
 var abbrs = loadJsonContent('./abbreviations.json')
 var aiServicesName = '${abbrs.ai.aiServices}${solutionName}'
 var workspaceName = '${abbrs.managementGovernance.logAnalyticsWorkspace}${solutionName}'
-var applicationInsightsName = '${abbrs.managementGovernance.applicationInsights}${solutionName}'
 var location = solutionLocation //'eastus2'
 var aiProjectName = '${abbrs.ai.aiFoundryProject}${solutionName}'
 var aiSearchName = '${abbrs.ai.aiSearch}${solutionName}'
@@ -107,18 +106,6 @@ resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2023-09-01' = if
     sku: {
       name: 'PerGB2018'
     }
-  }
-}
-
-resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
-  name: applicationInsightsName
-  location: location
-  kind: 'web'
-  properties: {
-    Application_Type: 'web'
-    publicNetworkAccessForIngestion: 'Enabled'
-    publicNetworkAccessForQuery: 'Disabled'
-    WorkspaceResourceId: useExisting ? existingLogAnalyticsWorkspace.id : logAnalytics.id
   }
 }
 
@@ -253,26 +240,6 @@ resource searchConnection 'Microsoft.CognitiveServices/accounts/projects/connect
   }
 }
 
-// Connect Application Insights to Project
-resource appInsightsConnection 'Microsoft.CognitiveServices/accounts/projects/connections@2025-04-01-preview' = if (empty(azureExistingAIProjectResourceId)) {
-  parent: aiProject
-  name: applicationInsightsName
-  properties: {
-    category: 'AppInsights'
-    target: applicationInsights.id
-    authType: 'ApiKey'
-    isSharedToAll: true
-    isDefault: true
-    credentials: {
-      key: applicationInsights.properties.InstrumentationKey
-    }
-    metadata: {
-      ApiType: 'Azure'
-      ResourceId: applicationInsights.id
-    }
-  }
-}
-
 // Role Definitions
 
 resource azureAIUser 'Microsoft.Authorization/roleDefinitions@2022-04-01' existing = {
@@ -297,13 +264,16 @@ resource searchIndexDataContributor 'Microsoft.Authorization/roleDefinitions@202
 }
 
 resource assignFoundryRoleToMI 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (empty(azureExistingAIProjectResourceId))  {
-  name: guid(resourceGroup().id, aiServices.id, azureAIUser.id)
+  name: guid(resourceGroup().id, aiServices.id, azureAIUser.id, managedIdentityObjectId)
   scope: aiServices
   properties: {
     principalId: managedIdentityObjectId
     roleDefinitionId: azureAIUser.id
     principalType: 'ServicePrincipal'
   }
+  dependsOn: [
+    aiServices
+  ]
 }
 
 module assignFoundryRoleToMIExisting 'deploy_foundry_role_assignment.bicep' = if (!empty(azureExistingAIProjectResourceId)) {
@@ -329,13 +299,17 @@ module assignFoundryRoleToMIExisting 'deploy_foundry_role_assignment.bicep' = if
 }
 
 resource assignOpenAIRoleToAISearch 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (empty(azureExistingAIProjectResourceId))  {
-  name: guid(resourceGroup().id, aiServices.id, cognitiveServicesOpenAIUser.id)
+  name: guid(resourceGroup().id, aiServices.id, cognitiveServicesOpenAIUser.id, aiSearch.id)
   scope: aiServices
   properties: {
     principalId: searchServiceEnableIdentity.outputs.principalId
     roleDefinitionId: cognitiveServicesOpenAIUser.id
     principalType: 'ServicePrincipal'
   }
+  dependsOn: [
+    aiServices
+    searchServiceEnableIdentity
+  ]
 }
 
 module existingOpenAiProject 'deploy_foundry_role_assignment.bicep' = if (!empty(azureExistingAIProjectResourceId)) {
@@ -359,6 +333,10 @@ resource assignSearchIndexDataReaderToAiProject 'Microsoft.Authorization/roleAss
     roleDefinitionId: searchIndexDataReader.id
     principalType: 'ServicePrincipal'
   }
+  dependsOn: [
+    aiProject
+    aiSearch
+  ]
 }
 
 resource assignSearchIndexDataReaderToExistingAiProject 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (!empty(azureExistingAIProjectResourceId)) {
@@ -379,6 +357,10 @@ resource assignSearchServiceContributorToAiProject 'Microsoft.Authorization/role
     roleDefinitionId: searchServiceContributor.id
     principalType: 'ServicePrincipal'
   }
+  dependsOn: [
+    aiProject
+    aiSearch
+  ]
 }
 
 resource assignSearchServiceContributorToExistingAiProject 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (!empty(azureExistingAIProjectResourceId)) {
@@ -392,13 +374,16 @@ resource assignSearchServiceContributorToExistingAiProject 'Microsoft.Authorizat
 }
 
 resource assignSearchIndexDataContributorToMI 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (empty(azureExistingAIProjectResourceId)) {
-  name: guid(resourceGroup().id, aiProject.id, searchIndexDataContributor.id)
+  name: guid(resourceGroup().id, managedIdentityObjectId, searchIndexDataContributor.id)
   scope: aiSearch
   properties: {
     principalId: managedIdentityObjectId
     roleDefinitionId: searchIndexDataContributor.id
     principalType: 'ServicePrincipal'
   }
+  dependsOn: [
+    aiSearch
+  ]
 }
 
 // Storage Role Definitions
@@ -421,6 +406,10 @@ resource projectStorageBlobContributor 'Microsoft.Authorization/roleAssignments@
     roleDefinitionId: storageBlobDataContributor.id
     principalType: 'ServicePrincipal'
   }
+  dependsOn: [
+    aiProject
+    storageAccount
+  ]
 }
 
 resource existingProjectStorageBlobContributor 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (!empty(azureExistingAIProjectResourceId)) {
@@ -441,6 +430,10 @@ resource projectStorageBlobReader 'Microsoft.Authorization/roleAssignments@2022-
     roleDefinitionId: storageBlobDataReader.id
     principalType: 'ServicePrincipal'
   }
+  dependsOn: [
+    aiProject
+    storageAccount
+  ]
 }
 
 resource existingProjectStorageBlobReader 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (!empty(azureExistingAIProjectResourceId)) {
@@ -462,6 +455,10 @@ resource searchStorageBlobDataReader 'Microsoft.Authorization/roleAssignments@20
     roleDefinitionId: storageBlobDataReader.id
     principalType: 'ServicePrincipal'
   }
+  dependsOn: [
+    searchServiceEnableIdentity
+    storageAccount
+  ]
 }
 
 // Default container for AI Foundry
@@ -474,7 +471,7 @@ resource defaultContainer 'Microsoft.Storage/storageAccounts/blobServices/contai
 }
 
 // Connect Storage to Project
-resource storageConnection 'Microsoft.CognitiveServices/accounts/projects/connections@2025-04-01-preview' = {
+resource storageConnection 'Microsoft.CognitiveServices/accounts/projects/connections@2025-04-01-preview' = if (empty(azureExistingAIProjectResourceId)) {
   parent: aiProject
   name: 'storage-connection'
   properties: {
@@ -488,7 +485,11 @@ resource storageConnection 'Microsoft.CognitiveServices/accounts/projects/connec
       ContainerName: 'default'
     }
   }
-  dependsOn: [defaultContainer]
+  dependsOn: [
+    defaultContainer
+    projectStorageBlobContributor
+    projectStorageBlobReader
+  ]
 }
 
 // Role Definitions for deploying user
@@ -506,6 +507,9 @@ resource userAIServicesAccess 'Microsoft.Authorization/roleAssignments@2022-04-0
     roleDefinitionId: cognitiveServicesUser.id
     principalType: deployingUserPrincipalType
   }
+  dependsOn: [
+    aiServices
+  ]
 }
 
 // Grant deploying user Azure AI User role on AI Services
@@ -517,6 +521,9 @@ resource userAzureAIAccess 'Microsoft.Authorization/roleAssignments@2022-04-01' 
     roleDefinitionId: azureAIUser.id
     principalType: deployingUserPrincipalType
   }
+  dependsOn: [
+    aiServices
+  ]
 }
 
 // Grant deploying user access to AI Search
@@ -578,9 +585,6 @@ output aiSearchConnectionName string = aiSearchConnectionName
 @description('The resource ID of the AI Search connection.')
 output aiSearchConnectionId string = empty(azureExistingAIProjectResourceId) ? searchConnection.id : ''
 
-@description('The resource ID of the Application Insights instance.')
-output applicationInsightsId string = applicationInsights.id
-
 @description('The name of the Log Analytics workspace.')
 output logAnalyticsWorkspaceResourceName string = useExisting ? existingLogAnalyticsWorkspace.name : logAnalytics.name
 
@@ -592,9 +596,6 @@ output logAnalyticsWorkspaceSubscription string = useExisting ? existingLawSubsc
 
 @description('The endpoint URL for the AI Foundry project.')
 output projectEndpoint string = !empty(existingProjEndpoint) ? existingProjEndpoint : aiProject.properties.endpoints['AI Foundry API']
-
-@description('The connection string for Application Insights.')
-output applicationInsightsConnectionString string = applicationInsights.properties.ConnectionString
 
 @description('The resource ID of the AI Foundry account.')
 output aiFoundryResourceId string = !empty(azureExistingAIProjectResourceId) ? azureExistingAIProjectResourceId : aiServices.id

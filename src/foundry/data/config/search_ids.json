@@ -1,8 +1,8 @@
 {
-  "index_name": "damynuiv657gue-documents",
-  "knowledge_base_name": "damynuiv657gue-kb",
-  "knowledge_source_name": "damynuiv657gue-ks",
-  "blob_container_name": "damynuiv657gue-documents",
+  "index_name": "daienzzfd3llsq-documents",
+  "knowledge_base_name": "daienzzfd3llsq-kb",
+  "knowledge_source_name": "daienzzfd3llsq-ks",
+  "blob_container_name": "daienzzfd3llsq-documents",
   "document_count": 32,
   "pdf_files": [
     "delivery_operations.pdf",
@@ -18,17 +18,17 @@
     "supply_chain_risk_management.pdf"
   ],
   "blob_urls": {
-    "delivery_operations.pdf": "https://stdamynuiv657gue.blob.core.windows.net//damynuiv657gue-documents/delivery_operations.pdf",
-    "delivery_operations_manual.pdf": "https://stdamynuiv657gue.blob.core.windows.net//damynuiv657gue-documents/delivery_operations_manual.pdf",
-    "environmental_safety_compliance_policy.pdf": "https://stdamynuiv657gue.blob.core.windows.net//damynuiv657gue-documents/environmental_safety_compliance_policy.pdf",
-    "inventory_logistics.pdf": "https://stdamynuiv657gue.blob.core.windows.net//damynuiv657gue-documents/inventory_logistics.pdf",
-    "inventory_management_standards.pdf": "https://stdamynuiv657gue.blob.core.windows.net//damynuiv657gue-documents/inventory_management_standards.pdf",
-    "quality_control_manual.pdf": "https://stdamynuiv657gue.blob.core.windows.net//damynuiv657gue-documents/quality_control_manual.pdf",
-    "supplier_management.pdf": "https://stdamynuiv657gue.blob.core.windows.net//damynuiv657gue-documents/supplier_management.pdf",
-    "supplier_onboarding_approval_process.pdf": "https://stdamynuiv657gue.blob.core.windows.net//damynuiv657gue-documents/supplier_onboarding_approval_process.pdf",
-    "supplier_performance_evaluation_framework.pdf": "https://stdamynuiv657gue.blob.core.windows.net//damynuiv657gue-documents/supplier_performance_evaluation_framework.pdf",
-    "supplier_terms_and_conditions.pdf": "https://stdamynuiv657gue.blob.core.windows.net//damynuiv657gue-documents/supplier_terms_and_conditions.pdf",
-    "supply_chain_risk_management.pdf": "https://stdamynuiv657gue.blob.core.windows.net//damynuiv657gue-documents/supply_chain_risk_management.pdf"
+    "delivery_operations.pdf": "https://stdaienzzfd3llsq.blob.core.windows.net//daienzzfd3llsq-documents/delivery_operations.pdf",
+    "delivery_operations_manual.pdf": "https://stdaienzzfd3llsq.blob.core.windows.net//daienzzfd3llsq-documents/delivery_operations_manual.pdf",
+    "environmental_safety_compliance_policy.pdf": "https://stdaienzzfd3llsq.blob.core.windows.net//daienzzfd3llsq-documents/environmental_safety_compliance_policy.pdf",
+    "inventory_logistics.pdf": "https://stdaienzzfd3llsq.blob.core.windows.net//daienzzfd3llsq-documents/inventory_logistics.pdf",
+    "inventory_management_standards.pdf": "https://stdaienzzfd3llsq.blob.core.windows.net//daienzzfd3llsq-documents/inventory_management_standards.pdf",
+    "quality_control_manual.pdf": "https://stdaienzzfd3llsq.blob.core.windows.net//daienzzfd3llsq-documents/quality_control_manual.pdf",
+    "supplier_management.pdf": "https://stdaienzzfd3llsq.blob.core.windows.net//daienzzfd3llsq-documents/supplier_management.pdf",
+    "supplier_onboarding_approval_process.pdf": "https://stdaienzzfd3llsq.blob.core.windows.net//daienzzfd3llsq-documents/supplier_onboarding_approval_process.pdf",
+    "supplier_performance_evaluation_framework.pdf": "https://stdaienzzfd3llsq.blob.core.windows.net//daienzzfd3llsq-documents/supplier_performance_evaluation_framework.pdf",
+    "supplier_terms_and_conditions.pdf": "https://stdaienzzfd3llsq.blob.core.windows.net//daienzzfd3llsq-documents/supplier_terms_and_conditions.pdf",
+    "supply_chain_risk_management.pdf": "https://stdaienzzfd3llsq.blob.core.windows.net//daienzzfd3llsq-documents/supply_chain_risk_management.pdf"
   },
-  "storage_endpoint": "https://stdamynuiv657gue.blob.core.windows.net/"
+  "storage_endpoint": "https://stdaienzzfd3llsq.blob.core.windows.net/"
 }

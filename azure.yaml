@@ -16,49 +16,47 @@ hooks:
   postprovision:
     windows:
       run: |
-        $isWorkshop = $env:IS_WORKSHOP
-        $deployApp = $env:AZURE_ENV_DEPLOY_APP
-
-        if (-not ($isWorkshop -eq "true" -and $deployApp -ne "true")) {
-            Write-Host "Web app URL: "
-            Write-Host "$env:WEB_APP_URL" -ForegroundColor Cyan
-        }
-        if ($isWorkshop -eq "true") {
-            Write-Host ""
-        } else {
-            Write-Host "`nRun the following commands in the bash terminal:"
-            Write-Host "1. Create agents (with WorkIQ integration):"
-            Write-Host "bash ./infra/scripts/agent_scripts/run_create_agents_scripts.sh" -ForegroundColor Cyan
-
-            Write-Host "`n2. Create Fabric items:"
-            Write-Host "bash ./infra/scripts/fabric_scripts/run_fabric_items_scripts.sh <fabric_workspace_id>" -ForegroundColor Cyan
-
-            Write-Host "`nNote: WorkIQ integration requires tenant admin consent for Microsoft 365 data access."
-        }
+        Write-Host "=== Azure Deployment Complete ===" -ForegroundColor Green
+        Write-Host ""
+        Write-Host "AI Foundry Project Endpoint: $env:AZURE_AI_PROJECT_ENDPOINT" -ForegroundColor Cyan
+        Write-Host "AI Search Endpoint: $env:AZURE_AI_SEARCH_ENDPOINT" -ForegroundColor Cyan
+        Write-Host "Storage Account: $env:AZURE_STORAGE_ACCOUNT_NAME" -ForegroundColor Cyan
+        Write-Host ""
+        Write-Host "=== Post-Deployment Setup ===" -ForegroundColor Yellow
+        Write-Host "Running post-deployment scripts..."
+        Write-Host ""
+        
+        Write-Host "1. Uploading documents to search index..." -ForegroundColor Cyan
+        python src/foundry/scripts/01_upload_to_search.py
+        
+        Write-Host "`n2. Creating AI agents..." -ForegroundColor Cyan
+        python src/foundry/scripts/02_create_agent_no_sql.py
+        Write-Host ""
+        Write-Host "=== Deployment Complete ===" -ForegroundColor Green
 
       shell: pwsh
       continueOnError: false
       interactive: true
     posix:
       run: |
-        if [ "$IS_WORKSHOP" != "true" ] || [ "$AZURE_ENV_DEPLOY_APP" = "true" ]; then
-            echo "Web app URL: "
-            echo $WEB_APP_URL
-            echo ""
-        fi
-
-        if [ "$IS_WORKSHOP" = "true" ]; then
-            echo ""
-        else
-            echo "Run the following commands in the bash terminal:"
-            echo "1. Create agents (with WorkIQ integration):"
-            echo "bash ./infra/scripts/agent_scripts/run_create_agents_scripts.sh"
-            echo ""
-            echo "2. Create Fabric items:"
-            echo "bash ./infra/scripts/fabric_scripts/run_fabric_items_scripts.sh <fabric_workspace_id>"
-            echo ""
-            echo "Note: WorkIQ integration requires tenant admin consent for Microsoft 365 data access."
-        fi
+        echo "=== Azure Deployment Complete ==="
+        echo ""
+        echo "AI Foundry Project Endpoint: $AZURE_AI_PROJECT_ENDPOINT"
+        echo "AI Search Endpoint: $AZURE_AI_SEARCH_ENDPOINT"
+        echo "Storage Account: $AZURE_STORAGE_ACCOUNT_NAME"
+        echo ""
+        echo "=== Post-Deployment Setup ==="
+        echo "Running post-deployment scripts..."
+        echo ""
+        
+        echo "1. Uploading documents to search index..."
+        python src/foundry/scripts/01_upload_to_search.py
+        
+        echo ""
+        echo "2. Creating AI agents..."
+        python src/foundry/scripts/02_create_agent_no_sql.py
+        echo ""
+        echo "=== Deployment Complete ==="
 
       shell: sh
       continueOnError: false
