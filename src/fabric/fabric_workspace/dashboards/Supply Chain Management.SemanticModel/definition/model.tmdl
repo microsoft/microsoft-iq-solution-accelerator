@@ -1,0 +1,34 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-IN
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["customer customer","customer customeraccount","customer customerrelationshiptype","customer customertradename","customer location","inventory demandforecast","inventory inventory","inventory inventorytransactions","inventory purchaseorderitems","inventory purchaseorders","inventory warehouses","product product","product productcategory","supplychain productsuppliers","supplychain suppliers","supplychain supplychainevents","Date","ServerParameter","DatabaseParameter"]
+
+ref table 'customer customer'
+ref table 'customer customeraccount'
+ref table 'customer customerrelationshiptype'
+ref table 'customer customertradename'
+ref table 'customer location'
+ref table 'inventory demandforecast'
+ref table 'inventory inventory'
+ref table 'inventory inventorytransactions'
+ref table 'inventory purchaseorderitems'
+ref table 'inventory purchaseorders'
+ref table 'inventory warehouses'
+ref table 'product product'
+ref table 'product productcategory'
+ref table 'supplychain productsuppliers'
+ref table 'supplychain suppliers'
+ref table 'supplychain supplychainevents'
+ref table Date
+ref table DateTableTemplate_4954bd80-3558-4b70-96b6-d5714be3d299
+ref table LocalDateTable_7e30d256-b63a-4b21-ac46-9f542615784c
+
+ref cultureInfo en-US
+
