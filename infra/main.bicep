@@ -70,11 +70,7 @@ param embeddingDeploymentCapacity int = 80
 
 // Image tag parameter removed - not needed for Copilot Studio
 
-@description('Set to true for workshop deployment with sample data and simplified configuration.')
-param isWorkshop bool = true
 
-// Copilot Studio deployment - no web app needed
-var shouldDeployApp = false
 
 param AZURE_LOCATION string=''
 var solutionLocation = empty(AZURE_LOCATION) ? resourceGroup().location : AZURE_LOCATION
@@ -119,7 +115,7 @@ var deployingUserPrincipalId = deployerInfo.objectId
 param deployingUserPrincipalType string = 'User'
 
 // ========== Resource Group Tag ========== //
-resource resourceGroupTags 'Microsoft.Resources/tags@2021-04-01' = if (!isWorkshop) {
+resource resourceGroupTags 'Microsoft.Resources/tags@2021-04-01' = {
   name: 'default'
   properties: {
     tags: {
@@ -159,7 +155,6 @@ module aifoundry 'deploy_ai_foundry.bicep' = {
     azureExistingAIProjectResourceId: azureExistingAIProjectResourceId
     deployingUserPrincipalId: deployingUserPrincipalId
     deployingUserPrincipalType: deployingUserPrincipalType
-    isWorkshop: isWorkshop
     searchServiceLocation: searchServiceLocation
   }
   scope: resourceGroup(resourceGroup().name)
@@ -237,7 +232,7 @@ output USE_CASE string = usecase
 output AZURE_AI_SEARCH_ENDPOINT string = aifoundry.outputs.aiSearchTarget
 
 @description('Azure AI Search index name for document search')
-output AZURE_AI_SEARCH_INDEX string = f"{solutionPrefix}-documents"
+output AZURE_AI_SEARCH_INDEX string = '${solutionPrefix}-documents'
 
 @description('Azure AI Search service resource name')
 output AZURE_AI_SEARCH_NAME string = aifoundry.outputs.aiSearchName
@@ -247,6 +242,12 @@ output SEARCH_DATA_FOLDER string = 'data/documents'
 
 @description('AI Foundry connection name for Azure AI Search')
 output AZURE_AI_SEARCH_CONNECTION_NAME string = aifoundry.outputs.aiSearchConnectionName
+
+@description('Azure Storage blob service endpoint URL')
+output AZURE_STORAGE_BLOB_ENDPOINT string = aifoundry.outputs.storageBlobEndpoint
+
+@description('Azure Storage account name')
+output AZURE_STORAGE_ACCOUNT_NAME string = aifoundry.outputs.storageAccountName
 
 @description('AI Foundry connection ID for Azure AI Search')
 output AZURE_AI_SEARCH_CONNECTION_ID string = aifoundry.outputs.aiSearchConnectionId
@@ -263,15 +264,5 @@ output AZURE_AI_PROJECT_NAME string = aifoundry.outputs.aiProjectName
 @description('Azure AI Services resource name')
 output AI_SERVICE_NAME string = aifoundry.outputs.aiServicesName
 
-@description('Flag indicating workshop deployment mode - still needed for AI Search')
-output IS_WORKSHOP bool = isWorkshop
-
-// App deployment flags removed - not needed for Copilot Studio
-// @description('Backend runtime stack (python or dotnet)')
-// output BACKEND_RUNTIME_STACK string = 'none'
-
-// @description('Flag indicating whether to deploy App Service')
-// output AZURE_ENV_DEPLOY_APP bool = false
-
-// @description('Flag indicating Azure-only mode (no Fabric)')
-// output AZURE_ENV_ONLY bool = false
+// @description('AI Foundry resource ID for role assignments')
+// output AI_FOUNDRY_RESOURCE_ID string = aifoundry.outputs.aiFoundryResourceId
