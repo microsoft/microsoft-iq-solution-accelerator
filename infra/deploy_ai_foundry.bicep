@@ -48,9 +48,6 @@ param tags object = {}
 @description('Location for AI services deployment. This is the location where the Search service resource will be deployed.')
 param searchServiceLocation string = resourceGroup().location
 
-@description('When true, deploys additional resources for workshop scenarios including AI Search and Storage.')
-param isWorkshop bool = false
-
 var abbrs = loadJsonContent('./abbreviations.json')
 var aiServicesName = '${abbrs.ai.aiServices}${solutionName}'
 var workspaceName = '${abbrs.managementGovernance.logAnalyticsWorkspace}${solutionName}'
@@ -72,7 +69,7 @@ var aiModelDeployments = concat([
     version: gptModelVersion
     raiPolicyName: 'Microsoft.Default'
   }
-], isWorkshop ? [
+], [
   {
     name: embeddingModel
     model: embeddingModel
@@ -82,7 +79,7 @@ var aiModelDeployments = concat([
     }
     raiPolicyName: 'Microsoft.Default'
   }
-] : [])
+])
 
 var useExisting = !empty(existingLogAnalyticsWorkspaceId)
 var existingLawSubscription = useExisting ? split(existingLogAnalyticsWorkspaceId, '/')[2] : ''
@@ -126,7 +123,7 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
 }
 
 // Storage Account
-resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = if(isWorkshop) {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
   name: storageName
   location: location
   tags: tags
@@ -142,7 +139,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = if(isWo
 }
 
 // Blob Service
-resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2023-05-01' = if(isWorkshop) {
+resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2023-05-01' = {
   parent: storageAccount
   name: 'default'
 }
@@ -218,7 +215,7 @@ resource aiSearch 'Microsoft.Search/searchServices@2024-06-01-preview' = {
   }
 }
 
-module searchServiceEnableIdentity 'deploy_enable_srch_managed_identity.bicep' = if (isWorkshop) {
+module searchServiceEnableIdentity 'deploy_enable_srch_managed_identity.bicep' = {
   name: 'searchServiceIdentity'
   params: {
     searchServiceName: aiSearchName
@@ -341,7 +338,7 @@ resource assignOpenAIRoleToAISearch 'Microsoft.Authorization/roleAssignments@202
   }
 }
 
-module existingOpenAiProject 'deploy_foundry_role_assignment.bicep' = if (!empty(azureExistingAIProjectResourceId) && isWorkshop) {
+module existingOpenAiProject 'deploy_foundry_role_assignment.bicep' = if (!empty(azureExistingAIProjectResourceId)) {
   name: 'assignOpenAIRoleToAISearchExisting'
   scope: resourceGroup(existingAIServiceSubscription, existingAIServiceResourceGroup)
   params: {
@@ -416,7 +413,7 @@ resource storageBlobDataReader 'Microsoft.Authorization/roleDefinitions@2022-04-
 }
 
 // Grant AI Project identity access to Storage
-resource projectStorageBlobContributor 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (empty(azureExistingAIProjectResourceId) && isWorkshop) {
+resource projectStorageBlobContributor 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (empty(azureExistingAIProjectResourceId)) {
   scope: storageAccount
   name: guid(storageAccount.id, aiProject.id, storageBlobDataContributor.id)
   properties: {
@@ -426,7 +423,7 @@ resource projectStorageBlobContributor 'Microsoft.Authorization/roleAssignments@
   }
 }
 
-resource existingProjectStorageBlobContributor 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (!empty(azureExistingAIProjectResourceId) && isWorkshop) {
+resource existingProjectStorageBlobContributor 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (!empty(azureExistingAIProjectResourceId)) {
   scope: storageAccount
   name: guid(storageAccount.id, existingAIProjectName, storageBlobDataContributor.id)
   properties: {
@@ -436,7 +433,7 @@ resource existingProjectStorageBlobContributor 'Microsoft.Authorization/roleAssi
   }
 }
 
-resource projectStorageBlobReader 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (empty(azureExistingAIProjectResourceId) && isWorkshop) {
+resource projectStorageBlobReader 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (empty(azureExistingAIProjectResourceId)) {
   scope: storageAccount
   name: guid(storageAccount.id, aiProject.id, storageBlobDataReader.id)
   properties: {
@@ -446,7 +443,7 @@ resource projectStorageBlobReader 'Microsoft.Authorization/roleAssignments@2022-
   }
 }
 
-resource existingProjectStorageBlobReader 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (!empty(azureExistingAIProjectResourceId) && isWorkshop) {
+resource existingProjectStorageBlobReader 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (!empty(azureExistingAIProjectResourceId)) {
   scope: storageAccount
   name: guid(storageAccount.id, existingAIProjectName, storageBlobDataReader.id)
   properties: {
@@ -457,7 +454,7 @@ resource existingProjectStorageBlobReader 'Microsoft.Authorization/roleAssignmen
 }
 
 // Grant AI Search identity access to Storage (for indexers)
-resource searchStorageBlobDataReader 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (isWorkshop) {
+resource searchStorageBlobDataReader 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   scope: storageAccount
   name: guid(storageAccount.id, aiSearch.id, storageBlobDataReader.id)
   properties: {
@@ -468,7 +465,7 @@ resource searchStorageBlobDataReader 'Microsoft.Authorization/roleAssignments@20
 }
 
 // Default container for AI Foundry
-resource defaultContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2023-05-01' = if (isWorkshop) {
+resource defaultContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2023-05-01' = {
   parent: blobService
   name: 'default'
   properties: {
@@ -477,7 +474,7 @@ resource defaultContainer 'Microsoft.Storage/storageAccounts/blobServices/contai
 }
 
 // Connect Storage to Project
-resource storageConnection 'Microsoft.CognitiveServices/accounts/projects/connections@2025-04-01-preview' = if (isWorkshop) {
+resource storageConnection 'Microsoft.CognitiveServices/accounts/projects/connections@2025-04-01-preview' = {
   parent: aiProject
   name: 'storage-connection'
   properties: {
@@ -544,7 +541,7 @@ resource userSearchServiceContributor 'Microsoft.Authorization/roleAssignments@2
 }
 
 // Grant deploying user access to Storage
-resource userStorageBlobContributor 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (isWorkshop) {
+resource userStorageBlobContributor 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   scope: storageAccount
   name: guid(storageAccount.id, deployingUserPrincipalId, storageBlobDataContributor.id)
   properties: {
@@ -601,3 +598,9 @@ output applicationInsightsConnectionString string = applicationInsights.properti
 
 @description('The resource ID of the AI Foundry account.')
 output aiFoundryResourceId string = !empty(azureExistingAIProjectResourceId) ? azureExistingAIProjectResourceId : aiServices.id
+
+@description('The blob endpoint URL for the storage account.')
+output storageBlobEndpoint string = storageAccount.properties.primaryEndpoints.blob
+
+@description('The name of the storage account.')
+output storageAccountName string = storageAccount.name
