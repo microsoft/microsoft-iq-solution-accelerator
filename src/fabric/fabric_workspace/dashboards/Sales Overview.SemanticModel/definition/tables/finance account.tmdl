@@ -1,0 +1,113 @@
+table 'finance account'
+	lineageTag: ce6bfb7d-d37f-44df-a482-7644e597979b
+
+	column AccountNumber
+		dataType: string
+		lineageTag: 3acd5b69-4ae7-4e5c-8c17-fbbd0772f0f1
+		summarizeBy: none
+		sourceColumn: AccountNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column AccountType
+		dataType: string
+		lineageTag: be23745b-8111-4199-b9c1-1d01a47bc09e
+		summarizeBy: none
+		sourceColumn: AccountType
+
+		annotation SummarizationSetBy = Automatic
+
+	column AccountStatus
+		dataType: string
+		lineageTag: 2a6258fb-3a78-4641-94b7-2dbf359d9317
+		summarizeBy: none
+		sourceColumn: AccountStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 8cad8691-de3b-4c12-8933-19ae83d2ddbe
+		summarizeBy: none
+		sourceColumn: CreatedDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ClosedDate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 45aa96cc-8205-4a84-bc37-cdf9066cdd83
+		summarizeBy: none
+		sourceColumn: ClosedDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Balance
+		dataType: double
+		lineageTag: 912ee129-ce10-4ac0-ae54-c30e7cd509df
+		summarizeBy: sum
+		sourceColumn: Balance
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Currency
+		dataType: string
+		lineageTag: 499158e5-1c95-4fdd-967c-0ba4421d48cf
+		summarizeBy: none
+		sourceColumn: Currency
+
+		annotation SummarizationSetBy = Automatic
+
+	column Description
+		dataType: string
+		lineageTag: ce549dbd-1f8e-4ca9-8ebc-f1226f66795f
+		summarizeBy: none
+		sourceColumn: Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedBy
+		dataType: string
+		lineageTag: d29d486f-018f-4d36-9201-9712ae614eff
+		summarizeBy: none
+		sourceColumn: CreatedBy
+
+		annotation SummarizationSetBy = Automatic
+
+	column AccountID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: cc55036b-b838-4e7b-b8c7-df5d8607d491
+		summarizeBy: none
+		sourceColumn: AccountID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 2d48caf6-4aa5-4146-b6b7-936ca41ad20f
+		summarizeBy: none
+		sourceColumn: CustomerID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'finance account' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database("ccllgusga4suzkb52t4j7lpn7y-vwhycj2qas4ufjfa3ocaowwi24.datawarehouse.fabric.microsoft.com", "miqsadata"),
+				    finance_account = Source{[Schema="finance",Item="account"]}[Data]
+				in
+				    finance_account
+
+	annotation PBI_ResultType = Table
+

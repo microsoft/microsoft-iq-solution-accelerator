@@ -1,0 +1,117 @@
+table 'finance invoice'
+	lineageTag: 12702a3f-dbe7-4c0f-9029-99300469dd91
+
+	column InvoiceNumber
+		dataType: string
+		lineageTag: 4d6e4619-56e9-4f52-9631-42d202807673
+		summarizeBy: none
+		sourceColumn: InvoiceNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column InvoiceDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 608965a0-291f-4e90-84ca-c5bf9fef552a
+		summarizeBy: none
+		sourceColumn: InvoiceDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column DueDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: ed11e380-8a54-442b-bd16-389d12a15bd9
+		summarizeBy: none
+		sourceColumn: DueDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column SubTotal
+		dataType: double
+		lineageTag: 9651a329-e589-47d6-8f37-5eb88dc47d36
+		summarizeBy: sum
+		sourceColumn: SubTotal
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TaxAmount
+		dataType: double
+		lineageTag: c6218069-2147-47ac-868c-0b9dc16bd153
+		summarizeBy: sum
+		sourceColumn: TaxAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TotalAmount
+		dataType: double
+		lineageTag: e5a6fcdf-a45f-4080-99ea-67bccb3e3b05
+		summarizeBy: sum
+		sourceColumn: TotalAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column InvoiceStatus
+		dataType: string
+		lineageTag: e99b8517-8f67-4548-aecc-38a9320aa634
+		summarizeBy: none
+		sourceColumn: InvoiceStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedBy
+		dataType: string
+		lineageTag: 7b38376a-adfa-4645-9373-2895e87f54e2
+		summarizeBy: none
+		sourceColumn: CreatedBy
+
+		annotation SummarizationSetBy = Automatic
+
+	column InvoiceID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 1e1d70a1-f131-47a1-a2bf-459d290b4b8c
+		summarizeBy: none
+		sourceColumn: InvoiceID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 62816fdb-6c32-433d-bb33-f9a1c112c4a2
+		summarizeBy: none
+		sourceColumn: CustomerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: b8e31122-9dc0-4af6-abb0-83f5d9b7af7e
+		summarizeBy: none
+		sourceColumn: OrderID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'finance invoice' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database("ccllgusga4suzkb52t4j7lpn7y-vwhycj2qas4ufjfa3ocaowwi24.datawarehouse.fabric.microsoft.com", "miqsadata"),
+				    finance_invoice = Source{[Schema="finance",Item="invoice"]}[Data]
+				in
+				    finance_invoice
+
+	annotation PBI_ResultType = Table
+
