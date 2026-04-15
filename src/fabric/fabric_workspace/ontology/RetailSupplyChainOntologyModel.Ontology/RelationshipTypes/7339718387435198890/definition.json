@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "7339718387435198890",
+  "name": "inventory_demandforecast_has_inventory_warehouses",
+  "namespaceType": "Imported",
+  "source": {
+    "entityTypeId": "43938683415727"
+  },
+  "target": {
+    "entityTypeId": "255553238490626"
+  }
+}

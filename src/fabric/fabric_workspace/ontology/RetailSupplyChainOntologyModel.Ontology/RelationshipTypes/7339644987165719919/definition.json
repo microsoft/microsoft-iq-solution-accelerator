@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "7339644987165719919",
+  "name": "inventory_inventorytransactions_has_shared_dimdate",
+  "namespaceType": "Imported",
+  "source": {
+    "entityTypeId": "14130145991729"
+  },
+  "target": {
+    "entityTypeId": "193783326082610"
+  }
+}

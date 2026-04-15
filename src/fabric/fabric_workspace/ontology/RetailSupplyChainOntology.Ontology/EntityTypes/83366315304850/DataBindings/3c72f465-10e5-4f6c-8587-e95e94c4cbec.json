@@ -1,0 +1,112 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "3c72f465-10e5-4f6c-8587-e95e94c4cbec",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "WarehouseID",
+        "targetPropertyId": "3255857841290000311"
+      },
+      {
+        "sourceColumnName": "WarehouseName",
+        "targetPropertyId": "3255857866460222606"
+      },
+      {
+        "sourceColumnName": "DisplayName",
+        "targetPropertyId": "3255857887733270867"
+      },
+      {
+        "sourceColumnName": "Type",
+        "targetPropertyId": "3255857909652800495"
+      },
+      {
+        "sourceColumnName": "Status",
+        "targetPropertyId": "3255857932404627855"
+      },
+      {
+        "sourceColumnName": "Location",
+        "targetPropertyId": "3255857955647623433"
+      },
+      {
+        "sourceColumnName": "AddressStreet",
+        "targetPropertyId": "3255857982899834472"
+      },
+      {
+        "sourceColumnName": "AddressCity",
+        "targetPropertyId": "3255858001796667395"
+      },
+      {
+        "sourceColumnName": "AddressState",
+        "targetPropertyId": "3255858026298163462"
+      },
+      {
+        "sourceColumnName": "AddressZipCode",
+        "targetPropertyId": "3255858050359382060"
+      },
+      {
+        "sourceColumnName": "AddressCountry",
+        "targetPropertyId": "3255858069663381350"
+      },
+      {
+        "sourceColumnName": "Phone",
+        "targetPropertyId": "3255858091244301781"
+      },
+      {
+        "sourceColumnName": "Email",
+        "targetPropertyId": "3255858118857903340"
+      },
+      {
+        "sourceColumnName": "ManagerName",
+        "targetPropertyId": "3255858141415259777"
+      },
+      {
+        "sourceColumnName": "ManagerEmail",
+        "targetPropertyId": "3255858162915028322"
+      },
+      {
+        "sourceColumnName": "WarehousePriority",
+        "targetPropertyId": "3255858366673098393"
+      },
+      {
+        "sourceColumnName": "MaxCapacity",
+        "targetPropertyId": "3255858182072326158"
+      },
+      {
+        "sourceColumnName": "OperatingHours",
+        "targetPropertyId": "3255858209343172109"
+      },
+      {
+        "sourceColumnName": "StaffCount",
+        "targetPropertyId": "3255858229904356457"
+      },
+      {
+        "sourceColumnName": "AutomationLevel",
+        "targetPropertyId": "3255858251465164849"
+      },
+      {
+        "sourceColumnName": "DeliveryName",
+        "targetPropertyId": "3255858274506946353"
+      },
+      {
+        "sourceColumnName": "CreatedBy",
+        "targetPropertyId": "3255858299076222025"
+      },
+      {
+        "sourceColumnName": "CreatedDate",
+        "targetPropertyId": "3255858320688934194"
+      },
+      {
+        "sourceColumnName": "LastUpdated",
+        "targetPropertyId": "3255858345081545613"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "27818fad-0450-42b9-a4a0-db84075ac8d7",
+      "itemId": "4118a141-e905-4be6-9980-6ef912c064a3",
+      "sourceTableName": "warehouses",
+      "sourceSchema": "inventory"
+    }
+  }
+}

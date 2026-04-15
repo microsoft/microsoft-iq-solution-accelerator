@@ -1,0 +1,23 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/contextualization/1.0.0/schema.json",
+  "id": "d781e5f7-28b2-4e49-8fd8-043ea5bd3818",
+  "dataBindingTable": {
+    "workspaceId": "27818fad-0450-42b9-a4a0-db84075ac8d7",
+    "itemId": "4118a141-e905-4be6-9980-6ef912c064a3",
+    "sourceTableName": "supplychaineventimpacts",
+    "sourceSchema": "supplychain",
+    "sourceType": "LakehouseTable"
+  },
+  "sourceKeyRefBindings": [
+    {
+      "sourceColumnName": "ImpactID",
+      "targetPropertyId": "3255860261508547851"
+    }
+  ],
+  "targetKeyRefBindings": [
+    {
+      "sourceColumnName": "SupplierID",
+      "targetPropertyId": "3255859955211516862"
+    }
+  ]
+}

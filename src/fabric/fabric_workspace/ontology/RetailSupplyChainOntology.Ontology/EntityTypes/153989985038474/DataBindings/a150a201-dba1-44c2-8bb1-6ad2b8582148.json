@@ -1,0 +1,60 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "a150a201-dba1-44c2-8bb1-6ad2b8582148",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "ImpactID",
+        "targetPropertyId": "3255860261508547851"
+      },
+      {
+        "sourceColumnName": "EventID",
+        "targetPropertyId": "3255860282780319603"
+      },
+      {
+        "sourceColumnName": "SupplierID",
+        "targetPropertyId": "3255860310299833234"
+      },
+      {
+        "sourceColumnName": "ProductCategory",
+        "targetPropertyId": "3255860330732004839"
+      },
+      {
+        "sourceColumnName": "ImpactLevel",
+        "targetPropertyId": "3255860351672540061"
+      },
+      {
+        "sourceColumnName": "DeliveryDelay",
+        "targetPropertyId": "3255860374382667681"
+      },
+      {
+        "sourceColumnName": "CostIncrease",
+        "targetPropertyId": "3255860396546441498"
+      },
+      {
+        "sourceColumnName": "AlternativeAction",
+        "targetPropertyId": "3255860415941358209"
+      },
+      {
+        "sourceColumnName": "EstimatedRevenueImpact",
+        "targetPropertyId": "3255860437907043962"
+      },
+      {
+        "sourceColumnName": "CreatedBy",
+        "targetPropertyId": "3255860459574879015"
+      },
+      {
+        "sourceColumnName": "CreatedDate",
+        "targetPropertyId": "3255860483168642576"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "27818fad-0450-42b9-a4a0-db84075ac8d7",
+      "itemId": "4118a141-e905-4be6-9980-6ef912c064a3",
+      "sourceTableName": "supplychaineventimpacts",
+      "sourceSchema": "supplychain"
+    }
+  }
+}

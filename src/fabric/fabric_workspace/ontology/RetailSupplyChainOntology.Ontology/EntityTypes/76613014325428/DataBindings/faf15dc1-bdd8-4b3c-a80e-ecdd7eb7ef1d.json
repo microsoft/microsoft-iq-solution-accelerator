@@ -1,0 +1,72 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "faf15dc1-bdd8-4b3c-a80e-ecdd7eb7ef1d",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "PurchaseOrderID",
+        "targetPropertyId": "3255857471748687595"
+      },
+      {
+        "sourceColumnName": "PurchaseOrderNumber",
+        "targetPropertyId": "3255857491949020214"
+      },
+      {
+        "sourceColumnName": "SupplierID",
+        "targetPropertyId": "3255857516281837741"
+      },
+      {
+        "sourceColumnName": "OrderDate",
+        "targetPropertyId": "3255857541163318545"
+      },
+      {
+        "sourceColumnName": "ExpectedDeliveryDate",
+        "targetPropertyId": "3255857559706095126"
+      },
+      {
+        "sourceColumnName": "ActualDeliveryDate",
+        "targetPropertyId": "3255857586850593435"
+      },
+      {
+        "sourceColumnName": "Status",
+        "targetPropertyId": "3255857606623403536"
+      },
+      {
+        "sourceColumnName": "TotalOrderValue",
+        "targetPropertyId": "3255857629092419937"
+      },
+      {
+        "sourceColumnName": "WarehouseID",
+        "targetPropertyId": "3255857653308786948"
+      },
+      {
+        "sourceColumnName": "OrderedBy",
+        "targetPropertyId": "3255857675270591751"
+      },
+      {
+        "sourceColumnName": "OrderPriority",
+        "targetPropertyId": "3255857770971895247"
+      },
+      {
+        "sourceColumnName": "Notes",
+        "targetPropertyId": "3255857702691245223"
+      },
+      {
+        "sourceColumnName": "CreatedBy",
+        "targetPropertyId": "3255857724291805417"
+      },
+      {
+        "sourceColumnName": "CreatedDate",
+        "targetPropertyId": "3255857748084156453"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "27818fad-0450-42b9-a4a0-db84075ac8d7",
+      "itemId": "4118a141-e905-4be6-9980-6ef912c064a3",
+      "sourceTableName": "purchaseorders",
+      "sourceSchema": "inventory"
+    }
+  }
+}

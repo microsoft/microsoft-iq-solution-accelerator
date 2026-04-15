@@ -1,0 +1,23 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/contextualization/1.0.0/schema.json",
+  "id": "8cae1a37-836f-479c-8899-1c73ef0c2882",
+  "dataBindingTable": {
+    "workspaceId": "27818fad-0450-42b9-a4a0-db84075ac8d7",
+    "itemId": "4118a141-e905-4be6-9980-6ef912c064a3",
+    "sourceTableName": "productsuppliers",
+    "sourceSchema": "supplychain",
+    "sourceType": "LakehouseTable"
+  },
+  "sourceKeyRefBindings": [
+    {
+      "sourceColumnName": "ProductSupplierID",
+      "targetPropertyId": "3255859674283048712"
+    }
+  ],
+  "targetKeyRefBindings": [
+    {
+      "sourceColumnName": "SupplierID",
+      "targetPropertyId": "3255859955211516862"
+    }
+  ]
+}
