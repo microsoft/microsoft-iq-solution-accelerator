@@ -67,18 +67,19 @@ ORDER BY NetRevenue DESC;
 -- 3. Products at or below reorder point across active warehouses
 SELECT
     i.ProductName,
-    i.ProductCategory               AS Category,
+    p.CategoryName                  AS Category,
     w.WarehouseName                 AS Warehouse,
     i.AvailableStock,
     i.ReorderPoint,
-    i.SafetyStockLevel              AS SafetyStock,
+    i.SafetyStockLevel             AS SafetyStock,
     i.AvailableStock - i.ReorderPoint AS StockBuffer,
-    i.Status                        AS StockStatus
+    i.Status                       AS StockStatus
 FROM inventory.inventory i
-JOIN inventory.warehouses w ON i.WarehouseLocation = w.WarehouseName
+JOIN inventory.warehouses w ON i.WarehouseID = w.WarehouseID
+LEFT JOIN product.product p ON i.ProductID = p.ProductID
 WHERE w.Status = 'Active'
   AND i.AvailableStock <= i.ReorderPoint
-ORDER BY i.AvailableStock ASC;
+ORDER BY i.AvailableStock ASC; 
 ```
 ---
 
@@ -99,14 +100,15 @@ SELECT
     e.GeographicArea              AS AreaAffected,
     e.StartDate,
     e.EndDate,
-    e.DeliveryDelay               AS DelayDays,
-    e.EstimatedRevenueImpact      AS EstRevenueImpact,
-    e.AlternativeAction           AS RecommendedAction,
-    e.ProductCategory,
+    i.DeliveryDelay               AS DelayDays,
+    i.EstimatedRevenueImpact      AS EstRevenueImpact,
+    i.AlternativeAction           AS RecommendedAction,
+    i.ProductLineName             AS ProductCategory,
     s.SupplierName,
     s.SupplierType,
     s.ReliabilityScore
 FROM supplychain.supplychainevents e
+LEFT JOIN supplychain.supplychaineventimpacts i ON e.EventID = i.EventID
 LEFT JOIN supplychain.suppliers s ON e.SupplierID = s.SupplierID
 WHERE e.Status IN ('Active', 'Monitoring')
 ORDER BY
@@ -132,7 +134,7 @@ ORDER BY
 SELECT
     s.SupplierName,
     s.SupplierType,
-    s.ProductCategory,
+    ps.ProductLineName              AS ProductCategory,
     s.Status                        AS SupplierStatus,
     s.ReliabilityScore,
     CASE
@@ -141,11 +143,21 @@ SELECT
         ELSE 'AT RISK'
     END                             AS ReliabilityRating,
     AVG(ps.LeadTimeDays)            AS AvgLeadTimeDays,
-    COUNT(DISTINCT ps.ProductName)  AS ProductsSupplied
+    COUNT(DISTINCT ps.ProductName)  AS ProductsSupplied,
+    CASE 
+        WHEN scd.EventID IS NOT NULL THEN 'DISRUPTED'
+        WHEN s.ReliabilityScore < 70 THEN 'LOW RELIABILITY'
+        ELSE 'OK'
+    END                             AS RiskFlag
 FROM supplychain.suppliers s
-JOIN supplychain.productsuppliers ps ON s.SupplierName = ps.SupplierName
+JOIN supplychain.productsuppliers ps ON s.SupplierID = ps.SupplierID
+LEFT JOIN (
+    SELECT DISTINCT SupplierID, EventID
+    FROM supplychain.supplychainevents 
+    WHERE Status IN ('Active', 'Monitoring')
+) scd ON s.SupplierID = scd.SupplierID
 WHERE s.Status = 'Active'
   AND ps.Status = 'Active'
-GROUP BY s.SupplierName, s.SupplierType, s.ProductCategory, s.Status, s.ReliabilityScore
-ORDER BY s.ReliabilityScore ASC, s.ProductCategory;
+GROUP BY s.SupplierName, s.SupplierType, ps.ProductLineName, s.Status, s.ReliabilityScore, scd.EventID
+ORDER BY s.ReliabilityScore ASC, ps.ProductLineName;
 ```
