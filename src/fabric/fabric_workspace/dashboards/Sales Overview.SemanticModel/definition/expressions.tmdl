@@ -1,11 +1,11 @@
-expression ServerParameter = "ccllgusga4suzkb52t4j7lpn7y-vwhycj2qas4ufjfa3ocaowwi24.datawarehouse.fabric.microsoft.com" meta [IsParameterQuery=true, List={"ccllgusga4suzkb52t4j7lpn7y-ljcuqknqh7ienmoden2voxj64q.datawarehouse.fabric.microsoft.com"}, DefaultValue="ccllgusga4suzkb52t4j7lpn7y-ljcuqknqh7ienmoden2voxj64q.datawarehouse.fabric.microsoft.com", Type="Text", IsParameterQueryRequired=true]
+expression ServerParameter = "ccllgusga4suzkb52t4j7lpn7y-vwhycj2qas4ufjfa3ocaowwi24.datawarehouse.fabric.microsoft.com" meta [IsParameterQuery=true, List={"ccllgusga4suzkb52t4j7lpn7y-vwhycj2qas4ufjfa3ocaowwi24.datawarehouse.fabric.microsoft.com"}, DefaultValue="ccllgusga4suzkb52t4j7lpn7y-vwhycj2qas4ufjfa3ocaowwi24.datawarehouse.fabric.microsoft.com", Type="Text", IsParameterQueryRequired=true]
 	lineageTag: 163a47c6-ec7f-4c47-8e8c-5ae74106968f
 
 	annotation PBI_NavigationStepName = Navigation
 
 	annotation PBI_ResultType = Text
 
-expression DatabaseParameter = "miqsadata" meta [IsParameterQuery=true, List={"miq1lh"}, DefaultValue="miq1lh", Type="Text", IsParameterQueryRequired=true]
+expression DatabaseParameter = "miqsadata" meta [IsParameterQuery=true, List={"miqsadata"}, DefaultValue="miqsadata", Type="Text", IsParameterQueryRequired=true]
 	lineageTag: 229752c5-676c-4cf6-8feb-df351a3f4bd7
 
 	annotation PBI_NavigationStepName = Navigation
