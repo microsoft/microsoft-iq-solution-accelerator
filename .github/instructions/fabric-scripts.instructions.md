@@ -72,6 +72,10 @@ The notebook uses [fabric-launcher](https://github.com/microsoft/fabric-launcher
 - `GITHUB_FABRIC_WORKSPACE_PATH` — path to workspace items in repo (default: `"src/fabric/fabric_workspace"`)
 - `LAKEHOUSE_NAME` — target lakehouse for data ingestion (default: `"miqsadata"`)
 - `DATA_FOLDERS` — mapping of source data folders to lakehouse target paths
+- `ONTOLOGY_NAMES` — list of ontology names to deploy from the repository
+- `ONTOLOGY_TARGET_FOLDER` — target folder where ontologies will be moved after deployment
+- `SOURCE_DEV_WORKSPACE_ID` — hardcoded GUID from source DEV workspace for replacement during ontology deployment
+- `SOURCE_DEV_LAKEHOUSE_ID` — hardcoded GUID from source DEV lakehouse for replacement during ontology deployment
 - `item_type_stages` — deployment order (Lakehouse/Ontology first, then Notebook/DataAgent)
 
 **When modifying the installer notebook:**
