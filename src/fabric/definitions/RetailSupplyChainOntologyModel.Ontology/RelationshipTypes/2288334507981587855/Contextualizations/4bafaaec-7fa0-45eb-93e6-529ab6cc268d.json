@@ -1,0 +1,23 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/contextualization/1.0.0/schema.json",
+  "id": "4bafaaec-7fa0-45eb-93e6-529ab6cc268d",
+  "dataBindingTable": {
+    "workspaceId": "27818fad-0450-42b9-a4a0-db84075ac8d7",
+    "itemId": "e6cd0b76-50e8-498f-9cd0-89251fae70c2",
+    "sourceTableName": "demandforecast",
+    "sourceSchema": "inventory",
+    "sourceType": "LakehouseTable"
+  },
+  "sourceKeyRefBindings": [
+    {
+      "sourceColumnName": "ForecastID",
+      "targetPropertyId": "2288659915680409054"
+    }
+  ],
+  "targetKeyRefBindings": [
+    {
+      "sourceColumnName": "ProductID",
+      "targetPropertyId": "2288657342795302473"
+    }
+  ]
+}
