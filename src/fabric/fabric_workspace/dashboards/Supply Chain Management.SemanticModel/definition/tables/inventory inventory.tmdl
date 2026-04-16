@@ -1,7 +1,7 @@
 table 'inventory inventory'
 	lineageTag: 817c5d97-4f9e-4e7c-91ed-c65dfb78a236
 
-	measure 'Product Count' = COUNTROWS('inventory Inventory')
+	measure 'Product Count' = SUM('inventory inventory'[AvailableStock])
 		formatString: 0
 		lineageTag: 79371282-cb0b-4ee4-b075-ec04ff934b78
 

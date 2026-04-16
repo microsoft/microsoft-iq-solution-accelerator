@@ -1,5 +1,12 @@
 # Fabric notebook source
 
+# METADATA ********************
+
+# META {
+# META   "kernel_info": {
+# META     "name": "synapse_pyspark"
+# META   }
+# META }
 
 # MARKDOWN ********************
 
@@ -26,6 +33,13 @@
 SCHEMA_NAME = "shared"
 spark.sql(f"CREATE DATABASE IF NOT EXISTS {SCHEMA_NAME}")
 print(f"✅ {SCHEMA_NAME} schema ready!")
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
 
 # CELL ********************
 
@@ -58,3 +72,10 @@ spark.sql(create_table_sql)
 print(f"✅ {SCHEMA_NAME}.{TABLE_NAME} table created!")
 
 print(f"🎉 {SCHEMA_NAME.upper()} DOMAIN COMPLETE!")
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
