@@ -2,5 +2,7 @@ python-dotenv==1.0.1
 azure-identity==1.23.0
 azure-ai-projects==2.0.0b2
 azure-search-documents==11.7.0b2
+azure-storage-blob==12.23.1
 openai==1.54.4
 pypdf==3.0.1
+requests==2.32.3
