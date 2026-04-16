@@ -23,6 +23,9 @@ hooks:
         Write-Host "Storage Account: $env:AZURE_STORAGE_ACCOUNT_NAME" -ForegroundColor Cyan
         Write-Host ""
         Write-Host "=== Post-Deployment Setup ===" -ForegroundColor Yellow
+        Write-Host "Installing Python dependencies..."
+        pip install -r src/foundry/scripts/requirements.txt
+        Write-Host ""
         Write-Host "Running post-deployment scripts..."
         Write-Host ""
         
@@ -46,6 +49,9 @@ hooks:
         echo "Storage Account: $AZURE_STORAGE_ACCOUNT_NAME"
         echo ""
         echo "=== Post-Deployment Setup ==="
+        echo "Installing Python dependencies..."
+        pip install -r src/foundry/scripts/requirements.txt
+        echo ""
         echo "Running post-deployment scripts..."
         echo ""
         
