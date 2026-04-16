@@ -95,8 +95,8 @@ This phase is orchestrated by [`install_fabric_solution.py`](../infra/scripts/fa
 3. **Upload Installer Notebook**: Uploads [`fabric_solution_installer.ipynb`](../infra/deploy/fabric_solution_installer.ipynb) to the workspace (creates or updates if already exists)
 4. **Run Installer Notebook**: Executes [`fabric_solution_installer.ipynb`](../infra/deploy/fabric_solution_installer.ipynb) end-to-end inside Fabric. The notebook uses the [`fabric-launcher`](https://github.com/microsoft/fabric-launcher) library to pull the solution directly from GitHub and deploy all Fabric items leveraging [Fabric's Git integration and CI/CD capabilities](https://learn.microsoft.com/fabric/cicd/git-integration/intro-to-git-integration). The Fabric items (lakehouses, notebooks, reports, semantic models, data agent) are defined in the [`fabric_workspace/`](../fabric_workspace/) folder at the repository root, which is structured to match the [Fabric workspace Git format](https://learn.microsoft.com/fabric/cicd/git-integration/git-get-started). The notebook then runs the following post-deployment tasks:
    - Run `pipeline_main` notebook: creates lakehouse tables from ingested CSV data
-   - Deploy `ontology_supplychain` ontology item with logical ID resolution and eventhouse URI mapping
-   - Move installer notebook to the notebooks folder
+   - Deploy ontology items with logical ID resolution and lakehouse SQL endpoint mapping
+   - Move installer notebook and ontologies to their target folders
 
 #### Deployment Architecture
 
