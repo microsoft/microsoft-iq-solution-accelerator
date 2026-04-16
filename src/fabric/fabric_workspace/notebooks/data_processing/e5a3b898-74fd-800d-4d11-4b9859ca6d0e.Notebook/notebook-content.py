@@ -1,5 +1,12 @@
 # Fabric notebook source
 
+# METADATA ********************
+
+# META {
+# META   "kernel_info": {
+# META     "name": "synapse_pyspark"
+# META   }
+# META }
 
 # MARKDOWN ********************
 
@@ -31,6 +38,13 @@ DATA_PATH = "Files/data/inventory"
 spark.sql(f"CREATE DATABASE IF NOT EXISTS {SCHEMA_NAME}")
 print(f"✅Loading '{SCHEMA_NAME}' schema from: {DATA_PATH}")
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 # 1. Load Warehouses Table
@@ -42,6 +56,13 @@ warehouses_df = warehouses_df \
     .withColumn("LastUpdated", col("LastUpdated").cast("date"))
 warehouses_df.write.mode("overwrite").saveAsTable(f"{SCHEMA_NAME}.Warehouses")
 warehouses_count = warehouses_df.count()
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
 
 # CELL ********************
 
@@ -60,6 +81,13 @@ inventory_df = inventory_df \
 inventory_df.write.mode("overwrite").saveAsTable(f"{SCHEMA_NAME}.Inventory")
 inventory_count = inventory_df.count()
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 # 3. Load InventoryTransactions Table
@@ -75,6 +103,13 @@ transactions_df = transactions_df \
 transactions_df.write.mode("overwrite").saveAsTable(f"{SCHEMA_NAME}.InventoryTransactions")
 transactions_count = transactions_df.count()
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 # 4. Load PurchaseOrders Table
@@ -87,6 +122,13 @@ orders_df = orders_df \
     .withColumn("CreatedDate", col("CreatedDate").cast("date"))
 orders_df.write.mode("overwrite").saveAsTable(f"{SCHEMA_NAME}.PurchaseOrders")
 orders_count = orders_df.count()
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
 
 # CELL ********************
 
@@ -102,6 +144,13 @@ order_items_df = order_items_df \
     .withColumn("CreatedDate", col("CreatedDate").cast("date"))
 order_items_df.write.mode("overwrite").saveAsTable(f"{SCHEMA_NAME}.PurchaseOrderItems")
 order_items_count = order_items_df.count()
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
 
 # CELL ********************
 
@@ -125,6 +174,13 @@ forecast_df.write.mode("overwrite").saveAsTable(f"{SCHEMA_NAME}.DemandForecast")
 forecast_count = forecast_df.count()
 
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 # Summary
@@ -136,3 +192,10 @@ print(f"   - InventoryTransactions: {transactions_count:,} records")
 print(f"   - PurchaseOrders: {orders_count:,} records") 
 print(f"   - PurchaseOrderItems: {order_items_count:,} records")
 print(f"   - ForecastDemand: {forecast_count:,} records")
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
