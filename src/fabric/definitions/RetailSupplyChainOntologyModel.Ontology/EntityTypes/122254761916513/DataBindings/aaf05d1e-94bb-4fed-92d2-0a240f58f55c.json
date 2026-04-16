@@ -1,0 +1,72 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "aaf05d1e-94bb-4fed-92d2-0a240f58f55c",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "ProductSupplierID",
+        "targetPropertyId": "2288656097137985601"
+      },
+      {
+        "sourceColumnName": "ProductID",
+        "targetPropertyId": "2288656076381875144"
+      },
+      {
+        "sourceColumnName": "ProductName",
+        "targetPropertyId": "2288655860297222169"
+      },
+      {
+        "sourceColumnName": "ProductLineName",
+        "targetPropertyId": "2288655839918292844"
+      },
+      {
+        "sourceColumnName": "SupplierID",
+        "targetPropertyId": "2288656053657667835"
+      },
+      {
+        "sourceColumnName": "SupplierName",
+        "targetPropertyId": "2288655817195474585"
+      },
+      {
+        "sourceColumnName": "SupplierProductCode",
+        "targetPropertyId": "2288656032582626857"
+      },
+      {
+        "sourceColumnName": "WholesaleCost",
+        "targetPropertyId": "2288656013613001993"
+      },
+      {
+        "sourceColumnName": "MinOrderQuantity",
+        "targetPropertyId": "2288655992271578442"
+      },
+      {
+        "sourceColumnName": "MaxOrderQuantity",
+        "targetPropertyId": "2288655970718718878"
+      },
+      {
+        "sourceColumnName": "LeadTimeDays",
+        "targetPropertyId": "2288655946941700064"
+      },
+      {
+        "sourceColumnName": "Status",
+        "targetPropertyId": "2288655925099881355"
+      },
+      {
+        "sourceColumnName": "CreatedBy",
+        "targetPropertyId": "2288655904445235789"
+      },
+      {
+        "sourceColumnName": "CreatedDate",
+        "targetPropertyId": "2288655885136594076"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "27818fad-0450-42b9-a4a0-db84075ac8d7",
+      "itemId": "e6cd0b76-50e8-498f-9cd0-89251fae70c2",
+      "sourceTableName": "productsuppliers",
+      "sourceSchema": "supplychain"
+    }
+  }
+}
