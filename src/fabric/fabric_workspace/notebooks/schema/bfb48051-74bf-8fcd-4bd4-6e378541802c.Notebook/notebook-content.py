@@ -1,5 +1,12 @@
 # Fabric notebook source
 
+# METADATA ********************
+
+# META {
+# META   "kernel_info": {
+# META     "name": "synapse_pyspark"
+# META   }
+# META }
 
 # MARKDOWN ********************
 
@@ -25,6 +32,13 @@ SCHEMA_NAME = "inventory"
 spark.sql(f"CREATE DATABASE IF NOT EXISTS {SCHEMA_NAME}")
 print(f"✅ {SCHEMA_NAME} schema ready!")
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 # Create all Inventory and Purchase Order tables
@@ -34,6 +48,13 @@ print(f"✅ {SCHEMA_NAME} schema ready!")
 # 4. PurchaseOrders - Order headers with supplier and timing information
 # 5. PurchaseOrderItems - Line items with product details and quantities
 # 6. DemandForecast - Predictive analytics for future demand planning
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
 
 # CELL ********************
 
@@ -77,6 +98,13 @@ USING DELTA
 spark.sql(create_table_sql)
 print(f"✅ {SCHEMA_NAME}.{TABLE_NAME} table created!")
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 # 2. Create Inventory table for current stock levels
@@ -103,6 +131,13 @@ USING DELTA
 """
 spark.sql(create_table_sql)
 print(f"✅ {SCHEMA_NAME}.{TABLE_NAME} table created!")
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
 
 # CELL ********************
 
@@ -133,6 +168,13 @@ USING DELTA
 spark.sql(create_table_sql)
 print(f"✅ {SCHEMA_NAME}.{TABLE_NAME} table created!")
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 # 4. Create PurchaseOrders table for procurement headers
@@ -160,6 +202,13 @@ USING DELTA
 spark.sql(create_table_sql)
 print(f"✅ {SCHEMA_NAME}.{TABLE_NAME} table created!")
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 # 5. Create PurchaseOrderItems table for line item details
@@ -186,6 +235,13 @@ USING DELTA
 """
 spark.sql(create_table_sql)
 print(f"✅ {SCHEMA_NAME}.{TABLE_NAME} table created!")
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
 
 # CELL ********************
 
@@ -217,3 +273,10 @@ spark.sql(create_table_sql)
 print(f"✅ {SCHEMA_NAME}.{TABLE_NAME} table created!")
 
 print(f"🎉 {SCHEMA_NAME.upper()} DOMAIN COMPLETE!")
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
