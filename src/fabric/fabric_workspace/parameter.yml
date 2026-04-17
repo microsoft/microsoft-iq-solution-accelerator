@@ -40,6 +40,21 @@ find_replace:
     replace_value:
       _ALL_: "$workspace.$id"
     item_type: "Notebook"
+
+  # ==========================================================================
+  # DATA AGENT — Ontology Artifact ID Replacement
+  # ==========================================================================
+
+  # Ontology artifact ID used by DataAgent items to reference the ontology
+  # This GUID appears in datasource.json files within DataAgent configurations
+  # and must be updated to point to the deployed ontology in the target workspace
+  #
+  # Source artifact ID (DEV): b1eb253e-6048-9a94-42a5-c64487ae7541
+  # Target: Dynamically resolved from RetailSupplyChainOntologyModel ontology ID
+  - find_value: "b1eb253e-6048-9a94-42a5-c64487ae7541"
+    replace_value:
+      _ALL_: "$items.Ontology.RetailSupplyChainOntologyModel.$id"
+    item_type: "DataAgent"
   
 
   # ==========================================================================
