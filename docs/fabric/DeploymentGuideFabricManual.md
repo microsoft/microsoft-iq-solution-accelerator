@@ -33,7 +33,8 @@ Download the [fabric_solution_installer.ipynb](../infra/deploy/fabric_solution_i
 1. In your Fabric workspace, click **+ New item** → **Import notebook**
 2. Navigate to the folder where you saved [fabric_solution_installer.ipynb](../infra/deploy/fabric_solution_installer.ipynb)
 3. Upload and open the **fabric_solution_installer** notebook
-4. Click **Run all** to execute the deployment
+4. **(Optional)** If you want to deploy from a different branch, edit the `GITHUB_BRANCH` variable in the configuration cell (default: `"main"`)
+5. Click **Run all** to execute the deployment
 
 The installer notebook will:
 
