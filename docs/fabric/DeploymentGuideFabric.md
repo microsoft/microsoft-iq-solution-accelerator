@@ -275,12 +275,16 @@ cd microsoft-iq-solution-accelerator
 # Authenticate (required)
 azd auth login
 
-# Optional: Customize workspace name
-azd env set FABRIC_WORKSPACE_NAME "My Analytics Platform"
+# Optional: Customize deployment (see Advanced Configuration Options below)
+azd env set FABRIC_WORKSPACE_NAME "My IQ Platform"
+azd env set AZURE_LOCATION "westeurope"
+azd env set GITHUB_TOKEN "ghp_xxxxxxxxxxxx"  # Only needed for private repositories
 
 # Deploy everything
 azd up
 ```
+
+> **💡 Configuration Tip**: You can customize the deployment with [optional variables](#-additional-optional-configuration) like `AZURE_LOCATION`, `LOG_LEVEL`, and `GITHUB_TOKEN` before running `azd up`.
 
 During deployment, you'll specify:
 
@@ -639,6 +643,7 @@ These optional environment variables control advanced deployment behavior in [`i
 
 | Parameter | AZD Environment Variable | Description | Default | Example |
 |-----------|-------------------------|-------------|---------|---------|
+| **Azure Location** | `AZURE_LOCATION` | Azure region for resource deployment. When not set, uses the location of the selected resource group | Resource group location | `eastus`, `westus2`, `westeurope`, `northeurope` |
 | **GitHub Token** | `GITHUB_TOKEN` | GitHub personal access token. When set, the installer notebook is patched to include the token for private repository access. Only needed when deploying from a private fork | Not set | `ghp_xxxxxxxxxxxx` |
 | **Log Level** | `LOG_LEVEL` | Controls verbosity of deployment script logging. Set to `DEBUG` for detailed HTTP request/response tracing | `INFO` | `DEBUG`, `WARNING` |
 | **Workspace ID** | `FABRIC_WORKSPACE_ID` | Target an existing workspace by ID during removal (used by `remove_fabric_solution.py`). If both `FABRIC_WORKSPACE_NAME` and `FABRIC_WORKSPACE_ID` are set, the name takes precedence | Not set | `12345678-1234-...` |
@@ -646,6 +651,9 @@ These optional environment variables control advanced deployment behavior in [`i
 **Configuration Examples:**
 
 ```bash
+# Set Azure region (optional - defaults to resource group location)
+azd env set AZURE_LOCATION "westeurope"
+
 # Enable debug logging for troubleshooting
 azd env set LOG_LEVEL DEBUG
 
