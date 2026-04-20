@@ -23,7 +23,7 @@ Master data entities for customer identity, accounts, locations, and relationshi
 
 | Field Name | Data Type | Description | Sample Values |
 |------------|-----------|-------------|---------------|
-| CustomerId | STRING | Primary key, unique customer identifier | UUID format |
+| CustomerId | STRING | Primary key, unique customer identifier | CID-001, CID-002, CID-003 |
 | CustomerTypeId | STRING | Classification of customer organization type | Individual, Business, Government |
 | CustomerRelationshipTypeId | STRING | Customer tier/relationship level | Standard, Premium, VIP, SMB, Premier, Partner, Federal, State, Local |
 | DateOfBirth | DATE | Customer's birth date | 1975-06-15, 1990-11-02 |
@@ -54,7 +54,7 @@ Master data entities for customer identity, accounts, locations, and relationshi
 
 | Field Name | Data Type | Description | Sample Values |
 |------------|-----------|-------------|---------------|
-| CustomerRelationshipTypeId | STRING | Primary key, unique tier identifier | UUID format |
+| CustomerRelationshipTypeId | STRING | Primary key, unique tier identifier | Standard, Premium, VIP, SMB |
 | CustomerRelationshipTypeName | STRING | Human-readable tier name | Standard, Premium, VIP, SMB |
 | CustomerRelationshipTypeDescription | STRING | Description of the tier and its benefits | "Top-tier individual customers with full service access" |
 
@@ -66,9 +66,9 @@ Master data entities for customer identity, accounts, locations, and relationshi
 
 | Field Name | Data Type | Description | Sample Values |
 |------------|-----------|-------------|---------------|
-| CustomerId | STRING | Foreign key to Customer table | UUID format |
+| CustomerId | STRING | Foreign key to Customer table | CID-001, CID-002, CID-003 |
 | CustomerTypeId | STRING | Customer type context | Business, Government |
-| TradeNameId | STRING | Unique trade name identifier | UUID format |
+| TradeNameId | STRING | Unique trade name identifier | TN-001, TN-002, TN-003 |
 | TradeName | STRING | Trade name or DBA (Doing Business As) name | "Contoso Outdoors LLC" |
 | PeriodStartDate | DATE | Start of period this trade name was active | 2020-01-01 |
 | PeriodEndDate | DATE | End of period (NULL if currently active) | NULL, 2023-12-31 |
@@ -82,8 +82,8 @@ Master data entities for customer identity, accounts, locations, and relationshi
 
 | Field Name | Data Type | Description | Sample Values |
 |------------|-----------|-------------|---------------|
-| LocationId | STRING | Primary key, unique location identifier | UUID format |
-| CustomerId | STRING | Foreign key to Customer table | UUID format |
+| LocationId | STRING | Primary key, unique location identifier | LOC-001, LOC-002, LOC-003 |
+| CustomerId | STRING | Foreign key to Customer table | CID-001, CID-002, CID-003 |
 | LocationName | STRING | Descriptive name for the location | "HQ", "West Distribution" |
 | IsActive | BOOLEAN | Whether the location is currently active | true, false |
 | AddressLine1 | STRING | Street address | "1000 Main St" |
@@ -120,20 +120,39 @@ Product catalog and category data used across sales, inventory, and supply chain
 
 ---
 
+#### ProductLine (`product.ProductLine`)
+**Purpose**: Top-level product line definitions for the three main business categories  
+**Update Frequency**: Rarely (only during major business restructuring)
+
+| Field Name | Data Type | Description | Sample Values |
+|------------|-----------|-------------|---------------|
+| ProductLineID | STRING | Primary key, unique product line identifier | PL_10, PL_20, PL_30 |
+| ProductLineName | STRING | Product line display name | Camping, Kitchen, Ski |
+| Description | STRING | Description of the product line | "Outdoor camping equipment and gear" |
+| CreatedBy | STRING | User/system who created the record | SampleGen |
+| CreatedDate | DATE | Date product line was created in system | 2023-01-01 |
+
+**Business Rules**:
+- Three main product lines: Camping, Kitchen, Ski
+- Each product line contains multiple product categories
+- Product line is the highest level of product hierarchy
+
+---
+
 #### Product (`product.Product`)
 **Purpose**: Product catalog with pricing, specifications, and categorization  
 **Update Frequency**: Weekly batch processing  
 
 | Field Name | Data Type | Description | Sample Values |
 |------------|-----------|-------------|---------------|
-| ProductID | STRING | Primary key, unique product identifier | UUID format |
+| ProductID | STRING | Primary key, unique product identifier | 1521, 1531, 1541 |
+| ProductLineID | STRING | Foreign key to ProductLine | PL_10, PL_20, PL_30 |
 | ProductName | STRING | Full product name with specification | "Summit Pro Tent 4-Person" |
 | ProductDescription | STRING | Detailed product description | "Lightweight 4-season tent..." |
-| BrandName | STRING | Product brand | Contoso, Fabrikam |
 | ProductNumber | STRING | Internal product SKU/number | SKU-CAMP-001 |
 | Color | STRING | Color variant | Black, Red, Blue, Multi |
 | ProductModel | STRING | Model or series name | "Summit Pro", "Trail Lite" |
-| ProductCategoryID | STRING | Foreign key to ProductCategory | UUID format |
+| ProductCategoryID | STRING | Foreign key to ProductCategory | 151, 152, 153 |
 | CategoryName | STRING | Denormalized category name | Camping, Kitchen, Ski |
 | ListPrice | DECIMAL(18,2) | Suggested retail price | 249.99, 1499.00 |
 | StandardCost | DECIMAL(18,2) | Manufacturing or procurement cost | 124.50, 750.00 |
@@ -156,18 +175,19 @@ Product catalog and category data used across sales, inventory, and supply chain
 ---
 
 #### ProductCategory (`product.ProductCategory`)
-**Purpose**: Hierarchical product categorization used for reporting and supply chain  
+**Purpose**: Product categorization within product lines used for reporting and supply chain  
 **Update Frequency**: Quarterly during catalog reviews
 
 | Field Name | Data Type | Description | Sample Values |
 |------------|-----------|-------------|---------------|
-| CategoryID | STRING | Primary key, unique category identifier | UUID format |
-| ParentCategoryId | STRING | Parent category for hierarchy (NULL = top level) | UUID format, NULL |
+| ProductCategoryID | STRING | Primary key, unique category identifier | 151, 152, 153 |
+| ProductLineID | STRING | Foreign key to ProductLine | PL_10, PL_20, PL_30 |
+| ProductLineName | STRING | Denormalized product line name | Camping, Kitchen, Ski |
 | CategoryName | STRING | Category display name | Camping, Kitchen, Ski |
 | CategoryDescription | STRING | Description of the category | "Outdoor camping equipment and accessories" |
-| BrandName | STRING | Brand associated with this category | Contoso |
-| BrandLogoUrl | STRING | URL to brand logo image | https://... |
 | IsActive | BOOLEAN | Whether this category is currently active | true, false |
+| CreatedBy | STRING | User/system who created the record | SampleGen |
+| CreatedDate | DATE | Date category was created in system | 2023-01-01 |
 
 ---
 
@@ -184,10 +204,10 @@ Sales transaction data covering orders, line items, and payment records.
 | Field Name | Data Type | Description | Sample Values |
 |------------|-----------|-------------|---------------|
 | OrderId | STRING | Primary key, unique order identifier | UUID format |
-| SalesChannelId | STRING | Sales channel identifier | Fabric |
+| ProductLineName | STRING | Product line for this order | Camping, Kitchen, Ski |
 | OrderNumber | STRING | Business-readable order number | F100000, F100001 |
-| CustomerId | STRING | Foreign key to Customer table | UUID format |
-| CustomerAccountId | STRING | Foreign key to CustomerAccount table | UUID format |
+| CustomerId | STRING | Foreign key to Customer table | CID-001, CID-002, CID-003 |
+| CustomerAccountId | STRING | Foreign key to CustomerAccount table | CA-0001, CA-0002, CA-0003 |
 | OrderDate | DATE | Date order was placed | 2025-03-15 |
 | OrderStatus | STRING | Current order processing status | Completed, Pending, Cancelled |
 | SubTotal | DECIMAL(18,2) | Order total before tax | 2399.95 |
@@ -530,8 +550,9 @@ Supplier master data, product-supplier relationships, and disruption event track
 - `customer.CustomerAccount` ↔ `customer.CustomerAccount` (parent): Self-referential hierarchy via `ParentAccountId`
 
 *Product Domain:*
+- `product.ProductLine` ↔ `product.Product`: One-to-many via `ProductLineID`
+- `product.ProductLine` ↔ `product.ProductCategory`: One-to-many via `ProductLineID`
 - `product.Product` ↔ `product.ProductCategory`: Many-to-one via `ProductCategoryID`
-- `product.ProductCategory` ↔ `product.ProductCategory` (parent): Self-referential hierarchy via `ParentCategoryId`
 
 *Sales Domain:*
 - `sales.Order` ↔ `sales.OrderLine`: One-to-many via `OrderId`
