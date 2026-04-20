@@ -70,10 +70,12 @@ table 'customer customertradename'
 		mode: directQuery
 		source =
 				let
-				    Source = Sql.Database("ccllgusga4suzkb52t4j7lpn7y-vwhycj2qas4ufjfa3ocaowwi24.datawarehouse.fabric.microsoft.com", "miqsadata"),
+				     Source =  Sql.Database(ServerParameter,DatabaseParameter),
 				    customer_customertradename = Source{[Schema="customer",Item="customertradename"]}[Data]
 				in
 				    customer_customertradename
 
 	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
 

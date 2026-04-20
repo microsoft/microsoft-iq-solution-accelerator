@@ -143,7 +143,7 @@ table 'inventory purchaseorders'
 		mode: directQuery
 		source =
 				let
-				    Source = Sql.Database("ccllgusga4suzkb52t4j7lpn7y-vwhycj2qas4ufjfa3ocaowwi24.datawarehouse.fabric.microsoft.com", "miqsadata"),
+				    Source = Sql.Database(ServerParameter, DatabaseParameter),
 				    inventory_purchaseorders = Source{[Schema="inventory",Item="purchaseorders"]}[Data]
 				in
 				    inventory_purchaseorders
