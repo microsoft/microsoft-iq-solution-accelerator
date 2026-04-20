@@ -31,16 +31,6 @@ relationship ea23964d-07e3-2ef2-0253-0889230b693a
 	fromColumn: 'customer location'.CustomerID
 	toColumn: 'customer customer'.CustomerID
 
-relationship c3b08a5b-1794-7097-639d-aea71bf8055b
-	fromColumn: 'finance invoice'.CustomerID
-	toColumn: 'customer customer'.CustomerID
-
-relationship 9319a492-37c1-0fc9-325b-ba2e16331cca
-	crossFilteringBehavior: bothDirections
-	fromCardinality: one
-	fromColumn: 'finance payment'.InvoiceID
-	toColumn: 'finance invoice'.InvoiceID
-
 relationship 80f3c60f-8ca1-f68d-c60d-e10b4f7734ae
 	fromColumn: 'product product'.ProductCategoryID
 	toColumn: 'product productcategory'.ProductCategoryID
