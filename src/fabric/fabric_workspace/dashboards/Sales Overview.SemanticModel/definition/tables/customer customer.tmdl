@@ -1,0 +1,138 @@
+table 'customer customer'
+	lineageTag: 48c91d84-ab3d-4ff3-8f33-ca6358f3e251
+
+	column DateOfBirth
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: a5ab17fe-07d6-4037-af03-d605659b074b
+		summarizeBy: none
+		sourceColumn: DateOfBirth
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CustomerEstablishedDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: a175acd1-79ba-446f-b862-ca824dd1a9d2
+		summarizeBy: none
+		sourceColumn: CustomerEstablishedDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column IsActive
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 66670ec5-e65c-4d1c-b65a-0cede79e18e4
+		summarizeBy: none
+		sourceColumn: IsActive
+
+		annotation SummarizationSetBy = Automatic
+
+	column FirstName
+		dataType: string
+		lineageTag: 458c2ce6-7a5c-4ae4-8488-90b6ca9998d2
+		summarizeBy: none
+		sourceColumn: FirstName
+
+		annotation SummarizationSetBy = Automatic
+
+	column LastName
+		dataType: string
+		lineageTag: 4cb1ae1d-3cf6-4bf1-b80b-17adef1dfb3f
+		summarizeBy: none
+		sourceColumn: LastName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Gender
+		dataType: string
+		lineageTag: 9f0466d5-bf96-4988-8881-d5085251109c
+		summarizeBy: none
+		sourceColumn: Gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column PrimaryPhone
+		dataType: string
+		lineageTag: fa0e6e66-54f5-41ab-be7f-7062e98036b6
+		summarizeBy: none
+		sourceColumn: PrimaryPhone
+
+		annotation SummarizationSetBy = Automatic
+
+	column SecondaryPhone
+		dataType: string
+		lineageTag: d567d25e-b3f1-4881-8d04-7282c745ba07
+		summarizeBy: none
+		sourceColumn: SecondaryPhone
+
+		annotation SummarizationSetBy = Automatic
+
+	column PrimaryEmail
+		dataType: string
+		lineageTag: 61a763df-4ef5-4fcb-9393-9e44a7a205ba
+		summarizeBy: none
+		sourceColumn: PrimaryEmail
+
+		annotation SummarizationSetBy = Automatic
+
+	column SecondaryEmail
+		dataType: string
+		lineageTag: 3ed94d99-a057-4924-8c48-f20678883d15
+		summarizeBy: none
+		sourceColumn: SecondaryEmail
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedBy
+		dataType: string
+		lineageTag: f94f52ce-4f32-4646-b8af-6f15497bebea
+		summarizeBy: none
+		sourceColumn: CreatedBy
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: bf98f9ca-2b59-4f35-9023-217f76435ef1
+		summarizeBy: none
+		sourceColumn: CustomerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerTypeID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 4c334326-3ec3-41b0-bddd-ff0359950e1e
+		summarizeBy: none
+		sourceColumn: CustomerTypeID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerRelationshipTypeID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 94d1246f-bd4b-454e-beed-badca155ca3f
+		summarizeBy: none
+		sourceColumn: CustomerRelationshipTypeID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'customer customer' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database(ServerParameter,DatabaseParameter),
+				    customer_customer = Source{[Schema="customer",Item="customer"]}[Data]
+				in
+				    customer_customer
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

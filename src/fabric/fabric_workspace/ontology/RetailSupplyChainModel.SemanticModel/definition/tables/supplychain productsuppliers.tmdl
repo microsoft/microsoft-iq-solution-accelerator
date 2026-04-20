@@ -1,0 +1,151 @@
+table 'supplychain productsuppliers'
+	lineageTag: e667dadc-ef57-49c5-9d06-da15ddad6803
+
+	column ProductSupplierID
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(8000)
+		lineageTag: a05caf12-f299-489d-878f-df3f2c399ba2
+		summarizeBy: none
+		sourceColumn: ProductSupplierID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductID
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(8000)
+		lineageTag: 79def094-61ac-4b48-bfad-c4521463b892
+		summarizeBy: none
+		sourceColumn: ProductID
+
+		annotation SummarizationSetBy = Automatic
+
+	column SupplierID
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(8000)
+		lineageTag: 79d223ba-39b1-4bbd-a52e-155138dba3ae
+		summarizeBy: none
+		sourceColumn: SupplierID
+
+		annotation SummarizationSetBy = Automatic
+
+	column SupplierProductCode
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 0b03b9ab-f26b-443a-a901-d8862e915ab2
+		summarizeBy: none
+		sourceColumn: SupplierProductCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column WholesaleCost
+		dataType: double
+		sourceProviderType: decimal(10, 2)
+		lineageTag: 60607e74-7056-4bcb-84a1-350739542eed
+		summarizeBy: sum
+		sourceColumn: WholesaleCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MinOrderQuantity
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 6cc140b7-e73b-4c09-8bf4-042bf2e8c9fe
+		summarizeBy: sum
+		sourceColumn: MinOrderQuantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column MaxOrderQuantity
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: a83296d3-0b58-48e4-9268-e6b5da27ec2c
+		summarizeBy: sum
+		sourceColumn: MaxOrderQuantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column LeadTimeDays
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: f4ccec8e-032e-4858-8ca6-39fc6b8b19dc
+		summarizeBy: sum
+		sourceColumn: LeadTimeDays
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: eee1ae0d-6f85-475b-8040-511faa5cfb5b
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedBy
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 5fcf607c-1bee-439b-9ce4-abd5159719ce
+		summarizeBy: none
+		sourceColumn: CreatedBy
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: d26e334f-0222-40bf-9017-172c4032e48c
+		summarizeBy: none
+		sourceColumn: CreatedDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ProductName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 7d20849e-fc1c-4a9e-9dc9-dbc30c7db8b9
+		summarizeBy: none
+		sourceColumn: ProductName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductLineName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 324c6f35-ee61-4219-978d-db84102acc71
+		summarizeBy: none
+		sourceColumn: ProductLineName
+
+		annotation SummarizationSetBy = Automatic
+
+	column SupplierName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: a7f0536a-7415-421f-8de3-a11136e86cd8
+		summarizeBy: none
+		sourceColumn: SupplierName
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'supplychain productsuppliers' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database(SQLEndpoint, DatabaseName),
+				    supplychain_productsuppliers = Source{[Schema="supplychain",Item="productsuppliers"]}[Data]
+				in
+				    supplychain_productsuppliers
+
+	annotation PBI_ResultType = Exception
+

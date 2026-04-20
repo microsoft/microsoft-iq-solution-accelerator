@@ -3,14 +3,14 @@
 # ============================================================================
 # Handles environment-specific value replacement when deploying to target
 # environments via the fabric-cicd library.
-# See: https://microsoft.github.io/fabric-cicd/0.1.12/how_to/parameterization/
+# See: https://microsoft.github.io/fabric-cicd/0.3.1/how_to/parameterization/
 #
 # find_replace: replaces every instance of find_value in every file matching
 # the optional item_type / item_name / file_path filters.
 # .platform files are excluded automatically by fabric-cicd.
 #
-# Current GUIDs (source/DEV workspace — main_pipeline.Notebook):
-#   Lakehouse : 3da39fae-d464-ba66-44f8-a2fa1650c6ba
+# Current GUIDs (source/DEV workspace — pipeline_main.Notebook):
+#   Lakehouse : e6cd0b76-50e8-498f-9cd0-89251fae70c2
 #   Workspace : 27818fad-0450-42b9-a4a0-db84075ac8d7
 #
 # NOTE: model_customer.Notebook uses different GUIDs (lakehouse 7bc5f01b,
@@ -23,20 +23,55 @@ find_replace:
   # NOTEBOOK — Lakehouse ID Replacement
   # ==========================================================================
 
-  # Lakehouse GUID used in main_pipeline.Notebook/notebook-content.py
+  # Lakehouse GUID used in pipeline_main.Notebook/notebook-content.py
   # (default_lakehouse and lakehouse id fields)
-  - find_value: "3da39fae-d464-ba66-44f8-a2fa1650c6ba"
+  - find_value: "e6cd0b76-50e8-498f-9cd0-89251fae70c2"
     replace_value:
-      _ALL_: "$items.Lakehouse.fabriciq_team_lake.$id"
+      _ALL_: "$items.Lakehouse.miqsadata.$id"
     item_type: "Notebook"
 
   # ==========================================================================
-  # DATA AGENT — Lakehouse Reference Replacement
+  # NOTEBOOK — Workspace ID Replacement
   # ==========================================================================
 
-  # The Data Agent datasource.json stores the fabriciq_team_lake lakehouse reference
-  # as artifactId. This must resolve to the deployed lakehouse item ID.
-  - find_value: "3da39fae-d464-ba66-44f8-a2fa1650c6ba"
+  # Workspace GUID used in pipeline_main.Notebook/notebook-content.py files
+  # Matches default_lakehouse_workspace_id field and replaces with target workspace ID
+  - find_value: "27818fad-0450-42b9-a4a0-db84075ac8d7"
     replace_value:
-      _ALL_: "$items.Lakehouse.fabriciq_team_lake.$id"
+      _ALL_: "$workspace.$id"
+    item_type: "Notebook"
+
+  # ==========================================================================
+  # DATA AGENT — Ontology Artifact ID Replacement
+  # ==========================================================================
+
+  # Ontology artifact ID used by DataAgent items to reference the ontology
+  # This GUID appears in datasource.json files within DataAgent configurations
+  # and must be updated to point to the deployed ontology in the target workspace
+  #
+  # Source artifact ID (DEV): b1eb253e-6048-9a94-42a5-c64487ae7541
+  # Target: Dynamically resolved from RetailSupplyChainOntologyModel ontology ID
+  - find_value: "b1eb253e-6048-9a94-42a5-c64487ae7541"
+    replace_value:
+      _ALL_: "$items.Ontology.RetailSupplyChainOntologyModel.$id"
     item_type: "DataAgent"
+  
+
+  # ==========================================================================
+  # SEMANTIC MODEL — SQL Endpoint Replacement
+  # ==========================================================================
+
+  # SQL endpoint URL used by SemanticModel items to connect to the lakehouse.
+  # Each Fabric lakehouse exposes a SQL Analytics Endpoint that allows
+  # Power BI semantic models and other tools to query lakehouse data via T-SQL.
+  #
+  # The endpoint format is: <workspace-guid>-<lakehouse-guid>.datawarehouse.fabric.microsoft.com
+  # This replacement ensures semantic models connect to the correct lakehouse
+  # SQL endpoint in the target environment.
+  #
+  # Source endpoint (DEV): ccllgusga4suzkb52t4j7lpn7y-vwhycj2qas4ufjfa3ocaowwi24.datawarehouse.fabric.microsoft.com
+  # Target: Dynamically resolved from miqsadata lakehouse's SQL endpoint property
+  - find_value: "ccllgusga4suzkb52t4j7lpn7y-vwhycj2qas4ufjfa3ocaowwi24.datawarehouse.fabric.microsoft.com"
+    replace_value:
+      _ALL_: "$items.Lakehouse.miqsadata.$sqlendpoint"
+    item_type: "SemanticModel"

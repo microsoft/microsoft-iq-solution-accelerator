@@ -1,0 +1,223 @@
+table 'product product'
+	lineageTag: b558c8f3-e432-4dea-929a-bbdfcc8bf7e3
+
+	column ProductID
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(8000)
+		lineageTag: 95702745-92d1-48d5-b320-3e580367a280
+		summarizeBy: none
+		sourceColumn: ProductID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductName
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(8000)
+		lineageTag: b586fd31-0c3b-4b79-a8b4-b3c9ed71d442
+		summarizeBy: none
+		sourceColumn: ProductName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductDescription
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: eb972476-a029-41cd-ab89-704ffc9e63bb
+		summarizeBy: none
+		sourceColumn: ProductDescription
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductNumber
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: dfbb6f8d-1c7d-42d0-837f-04f8ac0dd8f9
+		summarizeBy: none
+		sourceColumn: ProductNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column Color
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 4486a9ec-1d75-4dd2-a676-8319e2dc3911
+		summarizeBy: none
+		sourceColumn: Color
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductModel
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 38eb9a7d-d940-4d2e-a93e-df2de3c0daa3
+		summarizeBy: none
+		sourceColumn: ProductModel
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductCategoryID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 6adb4699-f4c4-4dc1-8e7b-6176c679ba43
+		summarizeBy: none
+		sourceColumn: ProductCategoryID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductLineID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 726e0b90-5971-4f1c-bda9-ac48253fa8cf
+		summarizeBy: none
+		sourceColumn: ProductLineID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ListPrice
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: dd26e5d7-bf7e-4a27-92ef-8b61845104ee
+		summarizeBy: sum
+		sourceColumn: ListPrice
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column StandardCost
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: 793eec3d-011c-484c-a1dc-a7f58fbd8ddb
+		summarizeBy: sum
+		sourceColumn: StandardCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Weight
+		dataType: double
+		sourceProviderType: decimal(18, 3)
+		lineageTag: c8488c61-5473-4a3e-a77a-a2b7322c06ba
+		summarizeBy: sum
+		sourceColumn: Weight
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WeightUom
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 8c08141c-38c1-4072-a1bd-8c1dfd13d54c
+		summarizeBy: none
+		sourceColumn: WeightUom
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductStatus
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 38f512fa-cc11-4c4e-9b75-206360ffc002
+		summarizeBy: none
+		sourceColumn: ProductStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: ed4284d1-ad73-43c5-9893-61eee173e7e4
+		summarizeBy: none
+		sourceColumn: CreatedDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column SellStartDate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 7fefe4cd-0f45-4a27-aa3e-45ec8c84e144
+		summarizeBy: none
+		sourceColumn: SellStartDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column SellEndDate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: ee296ae1-067b-4853-a864-087fb71a7881
+		summarizeBy: none
+		sourceColumn: SellEndDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column UpdatedDate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 85eecb7f-7fd6-48e7-9007-dadb85f102f8
+		summarizeBy: none
+		sourceColumn: UpdatedDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CreatedBy
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: ebaedeb7-72d0-40b4-966d-970c57175b49
+		summarizeBy: none
+		sourceColumn: CreatedBy
+
+		annotation SummarizationSetBy = Automatic
+
+	column UpdatedBy
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 085bea24-9bb1-453a-8437-786db5b91b50
+		summarizeBy: none
+		sourceColumn: UpdatedBy
+
+		annotation SummarizationSetBy = Automatic
+
+	column CategoryName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: a4356aa0-1314-421e-8d15-25789210d841
+		summarizeBy: none
+		sourceColumn: CategoryName
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsoCurrencyCode
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: adc6689f-3603-4ff6-9ef9-fe395b11f9e5
+		summarizeBy: none
+		sourceColumn: IsoCurrencyCode
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'product product' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database(SQLEndpoint, DatabaseName),
+				    product_product = Source{[Schema="product",Item="product"]}[Data]
+				in
+				    product_product
+
+	annotation PBI_ResultType = Exception
+

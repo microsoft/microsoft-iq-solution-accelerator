@@ -9,7 +9,7 @@
       "value": "${AZURE_EXISTING_FABRIC_CAPACITY_NAME=}"
     },
     "location": {
-      "value": "WestUS2"
+      "value": "${AZURE_LOCATION}"
     }
   }
 }

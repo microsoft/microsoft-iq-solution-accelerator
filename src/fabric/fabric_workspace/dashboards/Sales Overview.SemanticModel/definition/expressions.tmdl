@@ -1,0 +1,50 @@
+expression ServerParameter = "ccllgusga4suzkb52t4j7lpn7y-vwhycj2qas4ufjfa3ocaowwi24.datawarehouse.fabric.microsoft.com" meta [IsParameterQuery=true, List={"ccllgusga4suzkb52t4j7lpn7y-vwhycj2qas4ufjfa3ocaowwi24.datawarehouse.fabric.microsoft.com"}, DefaultValue="ccllgusga4suzkb52t4j7lpn7y-vwhycj2qas4ufjfa3ocaowwi24.datawarehouse.fabric.microsoft.com", Type="Text", IsParameterQueryRequired=true]
+	lineageTag: e49676c5-5437-4a89-99bd-4a49f04a88d5
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
+expression DatabaseParameter = "miqsadata" meta [IsParameterQuery=true, List={"miqsadata"}, DefaultValue="miqsadata", Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 4c0ca3d8-10d6-4c91-8a54-e6de6c41914b
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
+expression 'finance account' =
+		let
+		     Source =  Sql.Database(ServerParameter,DatabaseParameter),
+		    finance_account = Source{[Schema="finance",Item="account"]}[Data]
+		in
+		    finance_account
+	lineageTag: b7c3aa64-b22a-42ab-890d-507b3733e4dc
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'finance invoice' =
+		let
+		     Source =  Sql.Database(ServerParameter,DatabaseParameter),
+		    finance_invoice = Source{[Schema="finance",Item="invoice"]}[Data]
+		in
+		    finance_invoice
+	lineageTag: 20366899-644b-45bf-8e5e-67bce0d8b685
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'finance payment' =
+		let
+		    Source =  Sql.Database(ServerParameter,DatabaseParameter),
+		    finance_payment = Source{[Schema="finance",Item="payment"]}[Data]
+		in
+		    finance_payment
+	lineageTag: fd52ea5a-ff05-4c30-8557-63bf9f530ccc
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

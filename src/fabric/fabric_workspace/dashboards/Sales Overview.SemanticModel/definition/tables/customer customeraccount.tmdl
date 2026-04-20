@@ -1,0 +1,59 @@
+table 'customer customeraccount'
+	lineageTag: 8ffc92f5-c6b4-4fbd-b3f0-30127dbe2ae7
+
+	column CustomerAccountName
+		dataType: string
+		lineageTag: bf2c6adf-cf68-40f4-87d5-337876e8c420
+		summarizeBy: none
+		sourceColumn: CustomerAccountName
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsoCurrencyCode
+		dataType: string
+		lineageTag: 4db336a5-25b5-4872-9fc5-3910a9422253
+		summarizeBy: none
+		sourceColumn: IsoCurrencyCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerAccountID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 9591cf30-360c-4752-9152-9ce2fe7b9f28
+		summarizeBy: none
+		sourceColumn: CustomerAccountID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ParentAccountID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: e82b2e5a-1009-427a-9399-ec13ac5dc209
+		summarizeBy: none
+		sourceColumn: ParentAccountID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 62d6ee67-7cdf-4c58-ad6a-b187158dfcb7
+		summarizeBy: none
+		sourceColumn: CustomerID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'customer customeraccount' = m
+		mode: directQuery
+		source =
+				let
+				     Source = Sql.Database(ServerParameter,DatabaseParameter),
+				    customer_customeraccount = Source{[Schema="customer",Item="customeraccount"]}[Data]
+				in
+				    customer_customeraccount
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+
