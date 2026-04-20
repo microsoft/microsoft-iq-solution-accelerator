@@ -1,0 +1,137 @@
+table 'sales order'
+	lineageTag: e9099ea8-89c9-4351-ac32-b96de1de675b
+
+	measure 'Units Sold' = SUM('sales orderline'[Quantity])
+		formatString: 0
+		lineageTag: 04544da9-5bfc-4d4d-8938-14cc187df254
+
+	column OrderNumber
+		dataType: string
+		lineageTag: e69912a6-ee57-40f2-9ceb-ceb81871aeb9
+		summarizeBy: none
+		sourceColumn: OrderNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: eea4659c-f76c-41fe-80d8-ee5048465e70
+		summarizeBy: none
+		sourceColumn: OrderDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column OrderStatus
+		dataType: string
+		lineageTag: ee5468e9-8658-4244-b849-47b25e95e454
+		summarizeBy: none
+		sourceColumn: OrderStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column SubTotal
+		dataType: double
+		lineageTag: 7a41537b-fa03-4c53-a85e-7370998cff42
+		summarizeBy: sum
+		sourceColumn: SubTotal
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TaxAmount
+		dataType: double
+		lineageTag: 298c1a7b-f408-4c8e-b5d2-d1e0118dc33d
+		summarizeBy: sum
+		sourceColumn: TaxAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column OrderTotal
+		dataType: double
+		lineageTag: 3c7510d5-4f66-4e47-b0d2-bb275842c918
+		summarizeBy: sum
+		sourceColumn: OrderTotal
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PaymentMethod
+		dataType: string
+		lineageTag: 06df4201-4fe6-493a-a5ac-2e7981704154
+		summarizeBy: none
+		sourceColumn: PaymentMethod
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsoCurrencyCode
+		dataType: string
+		lineageTag: 9ff74f24-d8dd-4392-8c98-3934e9be0d45
+		summarizeBy: none
+		sourceColumn: IsoCurrencyCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedBy
+		dataType: string
+		lineageTag: 9b47beab-4745-4050-84ff-af37a8ddc1ac
+		summarizeBy: none
+		sourceColumn: CreatedBy
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: cd37af93-5a61-4603-ad50-4acbb863a140
+		summarizeBy: none
+		sourceColumn: OrderID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductLineName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 43244c06-e75b-42a7-9cc8-dc72765809ed
+		summarizeBy: none
+		sourceColumn: ProductLineName
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 0989e19b-06b8-4455-8508-08685fef8237
+		summarizeBy: none
+		sourceColumn: CustomerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerAccountID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 7b281b47-cc86-4768-be3a-a464a15bd3fa
+		summarizeBy: none
+		sourceColumn: CustomerAccountID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'sales order' = m
+		mode: directQuery
+		source =
+				let
+				     Source =  Sql.Database(ServerParameter,DatabaseParameter),
+				    sales_order = Source{[Schema="sales",Item="order"]}[Data]
+				in
+				    sales_order
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

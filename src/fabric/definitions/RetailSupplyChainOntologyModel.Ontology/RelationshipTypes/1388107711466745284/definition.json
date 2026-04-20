@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "1388107711466745284",
+  "name": "inventory_inventorytransactions_has_inventory_warehouses",
+  "namespaceType": "Custom",
+  "source": {
+    "entityTypeId": "113325854257683"
+  },
+  "target": {
+    "entityTypeId": "120698763730570"
+  }
+}

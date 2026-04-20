@@ -1,0 +1,222 @@
+table 'inventory warehouses'
+	lineageTag: 43b8fa16-c1eb-4276-8bd5-60e782363f49
+
+	column WarehouseID
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(8000)
+		lineageTag: 57dcb6fe-10d6-42ba-b285-5bf415324ac6
+		summarizeBy: none
+		sourceColumn: WarehouseID
+
+		annotation SummarizationSetBy = Automatic
+
+	column WarehouseName
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(8000)
+		lineageTag: 6f5f6263-3d95-4996-b556-dc29ec142fa2
+		summarizeBy: none
+		sourceColumn: WarehouseName
+
+		annotation SummarizationSetBy = Automatic
+
+	column DisplayName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: f5645dea-037c-439d-9537-55726f34a72f
+		summarizeBy: none
+		sourceColumn: DisplayName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Type
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 9fcf6cdc-82f0-4f34-84b2-24783d00c197
+		summarizeBy: none
+		sourceColumn: Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 85db0e8a-efc5-4dce-8bad-856e627f0a0e
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column AddressStreet
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 57476a4c-dc3d-40b9-b4e9-cb1ac134704e
+		summarizeBy: none
+		sourceColumn: AddressStreet
+
+		annotation SummarizationSetBy = Automatic
+
+	column AddressCity
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 2d2c79d8-7318-4fc6-9638-ac4ef15acc10
+		summarizeBy: none
+		sourceColumn: AddressCity
+
+		annotation SummarizationSetBy = Automatic
+
+	column AddressState
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: d6a2aa9a-7fd4-4a13-92e0-7695bf15ffc7
+		summarizeBy: none
+		sourceColumn: AddressState
+
+		annotation SummarizationSetBy = Automatic
+
+	column AddressZipCode
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 963532a8-e081-4a9c-ab03-57e759f44462
+		summarizeBy: none
+		sourceColumn: AddressZipCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column AddressCountry
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 11faf45c-32d6-4f3a-8158-fcc37a1763f9
+		summarizeBy: none
+		sourceColumn: AddressCountry
+
+		annotation SummarizationSetBy = Automatic
+
+	column Phone
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: e1308c6c-fb2e-4c6d-bd8c-29bca5415ff8
+		summarizeBy: none
+		sourceColumn: Phone
+
+		annotation SummarizationSetBy = Automatic
+
+	column Email
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 8f16a82e-75a8-4786-b684-b8dd8d887bc7
+		summarizeBy: none
+		sourceColumn: Email
+
+		annotation SummarizationSetBy = Automatic
+
+	column ManagerName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 15c3c16a-d36b-41ec-af78-8354ba3df2fc
+		summarizeBy: none
+		sourceColumn: ManagerName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ManagerEmail
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: a7d50f8a-b53a-4e37-bb24-079879c03e56
+		summarizeBy: none
+		sourceColumn: ManagerEmail
+
+		annotation SummarizationSetBy = Automatic
+
+	column MaxCapacity
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: f0c21b65-aef0-48cb-a231-6c2b334d5747
+		summarizeBy: sum
+		sourceColumn: MaxCapacity
+
+		annotation SummarizationSetBy = Automatic
+
+	column OperatingHours
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 5e9f449c-e4e3-4258-a19e-12fc50856dd1
+		summarizeBy: none
+		sourceColumn: OperatingHours
+
+		annotation SummarizationSetBy = Automatic
+
+	column StaffCount
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 324a965d-7d6b-4d6b-bf17-a639ae5021c6
+		summarizeBy: sum
+		sourceColumn: StaffCount
+
+		annotation SummarizationSetBy = Automatic
+
+	column AutomationLevel
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 9dbdbb9a-35f1-4e28-bdf9-beb2b513bf62
+		summarizeBy: none
+		sourceColumn: AutomationLevel
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedBy
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: c3c5c41f-4576-474d-a448-ac1faa15d887
+		summarizeBy: none
+		sourceColumn: CreatedBy
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: d4bf6c4e-53cb-41c2-981c-682b0aea6d5a
+		summarizeBy: none
+		sourceColumn: CreatedDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column LastUpdated
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: d9c2708b-36f9-41f1-a1e8-7c2c5904c91c
+		summarizeBy: none
+		sourceColumn: LastUpdated
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ShortName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: adb52bc4-58ea-4051-9efb-5ed083864f24
+		summarizeBy: none
+		sourceColumn: ShortName
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'inventory warehouses' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database(SQLEndpoint, DatabaseName),
+				    inventory_warehouses = Source{[Schema="inventory",Item="warehouses"]}[Data]
+				in
+				    inventory_warehouses
+
+	annotation PBI_ResultType = Exception
+

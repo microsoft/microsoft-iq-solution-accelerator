@@ -1,0 +1,174 @@
+table 'inventory inventory'
+	lineageTag: 817c5d97-4f9e-4e7c-91ed-c65dfb78a236
+
+	measure 'Product Count' = SUM('inventory inventory'[AvailableStock])
+		formatString: 0
+		lineageTag: 79371282-cb0b-4ee4-b075-ec04ff934b78
+
+	column InventoryID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 27af60e4-b5d7-459c-86c4-7ae24ba09b4b
+		summarizeBy: none
+		sourceColumn: InventoryID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 3a25573e-5802-4d0e-9a01-5b0a981d46da
+		summarizeBy: none
+		sourceColumn: ProductID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductName
+		dataType: string
+		lineageTag: 6345d823-4d92-4222-9479-aba8902cc343
+		summarizeBy: none
+		sourceColumn: ProductName
+
+		annotation SummarizationSetBy = Automatic
+
+	column CurrentStock
+		dataType: int64
+		formatString: 0
+		lineageTag: ae8d7e7c-2cc0-43d1-b642-24cb45453100
+		summarizeBy: sum
+		sourceColumn: CurrentStock
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReservedStock
+		dataType: int64
+		formatString: 0
+		lineageTag: 1d6a96c2-72df-4395-9820-15d3fb56a8b4
+		summarizeBy: sum
+		sourceColumn: ReservedStock
+
+		annotation SummarizationSetBy = Automatic
+
+	column AvailableStock
+		dataType: int64
+		formatString: 0
+		lineageTag: cda442a1-53bc-466f-b21f-428cbd589fed
+		summarizeBy: sum
+		sourceColumn: AvailableStock
+
+		annotation SummarizationSetBy = Automatic
+
+	column SafetyStockLevel
+		dataType: int64
+		formatString: 0
+		lineageTag: 258dca88-cdef-46b7-9893-491f163d2235
+		summarizeBy: sum
+		sourceColumn: SafetyStockLevel
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReorderPoint
+		dataType: int64
+		formatString: 0
+		lineageTag: d46e2bc4-3d43-4526-af25-a037038e9d83
+		summarizeBy: sum
+		sourceColumn: ReorderPoint
+
+		annotation SummarizationSetBy = Automatic
+
+	column MaxStockLevel
+		dataType: int64
+		formatString: 0
+		lineageTag: 6a61ed52-6242-4869-b139-94e799a5778a
+		summarizeBy: sum
+		sourceColumn: MaxStockLevel
+
+		annotation SummarizationSetBy = Automatic
+
+	column LastUpdated
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: e3177663-81dc-402e-bd2a-f722ff7365e3
+		summarizeBy: none
+		sourceColumn: LastUpdated
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column AverageCost
+		dataType: double
+		lineageTag: 772987e4-5cd4-4f00-bffa-4cddefcc1ec4
+		summarizeBy: sum
+		sourceColumn: AverageCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Status
+		dataType: string
+		lineageTag: fb155bcc-4d66-4d88-ab7b-060cc8d5a616
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedBy
+		dataType: string
+		lineageTag: ea0af7b5-00dd-47c9-9eb2-c31775c069dc
+		summarizeBy: none
+		sourceColumn: CreatedBy
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: c1051661-046e-4f25-b4f8-dea1389e78f6
+		summarizeBy: none
+		sourceColumn: CreatedDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column StockHealth =
+			
+			SWITCH(
+			    TRUE(),
+			    'inventory Inventory'[CurrentStock] = 0, "Out of Stock",
+			    'inventory Inventory'[CurrentStock] <= 'inventory Inventory'[SafetyStockLevel], "Low Stock",
+			    'inventory Inventory'[CurrentStock] <= 'inventory Inventory'[ReorderPoint], "Reorder Soon",
+			    'inventory Inventory'[CurrentStock] >= 'inventory Inventory'[MaxStockLevel] * 0.9, "High Stock",
+			    "Healthy Stock"
+			)
+		lineageTag: bcd304dd-2c70-4a32-8b6d-ffa35fdfa786
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column WarehouseID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 19fda1f1-5c50-4be1-975d-2618a07519a9
+		summarizeBy: none
+		sourceColumn: WarehouseID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'inventory inventory' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database(ServerParameter, DatabaseParameter),
+				    inventory_inventory = Source{[Schema="inventory",Item="inventory"]}[Data]
+				in
+				    inventory_inventory
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+
