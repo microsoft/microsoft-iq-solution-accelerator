@@ -55,3 +55,7 @@ relationship d4bccfeb-af24-90c5-86f1-0ddffc066464
 	fromColumn: 'inventory inventory'.WarehouseID
 	toColumn: 'inventory warehouses'.WarehouseID
 
+relationship 435d8326-620a-b6bb-9802-0d50ff126396
+	fromColumn: 'supplychain supplychainevents'.SupplierID
+	toColumn: 'supplychain suppliers'.SupplierID
+
