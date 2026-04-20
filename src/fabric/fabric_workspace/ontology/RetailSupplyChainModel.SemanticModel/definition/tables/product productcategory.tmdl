@@ -1,0 +1,92 @@
+table 'product productcategory'
+	lineageTag: a1008656-bd80-48bc-9203-68e5d613daf0
+
+	column ProductCategoryID
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(8000)
+		lineageTag: 5b433c90-f267-4c02-9768-e336ed9cbb3b
+		summarizeBy: none
+		sourceColumn: ProductCategoryID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductLineID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 25218b8e-6810-4294-9571-15cdeb852e01
+		summarizeBy: none
+		sourceColumn: ProductLineID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CategoryName
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(8000)
+		lineageTag: f6b51757-55cc-458c-9ec5-4729e9e61599
+		summarizeBy: none
+		sourceColumn: CategoryName
+
+		annotation SummarizationSetBy = Automatic
+
+	column CategoryDescription
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 7cd829e7-80ad-4ea4-bcf9-1fb3b42dd7bf
+		summarizeBy: none
+		sourceColumn: CategoryDescription
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsActive
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 0871ab65-1ae2-40d1-a4f1-24cec59d476a
+		summarizeBy: none
+		sourceColumn: IsActive
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedBy
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: bd28c869-7a2c-44d0-b359-154ae064f9ef
+		summarizeBy: none
+		sourceColumn: CreatedBy
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 2147b9e8-d06d-48c3-8e9a-864c69da2764
+		summarizeBy: none
+		sourceColumn: CreatedDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ProductLineName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 6260ef7c-09e4-4b27-873d-5096531bf120
+		summarizeBy: none
+		sourceColumn: ProductLineName
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'product productcategory' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database(SQLEndpoint, DatabaseName),
+				    product_productcategory = Source{[Schema="product",Item="productcategory"]}[Data]
+				in
+				    product_productcategory
+
+	annotation PBI_ResultType = Exception
+

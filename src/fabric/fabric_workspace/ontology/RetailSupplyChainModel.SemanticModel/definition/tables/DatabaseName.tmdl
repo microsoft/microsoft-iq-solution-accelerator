@@ -1,0 +1,22 @@
+/// DatabaseName parameter for Fabric Lakehouse database name
+table DatabaseName
+	isHidden
+	isPrivate
+	lineageTag: c3d4e5f6-a7b8-9012-cdef-123456789012
+
+	column DatabaseName
+		dataType: string
+		lineageTag: d318dc3e-5023-4040-8ed1-89e486e86b3d
+		summarizeBy: none
+		sourceColumn: DatabaseName
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DatabaseName = m
+		mode: import
+		source = "miqsadata" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+
+	annotation PBI_ResultType = Text
+
+	annotation PBI_NavigationStepName = Navigation
+

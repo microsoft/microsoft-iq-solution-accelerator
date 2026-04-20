@@ -1,0 +1,42 @@
+table 'sales orderpayment'
+	lineageTag: cc5df4b9-8a36-4329-a38d-ef0313f36288
+
+	column PaymentMethod
+		dataType: string
+		lineageTag: dfa29a7d-a799-4384-b4e1-60e22feea853
+		summarizeBy: none
+		sourceColumn: PaymentMethod
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 2a9c321c-349b-41af-a362-71b6ee7daedd
+		summarizeBy: none
+		sourceColumn: OrderID
+
+		annotation SummarizationSetBy = Automatic
+
+	column TransactionID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 57470bdc-6e75-4a92-a10f-9bbdf3d399c7
+		summarizeBy: none
+		sourceColumn: TransactionID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'sales orderpayment' = m
+		mode: directQuery
+		source =
+				let
+				    Source =  Sql.Database(ServerParameter,DatabaseParameter),
+				    sales_orderpayment = Source{[Schema="sales",Item="orderpayment"]}[Data]
+				in
+				    sales_orderpayment
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

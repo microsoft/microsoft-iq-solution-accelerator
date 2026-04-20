@@ -1,0 +1,167 @@
+table 'supplychain supplychainevents'
+	lineageTag: 8c407e93-af1d-4e1c-9bd8-20b6088bcb1d
+
+	column EventID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 6b45a58e-c1c3-414a-8af5-7bf2a6b1ec99
+		summarizeBy: none
+		sourceColumn: EventID
+
+		annotation SummarizationSetBy = Automatic
+
+	column DisruptionType
+		dataType: string
+		lineageTag: 83e218d0-e3ca-4052-87be-78936168bc0e
+		summarizeBy: none
+		sourceColumn: DisruptionType
+
+		annotation SummarizationSetBy = Automatic
+
+	column EventName
+		dataType: string
+		lineageTag: cd61af63-e31f-466b-bece-a2c5920c4a22
+		summarizeBy: none
+		sourceColumn: EventName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Description
+		dataType: string
+		lineageTag: 0c147bc1-0552-4509-8a47-fc980f718cad
+		summarizeBy: none
+		sourceColumn: Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column Severity
+		dataType: string
+		lineageTag: 28b06966-1ecf-49fd-be8e-38103b6d1220
+		summarizeBy: none
+		sourceColumn: Severity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: b07acedb-9e9f-460a-962c-aae7d5a27d0d
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column StartDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: c2e01b33-99ae-44ed-9cf2-c5f6495fda02
+		summarizeBy: none
+		sourceColumn: StartDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column EndDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 6d3c5dbb-8ead-440a-9605-7b0388adb655
+		summarizeBy: none
+		sourceColumn: EndDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column GeographicArea
+		dataType: string
+		lineageTag: acc3732e-e815-4586-a072-8e73ba6538a5
+		summarizeBy: none
+		sourceColumn: GeographicArea
+
+		annotation SummarizationSetBy = Automatic
+
+	column IndustryImpact
+		dataType: string
+		lineageTag: 9c3b40e7-a46b-471f-99ca-f4080fcd04a5
+		summarizeBy: none
+		sourceColumn: IndustryImpact
+
+		annotation SummarizationSetBy = Automatic
+
+	column PredictedDuration
+		dataType: int64
+		formatString: 0
+		lineageTag: 9872a16f-32b6-4964-8cf1-5a42d16b3c87
+		summarizeBy: sum
+		sourceColumn: PredictedDuration
+
+		annotation SummarizationSetBy = Automatic
+
+	column ActualDuration
+		dataType: double
+		lineageTag: 6b1ec0fc-5066-4c22-a9fd-c85d9ebd7f6e
+		summarizeBy: sum
+		sourceColumn: ActualDuration
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column AlertLevel
+		dataType: string
+		lineageTag: 69bdca5b-7513-4f46-ba57-770f53534ac8
+		summarizeBy: none
+		sourceColumn: AlertLevel
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReportedBy
+		dataType: string
+		lineageTag: 7dafa4a5-2b18-47b1-9778-5dbead47b87c
+		summarizeBy: none
+		sourceColumn: ReportedBy
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedBy
+		dataType: string
+		lineageTag: d2f5866d-b43a-460a-899e-8880f1d892fd
+		summarizeBy: none
+		sourceColumn: CreatedBy
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: e0d9cb4b-43cf-411a-9038-7372ce877c38
+		summarizeBy: none
+		sourceColumn: CreatedDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column SupplierID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 02f47b44-bbab-4877-8f2f-e95fba17b26b
+		summarizeBy: none
+		sourceColumn: SupplierID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'supplychain supplychainevents' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database(ServerParameter, DatabaseParameter),
+				    supplychain_supplychainevents = Source{[Schema="supplychain",Item="supplychainevents"]}[Data]
+				in
+				    supplychain_supplychainevents
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

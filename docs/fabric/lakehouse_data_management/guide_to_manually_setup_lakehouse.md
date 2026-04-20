@@ -73,7 +73,7 @@ If you need to update a portion of the schema, data, or data loading code, you c
 
 ## Step 5. Expected output and validation
 
-During a successful run of `main_pipeline`, you will get plenty of messages. The last step is loading all the data to Fabric Lakehouse. You will get something similar to the following: 
+During a successful run of `pipeline_main`, you will get a lot of messages. The last step is loading all the data to Fabric Lakehouse. You will be getting something similar to below: 
 
 ```text
 ✅Loading 'customer' schema from: Files/data/customer

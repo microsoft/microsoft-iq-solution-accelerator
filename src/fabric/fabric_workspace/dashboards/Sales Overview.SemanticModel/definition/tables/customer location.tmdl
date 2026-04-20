@@ -1,0 +1,146 @@
+table 'customer location'
+	lineageTag: 76e371bd-b6a3-4e8e-956e-f3f0c6cae814
+
+	column LocationName
+		dataType: string
+		lineageTag: c9cc91c3-a6f6-4e59-b3f3-40109e07b441
+		summarizeBy: none
+		sourceColumn: LocationName
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsActive
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 1881a7b0-c5b4-41e6-be71-bbf106a6d526
+		summarizeBy: none
+		sourceColumn: IsActive
+
+		annotation SummarizationSetBy = Automatic
+
+	column AddressLine1
+		dataType: string
+		lineageTag: 99387f3c-71b6-48d3-9cb2-88cf8bfdaac1
+		summarizeBy: none
+		sourceColumn: AddressLine1
+
+		annotation SummarizationSetBy = Automatic
+
+	column AddressLine2
+		dataType: string
+		lineageTag: 7ce2fbc6-dcd1-4c03-9b2a-0475455b251a
+		summarizeBy: none
+		sourceColumn: AddressLine2
+
+		annotation SummarizationSetBy = Automatic
+
+	column City
+		dataType: string
+		lineageTag: 9d854206-dd9b-4851-92f1-03c926acfaa8
+		summarizeBy: none
+		sourceColumn: City
+
+		annotation SummarizationSetBy = Automatic
+
+	column ZipCode
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 2b69c17d-c579-4536-981e-b038beab94ad
+		summarizeBy: none
+		sourceColumn: ZipCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column SubdivisionName
+		dataType: string
+		lineageTag: 9bb6c268-fe0c-457b-ba97-b015ba0b6cbc
+		summarizeBy: none
+		sourceColumn: SubdivisionName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		lineageTag: 1c0ea7df-767d-45ce-b51d-85ddaef17de9
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column Latitude
+		dataType: double
+		lineageTag: 87878e7f-c3e5-4bcd-b9da-eaf6e9479dd8
+		summarizeBy: sum
+		sourceColumn: Latitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Longitude
+		dataType: double
+		lineageTag: e45aeba6-7791-44ab-8936-e396af98120a
+		summarizeBy: sum
+		sourceColumn: Longitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Note
+		dataType: string
+		lineageTag: 69f67701-671c-4d95-9be9-d0a17e400e76
+		summarizeBy: none
+		sourceColumn: Note
+
+		annotation SummarizationSetBy = Automatic
+
+	column LocationID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: d875c30f-af74-41a9-a69a-d2b54c310ca5
+		summarizeBy: none
+		sourceColumn: LocationID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 84d2e60c-521f-4bb8-ab76-88657b959d36
+		summarizeBy: none
+		sourceColumn: CustomerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column StateID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 6a2ce16a-d098-486b-bf9c-bd8981d1c120
+		summarizeBy: none
+		sourceColumn: StateID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CountryID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 0185457e-3680-4280-a8ff-24ce0ffbb525
+		summarizeBy: none
+		sourceColumn: CountryID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'customer location' = m
+		mode: directQuery
+		source =
+				let
+				    Source =  Sql.Database(ServerParameter,DatabaseParameter),
+				    customer_location = Source{[Schema="customer",Item="location"]}[Data]
+				in
+				    customer_location
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

@@ -1,0 +1,131 @@
+table 'sales orderline'
+	lineageTag: 99deb591-46cb-4f46-8f17-860f6a75676c
+
+	measure 'Net Sales' =
+			
+			SUMX(
+			    'sales orderline',
+			    ('sales orderline'[LineTotal]
+			    + 'sales orderline'[TaxAmount]   -- optional, include if tax counts toward net sales
+			))
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 604ceb06-5580-4854-8943-5e6baa3469ae
+
+	measure NetSales(Display) =
+			
+			VAR TotalSales = [Net Sales]
+			VAR CurrencySymbol = "$"  -- Replace with ₹ or your currency
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    ABS(TotalSales) >= 1000000, CurrencySymbol & FORMAT(TotalSales/1000000, "0.0") & "M",
+			    ABS(TotalSales) >= 1000, CurrencySymbol & FORMAT(TotalSales/1000, "0.0") & "K",
+			    CurrencySymbol & FORMAT(TotalSales, "0")
+			)
+		lineageTag: c3b727b3-4cd1-4ad7-ac08-70bed461fb8b
+
+	measure Revenue =
+			SUMX(
+			    'sales orderline',
+			    'sales orderline'[Quantity] * 'sales orderline'[UnitPrice]
+			)
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 790791b4-672d-462b-9e74-28e1eb1b9a8d
+
+	column OrderLineNumber
+		dataType: int64
+		formatString: 0
+		lineageTag: d000f309-a2cd-4822-8986-e2cfa20d0061
+		summarizeBy: sum
+		sourceColumn: OrderLineNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductName
+		dataType: string
+		lineageTag: 26802098-fc64-4858-b6e1-18a16d66d749
+		summarizeBy: none
+		sourceColumn: ProductName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quantity
+		dataType: int64
+		formatString: #,0
+		lineageTag: 9e8dbfd8-caee-49dd-876e-9f3026997c98
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column UnitPrice
+		dataType: double
+		lineageTag: 1eeb25b6-8a6b-4be2-b033-7bd9f1789d93
+		summarizeBy: sum
+		sourceColumn: UnitPrice
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LineTotal
+		dataType: double
+		lineageTag: 4e00ae84-591a-4430-84f8-dbc435e47c88
+		summarizeBy: sum
+		sourceColumn: LineTotal
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DiscountAmount
+		dataType: double
+		lineageTag: 04f5193b-eb5c-4027-b85c-1ee97997e4f2
+		summarizeBy: sum
+		sourceColumn: DiscountAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TaxAmount
+		dataType: double
+		lineageTag: 0299fb94-be22-4a78-83ae-552e1dc50f76
+		summarizeBy: sum
+		sourceColumn: TaxAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column OrderID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 4e984a20-9906-47cd-8f68-d1d99d28a4b1
+		summarizeBy: none
+		sourceColumn: OrderID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: d1665a59-3302-4b57-9e23-a63367b320f3
+		summarizeBy: none
+		sourceColumn: ProductID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'sales orderline' = m
+		mode: directQuery
+		source =
+				let
+				    Source =  Sql.Database(ServerParameter,DatabaseParameter),
+				    sales_orderline = Source{[Schema="sales",Item="orderline"]}[Data]
+				in
+				    sales_orderline
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

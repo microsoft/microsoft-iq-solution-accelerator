@@ -1,0 +1,81 @@
+table 'customer customertradename'
+	lineageTag: 3d90031d-57e7-4425-852f-8906574311e6
+
+	column TradeName
+		dataType: string
+		lineageTag: 669a9db3-e491-42d7-914d-40400adaac7e
+		summarizeBy: none
+		sourceColumn: TradeName
+
+		annotation SummarizationSetBy = Automatic
+
+	column PeriodStartDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: e61e82cd-d00a-4440-b9fe-ac445dca0192
+		summarizeBy: none
+		sourceColumn: PeriodStartDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column PeriodEndDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: cd53be6e-54aa-42f7-bf51-0b24dc3584cf
+		summarizeBy: none
+		sourceColumn: PeriodEndDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CustomerTradeNameNote
+		dataType: string
+		lineageTag: 96bc0068-721f-444f-acc9-77d3ee78c324
+		summarizeBy: none
+		sourceColumn: CustomerTradeNameNote
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 67eb1214-fe17-4884-a8e5-6b1d61228314
+		summarizeBy: none
+		sourceColumn: CustomerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerTypeID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 0bb1f92b-682f-4313-a551-91d7cb6cf7f0
+		summarizeBy: none
+		sourceColumn: CustomerTypeID
+
+		annotation SummarizationSetBy = Automatic
+
+	column TradeNameID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 837687c9-fdc1-4061-b109-ee093e68569a
+		summarizeBy: none
+		sourceColumn: TradeNameID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'customer customertradename' = m
+		mode: directQuery
+		source =
+				let
+				     Source =  Sql.Database(ServerParameter,DatabaseParameter),
+				    customer_customertradename = Source{[Schema="customer",Item="customertradename"]}[Data]
+				in
+				    customer_customertradename
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+
