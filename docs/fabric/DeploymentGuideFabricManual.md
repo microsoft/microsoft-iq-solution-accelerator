@@ -40,9 +40,9 @@ The installer notebook will:
 
 - ✅ Install required Python packages
 - ✅ Create the `miqsadata` lakehouse
-- ✅ Deploy and configure all solution notebooks (23 notebooks)
+- ✅ Deploy and configure all solution notebooks (26 notebooks)
 - ✅ Upload sample data files across 6 business domains
-- ✅ Deploy AI data agents and ontology semantic model
+- ✅ Deploy AI data agent, ontology, semantic models, and reports
 - ✅ Run post-deployment configuration tasks
 
 ---
@@ -51,13 +51,15 @@ The installer notebook will:
 
 After the notebook completes, verify the following items exist in your workspace:
 
-- **✅ Lakehouse**: `miqsadata` with tables across 6 business domains (customer, product, sales, finance, inventory, supplychain)
-- **✅ Notebooks**: 23 notebooks organized in `data_management/`, `data_processing/`, `query_samples/`, `schema/`, and root pipeline notebooks
+- **✅ Lakehouse**: `miqsadata` with 25 tables across 6 business domains plus shared dimension (customer, product, sales, finance, inventory, supplychain, shared)
+- **✅ Notebooks**: 26 notebooks organized in `data_management/`, `data_processing/`, `query_samples/`, `schema/`, and root pipeline notebooks
 - **✅ Sample Data**: CSV files loaded in the lakehouse Files section
-- **✅ Data Agents**: `data_agent_lakehouse` and `data_agent_ontology` for natural language querying
-- **✅ Ontology**: `ontology_supplychain` providing a business-friendly semantic layer
+- **✅ Data Agent**: `RetailSC Ontology Agent` for natural language querying through the ontology
+- **✅ Ontology**: `RetailSupplyChainOntologyModel` providing a business-friendly semantic layer
+- **✅ Semantic Models**: `RetailSupplyChainModel`, `Sales Overview`, `Supply Chain Management`
+- **✅ Reports**: `Sales Overview`, `Supply Chain Management` Power BI reports
 
-All items are deployed from the [`fabric_workspace/`](../fabric_workspace/) folder in the repository.
+Items are deployed from the [`src/fabric/fabric_workspace/`](../../src/fabric/fabric_workspace/) folder (standard items) and [`src/fabric/definitions/`](../../src/fabric/definitions/) folder (ontology definitions) in the repository.
 
 ---
 
