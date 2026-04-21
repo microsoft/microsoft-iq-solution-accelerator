@@ -1,6 +1,6 @@
-# Deployment Guide for Microsoft IQ: Fabric IQ
+# Deployment Guide for Microsoft IQ - Fabric IQ
 
-Deploy the **Microsoft IQ: Fabric IQ** solution accelerator using Azure Developer CLI - get a complete data platform with medallion architecture in minutes.
+Deploy the **Microsoft IQ** solution accelerator (Fabric IQ piece) using [Azure Developer CLI](https://learn.microsoft.com/azure/developer/azure-developer-cli/overview) in minutes.
 
 ---
 
@@ -79,20 +79,20 @@ This solution accelerator uses a **two-phase deployment approach** to provision 
 
 ### 1️⃣ Phase 1: Infrastructure (Azure)
 
-*Powered by Bicep & Azure Resource Manager*
+*Powered by [Bicep](https://learn.microsoft.com/azure/azure-resource-manager/bicep/overview) & [Azure Resource Manager](https://learn.microsoft.com/azure/azure-resource-manager/management/overview)*
 This phase creates the physical resources in your Azure subscription.
 
-- **Resource Group**: A container for your resources.
-- **Fabric Capacity**: The compute engine (F SKU) that powers your data workloads.
+- **[Resource Group](https://learn.microsoft.com/azure/azure-resource-manager/management/manage-resource-groups-portal)**: A container for your resources.
+- **[Fabric Capacity](https://learn.microsoft.com/fabric/enterprise/licenses)**: The compute engine (F SKU) that powers your data workloads.
 
 ### 2️⃣ Phase 2: Data Platform (Fabric)
 
-*Powered by Python & Fabric REST APIs*
-This phase is orchestrated by [`install_fabric_solution.py`](../infra/scripts/fabric/install_fabric_solution.py), which performs 4 bootstrap steps and then delegates the remaining solution setup to the installer notebook:
+*Powered by [Python](https://www.python.org/) & [Fabric REST APIs](https://learn.microsoft.com/rest/api/fabric/)*
+This phase is orchestrated by [`install_fabric_solution.py`](../../infra/scripts/fabric/install_fabric_solution.py), which performs 4 bootstrap steps and then delegates the remaining solution setup to the installer notebook:
 
-1. **Workspace Setup**: Creates or configures the workspace and assigns it to the Fabric capacity (resumes paused capacities automatically)
-2. **Workspace Administrators**: Adds administrators to the workspace (using Graph API resolution with fallback)
-3. **Upload Installer Notebook**: Uploads [`fabric_solution_installer.ipynb`](../infra/deploy/fabric_solution_installer.ipynb) to the workspace (creates or updates if already exists). The notebook is automatically patched before upload to set `GITHUB_BRANCH` to the currently checked out git branch, ensuring the solution is deployed from the same branch you're working on
+1. **Workspace Setup**: Creates or configures the [workspace](https://learn.microsoft.com/fabric/get-started/workspaces) and assigns it to the Fabric capacity (resumes paused capacities automatically)
+2. **Workspace Administrators**: Adds administrators to the workspace (using [Graph API](https://learn.microsoft.com/graph/overview) resolution with fallback)
+3. **Upload Installer Notebook**: Uploads [`fabric_solution_installer.ipynb`](../../infra/fabric/deploy/fabric_solution_installer.ipynb) to the workspace (creates or updates if already exists). The notebook is automatically patched before upload to set `GITHUB_BRANCH` to the currently checked out git branch, ensuring the solution is deployed from the same branch you're working on
 4. **Run Installer Notebook**: Executes [`fabric_solution_installer.ipynb`](../../infra/fabric/deploy/fabric_solution_installer.ipynb) end-to-end inside Fabric. The notebook uses the [`fabric-launcher`](https://github.com/microsoft/fabric-launcher) library to pull the solution directly from GitHub and deploy all Fabric items leveraging [Fabric's Git integration and CI/CD capabilities](https://learn.microsoft.com/fabric/cicd/git-integration/intro-to-git-integration). The Fabric items are defined in two locations: standard items (lakehouses, notebooks, reports, semantic models, data agent) are in the [`src/fabric/fabric_workspace/`](../../src/fabric/fabric_workspace/) folder structured to match the [Fabric workspace Git format](https://learn.microsoft.com/fabric/cicd/git-integration/git-get-started), while ontology definitions are in the [`src/fabric/definitions/`](../../src/fabric/definitions/) folder and deployed via custom post-deployment logic. The notebook then runs the following post-deployment tasks:
    - Run `pipeline_main` notebook: creates lakehouse tables from ingested CSV data
    - Deploy ontology items (`RetailSupplyChainOntologyModel`) with logical ID resolution and lakehouse SQL endpoint mapping
@@ -101,13 +101,13 @@ This phase is orchestrated by [`install_fabric_solution.py`](../infra/scripts/fa
 
 #### Deployment Architecture
 
-The Fabric deployment entry-point is [`install_fabric_solution.py`](../infra/scripts/fabric/install_fabric_solution.py), which coordinates the bootstrap steps using a small set of helper modules:
+The Fabric deployment entry-point is [`install_fabric_solution.py`](../../infra/scripts/fabric/install_fabric_solution.py), which coordinates the bootstrap steps using a small set of helper modules:
 
 | Helper Module | Purpose | Key Functions |
 |---------------|---------|---------------|
-| [`workspace.py`](../infra/scripts/fabric/helpers/workspace.py) | Workspace creation, capacity assignment, and auto-resume of paused capacities | `setup_workspace()` |
-| [`workspace_admins.py`](../infra/scripts/fabric/helpers/workspace_admins.py) | Administrator management with Graph API integration and fallback handling | `setup_workspace_administrators()` |
-| [`utils.py`](../infra/scripts/fabric/helpers/utils.py) | Common utilities | Notebook encoding, environment variable helpers, step logging |
+| [`workspace.py`](../../infra/scripts/fabric/helpers/workspace.py) | Workspace creation, capacity assignment, and auto-resume of paused capacities | `setup_workspace()` |
+| [`workspace_admins.py`](../../infra/scripts/fabric/helpers/workspace_admins.py) | Administrator management with Graph API integration and fallback handling | `setup_workspace_administrators()` |
+| [`utils.py`](../../infra/scripts/fabric/helpers/utils.py) | Common utilities | Notebook encoding, environment variable helpers, step logging |
 
 Fabric item definitions are organized in two locations:
 
@@ -120,7 +120,7 @@ The installer notebook ([`fabric_solution_installer.ipynb`](../../infra/fabric/d
 
 The deployment is designed to be **safe to re-run**. If you run `azd up` again:
 
-- **Infrastructure**: Only updates settings if they have changed (e.g., resizing Capacity).
+- **Infrastructure**: Only updates settings if they have changed (e.g., [resizing Capacity](https://learn.microsoft.com/fabric/enterprise/scale-capacity)).
 - **Workspace**: Detects existing workspace and skips creation.
 - **Content**:
   - *Notebooks/Reports*: Updated to the latest version (overwrites changes).
@@ -138,10 +138,10 @@ Choose your deployment environment based on your workflow and requirements. All 
 | Environment | Best For | Setup Required | Notes |
 |-------------|----------|----------------|-------|
 | **[Local Machine](#1-local-machine)** | Full development control | Install [software requirements](#software-requirements) | Most flexible, requires local setup |
-| **[Azure Cloud Shell](#2-azure-cloud-shell)** | Zero setup | Just a web browser | Pre-configured tools, session timeouts |
-| **[GitHub Codespaces](#3-github-codespaces)** | Team consistency | GitHub account | Cloud development environment |
+| **[Azure Cloud Shell](#2-azure-cloud-shell)** | Zero setup | Just a web browser | Pre-configured tools, [session timeouts](https://learn.microsoft.com/azure/cloud-shell/limitations#system-state-and-persistence) |
+| **[GitHub Codespaces](#3-github-codespaces)** | Team consistency | [GitHub account](https://github.com/signup) | [Cloud development environment](https://docs.github.com/en/codespaces/overview) |
 | **[Visual Studio Code (WEB)](#4-visual-studio-code-web)** | Zero setup| Just a web browser | Web-based VS Code, session timeouts |
-| **[Dev Container](#5-vs-code-dev-container)** | Standardized tooling | Docker Desktop + VS Code | Containerized consistency |
+| **[Dev Container](#5-vs-code-dev-container)** | Standardized tooling | [Docker Desktop](https://www.docker.com/products/docker-desktop) + VS Code | [Containerized consistency](https://code.visualstudio.com/docs/devcontainers/containers) |
 | **[GitHub Actions](#6-github-actions-cicd)** | Automated CI/CD | Service principal setup | Production deployments |
 
 <details>
@@ -282,13 +282,14 @@ azd auth login
 # Optional: Customize deployment (see Advanced Configuration Options below)
 azd env set FABRIC_WORKSPACE_NAME "My IQ Platform"
 azd env set AZURE_LOCATION "westeurope"
+azd env set FABRIC_CAPACITY_SKU_NAME "F8"  # Optional: defaults to F2
 azd env set GITHUB_TOKEN "ghp_xxxxxxxxxxxx"  # Only needed for private repositories
 
 # Deploy everything
 azd up
 ```
 
-> **💡 Configuration Tip**: You can customize the deployment with [optional variables](#-additional-optional-configuration) like `AZURE_LOCATION`, `LOG_LEVEL`, and `GITHUB_TOKEN` before running `azd up`.
+> **💡 Configuration Tip**: You can customize the deployment with optional infrastructure variables like `FABRIC_CAPACITY_SKU_NAME`, `AZURE_LOCATION`, or workspace variables like `FABRIC_WORKSPACE_NAME`, `LOG_LEVEL`, and `GITHUB_TOKEN` before running `azd up`. See [Advanced Configuration Options](#6-advanced-configuration-options) for details.
 
 > **⚠️ Known Deployment Issue - Notebook Session Timeouts**
 > 
@@ -299,7 +300,7 @@ azd up
 > through the managed network. ErrorCode GetManagedVnetTimeout. Please retry.
 > ```
 > 
-> **Root Cause**: This is a transient platform issue caused by intermittent delays during Spark session provisioning through the managed virtual network. It is not configuration-specific and can occur across different regions and capacities.
+> **Root Cause**: This is a transient platform issue caused by intermittent delays during [Spark session](https://learn.microsoft.com/fabric/data-engineering/spark-job-definition) provisioning through the managed virtual network. It is not configuration-specific and can occur across different regions and capacities.
 > 
 > **Workaround**: Simply re-run the deployment command (`azd up`). The deployment is idempotent and will resume from where it stopped. Session startup failures typically succeed on subsequent retry attempts.
 
@@ -309,7 +310,7 @@ During deployment, you'll specify:
 - **Azure subscription**.
 - **Azure resource group**.
 
-**What you get**: Complete medallion architecture with Fabric capacity, lakehouses (Bronze/Silver/Gold), notebooks, sample data, and Power BI reports.
+**What you get**: Complete [medallion architecture](https://learn.microsoft.com/azure/databricks/lakehouse/medallion) with Fabric capacity, [lakehouses](https://learn.microsoft.com/fabric/data-engineering/lakehouse-overview) (Bronze/Silver/Gold), [notebooks](https://learn.microsoft.com/fabric/data-engineering/how-to-use-notebook), sample data, and [Power BI reports](https://learn.microsoft.com/power-bi/create-reports/service-report-create-new).
 
 > **💡 Alternative Deployment Option**
 > This guide uses Azure Developer CLI for automated deployment. If you prefer more granular control or have an existing Fabric capacity, see the [Manual Deployment Guide](./DeploymentGuideFabricManual.md).
@@ -372,7 +373,7 @@ your-workspace/
 
 #### Lakehouse
 
-The solution deploys a single lakehouse that serves as the data store:
+The solution deploys a single [lakehouse](https://learn.microsoft.com/fabric/data-engineering/lakehouse-overview) that serves as the data store:
 
 | Name | Purpose |
 |------|---------|
@@ -398,7 +399,7 @@ Sample data is uploaded into the lakehouse during deployment to enable immediate
 
 #### Notebooks
 
-**26 notebooks** organized by function:
+**26 [notebooks](https://learn.microsoft.com/fabric/data-engineering/how-to-use-notebook)** organized by function:
 
 | Folder | Count | Purpose |
 |--------|-------|---------|
@@ -418,15 +419,23 @@ One [Fabric Data Agent](https://learn.microsoft.com/fabric/data-science/ai-agent
 |-------|---------|
 | `RetailSC Ontology Agent` | Query data through the ontology semantic model using natural language. Based on the Semantic Model → Ontology → Data Agent approach with comprehensive AI instructions |
 
-> **Note**: The solution supports additional data agent approaches (lakehouse-based, entity model-based) that can be manually configured. See [`docs/fabric/fabric_data_agent/README.md`](../fabric_data_agent/README.md) for details.
+
+> **Note**: The solution supports additional data agent approaches (lakehouse-based, entity model-based) that can be manually configured. See [fabric_data_agent/README.md](./fabric_data_agent/README.md) for details.
 
 #### Ontology & Semantic Models
 
 | Item | Type | Purpose |
 |------|------|---------|
-| `RetailSupplyChainOntologyModel` | Ontology | Ontology-based model providing a business-friendly view of the lakehouse data |
-| `RetailSupplyChainModel` | Semantic Model | Semantic model based on lakehouse schema used to generate the ontology |
-| `Sales Overview` | Semantic Model + Report | Power BI semantic model and report for sales analytics |
+| `RetailSupplyChainOntologyModel` | [Ontology](https://learn.microsoft.com/fabric/data-science/ontology) | Ontology-based model providing a business-friendly view of the lakehouse data |
+| `RetailSupplyChainModel` | [Semantic Model](https://learn.microsoft.com/power-bi/connect-data/service-datasets-understand) | Semantic model based on lakehouse schema used to generate the ontology |
+
+![Screenshot of Ontology](../images/deployment/fabric-ontology.png)
+
+#### Dashboards & Semantic Models
+
+| Item | Type | Purpose |
+|------|------|---------|
+| `Sales Overview` | Semantic Model + [Report](https://learn.microsoft.com/power-bi/create-reports/service-report-create-new) | [Power BI](https://learn.microsoft.com/power-bi/fundamentals/power-bi-overview) semantic model and report for sales analytics |
 | `Supply Chain Management` | Semantic Model + Report | Power BI semantic model and report for supply chain analytics |
 
 ---
@@ -440,9 +449,9 @@ The solution accelerator provides flexible configuration options to customize yo
 > - Infrastructure: [`infra/main.bicep`](../../infra/main.bicep) - Azure resource definitions
 > - Deployment orchestration: [`azure.yaml`](../../azure.yaml) - AZD project configuration  
 > - CI/CD workflow: [`.github/workflows/azure-dev.yml`](../../.github/workflows/azure-dev.yml) - GitHub Actions pipeline
-> - Fabric deployment: [`infra/scripts/fabric/install_fabric_solution.py`](../infra/scripts/fabric/install_fabric_solution.py) - Fabric solution bootstrap orchestrator
-> - Installer notebook: [`infra/deploy/fabric_solution_installer.ipynb`](../infra/deploy/fabric_solution_installer.ipynb) - Full solution deployment notebook
-> - Helper modules: [`infra/scripts/fabric/helpers/`](../infra/scripts/fabric/helpers/) - Bootstrap helper functions
+> - Fabric deployment: [`infra/scripts/fabric/install_fabric_solution.py`](../../infra/scripts/fabric/install_fabric_solution.py) - Fabric solution bootstrap orchestrator
+> - Installer notebook: [`infra/fabric/deploy/fabric_solution_installer.ipynb`](../../infra/fabric/deploy/fabric_solution_installer.ipynb) - Full solution deployment notebook
+> - Helper modules: [`infra/scripts/fabric/helpers/`](../../infra/scripts/fabric/helpers/) - Bootstrap helper functions
 
 ### 🏗️ Infrastructure Configuration
 
@@ -456,7 +465,7 @@ Configure the Azure infrastructure components through Bicep template parameters 
 | **Solution Name** | `solutionName` | `AZURE_ENV_NAME` | Friendly name for the application/solution (3-20 chars) | `udfwfsa` | `mycompany-iq` |
 | **Location** | `AZURE_LOCATION` | `AZURE_LOCATION` | Azure region for resource deployment | Resource group location | `eastus`, `westus2`, `westeurope` |
 | **Existing Fabric Capacity** *(Optional)* | `AZURE_EXISTING_FABRIC_CAPACITY_NAME` | `AZURE_EXISTING_FABRIC_CAPACITY_NAME` | Name of an existing Fabric capacity to use. If provided, skips capacity creation and uses the specified capacity instead | Empty (creates new capacity) | `fc-mycompany-prod` |
-| **Fabric Capacity SKU** | `skuName` | Not directly supported* | Fabric capacity tier and performance level (only applies when creating new capacity) | `F2` | `F4`, `F8`, `F16`, `F32`, `F64`, `F128`, `F256`, `F512`, `F1024`, `F2048` |
+| **Fabric Capacity SKU** *(Optional)* | `FABRIC_CAPACITY_SKU_NAME` | `FABRIC_CAPACITY_SKU_NAME` | Fabric capacity tier and performance level (only applies when creating new capacity) | `F2` | `F4`, `F8`, `F16`, `F32`, `F64`, `F128`, `F256`, `F512`, `F1024`, `F2048` |
 | **Enable Telemetry** | `enableTelemetry` | Not directly supported* | Enable/disable usage telemetry collection | `true` | `false` |
 
 *GitHub Actions can use additional parameters through Bicep parameter files or workflow modifications.*
@@ -469,8 +478,7 @@ Configure the Azure infrastructure components through Bicep template parameters 
 ```bash
 # Set environment variables (used by main.parameters.json)
 azd env set AZURE_LOCATION "westeurope"
-azd env set skuName "F8"
-azd env set enableTelemetry false
+azd env set FABRIC_CAPACITY_SKU_NAME "F8"
 
 # Optional: Use an existing Fabric capacity instead of creating a new one
 azd env set AZURE_EXISTING_FABRIC_CAPACITY_NAME "fc-mycompany-prod"
@@ -483,19 +491,20 @@ azd up
 <details>
 <summary><strong>🚀 GitHub Actions</strong></summary>
 
-Modify [`azure-dev.yml`](../../.github/workflows/azure-dev.yml) Deploy Infrastructure step:
+Set as a repository variable or modify [`azure-dev.yml`](../../.github/workflows/azure-dev.yml) to add environment variables:
 
 ```yaml
-- name: Deploy Infrastructure
-  uses: azure/bicep-deploy@v2
-  with:
-    parameters: |
-      {
-        "solutionName": "${{ env.AZURE_ENV_NAME_DEV }}",
-        "skuName": "F8",
-        "enableTelemetry": false
-      }
+- name: Deploy using azd up and Run Fabric provisioning script
+  env:
+    FABRIC_CAPACITY_SKU_NAME: "F8"
+    AZURE_LOCATION: ${{ env.AZURE_LOCATION }}
+  run: |
+    azd env new $ENV_NAME --no-prompt
+    azd env set FABRIC_CAPACITY_SKU_NAME "$FABRIC_CAPACITY_SKU_NAME"
+    azd up --no-prompt
 ```
+
+Alternatively, set it as a [GitHub repository variable](https://docs.github.com/en/actions/learn-github-actions/variables) named `FABRIC_CAPACITY_SKU_NAME` and reference it in the workflow with `${{ vars.FABRIC_CAPACITY_SKU_NAME }}`.
 
 </details>
 
@@ -514,7 +523,7 @@ For detailed capacity planning, see [Fabric capacity planning](https://learn.mic
 
 ### 🏢 Fabric Workspace Configuration
 
-Customize the Fabric workspace setup and naming conventions. These parameters are used by the [`install_fabric_solution.py`](../infra/scripts/fabric/install_fabric_solution.py) script during post-provisioning.
+Customize the Fabric workspace setup and naming conventions. These parameters are used by the [`install_fabric_solution.py`](../../infra/scripts/fabric/install_fabric_solution.py) script during post-provisioning.
 
 > **⚠️ Important**: Variables marked as "Bicep output" (like `AZURE_FABRIC_CAPACITY_NAME`, `SOLUTION_SUFFIX`, `AZURE_FABRIC_CAPACITY_ADMINISTRATORS`) are automatically set by the deployment process and should **NOT** be manually configured. These are outputs from [`main.bicep`](../../infra/main.bicep) and will be populated after infrastructure deployment.
 
@@ -564,7 +573,7 @@ env:
 
 ### 👥 Fabric Workspace Administrator Configuration
 
-Manage workspace administrators and security permissions for the Fabric workspace. These parameters are processed by both the Bicep template ([`main.bicep`](../../infra/main.bicep)) for capacity-level admins and the Fabric deployment script ([`install_fabric_solution.py`](../infra/scripts/fabric/install_fabric_solution.py)) for workspace-level admins.
+Manage workspace administrators and security permissions for the Fabric workspace. These parameters are processed by both the Bicep template ([`main.bicep`](../../infra/main.bicep)) for capacity-level admins and the Fabric deployment script ([`install_fabric_solution.py`](../../infra/scripts/fabric/install_fabric_solution.py)) for workspace-level admins.
 
 <details>
 <summary><strong>Admin Assignment Options</strong></summary>
@@ -655,7 +664,7 @@ Administrators configured through these parameters will have **Admin** role on t
 
 ### � Additional Optional Configuration
 
-These optional environment variables control advanced deployment behavior in [`install_fabric_solution.py`](../infra/scripts/fabric/install_fabric_solution.py) and [`remove_fabric_solution.py`](../infra/scripts/fabric/remove_fabric_solution.py).
+These optional environment variables control advanced deployment behavior in [`install_fabric_solution.py`](../../infra/scripts/fabric/install_fabric_solution.py) and [`remove_fabric_solution.py`](../../infra/scripts/fabric/remove_fabric_solution.py).
 
 <details>
 <summary><strong>Optional Variables</strong></summary>
@@ -686,7 +695,7 @@ azd up
 
 ### �🐍 Python Environment Configuration Options
 
-Configure deployment behavior and troubleshooting options. These parameters are handled by the PowerShell orchestration script ([`Run-PythonScript.ps1`](../infra/scripts/utils/Run-PythonScript.ps1)).
+Configure deployment behavior and troubleshooting options. These parameters are handled by the PowerShell orchestration script ([`Run-PythonScript.ps1`](../../infra/scripts/utils/Run-PythonScript.ps1)).
 
 <details>
 <summary><strong>Deployment Customization</strong></summary>
@@ -770,7 +779,7 @@ This section documents known limitations in the deployment process and their wor
 - This can result in workspaces that are only accessible to the deployment service principal
 
 **Technical Details**:
-The [`workspace_admins.py`](../infra/scripts/fabric/helpers/workspace_admins.py) helper module implements fallback logic:
+The [`workspace_admins.py`](../../infra/scripts/fabric/helpers/workspace_admins.py) helper module implements fallback logic:
 
 ```python
 def detect_principal_type(admin_identifier, graph_client=None):
@@ -800,7 +809,7 @@ def detect_principal_type(admin_identifier, graph_client=None):
 
    The helper module automatically detects whether an identifier is a UPN or object ID and handles accordingly.
 
-2. **Post-Deployment Admin Assignment**: If Graph API permissions cannot be granted, add administrators manually after deployment through the Fabric portal workspace settings, or use the dedicated helper module [`workspace_admins.py`](../infra/scripts/fabric/helpers/workspace_admins.py) with appropriate credentials that have Graph API access.
+2. **Post-Deployment Admin Assignment**: If Graph API permissions cannot be granted, add administrators manually after deployment through the Fabric portal workspace settings, or use the dedicated helper module [`workspace_admins.py`](../../infra/scripts/fabric/helpers/workspace_admins.py) with appropriate credentials that have Graph API access.
 
 ---
 
@@ -814,7 +823,7 @@ def detect_principal_type(admin_identifier, graph_client=None):
 - Graceful exit with clear guidance on permission requirements
 
 **Technical Details**:
-The [`install_fabric_solution.py`](../infra/scripts/fabric/install_fabric_solution.py) script provides specific error handling for authorization failures:
+The [`install_fabric_solution.py`](../../infra/scripts/fabric/install_fabric_solution.py) script provides specific error handling for authorization failures:
 
 ```python
 except FabricApiError as e:
@@ -881,13 +890,13 @@ Before removing Azure infrastructure, the cleanup process first handles the Micr
 ./fabric/infra/scripts/utils/Run-PythonScript.ps1 -ScriptPath "fabric/infra/scripts/fabric/remove_fabric_solution.py" -SkipPythonVirtualEnvironment
 ```
 
-This orchestration script ([`Run-PythonScript.ps1`](../infra/scripts/utils/Run-PythonScript.ps1)) manages:
+This orchestration script ([`Run-PythonScript.ps1`](../../infra/scripts/utils/Run-PythonScript.ps1)) manages:
 
 - **Python Environment Setup**: Creates or reuses Python virtual environment with required dependencies
 - **Script Execution**: Runs the specified Python script with proper error handling
 - **Cross-Platform Support**: Handles differences between Windows and Unix-based systems
 
-The core removal logic is handled by [`remove_fabric_solution.py`](../infra/scripts/fabric/remove_fabric_solution.py), which:
+The core removal logic is handled by [`remove_fabric_solution.py`](../../infra/scripts/fabric/remove_fabric_solution.py), which:
 
 - **Workspace Lookup**: Finds the workspace by name (defaults to `Microsoft IQ - {suffix}`) or by ID via `FABRIC_WORKSPACE_ID`
 - **Workspace Deletion**: Deletes the entire workspace and all its contents in unattended mode (no interactive confirmation)
