@@ -1,0 +1,90 @@
+table 'product productcategory'
+	lineageTag: 2b560a9d-1265-452e-9ef2-54b165bfa68a
+
+	column CategoryName
+		dataType: string
+		lineageTag: 9b82e738-372e-4471-8af6-a4ffe67a749f
+		summarizeBy: none
+		sourceColumn: CategoryName
+
+		annotation SummarizationSetBy = Automatic
+
+	column CategoryDescription
+		dataType: string
+		lineageTag: 786d7ad6-bc59-4391-84a4-169f16a2deb6
+		summarizeBy: none
+		sourceColumn: CategoryDescription
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsActive
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 7916ba6c-06e7-4ddf-b855-1f4d05109fbe
+		summarizeBy: none
+		sourceColumn: IsActive
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductCategoryID
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(8000)
+		lineageTag: 96b241e7-3627-4bfb-a2fa-c90823f34c04
+		summarizeBy: none
+		sourceColumn: ProductCategoryID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductLineID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 312f0c7e-a991-4bc2-a091-02134e4c776a
+		summarizeBy: none
+		sourceColumn: ProductLineID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductLineName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: bf582ad3-720c-48ec-885b-0eb8052322f6
+		summarizeBy: none
+		sourceColumn: ProductLineName
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedBy
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 8dbbe861-75ff-4d9d-b06f-c6481faddf83
+		summarizeBy: none
+		sourceColumn: CreatedBy
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: a9b18d95-699d-418f-82f3-fc786ccb5413
+		summarizeBy: none
+		sourceColumn: CreatedDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition 'product productcategory' = m
+		mode: directQuery
+		source =
+				let
+				   Source =  Sql.Database(ServerParameter,DatabaseParameter),
+				    product_productcategory = Source{[Schema="product",Item="productcategory"]}[Data]
+				in
+				    product_productcategory
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

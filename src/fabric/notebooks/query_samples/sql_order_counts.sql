@@ -1,7 +1,7 @@
 -- Use this in Fabric Warehouse UI
 -- T-SQL Query: Sales Channel Analytics - Comprehensive metrics by ProductLineName
 -- Source: Combined data from Order_Samples_Camping.csv, Order_Samples_Kitchen.csv, Order_Samples_Ski.csv
--- Table: [fabriciq_team_lake].[sales].[order]
+-- Table: [miqsadata].[sales].[order]
 -- 
 -- Returns: Order counts, percentages, unique customers, revenue totals, average order values, and date ranges
 
@@ -14,6 +14,6 @@ SELECT
     FORMAT(AVG(OrderTotal), 'N2') AS AvgOrderValue,
     MIN(OrderDate) AS FirstOrderDate,
     MAX(OrderDate) AS LastOrderDate
-FROM [fabriciq_team_lake].[sales].[order]
+FROM [miqsadata].[sales].[order]
 GROUP BY ProductLineName
 ORDER BY SUM(OrderTotal) DESC;

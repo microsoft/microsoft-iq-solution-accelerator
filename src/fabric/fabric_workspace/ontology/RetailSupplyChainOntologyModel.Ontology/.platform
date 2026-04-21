@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Ontology",
+    "displayName": "RetailSupplyChainOntologyModel"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "b1eb253e-6048-9a94-42a5-c64487ae7541"
+  }
+}

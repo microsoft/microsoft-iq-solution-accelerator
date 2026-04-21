@@ -1,0 +1,101 @@
+cultureInfo en-US
+
+	linguisticMetadata =
+			{
+			  "Version": "2.0.0",
+			  "Language": "en-US",
+			  "Entities": {
+			    "orderline.netsalesdisplay": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "orderline",
+			          "ConceptualProperty": "NetSales(Display)"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "suppliers.riskscore": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "suppliers",
+			          "ConceptualProperty": "RiskScore"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "suppliers.reliabilityscore": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "suppliers",
+			          "ConceptualProperty": "ReliabilityScore"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "customer_customer.customertypeid": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "customer customer",
+			          "ConceptualProperty": "CustomerTypeID"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Customer TypeID": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "sales_orderline.productname": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "sales orderline",
+			          "ConceptualProperty": "ProductName"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Product Name": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "product_productcategory.productlinename": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "product productcategory",
+			          "ConceptualProperty": "ProductLineName"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Product Line": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    }
+			  }
+			}
+		contentType: json
+

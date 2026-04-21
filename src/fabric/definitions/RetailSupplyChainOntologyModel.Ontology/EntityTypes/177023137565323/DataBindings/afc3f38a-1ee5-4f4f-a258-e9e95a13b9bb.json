@@ -1,0 +1,100 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "afc3f38a-1ee5-4f4f-a258-e9e95a13b9bb",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "ProductID",
+        "targetPropertyId": "2288657342795302473"
+      },
+      {
+        "sourceColumnName": "ProductLineID",
+        "targetPropertyId": "2288657187593622565"
+      },
+      {
+        "sourceColumnName": "ProductName",
+        "targetPropertyId": "2288657316639969875"
+      },
+      {
+        "sourceColumnName": "ProductDescription",
+        "targetPropertyId": "2288657295424422391"
+      },
+      {
+        "sourceColumnName": "ProductNumber",
+        "targetPropertyId": "2288657277053581075"
+      },
+      {
+        "sourceColumnName": "Color",
+        "targetPropertyId": "2288657254883829689"
+      },
+      {
+        "sourceColumnName": "ProductModel",
+        "targetPropertyId": "2288657232258389483"
+      },
+      {
+        "sourceColumnName": "ProductCategoryID",
+        "targetPropertyId": "2288657212430115899"
+      },
+      {
+        "sourceColumnName": "CategoryName",
+        "targetPropertyId": "2288656928103265222"
+      },
+      {
+        "sourceColumnName": "ListPrice",
+        "targetPropertyId": "2288657168058456835"
+      },
+      {
+        "sourceColumnName": "StandardCost",
+        "targetPropertyId": "2288657147156952411"
+      },
+      {
+        "sourceColumnName": "Weight",
+        "targetPropertyId": "2288657125388886907"
+      },
+      {
+        "sourceColumnName": "WeightUom",
+        "targetPropertyId": "2288657101501330941"
+      },
+      {
+        "sourceColumnName": "ProductStatus",
+        "targetPropertyId": "2288657081312561158"
+      },
+      {
+        "sourceColumnName": "CreatedDate",
+        "targetPropertyId": "2288657062081430304"
+      },
+      {
+        "sourceColumnName": "SellStartDate",
+        "targetPropertyId": "2288657037609149540"
+      },
+      {
+        "sourceColumnName": "SellEndDate",
+        "targetPropertyId": "2288657017656263404"
+      },
+      {
+        "sourceColumnName": "IsoCurrencyCode",
+        "targetPropertyId": "2288656907230028898"
+      },
+      {
+        "sourceColumnName": "UpdatedDate",
+        "targetPropertyId": "2288656995443686172"
+      },
+      {
+        "sourceColumnName": "CreatedBy",
+        "targetPropertyId": "2288656969385785937"
+      },
+      {
+        "sourceColumnName": "UpdatedBy",
+        "targetPropertyId": "2288656947354795248"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "27818fad-0450-42b9-a4a0-db84075ac8d7",
+      "itemId": "e6cd0b76-50e8-498f-9cd0-89251fae70c2",
+      "sourceTableName": "product",
+      "sourceSchema": "product"
+    }
+  }
+}

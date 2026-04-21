@@ -1,0 +1,129 @@
+table 'supplychain suppliers'
+	lineageTag: 15ed17a0-cadb-4a02-ba6f-bd1b01b537df
+
+	column SupplierID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: fac83762-cb87-4a82-9cfb-aaf5f811f86f
+		summarizeBy: none
+		sourceColumn: SupplierID
+
+		annotation SummarizationSetBy = Automatic
+
+	column SupplierName
+		dataType: string
+		lineageTag: d619892c-f019-4c12-ae74-a67d0d2d6023
+		summarizeBy: none
+		sourceColumn: SupplierName
+
+		annotation SummarizationSetBy = Automatic
+
+	column SupplierType
+		dataType: string
+		lineageTag: ac2d1bae-863e-4680-8b82-267738dfcd60
+		summarizeBy: none
+		sourceColumn: SupplierType
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: 7adfcda3-d08c-4bb5-8b5e-a084dca6af0b
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column PrimarySupplierID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 4548a307-808c-490e-92a8-d74dab3c15fc
+		summarizeBy: none
+		sourceColumn: PrimarySupplierID
+
+		annotation SummarizationSetBy = Automatic
+
+	column LeadTimeDays
+		dataType: int64
+		formatString: 0
+		lineageTag: abbacad9-13d2-4e39-84f5-f6becb75d062
+		summarizeBy: sum
+		sourceColumn: LeadTimeDays
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReliabilityScore
+		dataType: int64
+		formatString: 0
+		lineageTag: e94095f3-1ff1-438d-9e5d-e1d4ccddba37
+		summarizeBy: sum
+		sourceColumn: ReliabilityScore
+
+		annotation SummarizationSetBy = Automatic
+
+	column Location
+		dataType: string
+		lineageTag: 95ea01c8-abcf-4a2e-bf41-ac438259d0d3
+		summarizeBy: none
+		sourceColumn: Location
+
+		annotation SummarizationSetBy = Automatic
+
+	column ContactEmail
+		dataType: string
+		lineageTag: 1eec9086-8fb0-4ef9-a69b-cd538e66f8b4
+		summarizeBy: none
+		sourceColumn: ContactEmail
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedBy
+		dataType: string
+		lineageTag: 05f9a1ba-c002-4696-93e5-02214919f3e4
+		summarizeBy: none
+		sourceColumn: CreatedBy
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 46756ee7-9139-488f-8434-118873ad7a01
+		summarizeBy: none
+		sourceColumn: CreatedDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column RiskScore = (100 - 'supplychain suppliers'[ReliabilityScore]) + ('supplychain suppliers'[LeadTimeDays] / 2)
+		lineageTag: 11363431-ec3f-4811-b546-77fbd805e173
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ProductLineName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 40179ac4-e18a-4e0b-8864-b512c35ab51b
+		summarizeBy: none
+		sourceColumn: ProductLineName
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'supplychain suppliers' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database(ServerParameter, DatabaseParameter),
+				    supplychain_suppliers = Source{[Schema="supplychain",Item="suppliers"]}[Data]
+				in
+				    supplychain_suppliers
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+
