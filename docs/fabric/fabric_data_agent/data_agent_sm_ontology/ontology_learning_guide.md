@@ -1,47 +1,79 @@
 # Microsoft Fabric Ontology Learning Guide
 ## For Solution Deployers and Data Teams
 
+> ⚠️ **Preview:** Fabric Ontology is currently a preview feature. Auto-generation from a semantic model may not fully bind all entity properties or create all relationships. Expect to manually verify and complete data bindings and relationship definitions.
+
 ---
 
-This guide is meant to help you think clearly about ontology design in Fabric. It is not a setup checklist and it is not a product tutorial. The goal is to explain the design choices that make an ontology usable by a Data Agent, and to show the mistakes that usually make it fragile.
+## How to Use This Guide
 
-The simplest way to read it is this:
+This is a learning document, not a setup runbook. Use it to understand what an ontology is, how to design one well, avoid common failure patterns, and validate ontology behavior for Fabric Data Agent scenarios.
 
-1. Start with the mental model.
-2. Read the design guidance.
-3. Use the failure patterns to review your own model.
-4. Run the validation questions at the end.
+1. Read each module in order.
+2. Compare the guidance with your own ontology design.
+3. Run the lab queries and verify expected behavior.
 
-## The Mental Model
+---
 
-```text
-Prepare Data -> Create Semantic Model -> Generate Ontology -> Configure Data Agent
+## Learning Outcomes
 
-Prepare Data:
-- Load source files into Lakehouse tables
-- Validate PK and FK integrity
-- Resolve data type mismatches
+By the end of this guide, you should be able to:
 
-Create Semantic Model:
-- Select tables and define relationships
-- Add required measures (especially for low-numeric dimensions)
-- Choose DirectLake or Import mode
+1. Explain what a Fabric Ontology is and how it connects to data agents.
+2. Model ontology entities from business concepts, not just source tables.
+3. Design keys, properties, and relationships that avoid type and dependency issues.
+4. Prepare data so ontology generation is stable and complete.
+5. Write minimal but effective Data Agent instructions.
+6. Validate ontology quality using progressive test queries.
 
-Generate Ontology:
-- Create entities and properties from the model
-- Confirm keys, display names, and relation directions
-- Bind static data first, then time-series where needed
+---
 
-Configure Data Agent:
-- Add ontology as data source
-- Add concise instructions for ambiguity and output shape
-- Test with natural language queries
+## Module 1: What Is a Fabric Ontology?
+
+A [Fabric Ontology](https://learn.microsoft.com/fabric/iq/ontology/ontology-overview) is a semantic layer that defines:
+
+- **Entity types** — business concepts (e.g., Product, Supplier, Warehouse)
+- **Properties** — attributes of each entity (e.g., ProductName, ListPrice)
+- **Relationship types** — how entities connect (e.g., Product *supplied by* Supplier)
+
+When used as a data source for a Fabric Data Agent, the ontology lets the agent translate natural language into structured [GQL](https://learn.microsoft.com/fabric/iq/ontology/gql-overview) queries.
+
+### How It Fits in the Architecture
+
+```
+Lakehouse (Delta) ──> Semantic Model (Relationships + Measures) ──> Ontology (Entities + Rels) ──> Data Agent (NL → GQL)
 ```
 
+| Component | Role |
+|---|---|
+| **Lakehouse** | Raw data storage (Delta tables) |
+| **Semantic Model** | Adds relationships, measures, and business naming |
+| **Ontology** | Entity graph generated from the semantic model |
+| **Data Agent** | Answers natural language questions using the ontology |
 
-What usually goes wrong is that teams treat ontology generation as a table-conversion exercise. That produces a technically correct structure that is hard for people, and therefore hard for the agent, to use. A better ontology starts with the questions users ask and works backward into entities, properties, and relationships.
+### How the Data Agent Uses the Ontology
 
-## Start With Business Concepts, Not Tables
+1. User asks: *"Which products are supplied by Contoso?"*
+2. Agent identifies entities: `Product`, `Supplier`, `ProductSuppliers`
+3. Agent finds relationship path: `Supplier → ProductSuppliers → Product`
+4. Agent generates GQL query and executes it
+5. Agent returns human-readable results
+
+The ontology provides the **map** — the agent follows the paths.
+
+### Ontology vs. Direct Lakehouse
+
+| Aspect | With Ontology | Without (Direct Lakehouse) |
+|---|---|---|
+| Query language | GQL (graph-based) | T-SQL |
+| Relationships | Explicitly modeled | Agent must infer joins |
+| Measures | Available from semantic model | Not available |
+| Accuracy | Higher — structured paths | Lower — ambiguous joins |
+| Setup time | More steps | Minimal |
+
+---
+
+## Module 2: Model for Business Concepts
 
 If a user asks, "Which suppliers were affected by weather disruptions?" the business concepts are Supplier, SupplyChainEvent, and EventImpact. That is the shape of the ontology. The underlying tables matter, but they are not the design center.
 
@@ -56,164 +88,9 @@ In practice, it helps to classify source tables before modeling:
 
 The useful question is not, "Do I have an entity for every table?" The useful question is, "Can a business user ask a natural-language question and get back an answer that follows the domain model they already understand?"
 
-## Design Keys and Relationships Conservatively
-
-Most ontology problems are not caused by missing features. They are caused by over-modeling, ambiguous naming, or unstable keys.
-
-For entity keys, keep the rules strict:
-
-1. Use a single STRING or INTEGER key.
-2. Do not use nulls in key columns.
-3. Prefer stable business identifiers over generated values.
-
-Composite keys tend to make ontology behavior harder to reason about. They also make downstream troubleshooting harder. If you can avoid them, avoid them.
-
-Relationships should be designed so a human can read them without knowing the physical model. Names such as supplies, stored in, ordered from, and affected by are much more useful than generic link semantics. Relationship direction matters as well. If the model creates loops that do not add real business value, remove them.
-
-Property naming also needs more discipline than most teams expect. In Fabric ontology generation, property names are effectively global. Reusing a name like Priority or Status with different meanings or data types across entities is an easy way to create type conflicts and subtle confusion. Names such as WarehousePriority and OrderPriority are safer because they keep meaning attached to the property.
-
-## Prepare the Data Before You Generate the Ontology
-
-Ontology quality is constrained by data quality. If the source model is inconsistent, the ontology will reflect that inconsistency.
-
-The baseline requirements are straightforward:
-
-- [ ] Managed Lakehouse tables are used (not shortcuts or external only).
-- [ ] OneLake security is not enabled on the Lakehouse used for ontology generation.
-- [ ] Column mapping is not enabled.
-- [ ] Each table has a clear primary key column.
-- [ ] Foreign keys are valid with no orphan references.
-- [ ] Same-name columns across tables use compatible data types.
-
-There are also a few decisions that are not strictly required but usually improve the result:
-
-- [ ] Star schema separation for facts and dimensions.
-- [ ] DimDate available for time intelligence.
-- [ ] Descriptive names denormalized in high-use facts where practical.
-- [ ] Key columns without nulls.
-- [ ] Stable semantic typing for repeated concepts.
-
-Two small optimizations are worth calling out. First, display-friendly names such as WarehouseName make the ontology far easier to browse and far easier for the agent to return in answers. Second, dimension tables with no numeric behavior may need a measure in the semantic model so they are not ignored during generation.
-
-## Where Teams Usually Get Burned
-
-The same failure patterns show up repeatedly.
-
-### A table disappears from the ontology
-
-This often happens because the table has no measurable behavior and gets skipped. The usual fix is to add a simple measure in the semantic model, such as a row count, and regenerate.
-
-### A type conflict appears unexpectedly
-
-This usually means the same property name was reused with a different type in another entity. The fix is not to work around the error. The fix is to rename the property so its meaning is explicit and stable everywhere.
-
-### The Data Agent answers ID-based questions but struggles with names
-
-This usually means the ontology can technically traverse the model, but the data agent lacks enough readable context. You can solve this in two ways: improve instructions for join and matching behavior, or denormalize a small number of high-value name columns into key fact tables.
-
-### DirectLake works for simple queries but not multi-hop business questions
-
-This usually points to missing or weak relationship definitions in the semantic model. DirectLake will not rescue an under-specified model. If the join path matters, define it explicitly.
-
-## Keep Data Agent Instructions Lean
-
-Instructions should not restate the whole ontology. They should only help where the model alone is not enough.
-
-In most cases, the instructions need to do four things:
-
-1. Permit aggregation behavior such as GROUP BY.
-2. Define what to do when user wording does not exactly match stored values.
-3. Clarify business meanings for a few metrics.
-4. Require readable output fields in responses.
-
-That is usually enough. When instructions grow too long, they start competing with the model instead of supporting it.
-
-This pattern is often sufficient:
-
-```text
-Support GROUP BY in GQL.
-
-When no results are found, retry with:
-- Singular and plural variants
-- LIKE or CONTAINS partial matching
-- Related category fallback when product name misses
-
-Always include human-readable names such as ProductName, SupplierName, and WarehouseName.
-
-For quantity on hand or stock level, use CurrentStock.
-For available stock, calculate CurrentStock - ReservedStock.
-Treat negative quantities as valid for Sale, Transfer, and Damage.
-```
-
-## How to Tell Whether the Ontology Is Working
-
-The best test is not whether generation succeeds. The best test is whether natural-language questions behave the way a business user expects.
-
-Use a mix of simple and multi-hop questions:
-
-| Level | Question | What It Validates |
-|------|------|------|
-# Microsoft Fabric Ontology Learning Guide
-## For Solution Deployers and Data Teams
-
 ---
 
-## How to Use This Guide
-
-This is a learning document, not a setup runbook. Use it to understand design decisions,
-avoid common failure patterns, and validate ontology behavior for Fabric Data Agent scenarios.
-
-Recommended usage:
-
-1. Read each module in order.
-2. Compare the guidance with your own ontology design.
-3. Run the lab queries and verify expected behavior.
-
-Estimated time: 45 to 60 minutes.
-
----
-
-## Learning Outcomes
-
-By the end of this guide, you should be able to:
-
-1. Model ontology entities from business concepts, not just source tables.
-2. Design keys, properties, and relationships that avoid type and dependency issues.
-3. Prepare data so ontology generation is stable and complete.
-4. Write minimal but effective Data Agent instructions.
-5. Validate ontology quality using progressive test queries.
-
----
-
-## End-to-End Mental Model
-
-```text
-Prepare Data -> Create Semantic Model -> Generate Ontology -> Configure Data Agent
-
-Prepare Data:
-- Load source files into Lakehouse tables
-- Validate PK and FK integrity
-- Resolve data type mismatches
-
-Create Semantic Model:
-- Select tables and define relationships
-- Add required measures (especially for low-numeric dimensions)
-- Choose DirectLake or Import mode
-
-Generate Ontology:
-- Create entities and properties from the model
-- Confirm keys, display names, and relation directions
-- Bind static data first, then time-series where needed
-
-Configure Data Agent:
-- Add ontology as data source
-- Add concise instructions for ambiguity and output shape
-- Test with natural language queries
-```
-
----
-
-## Module 1: Model for Business Concepts
+## Module 2: Model for Business Concepts
 
 ### Principle
 
@@ -248,7 +125,7 @@ Better question:
 
 ---
 
-## Module 2: Keys, Relationships, and Property Naming
+## Module 3: Keys, Relationships, and Property Naming
 
 ### Entity Key Rules
 
@@ -298,7 +175,7 @@ types in different entities can cause type conflict failures.
 
 ---
 
-## Module 3: Data Readiness Checklist
+## Module 4: Data Readiness Checklist
 
 ### Must Have
 
@@ -336,7 +213,7 @@ types in different entities can cause type conflict failures.
 
 ---
 
-## Module 4: Common Pitfalls and Recovery Patterns
+## Module 5: Common Pitfalls and Recovery Patterns
 
 ### Pitfall 1: Table Missing in Ontology
 
@@ -389,7 +266,7 @@ Recovery:
 
 ---
 
-## Module 5: Writing Lean Data Agent Instructions
+## Module 6: Writing Lean Data Agent Instructions
 
 Good instructions are short, specific, and focused on ambiguity handling and response shape.
 
@@ -424,7 +301,7 @@ Treat negative quantities as valid for Sale, Transfer, and Damage.
 
 ---
 
-## Module 6: Validation Lab
+## Module 7: Validation Lab
 
 Run these questions from easy to advanced.
 
