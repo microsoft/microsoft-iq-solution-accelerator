@@ -1,0 +1,183 @@
+table 'inventory demandforecast'
+	lineageTag: b95a9b2e-de98-424d-bc4c-5f9b599a1b31
+
+	measure 'Predicted Demand' =
+			
+			CALCULATE(
+			    SUM('inventory DemandForecast'[PredictedDemand]),
+			    'inventory DemandForecast'[ForecastPeriod] = "Monthly", USERELATIONSHIP('inventory DemandForecast'[ForecastDate], 'Date'[Date]))
+		formatString: 0
+		lineageTag: 03244d93-1a35-4f8f-b7a4-53b83aff8de0
+
+	column ForecastID
+		dataType: int64
+		formatString: 0
+		lineageTag: 702fd275-137a-4ee2-a728-52849ab186df
+		summarizeBy: count
+		sourceColumn: ForecastID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductID
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(8000)
+		lineageTag: 1fd0d3c7-3a34-432b-bdf8-847a4c5e5a46
+		summarizeBy: none
+		sourceColumn: ProductID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductName
+		dataType: string
+		lineageTag: ed9beb91-f78a-47e3-9f5a-f8d802d6b1b6
+		summarizeBy: none
+		sourceColumn: ProductName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ForecastDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 33a0b03b-e84f-46a3-8321-17f049636ee3
+		summarizeBy: none
+		sourceColumn: ForecastDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ForecastPeriod
+		dataType: string
+		lineageTag: a9a84377-99a6-4882-8f2a-899951fc29a7
+		summarizeBy: none
+		sourceColumn: ForecastPeriod
+
+		annotation SummarizationSetBy = Automatic
+
+	column PredictedDemand
+		dataType: int64
+		formatString: 0
+		lineageTag: 1722f36a-bcfd-4187-a872-0b63b2128b49
+		summarizeBy: sum
+		sourceColumn: PredictedDemand
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConfidenceLevel
+		dataType: double
+		lineageTag: 925c8cb9-02af-471e-a7ef-e7ca0f2282e3
+		summarizeBy: sum
+		sourceColumn: ConfidenceLevel
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SeasonalMultiplier
+		dataType: double
+		lineageTag: 228e5373-0c01-446e-b946-1ff61511ef29
+		summarizeBy: sum
+		sourceColumn: SeasonalMultiplier
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TrendDirection
+		dataType: string
+		lineageTag: 04156b48-6f7b-4d89-8ac7-0081e6fc036c
+		summarizeBy: none
+		sourceColumn: TrendDirection
+
+		annotation SummarizationSetBy = Automatic
+
+	column BaselineDemand
+		dataType: int64
+		formatString: 0
+		lineageTag: 44c81883-1a08-426e-b4a4-5070b63b8452
+		summarizeBy: sum
+		sourceColumn: BaselineDemand
+
+		annotation SummarizationSetBy = Automatic
+
+	column MethodUsed
+		dataType: string
+		lineageTag: 5b85d58e-00e6-4dfd-ba48-3bc48781db34
+		summarizeBy: none
+		sourceColumn: MethodUsed
+
+		annotation SummarizationSetBy = Automatic
+
+	column ForecastHorizon
+		dataType: int64
+		formatString: 0
+		lineageTag: d1d85503-a17c-4e0b-8307-459320abfa38
+		summarizeBy: sum
+		sourceColumn: ForecastHorizon
+
+		annotation SummarizationSetBy = Automatic
+
+	column ActualDemand
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 431a6d14-8dce-45db-9144-2967c3080281
+		summarizeBy: sum
+		sourceColumn: ActualDemand
+
+		annotation SummarizationSetBy = Automatic
+
+	column AccuracyScore
+		dataType: double
+		sourceProviderType: decimal(5, 2)
+		lineageTag: 483aa202-415d-41d8-8e1f-04292a91a994
+		summarizeBy: sum
+		sourceColumn: AccuracyScore
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CreatedBy
+		dataType: string
+		lineageTag: d8b7ad58-4059-4148-9a28-436e7fc771d6
+		summarizeBy: none
+		sourceColumn: CreatedBy
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: de009e91-98f4-45e0-80a6-360981c06634
+		summarizeBy: none
+		sourceColumn: CreatedDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column WarehouseID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 15b41789-08bc-49c2-b222-16dd42ea75fa
+		summarizeBy: none
+		sourceColumn: WarehouseID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'inventory demandforecast' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database(ServerParameter, DatabaseParameter),
+				    inventory_demandforecast = Source{[Schema="inventory",Item="demandforecast"]}[Data]
+				in
+				    inventory_demandforecast
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

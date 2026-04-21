@@ -864,7 +864,7 @@ class FabricWorkspaceApiClient(FabricApiClient):
                     lro_response = self._wait_for_lro_completion(
                         job_url=job_monitoring_url,
                         operation_name=f"Run notebook '{notebook_name}' (ID: {notebook_id})",
-                        max_wait_time=1800,  # 30 minutes for notebook execution
+                        max_wait_time=3600,  # 60 minutes for notebook execution
                         check_interval=monitor_interval
                     )
                     

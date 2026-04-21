@@ -1,0 +1,41 @@
+table 'customer customerrelationshiptype'
+	lineageTag: eb00f14f-7092-49ec-a9c3-9fe8aa769df2
+
+	column CustomerRelationshipTypeName
+		dataType: string
+		lineageTag: 447d6d47-1848-4a43-8765-861ec2db36d5
+		summarizeBy: none
+		sourceColumn: CustomerRelationshipTypeName
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerRelationshipTypeDescription
+		dataType: string
+		lineageTag: cfebbc9b-1064-47be-a6a3-4c3fa97aea6b
+		summarizeBy: none
+		sourceColumn: CustomerRelationshipTypeDescription
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerRelationshipTypeID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 7ab37471-b21c-4395-adaa-e9e6a4b44846
+		summarizeBy: none
+		sourceColumn: CustomerRelationshipTypeID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'customer customerrelationshiptype' = m
+		mode: directQuery
+		source =
+				let
+				    Source =  Sql.Database(ServerParameter,DatabaseParameter),
+				    customer_customerrelationshiptype = Source{[Schema="customer",Item="customerrelationshiptype"]}[Data]
+				in
+				    customer_customerrelationshiptype
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+
