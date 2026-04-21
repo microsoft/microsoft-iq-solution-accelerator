@@ -28,7 +28,7 @@ Lakehouse → Semantic Model → Ontology → Data Agent
 
 - A Microsoft Fabric workspace with a deployed lakehouse (`fabriciq_team_lake` or equivalent)
 - Contributor or higher permissions on the workspace
-- Lakehouse tables loaded (22 Delta tables across 6 domain schemas)
+- Lakehouse tables loaded (16 Delta tables across 4 domain schemas)
 - Familiarity with [Fabric Semantic Models](https://learn.microsoft.com/fabric/get-started/direct-lake-overview)
 
 ---
@@ -40,7 +40,7 @@ Lakehouse → Semantic Model → Ontology → Data Agent
 1. In your Fabric workspace, navigate to the lakehouse.
 2. Select **New semantic model** from the lakehouse toolbar.
 3. Name it, for example, `RetailSupplyChainSemanticModel`.
-4. Select all tables across the 6 domain schemas.
+4. Select all tables across the 4 domain schemas.
 5. Define relationships between tables (see [semantic_model_guide.md](semantic_model_guide.md) for details).
 6. Add measures for dimension tables that have no numeric columns (e.g., `COUNTROWS` on `ProductCategory`).
 7. Optionally add a `DimDate` table for time intelligence.
@@ -74,7 +74,7 @@ Lakehouse → Semantic Model → Ontology → Data Agent
 
 **[semantic_model_guide.md](semantic_model_guide.md)** — Tables to include, relationships to define (with key pairs), measures to add, and DirectLake configuration for the semantic model.
 
-**[ontology_overview.md](ontology_overview.md)** — Solution-specific ontology reference: all 22 entities across 6 domains, their relationships, join keys, and common query paths for the `RetailSupplyChainOntologyModel`.
+**[ontology_overview.md](ontology_overview.md)** — Solution-specific ontology reference: all 16 entities across 4 domains, their relationships, join keys, and common query paths for the `RetailSupplyChainOntologyModel`.
 
 **[data_agent_instructions.md](data_agent_instructions.md)** — Agent behavior instructions to paste into the Data Agent configuration. Covers query matching, fallback logic, metric definitions, and response formatting.
 
@@ -101,7 +101,7 @@ Lakehouse → Semantic Model → Ontology → Data Agent
 
 ## Testing
 
-Once set up, use the questions in [sample_agent_questions.md](sample_agent_questions.md) to validate the agent across all six domains. Start with simple queries and progress to multi-hop business questions.
+Once set up, use the questions in [sample_agent_questions.md](sample_agent_questions.md) to validate the agent across all four domains. Start with simple queries and progress to multi-hop business questions.
 
 ---
 

@@ -19,18 +19,14 @@ The ontology is generated *from* this model — so getting it right here means b
 
 ## Tables to Include
 
-Include all 22 tables across the 6 domain schemas:
+Include all 16 tables across the 4 domain schemas:
 
 | Domain | Tables |
 |---|---|
-| **Customer** | Customer, CustomerRelationshipType, CustomerTradeName, Location, CustomerAccount |
-| **Product** | Product, ProductCategory |
-| **Sales** | Order, OrderLine, OrderPayment |
-| **Finance** | Invoice, Account, Payment |
+| **Product** | Product, ProductCategory, ProductLine |
 | **Inventory** | Warehouses, Inventory, InventoryTransactions, PurchaseOrders, PurchaseOrderItems, DemandForecast |
-| **Supply Chain** | Suppliers, ProductSuppliers, SupplyChainEvents |
-
-**Optional:** Add a `DimDate` shared dimension table for time intelligence queries.
+| **Supply Chain** | Suppliers, ProductSuppliers, SupplyChainEvents, SupplyChainEventImpacts |
+| **Shared** | DimDate |
 
 ---
 
@@ -38,36 +34,11 @@ Include all 22 tables across the 6 domain schemas:
 
 Define these relationships in the semantic model editor. Use the primary/foreign key pairs shown.
 
-### Customer Domain
-
-```
-CustomerRelationshipType (1) ──> Customer (*)     on CustomerRelationshipTypeId
-Customer (1) ──> Location (*)                      on CustomerId
-Customer (1) ──> CustomerAccount (*)               on CustomerId
-Customer (1) ──> CustomerTradeName (*)              on CustomerId
-```
-
 ### Product Domain
 
 ```
-ProductCategory (1) ──> Product (*)                on CategoryId / ProductCategoryID
-```
-
-### Sales Domain
-
-```
-Customer (1) ──> Order (*)                         on CustomerId
-Order (1) ──> OrderLine (*)                        on OrderId
-Order (1) ──> OrderPayment (*)                     on OrderId
-Product (1) ──> OrderLine (*)                      on ProductId
-```
-
-### Finance Domain
-
-```
-Customer (1) ──> Invoice (*)                       on CustomerId
-Customer (1) ──> Account (*)                       on CustomerId
-Invoice (1) ──> Payment (*)                        on InvoiceId
+ProductCategory (1) ──> Product (*)                on ProductCategoryID
+ProductLine (1) ──> Product (*)                    on ProductLineID
 ```
 
 ### Inventory Domain
@@ -76,7 +47,9 @@ Invoice (1) ──> Payment (*)                        on InvoiceId
 Warehouses (1) ──> Inventory (*)                   on WarehouseId
 Product (1) ──> Inventory (*)                      on ProductId
 Product (1) ──> InventoryTransactions (*)           on ProductId
+Warehouses (1) ──> InventoryTransactions (*)        on WarehouseId
 Product (1) ──> DemandForecast (*)                 on ProductId
+Warehouses (1) ──> DemandForecast (*)              on WarehouseId
 Product (1) ──> PurchaseOrderItems (*)             on ProductId
 PurchaseOrders (1) ──> PurchaseOrderItems (*)      on PurchaseOrderId
 ```
@@ -86,7 +59,17 @@ PurchaseOrders (1) ──> PurchaseOrderItems (*)      on PurchaseOrderId
 ```
 Suppliers (1) ──> ProductSuppliers (*)             on SupplierId
 Product (1) ──> ProductSuppliers (*)               on ProductId
-Suppliers (1) ──> SupplyChainEvents (*)            on SupplierId
+Suppliers (1) ──> PurchaseOrders (*)               on SupplierId
+SupplyChainEvents (1) ──> SupplyChainEventImpacts (*)  on EventId
+Suppliers (1) ──> SupplyChainEventImpacts (*)      on SupplierId
+```
+
+### Shared Dimension
+
+```
+DimDate (1) ──> InventoryTransactions (*)          on FullDate / TransactionDate
+DimDate (1) ──> PurchaseOrders (*)                 on FullDate / OrderDate
+DimDate (1) ──> DemandForecast (*)                 on FullDate / ForecastDate
 ```
 
 ---
@@ -98,7 +81,7 @@ Dimension tables with no numeric columns may be **skipped** during ontology gene
 | Table | Measure | DAX Expression |
 |---|---|---|
 | ProductCategory | CategoryCount | `COUNTROWS('ProductCategory')` |
-| CustomerRelationshipType | RelTypeCount | `COUNTROWS('CustomerRelationshipType')` |
+| ProductLine | ProductLineCount | `COUNTROWS('ProductLine')` |
 | Warehouses | WarehouseCount | `COUNTROWS('Warehouses')` |
 | Suppliers | SupplierCount | `COUNTROWS('Suppliers')` |
 
@@ -106,10 +89,9 @@ Dimension tables with no numeric columns may be **skipped** during ontology gene
 
 | Measure | DAX Expression |
 |---|---|
-| TotalRevenue | `SUMX('OrderLine', [LineTotal])` |
-| TotalOrders | `COUNTROWS('Order')` |
-| AvgOrderValue | `AVERAGEX('Order', [OrderTotal])` |
-| GrossMarginPct | `DIVIDE(SUM('OrderLine'[LineTotal]) - SUM('OrderLine'[StandardCost]), SUM('OrderLine'[LineTotal]))` |
+| TotalPOValue | `SUMX('PurchaseOrderItems', [Quantity] * [UnitPrice])` |
+| TotalPurchaseOrders | `COUNTROWS('PurchaseOrders')` |
+| AvgStockLevel | `AVERAGE('Inventory'[CurrentStock])` |
 
 ---
 
