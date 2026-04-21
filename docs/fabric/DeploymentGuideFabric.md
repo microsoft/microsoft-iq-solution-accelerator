@@ -93,9 +93,10 @@ This phase is orchestrated by [`install_fabric_solution.py`](../infra/scripts/fa
 1. **Workspace Setup**: Creates or configures the workspace and assigns it to the Fabric capacity (resumes paused capacities automatically)
 2. **Workspace Administrators**: Adds administrators to the workspace (using Graph API resolution with fallback)
 3. **Upload Installer Notebook**: Uploads [`fabric_solution_installer.ipynb`](../infra/deploy/fabric_solution_installer.ipynb) to the workspace (creates or updates if already exists). The notebook is automatically patched before upload to set `GITHUB_BRANCH` to the currently checked out git branch, ensuring the solution is deployed from the same branch you're working on
-4. **Run Installer Notebook**: Executes [`fabric_solution_installer.ipynb`](../infra/deploy/fabric_solution_installer.ipynb) end-to-end inside Fabric. The notebook uses the [`fabric-launcher`](https://github.com/microsoft/fabric-launcher) library to pull the solution directly from GitHub and deploy all Fabric items leveraging [Fabric's Git integration and CI/CD capabilities](https://learn.microsoft.com/fabric/cicd/git-integration/intro-to-git-integration). The Fabric items (lakehouses, notebooks, reports, semantic models, data agent) are defined in the [`fabric_workspace/`](../fabric_workspace/) folder at the repository root, which is structured to match the [Fabric workspace Git format](https://learn.microsoft.com/fabric/cicd/git-integration/git-get-started). The notebook then runs the following post-deployment tasks:
+4. **Run Installer Notebook**: Executes [`fabric_solution_installer.ipynb`](../../infra/fabric/deploy/fabric_solution_installer.ipynb) end-to-end inside Fabric. The notebook uses the [`fabric-launcher`](https://github.com/microsoft/fabric-launcher) library to pull the solution directly from GitHub and deploy all Fabric items leveraging [Fabric's Git integration and CI/CD capabilities](https://learn.microsoft.com/fabric/cicd/git-integration/intro-to-git-integration). The Fabric items are defined in two locations: standard items (lakehouses, notebooks, reports, semantic models, data agent) are in the [`src/fabric/fabric_workspace/`](../../src/fabric/fabric_workspace/) folder structured to match the [Fabric workspace Git format](https://learn.microsoft.com/fabric/cicd/git-integration/git-get-started), while ontology definitions are in the [`src/fabric/definitions/`](../../src/fabric/definitions/) folder and deployed via custom post-deployment logic. The notebook then runs the following post-deployment tasks:
    - Run `pipeline_main` notebook: creates lakehouse tables from ingested CSV data
-   - Deploy ontology items with logical ID resolution and lakehouse SQL endpoint mapping
+   - Deploy ontology items (`RetailSupplyChainOntologyModel`) with logical ID resolution and lakehouse SQL endpoint mapping
+   - Deploy data agent items (`RetailSC Ontology Agent`)
    - Move installer notebook and ontologies to their target folders
 
 #### Deployment Architecture
@@ -108,9 +109,12 @@ The Fabric deployment entry-point is [`install_fabric_solution.py`](../infra/scr
 | [`workspace_admins.py`](../infra/scripts/fabric/helpers/workspace_admins.py) | Administrator management with Graph API integration and fallback handling | `setup_workspace_administrators()` |
 | [`utils.py`](../infra/scripts/fabric/helpers/utils.py) | Common utilities | Notebook encoding, environment variable helpers, step logging |
 
-All Fabric item definitions (lakehouses, notebooks, reports, semantic models, data agent) live in the [`fabric_workspace/`](../fabric_workspace/) folder at the repository root. This folder follows the [Fabric workspace Git format](https://learn.microsoft.com/fabric/cicd/git-integration/git-get-started), enabling [Fabric CI/CD](https://learn.microsoft.com/fabric/cicd/git-integration/intro-to-git-integration) deployment via the [`fabric-launcher`](https://github.com/microsoft/fabric-launcher) library.
+Fabric item definitions are organized in two locations:
 
-The installer notebook ([`fabric_solution_installer.ipynb`](../infra/deploy/fabric_solution_installer.ipynb)) is uploaded to the workspace and executed as a Fabric notebook job. It uses [`fabric-launcher`](https://github.com/microsoft/fabric-launcher) to download the repository from GitHub and deploy all items from the [`fabric_workspace/`](../fabric_workspace/) folder directly into the Fabric workspace using Fabric's native CI/CD import capabilities.
+- **[`src/fabric/fabric_workspace/`](../../src/fabric/fabric_workspace/)**: Contains standard items (lakehouses, notebooks, reports, semantic models, data agent) structured to match the [Fabric workspace Git format](https://learn.microsoft.com/fabric/cicd/git-integration/git-get-started), enabling [Fabric CI/CD](https://learn.microsoft.com/fabric/cicd/git-integration/intro-to-git-integration) deployment via the [`fabric-launcher`](https://github.com/microsoft/fabric-launcher) library
+- **[`src/fabric/definitions/`](../../src/fabric/definitions/)**: Contains ontology definitions deployed via custom post-deployment logic using Fabric REST APIs
+
+The installer notebook ([`fabric_solution_installer.ipynb`](../../infra/fabric/deploy/fabric_solution_installer.ipynb)) is uploaded to the workspace and executed as a Fabric notebook job. It uses [`fabric-launcher`](https://github.com/microsoft/fabric-launcher) to download the repository from GitHub and deploy items from both folders into the Fabric workspace.
 
 ### 🔄 Idempotency & Re-runs
 
@@ -286,6 +290,19 @@ azd up
 
 > **💡 Configuration Tip**: You can customize the deployment with [optional variables](#-additional-optional-configuration) like `AZURE_LOCATION`, `LOG_LEVEL`, and `GITHUB_TOKEN` before running `azd up`.
 
+> **⚠️ Known Deployment Issue - Notebook Session Timeouts**
+> 
+> During deployment, the installer notebook may occasionally fail with a Spark session timeout error:
+> ```
+> SparkCoreError/Other: Livy session has failed. Error code: SparkCoreError/Other.
+> SessionInfo.State from SparkCore is Error: Error while trying to establish a connection
+> through the managed network. ErrorCode GetManagedVnetTimeout. Please retry.
+> ```
+> 
+> **Root Cause**: This is a transient platform issue caused by intermittent delays during Spark session provisioning through the managed virtual network. It is not configuration-specific and can occur across different regions and capacities.
+> 
+> **Workaround**: Simply re-run the deployment command (`azd up`). The deployment is idempotent and will resume from where it stopped. Session startup failures typically succeed on subsequent retry attempts.
+
 During deployment, you'll specify:
 
 - **Environment name** (e.g., "miq-dev"). This will be used to build the name of the deployed Azure resources.
@@ -319,96 +336,98 @@ After successful deployment, you'll have a complete data platform implementing m
 |----------|---------|
 | **[Fabric Capacity](https://learn.microsoft.com/fabric/admin/capacity-settings?tabs=power-bi-premium)** | Dedicated compute for Fabric workloads |
 
-![Screenshot of deployed Azure resources](./images/deployment/fabric/azure_resources.png)
+![Screenshot of deployed Azure resources](../images/deployment/azure-resources.png)
 
 ### Fabric Components
 
-All Fabric items are defined in the [`fabric_workspace/`](../fabric_workspace/) folder and deployed via the [`fabric-launcher`](https://github.com/microsoft/fabric-launcher) library using [Fabric's CI/CD import capabilities](https://learn.microsoft.com/fabric/cicd/git-integration/intro-to-git-integration). Deployment is staged: lakehouses first, then notebooks, data agents, and ontology models, ensuring correct dependency order. Re-running the installer notebook updates existing items in-place.
+Fabric items are defined in the [`src/fabric/fabric_workspace/`](../../src/fabric/fabric_workspace/) folder (standard items) and [`src/fabric/definitions/`](../../src/fabric/definitions/) folder (ontology definitions), and deployed via the [`fabric-launcher`](https://github.com/microsoft/fabric-launcher) library using [Fabric's CI/CD import capabilities](https://learn.microsoft.com/fabric/cicd/git-integration/intro-to-git-integration) plus custom ontology deployment logic. Deployment is staged: lakehouses first, then notebooks, then ontology and data agents via post-deployment tasks, ensuring correct dependency order. Re-running the installer notebook updates existing items in-place.
 
 #### Fabric Workspace
 
 Workspace created with the specified or default name (e.g., `Microsoft IQ - {suffix}`).
 
-![Screenshot of resulting Fabric workspace](./images/deployment/fabric/fabric_workspace.png)
+![Screenshot of resulting Fabric workspace](../images/deployment/fabric-workspace.png)
 
 #### Folder Structure
 
 ```text
 your-workspace/
-├── fabric_data_agents/       # AI Data Agents (natural language query)
-│   ├── data_agent_lakehouse/
-│   └── data_agent_ontology/
-├── fabric_ontology/          # Ontology semantic model
-│   └── ontology_supplychain/
+├── data_agent/               # AI Data Agent (natural language query)
+│   └── RetailSC Ontology Agent/
+├── dashboards/               # Power BI Reports & Semantic Models
+│   ├── Sales Overview/       # Report + Semantic Model
+│   └── Supply Chain Management/  # Report + Semantic Model
 ├── lakehouses/               # Fabric lakehouse
 │   └── miqsadata/
-└── notebooks/                # Data pipelines & utilities (23 notebooks)
-    ├── data_management/      # Table operations (create, drop, load, truncate)
-    ├── data_processing/      # Domain data loaders (customer, finance, sales, …)
-    ├── query_samples/        # Ad-hoc query notebooks (Python & SQL)
-    ├── schema/               # Schema model definitions per domain
-    ├── pipeline_main/        # Orchestration entry-point
-    ├── pipeline_update/      # Pipeline update utility
-    └── reset_or_debug/       # Debug and reset utility
+├── notebooks/                # Data pipelines & utilities (26 notebooks)
+│   ├── data_management/      # Table operations (create, drop, load, truncate)
+│   ├── data_processing/      # Domain data loaders (customer, finance, inventory, product, sales, supplychain, shared)
+│   ├── query_samples/        # Ad-hoc queries (data summary, schema lists, order counts)
+│   ├── schema/               # Schema models (customer, finance, inventory, product, sales, supplychain, shared)
+│   └── (root)/               # Pipeline orchestration (pipeline_main, pipeline_update, reset_or_debug, sampe_data_query)
+└── ontology/                 # Ontology & Semantic Model
+    ├── RetailSupplyChainOntologyModel/
+    └── RetailSupplyChainModel/  # Semantic Model
 ```
-
-![Screenshot of resulting Fabric workspace folder structure](./images/deployment/fabric/fabric_workspace_folders.png)
 
 #### Lakehouse
 
-The solution deploys a single lakehouse that serves as the unified data store:
+The solution deploys a single lakehouse that serves as the data store:
 
 | Name | Purpose |
 |------|---------|
-| `miqsadata` | Unified data lakehouse with schema-on-read tables across 6 business domains |
+| `miqsadata` | Data lakehouse with schema-on-read tables across 6 business domains |
 
 The lakehouse is configured with [shortcut](https://learn.microsoft.com/fabric/onelake/onelake-shortcuts-overview) support for external data sources (OneLake, ADLS Gen2, Dataverse, Amazon S3, Google Cloud Storage, Azure Blob Storage, OneDrive/SharePoint).
 
-![Screenshot of resulting Fabric lakehouses](./images/deployment/fabric/fabric_lakehouses.png)
+![Screenshot of resulting Fabric lakehouses](../images/deployment/fabric-lakehouse.png)
 
 #### Data & Schema
 
-The lakehouse manages 22 tables across 6 business domains:
+The lakehouse manages 25 tables across 6 business domains plus a shared date dimension:
 
-- **Customer**: customer profiles and segmentation
-- **Product**: product catalog and categories
-- **Sales**: orders, order lines, payments
-- **Finance**: accounts, invoices, financial transactions
-- **Inventory**: stock levels and warehouse data
-- **Supply chain**: suppliers, shipments, logistics
+- **Customer** (5 tables): Customer, CustomerTradeName, CustomerRelationshipType, Location, CustomerAccount
+- **Product** (3 tables): ProductLine, Product, ProductCategory
+- **Sales** (3 tables): Order, OrderLine, OrderPayment
+- **Finance** (3 tables): invoice, account, payment
+- **Inventory** (6 tables): Warehouses, Inventory, InventoryTransactions, PurchaseOrders, PurchaseOrderItems, DemandForecast
+- **Supply chain** (4 tables): Suppliers, ProductSuppliers, SupplyChainEvents, SupplyChainEventImpacts
+- **Shared** (1 table): DimDate
 
 Sample data is uploaded into the lakehouse during deployment to enable immediate exploration.
 
-![Screenshot of resulting Fabric sample data](./images/deployment/fabric/fabric_sample_data.png)
-
 #### Notebooks
 
-**23 notebooks** organized by function:
+**26 notebooks** organized by function:
 
 | Folder | Count | Purpose |
 |--------|-------|---------|
 | **data_management/** | 4 | Table lifecycle operations: `create_scheme_tables`, `drop_all_tables`, `load_data_all_tables`, `truncate_all_tables` |
-| **data_processing/** | 6 | Domain data loaders: `load_customer`, `load_finance`, `load_inventory`, `load_product`, `load_sales`, `load_supplychain` |
+| **data_processing/** | 7 | Domain data loaders: `load_customer`, `load_finance`, `load_inventory`, `load_product`, `load_sales`, `load_supplychain`, `load_shared` |
 | **query_samples/** | 4 | Ad-hoc queries: `get_data_summary`, `list_schema_tables`, `order_counts`, `sql_order_counts` (SQL) |
-| **schema/** | 6 | Schema model definitions: `model_customer`, `model_finance`, `model_inventory`, `model_product`, `model_sales`, `model_supplychain` |
+| **schema/** | 7 | Schema model definitions: `model_customer`, `model_finance`, `model_inventory`, `model_product`, `model_sales`, `model_supplychain`, `model_shared` |
 | *(root)* | 4 | Pipeline orchestration: `pipeline_main`, `pipeline_update`, `reset_or_debug`, `sampe_data_query` |
 
-![Screenshot of resulting Fabric notebooks](./images/deployment/fabric/fabric_notebooks.png)
+![Screenshot of resulting Fabric notebooks](../images/deployment/fabric-notebooks.png)
 
 #### AI Data Agents
 
-Two [Fabric Data Agents](https://learn.microsoft.com/fabric/data-science/ai-agents-overview) are deployed for natural language interaction with the data:
+One [Fabric Data Agent](https://learn.microsoft.com/fabric/data-science/ai-agents-overview) is deployed for natural language interaction with the data:
 
 | Agent | Purpose |
 |-------|---------|
-| `data_agent_lakehouse` | Query the `miqsadata` lakehouse tables using natural language. Includes comprehensive AI instructions covering all 22 tables and 6 business domains |
-| `data_agent_ontology` | Query data through the ontology semantic model |
+| `RetailSC Ontology Agent` | Query data through the ontology semantic model using natural language. Based on the Semantic Model → Ontology → Data Agent approach with comprehensive AI instructions |
 
-#### Ontology
+> **Note**: The solution supports additional data agent approaches (lakehouse-based, entity model-based) that can be manually configured. See [`docs/fabric/fabric_data_agent/README.md`](../fabric_data_agent/README.md) for details.
 
-| Item | Purpose |
-|------|---------|
-| `ontology_supplychain` | Ontology-based semantic model providing a business-friendly view of the underlying lakehouse data |
+#### Ontology & Semantic Models
+
+| Item | Type | Purpose |
+|------|------|---------|
+| `RetailSupplyChainOntologyModel` | Ontology | Ontology-based model providing a business-friendly view of the lakehouse data |
+| `RetailSupplyChainModel` | Semantic Model | Semantic model based on lakehouse schema used to generate the ontology |
+| `Sales Overview` | Semantic Model + Report | Power BI semantic model and report for sales analytics |
+| `Supply Chain Management` | Semantic Model + Report | Power BI semantic model and report for supply chain analytics |
 
 ---
 
