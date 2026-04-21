@@ -34,19 +34,6 @@ relationship 2c3f8845-5b74-7787-41c3-b33b88452c14
 	fromColumn: 'inventory purchaseorderitems'.PurchaseOrderItemID
 	toColumn: 'inventory purchaseorders'.PurchaseOrderID
 
-relationship 89559694-fa1c-4249-a576-b74aa80e7478
-	joinOnDateBehavior: datePartOnly
-	fromColumn: Date.Date
-	toColumn: LocalDateTable_7e30d256-b63a-4b21-ac46-9f542615784c.Date
-
-relationship 825c9dd7-a627-3d7a-8272-8faa20b61d79
-	fromColumn: 'inventory demandforecast'.ForecastDate
-	toColumn: Date.Date
-
-relationship c016b373-ff71-b012-7eca-21d10166dd4e
-	fromColumn: 'inventory purchaseorders'.OrderDate
-	toColumn: Date.Date
-
 relationship 64aec540-6424-02e4-62a2-b3063508593e
 	fromColumn: 'product product'.ProductCategoryID
 	toColumn: 'product productcategory'.ProductCategoryID

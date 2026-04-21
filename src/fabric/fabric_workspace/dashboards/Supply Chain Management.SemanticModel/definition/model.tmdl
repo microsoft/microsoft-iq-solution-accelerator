@@ -8,7 +8,7 @@ model Model
 
 annotation __PBI_TimeIntelligenceEnabled = 1
 
-annotation PBI_QueryOrder = ["inventory demandforecast","inventory inventory","inventory inventorytransactions","inventory purchaseorderitems","inventory purchaseorders","inventory warehouses","product product","product productcategory","supplychain productsuppliers","supplychain suppliers","supplychain supplychainevents","Date","ServerParameter","DatabaseParameter"]
+annotation PBI_QueryOrder = ["inventory demandforecast","inventory inventory","inventory inventorytransactions","inventory purchaseorderitems","inventory purchaseorders","inventory warehouses","product product","product productcategory","supplychain productsuppliers","supplychain suppliers","supplychain supplychainevents","ServerParameter","DatabaseParameter"]
 
 ref table 'inventory demandforecast'
 ref table 'inventory inventory'
@@ -21,9 +21,6 @@ ref table 'product productcategory'
 ref table 'supplychain productsuppliers'
 ref table 'supplychain suppliers'
 ref table 'supplychain supplychainevents'
-ref table Date
-ref table DateTableTemplate_4954bd80-3558-4b70-96b6-d5714be3d299
-ref table LocalDateTable_7e30d256-b63a-4b21-ac46-9f542615784c
 
 ref cultureInfo en-US
 

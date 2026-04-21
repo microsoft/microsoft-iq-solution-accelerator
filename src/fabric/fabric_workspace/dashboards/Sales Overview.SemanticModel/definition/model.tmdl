@@ -8,7 +8,7 @@ model Model
 
 annotation __PBI_TimeIntelligenceEnabled = 1
 
-annotation PBI_QueryOrder = ["customer customer","customer customeraccount","customer customerrelationshiptype","customer customertradename","customer location","finance account","finance invoice","finance payment","product product","product productcategory","sales order","sales orderline","sales orderpayment","Date","ServerParameter","DatabaseParameter"]
+annotation PBI_QueryOrder = ["customer customer","customer customeraccount","customer customerrelationshiptype","customer customertradename","customer location","finance account","finance invoice","finance payment","product product","product productcategory","sales order","sales orderline","sales orderpayment","ServerParameter","DatabaseParameter"]
 
 ref table 'customer customer'
 ref table 'customer customeraccount'
@@ -20,9 +20,6 @@ ref table 'product productcategory'
 ref table 'sales order'
 ref table 'sales orderline'
 ref table 'sales orderpayment'
-ref table Date
-ref table DateTableTemplate_4954bd80-3558-4b70-96b6-d5714be3d299
-ref table LocalDateTable_7e30d256-b63a-4b21-ac46-9f542615784c
 
 ref cultureInfo en-US
 
