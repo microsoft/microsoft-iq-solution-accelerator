@@ -45,3 +45,7 @@ relationship 175c311f-d653-373e-7d84-a066ac83834a
 	fromColumn: 'sales orderpayment'.OrderID
 	toColumn: 'sales order'.OrderID
 
+relationship 80098f28-3127-a984-caa8-2a93c0600d37
+	fromColumn: 'sales order'.OrderDate
+	toColumn: 'shared dimdate'.FullDate
+
