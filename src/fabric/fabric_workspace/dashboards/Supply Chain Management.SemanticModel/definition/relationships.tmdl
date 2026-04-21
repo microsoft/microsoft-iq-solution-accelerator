@@ -46,3 +46,7 @@ relationship 435d8326-620a-b6bb-9802-0d50ff126396
 	fromColumn: 'supplychain supplychainevents'.SupplierID
 	toColumn: 'supplychain suppliers'.SupplierID
 
+relationship eb7749f0-2977-5759-2604-99c259b10ae2
+	fromColumn: 'inventory inventory'.CreatedDate
+	toColumn: 'shared dimdate'.FullDate
+
