@@ -36,7 +36,7 @@ These docs live at `docs/fabric/`. Relative paths from this location:
 | Remove script | `../../infra/scripts/fabric/remove_fabric_solution.py` |
 | Helper modules | `../../infra/scripts/fabric/helpers/workspace.py`, etc. |
 | Installer notebook | `../../infra/fabric/deploy/fabric_solution_installer.ipynb` |
-| Workspace items | `../../fabric/fabric_workspace/` |
+| Workspace items | `../../src/fabric/fabric_workspace/`<br>`../../src/fabric/definitions/` |
 | Bicep template | `../../infra/main.bicep` |
 | AZD config | `../../azure.yaml` |
 | CI/CD workflow | `../../.github/workflows/azure-dev.yml` |
@@ -47,7 +47,8 @@ These docs live at `docs/fabric/`. Relative paths from this location:
 | What | Authoritative source |
 |---|---|
 | Script behavior & env vars | Python files in [`infra/scripts/fabric/`](../../infra/scripts/fabric/) |
-| Workspace items (lakehouse, notebooks, agents, ontology) | [`fabric/fabric_workspace/`](../../fabric/fabric_workspace/) folder structure |
+| Workspace items (standard items: lakehouse, notebooks, agents, reports, semantic models) | [`src/fabric/fabric_workspace/`](../../src/fabric/fabric_workspace/) folder structure |
+| Workspace items (ontology definitions) | [`src/fabric/definitions/`](../../src/fabric/definitions/) folder structure |
 | Azure infrastructure | [`infra/main.bicep`](../../infra/main.bicep) |
 | azd hooks & orchestration | [`azure.yaml`](../../azure.yaml) |
 | Solution name & defaults | [`infra/scripts/fabric/helpers/config.py`](../../infra/scripts/fabric/helpers/config.py) |

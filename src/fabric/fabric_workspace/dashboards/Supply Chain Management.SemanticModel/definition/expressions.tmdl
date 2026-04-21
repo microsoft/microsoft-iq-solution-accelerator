@@ -10,5 +10,5 @@ expression DatabaseParameter = "miqsadata" meta [IsParameterQuery=true, List={"m
 
 	annotation PBI_NavigationStepName = Navigation
 
-	annotation PBI_ResultType = Text
+	annotation PBI_ResultType = Exception
 
