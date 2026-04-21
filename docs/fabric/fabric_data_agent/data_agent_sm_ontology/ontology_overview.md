@@ -9,46 +9,21 @@ Details of the `RetailSupplyChainOntologyModel` ontology deployed by this soluti
 
 ## Ontology Name
 
-**RetailSupplyChainOntologyModel** — auto-generated from the solution's semantic model covering 22 tables across 6 business domains.
+**RetailSupplyChainOntologyModel** — auto-generated from the solution's semantic model (`RetailSupplyChainModel`) covering 16 tables across 4 business domains plus a shared date dimension.
 
 ---
 
 ## Business Domains and Entities
 
-### Customer Domain (5 entities)
-
-| Entity | Source Table | Key Column | Description |
-|---|---|---|---|
-| Customer | customer.Customer | CustomerID | Customer master records |
-| CustomerRelationshipType | customer.CustomerRelationshipType | RelationshipTypeID | Relationship classifications |
-| CustomerTradeName | customer.CustomerTradeName | TradeNameID | Trade name aliases |
-| Location | customer.Location | LocationID | Customer locations |
-| CustomerAccount | customer.CustomerAccount | AccountID | Account details |
-
-### Product Domain (2 entities)
+### Product Domain (3 entities)
 
 | Entity | Source Table | Key Column | Description |
 |---|---|---|---|
 | Product | product.Product | ProductID | Product catalog with names, categories, prices |
-| ProductCategory | product.ProductCategory | CategoryID | Category hierarchy |
+| ProductCategory | product.ProductCategory | ProductCategoryID | Category hierarchy |
+| ProductLine | product.ProductLine | ProductLineID | Product line groupings |
 
-### Sales Domain (3 entities)
-
-| Entity | Source Table | Key Column | Description |
-|---|---|---|---|
-| Order | sales.Order | OrderID | Sales order headers |
-| OrderLine | sales.OrderLine | OrderLineID | Line items per order |
-| OrderPayment | sales.OrderPayment | PaymentID | Payment records |
-
-### Finance Domain (3 entities)
-
-| Entity | Source Table | Key Column | Description |
-|---|---|---|---|
-| Invoice | finance.Invoice | InvoiceID | Invoice records |
-| Account | finance.Account | AccountID | Financial accounts |
-| Payment | finance.Payment | PaymentID | Payment transactions |
-
-### Inventory Domain (5 entities)
+### Inventory Domain (6 entities)
 
 | Entity | Source Table | Key Column | Description |
 |---|---|---|---|
@@ -59,13 +34,20 @@ Details of the `RetailSupplyChainOntologyModel` ontology deployed by this soluti
 | PurchaseOrderItems | inventory.PurchaseOrderItems | PurchaseOrderItemID | Line items per PO |
 | DemandForecast | inventory.DemandForecast | ForecastID | Predicted future demand |
 
-### Supply Chain Domain (3 entities)
+### Supply Chain Domain (4 entities)
 
 | Entity | Source Table | Key Column | Description |
 |---|---|---|---|
 | Suppliers | supplychain.Suppliers | SupplierID | Supplier directory |
 | ProductSuppliers | supplychain.ProductSuppliers | ProductSupplierID | Product-to-supplier mapping (bridge) |
 | SupplyChainEvents | supplychain.SupplyChainEvents | EventID | Disruption events |
+| SupplyChainEventImpacts | supplychain.SupplyChainEventImpacts | EventImpactID | Impact records per event per supplier |
+
+### Shared Dimension (1 entity)
+
+| Entity | Source Table | Key Column | Description |
+|---|---|---|---|
+| DimDate | shared.DimDate | FullDate | Calendar date dimension for time intelligence |
 
 ---
 
@@ -73,43 +55,45 @@ Details of the `RetailSupplyChainOntologyModel` ontology deployed by this soluti
 
 | From Entity | Relationship | To Entity | Join Keys |
 |---|---|---|---|
-| Order | contains | OrderLine | OrderID |
-| Order | paid via | OrderPayment | OrderID |
-| Product | categorized as | ProductCategory | CategoryID |
+| Product | belongs to | ProductCategory | ProductCategoryID |
+| Product | part of | ProductLine | ProductLineID |
 | Product | stocked in | Inventory | ProductID |
-| Product | supplied by | ProductSuppliers | ProductID |
-| Suppliers | supplies | ProductSuppliers | SupplierID |
-| Warehouses | stores | Inventory | WarehouseID |
-| PurchaseOrders | contains | PurchaseOrderItems | PurchaseOrderID |
-| Suppliers | fulfills | PurchaseOrders | SupplierID |
+| Product | tracked in | InventoryTransactions | ProductID |
 | Product | forecasted in | DemandForecast | ProductID |
-| Customer | has | CustomerAccount | CustomerID |
-| Customer | located at | Location | CustomerID |
-| SupplyChainEvents | affects | Suppliers | SupplierID |
+| Product | ordered as | PurchaseOrderItems | ProductID |
+| Product | supplied by | ProductSuppliers | ProductID |
+| Warehouses | stores | Inventory | WarehouseID |
+| Warehouses | logs | InventoryTransactions | WarehouseID |
+| Warehouses | receives | DemandForecast | WarehouseID |
+| Suppliers | supplies | ProductSuppliers | SupplierID |
+| Suppliers | fulfills | PurchaseOrders | SupplierID |
+| Suppliers | impacted by | SupplyChainEventImpacts | SupplierID |
+| PurchaseOrders | contains | PurchaseOrderItems | PurchaseOrderID |
+| SupplyChainEvents | causes | SupplyChainEventImpacts | EventID |
+| DimDate | dates | InventoryTransactions | FullDate / TransactionDate |
+| DimDate | dates | PurchaseOrders | FullDate / OrderDate |
+| DimDate | dates | DemandForecast | FullDate / ForecastDate |
 
 ---
 
 ## Entity Relationship Map
 
 ```
-Customer ──has──> CustomerAccount
-    │
-    └──located at──> Location
-
-Product ──categorized as──> ProductCategory
-    │
-    ├──stocked in──> Inventory <──stores── Warehouses
-    │
-    ├──supplied by──> ProductSuppliers <──supplies── Suppliers
-    │                                                    │
-    │                                      fulfills──> PurchaseOrders ──contains──> PurchaseOrderItems
-    │
-    └──forecasted in──> DemandForecast
-
-Order ──contains──> OrderLine
-    └──paid via──> OrderPayment
-
-SupplyChainEvents ──affects──> Suppliers
+ProductLine <──part of── Product ──belongs to──> ProductCategory
+                            │
+                            ├──stocked in──> Inventory <──stores── Warehouses
+                            │                                         │
+                            ├──tracked in──> InventoryTransactions <──logs──┘
+                            │                        │
+                            ├──forecasted in──> DemandForecast ──dates──> DimDate
+                            │
+                            ├──ordered as──> PurchaseOrderItems <──contains── PurchaseOrders
+                            │                                                     │
+                            └──supplied by──> ProductSuppliers <──supplies── Suppliers
+                                                                              │
+                                              SupplyChainEvents ──causes──> SupplyChainEventImpacts
+                                                                              │
+                                                                    impacted by──┘
 ```
 
 ---
@@ -121,9 +105,9 @@ SupplyChainEvents ──affects──> Suppliers
 | "What products does Contoso supply?" | Suppliers → ProductSuppliers → Product |
 | "What's in stock at Main Distribution Center?" | Warehouses → Inventory → Product |
 | "Show demand forecast for Tents" | Product → ProductCategory → DemandForecast |
-| "Which suppliers had disruptions?" | SupplyChainEvents → Suppliers |
-| "List orders with payments" | Order → OrderLine + Order → OrderPayment |
+| "Which suppliers had disruptions?" | SupplyChainEvents → SupplyChainEventImpacts → Suppliers |
 | "What POs are pending for a supplier?" | Suppliers → PurchaseOrders → PurchaseOrderItems |
+| "Show inventory transactions for last month" | DimDate → InventoryTransactions → Product |
 
 ---
 

@@ -31,7 +31,7 @@ Test questions to validate the Semantic Model → Ontology data agent. Organized
 | 11 | Advanced | Inventory | What is the demand forecast for Tents for May 2026? | Category → Product → Forecast path |
 | 12 | Advanced | Inventory | List top 5 products by current stock in Main Distribution Center. | Multi-hop join + sort + limit |
 | 13 | Advanced | Supply Chain | Which suppliers were affected by weather disruptions? | Event impact traversal |
-| 14 | Advanced | Supply Chain | What is the total order value by supplier? | Aggregation across bridge entity |
+| 14 | Advanced | Supply Chain | What is the total PO value by supplier? | Aggregation across PO items + supplier |
 | 15 | Advanced | Cross-domain | Show products with low stock that have active supply chain disruptions. | Multi-domain correlation |
 
 ---
