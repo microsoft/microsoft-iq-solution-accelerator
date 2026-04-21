@@ -293,16 +293,25 @@ azd up
 
 > **⚠️ Known Deployment Issue - Notebook Session Timeouts**
 > 
-> During deployment, the installer notebook may occasionally fail with a Spark session timeout error:
+> During deployment, the installer notebook may occasionally fail with timeout errors. Common error messages include:
+> 
+> **Spark Session Timeout:**
 > ```
 > SparkCoreError/Other: Livy session has failed. Error code: SparkCoreError/Other.
 > SessionInfo.State from SparkCore is Error: Error while trying to establish a connection
 > through the managed network. ErrorCode GetManagedVnetTimeout. Please retry.
 > ```
 > 
-> **Root Cause**: This is a transient platform issue caused by intermittent delays during [Spark session](https://learn.microsoft.com/fabric/data-engineering/spark-job-definition) provisioning through the managed virtual network. It is not configuration-specific and can occur across different regions and capacities.
+> **Notebook Execution Timeout:**
+> ```
+> Exception while executing run_installer: Installer notebook finished with status 'Timeout'. 
+> Error: Operation 'Run notebook 'fabric_solution_installer' (ID: d0eb206f-885d-4592-bab2-b3f4af9c1711)' 
+> timed out after 60m 0s
+> ```
 > 
-> **Workaround**: Simply re-run the deployment command (`azd up`). The deployment is idempotent and will resume from where it stopped. Session startup failures typically succeed on subsequent retry attempts.
+> **Root Cause**: These are transient platform issues caused by intermittent delays during [Spark session](https://learn.microsoft.com/fabric/data-engineering/spark-job-definition) provisioning, notebook execution, or managed virtual network connectivity. These issues are not configuration-specific and can occur across different regions and capacities.
+> 
+> **Workaround**: Simply re-run the deployment command (`azd up`). The deployment is idempotent and will resume from where it stopped. Timeout failures typically succeed on subsequent retry attempts.
 
 During deployment, you'll specify:
 
