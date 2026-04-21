@@ -286,6 +286,19 @@ azd up
 
 > **💡 Configuration Tip**: You can customize the deployment with [optional variables](#-additional-optional-configuration) like `AZURE_LOCATION`, `LOG_LEVEL`, and `GITHUB_TOKEN` before running `azd up`.
 
+> **⚠️ Known Deployment Issue - Notebook Session Timeouts**
+> 
+> During deployment, the installer notebook may occasionally fail with a Spark session timeout error:
+> ```
+> SparkCoreError/Other: Livy session has failed. Error code: SparkCoreError/Other.
+> SessionInfo.State from SparkCore is Error: Error while trying to establish a connection
+> through the managed network. ErrorCode GetManagedVnetTimeout. Please retry.
+> ```
+> 
+> **Root Cause**: This is a transient platform issue caused by intermittent delays during Spark session provisioning through the managed virtual network. It is not configuration-specific and can occur across different regions and capacities.
+> 
+> **Workaround**: Simply re-run the deployment command (`azd up`). The deployment is idempotent and will resume from where it stopped. Session startup failures typically succeed on subsequent retry attempts.
+
 During deployment, you'll specify:
 
 - **Environment name** (e.g., "miq-dev"). This will be used to build the name of the deployed Azure resources.
@@ -319,7 +332,7 @@ After successful deployment, you'll have a complete data platform implementing m
 |----------|---------|
 | **[Fabric Capacity](https://learn.microsoft.com/fabric/admin/capacity-settings?tabs=power-bi-premium)** | Dedicated compute for Fabric workloads |
 
-![Screenshot of deployed Azure resources](./images/deployment/fabric/azure_resources.png)
+![Screenshot of deployed Azure resources](../images/deployment/azure-resources.png)
 
 ### Fabric Components
 
@@ -329,7 +342,7 @@ All Fabric items are defined in the [`fabric_workspace/`](../fabric_workspace/) 
 
 Workspace created with the specified or default name (e.g., `Microsoft IQ - {suffix}`).
 
-![Screenshot of resulting Fabric workspace](./images/deployment/fabric/fabric_workspace.png)
+![Screenshot of resulting Fabric workspace](../images/deployment/fabric-workspace.png)
 
 #### Folder Structure
 
@@ -352,19 +365,17 @@ your-workspace/
     └── reset_or_debug/       # Debug and reset utility
 ```
 
-![Screenshot of resulting Fabric workspace folder structure](./images/deployment/fabric/fabric_workspace_folders.png)
-
 #### Lakehouse
 
-The solution deploys a single lakehouse that serves as the unified data store:
+The solution deploys a single lakehouse that serves as the data store:
 
 | Name | Purpose |
 |------|---------|
-| `miqsadata` | Unified data lakehouse with schema-on-read tables across 6 business domains |
+| `miqsadata` | Data lakehouse with schema-on-read tables across 6 business domains |
 
 The lakehouse is configured with [shortcut](https://learn.microsoft.com/fabric/onelake/onelake-shortcuts-overview) support for external data sources (OneLake, ADLS Gen2, Dataverse, Amazon S3, Google Cloud Storage, Azure Blob Storage, OneDrive/SharePoint).
 
-![Screenshot of resulting Fabric lakehouses](./images/deployment/fabric/fabric_lakehouses.png)
+![Screenshot of resulting Fabric lakehouses](../images/deployment/fabric-lakehouse.jpeg)
 
 #### Data & Schema
 
@@ -379,7 +390,7 @@ The lakehouse manages 22 tables across 6 business domains:
 
 Sample data is uploaded into the lakehouse during deployment to enable immediate exploration.
 
-![Screenshot of resulting Fabric sample data](./images/deployment/fabric/fabric_sample_data.png)
+![Screenshot of resulting Fabric sample data](../images/deployment/fabric_sample_data.png)
 
 #### Notebooks
 
@@ -393,7 +404,7 @@ Sample data is uploaded into the lakehouse during deployment to enable immediate
 | **schema/** | 6 | Schema model definitions: `model_customer`, `model_finance`, `model_inventory`, `model_product`, `model_sales`, `model_supplychain` |
 | *(root)* | 4 | Pipeline orchestration: `pipeline_main`, `pipeline_update`, `reset_or_debug`, `sampe_data_query` |
 
-![Screenshot of resulting Fabric notebooks](./images/deployment/fabric/fabric_notebooks.png)
+![Screenshot of resulting Fabric notebooks](../images/deployment/fabric_notebooks.png)
 
 #### AI Data Agents
 
