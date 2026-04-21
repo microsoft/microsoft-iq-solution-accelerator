@@ -1,0 +1,33 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-IN
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["SQLEndpoint","DatabaseName","inventory demandforecast","inventory inventory","inventory inventorytransactions","inventory purchaseorderitems","inventory purchaseorders","inventory warehouses","product product","product productcategory","product productline","shared dimdate","supplychain productsuppliers","supplychain suppliers","supplychain supplychaineventimpacts","supplychain supplychainevents"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table 'inventory demandforecast'
+ref table 'inventory inventory'
+ref table 'inventory inventorytransactions'
+ref table 'inventory purchaseorderitems'
+ref table 'inventory purchaseorders'
+ref table 'inventory warehouses'
+ref table 'product product'
+ref table 'product productcategory'
+ref table 'product productline'
+ref table 'shared dimdate'
+ref table 'supplychain productsuppliers'
+ref table 'supplychain suppliers'
+ref table 'supplychain supplychaineventimpacts'
+ref table 'supplychain supplychainevents'
+ref table SQLEndpoint
+ref table DatabaseName
+
+ref cultureInfo en-US
+

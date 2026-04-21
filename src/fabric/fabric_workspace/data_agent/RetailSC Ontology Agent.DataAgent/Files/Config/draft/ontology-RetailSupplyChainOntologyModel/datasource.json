@@ -1,0 +1,116 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/dataAgent/definition/dataSource/1.0.0/schema.json",
+  "artifactId": "b1eb253e-6048-9a94-42a5-c64487ae7541",
+  "workspaceId": "00000000-0000-0000-0000-000000000000",
+  "dataSourceInstructions": null,
+  "displayName": "RetailSupplyChainOntologyModel",
+  "type": "ontology",
+  "userDescription": null,
+  "metadata": {},
+  "elements": [
+    {
+      "id": "inventory_demandforecast",
+      "is_selected": true,
+      "display_name": "inventory_demandforecast",
+      "type": "ontology.entity",
+      "description": "ForecastID,ProductID,WarehouseID,ProductName,ForecastDate,ForecastPeriod,PredictedDemand,ConfidenceLevel,SeasonalMultiplier,TrendDirection,BaselineDemand,MethodUsed,ForecastHorizon,ActualDemand,AccuracyScore,CreatedBy,CreatedDate",
+      "children": []
+    },
+    {
+      "id": "inventory_purchaseorderitems",
+      "is_selected": true,
+      "display_name": "inventory_purchaseorderitems",
+      "type": "ontology.entity",
+      "description": "PurchaseOrderItemID,PurchaseOrderID,PurchaseOrderNumber,ProductID,ProductName,QuantityOrdered,QuantityReceived,UnitCost,LineTotal,Status,ExpectedDate,ReceivedDate,Notes,CreatedBy,CreatedDate",
+      "children": []
+    },
+    {
+      "id": "inventory_purchaseorders",
+      "is_selected": true,
+      "display_name": "inventory_purchaseorders",
+      "type": "ontology.entity",
+      "description": "PurchaseOrderID,PurchaseOrderNumber,SupplierID,SupplierName,OrderDate,ExpectedDeliveryDate,ActualDeliveryDate,Status,TotalOrderValue,DeliveryLocation,OrderedBy,Priority,Notes,CreatedBy,CreatedDate",
+      "children": []
+    },
+    {
+      "id": "product_product",
+      "is_selected": true,
+      "display_name": "product_product",
+      "type": "ontology.entity",
+      "description": "ProductID,ProductLineID,ProductName,ProductDescription,ProductNumber,Color,ProductModel,ProductCategoryID,CategoryName,ListPrice,StandardCost,Weight,WeightUom,ProductStatus,CreatedDate,SellStartDate,SellEndDate,IsoCurrencyCode,UpdatedDate,CreatedBy,UpdatedBy",
+      "children": []
+    },
+    {
+      "id": "product_productcategory",
+      "is_selected": true,
+      "display_name": "product_productcategory",
+      "type": "ontology.entity",
+      "description": "ProductCategoryID,ProductLineID,ProductLineName,CategoryName,CategoryDescription,IsActive,CreatedBy,CreatedDate",
+      "children": []
+    },
+    {
+      "id": "product_productline",
+      "is_selected": true,
+      "display_name": "product_productline",
+      "type": "ontology.entity",
+      "description": "ProductLineID,ProductLineName,Description,CreatedBy,CreatedDate",
+      "children": []
+    },
+    {
+      "id": "supplychain_productsuppliers",
+      "is_selected": true,
+      "display_name": "supplychain_productsuppliers",
+      "type": "ontology.entity",
+      "description": "ProductSupplierID,ProductID,ProductName,ProductLineName,SupplierID,SupplierName,SupplierProductCode,WholesaleCost,MinOrderQuantity,MaxOrderQuantity,LeadTimeDays,Status,CreatedBy,CreatedDate",
+      "children": []
+    },
+    {
+      "id": "supplychain_suppliers",
+      "is_selected": true,
+      "display_name": "supplychain_suppliers",
+      "type": "ontology.entity",
+      "description": "SupplierID,SupplierName,SupplierType,Status,ProductLineName,PrimarySupplierID,LeadTimeDays,ReliabilityScore,Location,ContactEmail,CreatedBy,CreatedDate",
+      "children": []
+    },
+    {
+      "id": "supplychain_supplychaineventimpacts",
+      "is_selected": true,
+      "display_name": "supplychain_supplychaineventimpacts",
+      "type": "ontology.entity",
+      "description": "AlternativeAction,CostIncrease,CreatedBy,CreatedDate,DeliveryDelay,EstimatedRevenueImpact,EventID,ImpactID,ImpactLevel,ProductLineName,SupplierID",
+      "children": []
+    },
+    {
+      "id": "supplychain_supplychainevents",
+      "is_selected": true,
+      "display_name": "supplychain_supplychainevents",
+      "type": "ontology.entity",
+      "description": "EventID,SupplierID,DisruptionType,EventName,Description,Severity,Status,StartDate,EndDate,GeographicArea,IndustryImpact,PredictedDuration,ActualDuration,AlertLevel,ReportedBy,CreatedBy,CreatedDate",
+      "children": []
+    },
+    {
+      "id": "inventory_inventory",
+      "is_selected": true,
+      "display_name": "inventory_inventory",
+      "type": "ontology.entity",
+      "description": "InventoryID,ProductID,ProductName,WarehouseID,CurrentStock,ReservedStock,AvailableStock,SafetyStockLevel,ReorderPoint,MaxStockLevel,LastUpdated,AverageCost,Status,CreatedBy,CreatedDate",
+      "children": []
+    },
+    {
+      "id": "inventory_warehouses",
+      "is_selected": true,
+      "display_name": "inventory_warehouses",
+      "type": "ontology.entity",
+      "description": "WarehouseID,WarehouseName,DisplayName,Type,Status,AddressStreet,AddressCity,AddressState,AddressZipCode,AddressCountry,Phone,Email,ManagerName,ManagerEmail,MaxCapacity,OperatingHours,StaffCount,AutomationLevel,ShortName,CreatedBy,CreatedDate,LastUpdated",
+      "children": []
+    },
+    {
+      "id": "inventory_inventorytransactions",
+      "is_selected": true,
+      "display_name": "inventory_inventorytransactions",
+      "type": "ontology.entity",
+      "description": "TransactionID,ProductID,ProductName,WarehouseID,TransactionType,TransactionDate,Quantity,TotalValue,ReferenceNumber,ReasonCode,StockBefore,StockAfter,ProcessedBy,Notes,CreatedBy,CreatedDate",
+      "children": []
+    }
+  ]
+}

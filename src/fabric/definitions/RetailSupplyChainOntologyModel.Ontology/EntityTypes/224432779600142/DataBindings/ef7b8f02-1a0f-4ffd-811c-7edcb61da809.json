@@ -1,0 +1,76 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "ef7b8f02-1a0f-4ffd-811c-7edcb61da809",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "PurchaseOrderItemID",
+        "targetPropertyId": "2288658613340433729"
+      },
+      {
+        "sourceColumnName": "PurchaseOrderID",
+        "targetPropertyId": "2288658594257657260"
+      },
+      {
+        "sourceColumnName": "PurchaseOrderNumber",
+        "targetPropertyId": "2288658336897587195"
+      },
+      {
+        "sourceColumnName": "ProductID",
+        "targetPropertyId": "2288658573538925673"
+      },
+      {
+        "sourceColumnName": "ProductName",
+        "targetPropertyId": "2288658315215560218"
+      },
+      {
+        "sourceColumnName": "QuantityOrdered",
+        "targetPropertyId": "2288658549868078255"
+      },
+      {
+        "sourceColumnName": "QuantityReceived",
+        "targetPropertyId": "2288658528021902817"
+      },
+      {
+        "sourceColumnName": "UnitCost",
+        "targetPropertyId": "2288658505793582345"
+      },
+      {
+        "sourceColumnName": "LineTotal",
+        "targetPropertyId": "2288658485117491990"
+      },
+      {
+        "sourceColumnName": "Status",
+        "targetPropertyId": "2288658466768175392"
+      },
+      {
+        "sourceColumnName": "ExpectedDate",
+        "targetPropertyId": "2288658442649521568"
+      },
+      {
+        "sourceColumnName": "ReceivedDate",
+        "targetPropertyId": "2288658421381386412"
+      },
+      {
+        "sourceColumnName": "Notes",
+        "targetPropertyId": "2288658401341543403"
+      },
+      {
+        "sourceColumnName": "CreatedBy",
+        "targetPropertyId": "2288658379558749889"
+      },
+      {
+        "sourceColumnName": "CreatedDate",
+        "targetPropertyId": "2288658359568698207"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "27818fad-0450-42b9-a4a0-db84075ac8d7",
+      "itemId": "e6cd0b76-50e8-498f-9cd0-89251fae70c2",
+      "sourceTableName": "purchaseorderitems",
+      "sourceSchema": "inventory"
+    }
+  }
+}
