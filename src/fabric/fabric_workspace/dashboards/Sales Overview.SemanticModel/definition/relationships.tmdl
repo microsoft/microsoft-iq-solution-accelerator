@@ -1,12 +1,3 @@
-relationship 89559694-fa1c-4249-a576-b74aa80e7478
-	joinOnDateBehavior: datePartOnly
-	fromColumn: Date.Date
-	toColumn: LocalDateTable_7e30d256-b63a-4b21-ac46-9f542615784c.Date
-
-relationship c3a120e6-bf27-a010-0471-61976260f27d
-	fromColumn: 'sales order'.OrderDate
-	toColumn: Date.Date
-
 relationship 6d5633ee-9a60-d505-4546-9afea32931d2
 	fromColumn: 'sales orderline'.OrderID
 	toColumn: 'sales order'.OrderID

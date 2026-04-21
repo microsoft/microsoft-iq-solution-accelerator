@@ -32,15 +32,6 @@ cultureInfo en-US
 			      },
 			      "State": "Generated"
 			    },
-			    "date.yearmonth": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Date",
-			          "ConceptualProperty": "YearMonth"
-			        }
-			      },
-			      "State": "Generated"
-			    },
 			    "customer_customer.customertypeid": {
 			      "Definition": {
 			        "Binding": {
