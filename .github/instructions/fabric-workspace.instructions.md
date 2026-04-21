@@ -47,15 +47,15 @@ fabric_workspace/
 ├── fabric_ontology/
 │   └── ontology_semantic_model.Ontology/ # Business-friendly semantic layer
 ├── lakehouses/
-│   └── fabriciq_team_lake.Lakehouse/     # Unified data store (shortcut-enabled)
+│   └── miqsadata.Lakehouse/     # Unified data store (shortcut-enabled)
 └── notebooks/                    # 23 notebooks
     ├── data_management/ (4)      # create_scheme_tables, drop_all_tables, load_data_all_tables, truncate_all_tables
     ├── data_processing/ (6)      # load_customer, load_finance, load_inventory, load_product, load_sales, load_supplychain
     ├── query_samples/ (4)        # get_data_summary, list_schema_tables, order_counts, sql_order_counts
     ├── schema/ (6)               # model_customer, model_finance, model_inventory, model_product, model_sales, model_supplychain
-    ├── main_pipeline/            # Orchestration entry-point
-    ├── update_pipeline/          # Pipeline update utility
-    └── truncate_or_drop_table_by_name/
+    ├── pipeline_main/            # Orchestration entry-point
+    ├── pipeline_update/          # Pipeline update utility
+    └── reset_or_debug/           # Debug and reset utility
 ```
 
 ### Business domains (22 tables)

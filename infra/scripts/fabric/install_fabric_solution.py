@@ -47,6 +47,7 @@ import json
 import logging
 import os
 import re
+import subprocess
 import sys
 from datetime import datetime
 
@@ -106,6 +107,64 @@ def _notebook_path() -> str:
     return os.path.join(REPO_ROOT, "infra", "fabric", "deploy", f"{INSTALLER_NOTEBOOK_NAME}.ipynb")
 
 
+def _get_current_git_branch() -> str | None:
+    """Get the name of the currently checked out git branch.
+
+    Returns:
+        str: The branch name, or None if not in a git repository or if detection fails.
+    """
+    try:
+        result = subprocess.run(
+            ["git", "branch", "--show-current"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        branch = result.stdout.strip()
+        return branch if branch else None
+    except (subprocess.CalledProcessError, FileNotFoundError) as exc:
+        logger.debug(f"Could not detect git branch: {exc}")
+        return None
+
+
+def _patch_notebook_for_github_branch(notebook_json: dict, branch_name: str) -> dict:
+    """Update the ``GITHUB_BRANCH`` value in the installer notebook.
+
+    Modifies the notebook *in-place* to replace the GITHUB_BRANCH variable
+    assignment with the current branch name.
+
+    Args:
+        notebook_json: Parsed notebook dict (ipynb JSON).
+        branch_name: The branch name to set.
+
+    Returns:
+        The mutated *notebook_json* dict.
+    """
+    for cell in notebook_json.get("cells", []):
+        if cell.get("cell_type") != "code":
+            continue
+        source_lines = cell.get("source", [])
+        source_text = "".join(source_lines)
+
+        # Update GITHUB_BRANCH value if found
+        if "GITHUB_BRANCH" in source_text and "=" in source_text:
+            new_lines = []
+            for line in source_lines:
+                if line.lstrip().startswith("GITHUB_BRANCH") and "=" in line:
+                    # Preserve indentation and spacing style
+                    indent = line[: len(line) - len(line.lstrip())]
+                    # Extract spacing pattern (spaces around =)
+                    before_eq = line.split("=")[0]
+                    spaces_before = len(before_eq) - len(before_eq.rstrip())
+                    new_lines.append(f'{indent}GITHUB_BRANCH{" " * spaces_before}= "{branch_name}"\n')
+                else:
+                    new_lines.append(line)
+            cell["source"] = new_lines
+
+    return notebook_json
+
+
 def _patch_notebook_for_github_token(notebook_json: dict, github_token: str) -> dict:
     """Inject ``GITHUB_TOKEN`` into the installer notebook.
 
@@ -159,9 +218,9 @@ def _upload_installer_notebook(workspace_client, notebook_path: str, github_toke
     If a notebook with the same name already exists it will be updated in-place;
     otherwise a new notebook is created.
 
-    When *github_token* is provided the notebook is patched in-memory before
-    upload to inject the token variable and pass it to
-    ``launcher.download_and_deploy``.
+    The notebook is patched in-memory before upload to:
+    * Update GITHUB_BRANCH to the currently checked out branch
+    * Inject GITHUB_TOKEN if provided
 
     Args:
         workspace_client: Authenticated :class:`FabricWorkspaceApiClient`.
@@ -177,11 +236,28 @@ def _upload_installer_notebook(workspace_client, notebook_path: str, github_toke
     """
     logger.info(f"   Reading notebook file: {notebook_path}")
 
+    # Always read and parse the notebook for patching
+    content = read_file_content(notebook_path)
+    notebook_json = json.loads(content)
+    patched = False
+
+    # Detect and patch current git branch
+    current_branch = _get_current_git_branch()
+    if current_branch:
+        logger.info(f"   Patching notebook with GITHUB_BRANCH = '{current_branch}'")
+        _patch_notebook_for_github_branch(notebook_json, current_branch)
+        patched = True
+    else:
+        logger.info("   Could not detect git branch, using notebook default")
+
+    # Patch GitHub token if provided
     if github_token:
         logger.info("   Patching notebook with GITHUB_TOKEN")
-        content = read_file_content(notebook_path)
-        notebook_json = json.loads(content)
         _patch_notebook_for_github_token(notebook_json, github_token)
+        patched = True
+
+    # Encode the notebook (patched or original)
+    if patched:
         raw_bytes = json.dumps(notebook_json).encode("utf-8")
         notebook_base64 = base64.b64encode(raw_bytes).decode("utf-8")
     else:
