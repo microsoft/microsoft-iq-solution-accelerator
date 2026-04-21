@@ -92,10 +92,11 @@ This phase is orchestrated by [`install_fabric_solution.py`](../infra/scripts/fa
 
 1. **Workspace Setup**: Creates or configures the workspace and assigns it to the Fabric capacity (resumes paused capacities automatically)
 2. **Workspace Administrators**: Adds administrators to the workspace (using Graph API resolution with fallback)
-3. **Upload Installer Notebook**: Uploads [`fabric_solution_installer.ipynb`](../infra/deploy/fabric_solution_installer.ipynb) to the workspace (creates or updates if already exists)
+3. **Upload Installer Notebook**: Uploads [`fabric_solution_installer.ipynb`](../infra/deploy/fabric_solution_installer.ipynb) to the workspace (creates or updates if already exists). The notebook is automatically patched before upload to set `GITHUB_BRANCH` to the currently checked out git branch, ensuring the solution is deployed from the same branch you're working on
 4. **Run Installer Notebook**: Executes [`fabric_solution_installer.ipynb`](../infra/deploy/fabric_solution_installer.ipynb) end-to-end inside Fabric. The notebook uses the [`fabric-launcher`](https://github.com/microsoft/fabric-launcher) library to pull the solution directly from GitHub and deploy all Fabric items leveraging [Fabric's Git integration and CI/CD capabilities](https://learn.microsoft.com/fabric/cicd/git-integration/intro-to-git-integration). The Fabric items (lakehouses, notebooks, reports, semantic models, data agent) are defined in the [`fabric_workspace/`](../fabric_workspace/) folder at the repository root, which is structured to match the [Fabric workspace Git format](https://learn.microsoft.com/fabric/cicd/git-integration/git-get-started). The notebook then runs the following post-deployment tasks:
-   - Run `run_bronze_to_silver` notebook: convert and standardize data from Bronze to Silver lakehouse
-   - Run `run_silver_to_gold` notebook: segment and aggregate data from Silver to Gold lakehouse
+   - Run `pipeline_main` notebook: creates lakehouse tables from ingested CSV data
+   - Deploy ontology items with logical ID resolution and lakehouse SQL endpoint mapping
+   - Move installer notebook and ontologies to their target folders
 
 #### Deployment Architecture
 
@@ -274,12 +275,16 @@ cd microsoft-iq-solution-accelerator
 # Authenticate (required)
 azd auth login
 
-# Optional: Customize workspace name
-azd env set FABRIC_WORKSPACE_NAME "My Analytics Platform"
+# Optional: Customize deployment (see Advanced Configuration Options below)
+azd env set FABRIC_WORKSPACE_NAME "My IQ Platform"
+azd env set AZURE_LOCATION "westeurope"
+azd env set GITHUB_TOKEN "ghp_xxxxxxxxxxxx"  # Only needed for private repositories
 
 # Deploy everything
 azd up
 ```
+
+> **💡 Configuration Tip**: You can customize the deployment with [optional variables](#-additional-optional-configuration) like `AZURE_LOCATION`, `LOG_LEVEL`, and `GITHUB_TOKEN` before running `azd up`.
 
 During deployment, you'll specify:
 
@@ -334,17 +339,17 @@ your-workspace/
 │   ├── data_agent_lakehouse/
 │   └── data_agent_ontology/
 ├── fabric_ontology/          # Ontology semantic model
-│   └── ontology_semantic_model/
+│   └── ontology_supplychain/
 ├── lakehouses/               # Fabric lakehouse
-│   └── fabriciq_team_lake/
+│   └── miqsadata/
 └── notebooks/                # Data pipelines & utilities (23 notebooks)
     ├── data_management/      # Table operations (create, drop, load, truncate)
     ├── data_processing/      # Domain data loaders (customer, finance, sales, …)
     ├── query_samples/        # Ad-hoc query notebooks (Python & SQL)
     ├── schema/               # Schema model definitions per domain
-    ├── main_pipeline/        # Orchestration entry-point
-    ├── update_pipeline/      # Pipeline update utility
-    └── truncate_or_drop_table_by_name/
+    ├── pipeline_main/        # Orchestration entry-point
+    ├── pipeline_update/      # Pipeline update utility
+    └── reset_or_debug/       # Debug and reset utility
 ```
 
 ![Screenshot of resulting Fabric workspace folder structure](./images/deployment/fabric/fabric_workspace_folders.png)
@@ -355,7 +360,7 @@ The solution deploys a single lakehouse that serves as the unified data store:
 
 | Name | Purpose |
 |------|---------|
-| `fabriciq_team_lake` | Unified data lakehouse with schema-on-read tables across 6 business domains |
+| `miqsadata` | Unified data lakehouse with schema-on-read tables across 6 business domains |
 
 The lakehouse is configured with [shortcut](https://learn.microsoft.com/fabric/onelake/onelake-shortcuts-overview) support for external data sources (OneLake, ADLS Gen2, Dataverse, Amazon S3, Google Cloud Storage, Azure Blob Storage, OneDrive/SharePoint).
 
@@ -386,7 +391,7 @@ Sample data is uploaded into the lakehouse during deployment to enable immediate
 | **data_processing/** | 6 | Domain data loaders: `load_customer`, `load_finance`, `load_inventory`, `load_product`, `load_sales`, `load_supplychain` |
 | **query_samples/** | 4 | Ad-hoc queries: `get_data_summary`, `list_schema_tables`, `order_counts`, `sql_order_counts` (SQL) |
 | **schema/** | 6 | Schema model definitions: `model_customer`, `model_finance`, `model_inventory`, `model_product`, `model_sales`, `model_supplychain` |
-| *(root)* | 3 | Pipeline orchestration: `main_pipeline`, `update_pipeline`, `truncate_or_drop_table_by_name` |
+| *(root)* | 4 | Pipeline orchestration: `pipeline_main`, `pipeline_update`, `reset_or_debug`, `sampe_data_query` |
 
 ![Screenshot of resulting Fabric notebooks](./images/deployment/fabric/fabric_notebooks.png)
 
@@ -396,14 +401,14 @@ Two [Fabric Data Agents](https://learn.microsoft.com/fabric/data-science/ai-agen
 
 | Agent | Purpose |
 |-------|---------|
-| `data_agent_lakehouse` | Query the `fabriciq_team_lake` lakehouse tables using natural language. Includes comprehensive AI instructions covering all 22 tables and 6 business domains |
+| `data_agent_lakehouse` | Query the `miqsadata` lakehouse tables using natural language. Includes comprehensive AI instructions covering all 22 tables and 6 business domains |
 | `data_agent_ontology` | Query data through the ontology semantic model |
 
 #### Ontology
 
 | Item | Purpose |
 |------|---------|
-| `ontology_semantic_model` | Ontology-based semantic model providing a business-friendly view of the underlying lakehouse data |
+| `ontology_supplychain` | Ontology-based semantic model providing a business-friendly view of the underlying lakehouse data |
 
 ---
 
@@ -638,6 +643,7 @@ These optional environment variables control advanced deployment behavior in [`i
 
 | Parameter | AZD Environment Variable | Description | Default | Example |
 |-----------|-------------------------|-------------|---------|---------|
+| **Azure Location** | `AZURE_LOCATION` | Azure region for resource deployment. When not set, uses the location of the selected resource group | Resource group location | `eastus`, `westus2`, `westeurope`, `northeurope` |
 | **GitHub Token** | `GITHUB_TOKEN` | GitHub personal access token. When set, the installer notebook is patched to include the token for private repository access. Only needed when deploying from a private fork | Not set | `ghp_xxxxxxxxxxxx` |
 | **Log Level** | `LOG_LEVEL` | Controls verbosity of deployment script logging. Set to `DEBUG` for detailed HTTP request/response tracing | `INFO` | `DEBUG`, `WARNING` |
 | **Workspace ID** | `FABRIC_WORKSPACE_ID` | Target an existing workspace by ID during removal (used by `remove_fabric_solution.py`). If both `FABRIC_WORKSPACE_NAME` and `FABRIC_WORKSPACE_ID` are set, the name takes precedence | Not set | `12345678-1234-...` |
@@ -645,6 +651,9 @@ These optional environment variables control advanced deployment behavior in [`i
 **Configuration Examples:**
 
 ```bash
+# Set Azure region (optional - defaults to resource group location)
+azd env set AZURE_LOCATION "westeurope"
+
 # Enable debug logging for troubleshooting
 azd env set LOG_LEVEL DEBUG
 

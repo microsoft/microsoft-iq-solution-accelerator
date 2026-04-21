@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "1373833960763083416",
+  "name": "demandforecast_forecastsfor_warehouse",
+  "namespaceType": "Custom",
+  "source": {
+    "entityTypeId": "263228276373168"
+  },
+  "target": {
+    "entityTypeId": "120698763730570"
+  }
+}
