@@ -32,27 +32,6 @@ cultureInfo en-US
 			      },
 			      "State": "Generated"
 			    },
-			    "date.yearmonth": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Date",
-			          "ConceptualProperty": "YearMonth"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "Year - Month": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
-			    },
 			    "inventory_inventory.product_count": {
 			      "Definition": {
 			        "Binding": {
@@ -166,27 +145,6 @@ cultureInfo en-US
 			        }
 			      },
 			      "State": "Generated"
-			    },
-			    "inventory_inventory.stockhealth": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "inventory inventory",
-			          "ConceptualProperty": "StockHealth"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "Stock Health": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
 			    }
 			  }
 			}

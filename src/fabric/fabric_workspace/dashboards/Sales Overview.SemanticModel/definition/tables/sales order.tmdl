@@ -122,14 +122,72 @@ table 'sales order'
 
 		annotation SummarizationSetBy = Automatic
 
+	column Year
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 62da4e3a-2e61-4ef7-8fec-db2f0f6f747d
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 1240123e-2c38-4453-b14a-6d625ee5c74f
+		summarizeBy: sum
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: ebfe576e-e32e-44e0-801f-77e7f8c2e81d
+		summarizeBy: sum
+		sourceColumn: Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column Day
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: b289495f-c1c4-4aa9-9bf7-35bec5ec34cb
+		summarizeBy: sum
+		sourceColumn: Day
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month name'
+		dataType: string
+		sourceProviderType: nvarchar(4000)
+		lineageTag: c9377483-f0e4-46de-bcdf-f465454b0e37
+		summarizeBy: none
+		sourceColumn: Month name
+		sortByColumn: Month
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
 	partition 'sales order' = m
 		mode: directQuery
 		source =
 				let
 				     Source =  Sql.Database(ServerParameter,DatabaseParameter),
-				    sales_order = Source{[Schema="sales",Item="order"]}[Data]
+				    sales_order = Source{[Schema="sales",Item="order"]}[Data],
+				    #"Inserted Year" = Table.AddColumn(sales_order, "Year", each Date.Year([OrderDate]), Int64.Type),
+				    #"Inserted Month" = Table.AddColumn(#"Inserted Year", "Month", each Date.Month([OrderDate]), Int64.Type),
+				    #"Inserted Quarter" = Table.AddColumn(#"Inserted Month", "Quarter", each Date.QuarterOfYear([OrderDate]), Int64.Type),
+				    #"Inserted Day" = Table.AddColumn(#"Inserted Quarter", "Day", each Date.Day([OrderDate]), Int64.Type),
+				    #"Added Custom" = Table.AddColumn(#"Inserted Day", "Month name", each if [Month] = 1 then "Jan" else if [Month] = 2 then "Feb" else if [Month] = 3 then "Mar" else if [Month] = 4 then "Apr" else if [Month] = 5 then "May" else if [Month] = 6 then "Jun" else if [Month] = 7 then "Jul" else if [Month] = 8 then "Aug" else if [Month] = 9 then "Sep" else if [Month] = 10 then "Oct" else if [Month] = 11 then "Nov" else if [Month] = 12 then "Dec" else null),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Added Custom",{{"Month name", type text}})
 				in
-				    sales_order
+				    #"Changed Type"
 
 	annotation PBI_ResultType = Table
 
