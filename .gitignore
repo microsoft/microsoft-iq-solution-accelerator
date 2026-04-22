@@ -207,3 +207,8 @@ marimo/_lsp/
 __marimo__/
 
 # project
+.work-folder-info
+
+# Python virtual environments
+.venv/
+*/.venv/
