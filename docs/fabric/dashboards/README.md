@@ -93,14 +93,6 @@ Backed by the `inventory`, `supplychain`, and `product` lakehouse schemas:
 
 ---
 
-## Review the Dashboards
-
-1. Deploy the accelerator by following [`DeploymentGuideFabric.md`](../DeploymentGuideFabric.md) (automated) or [`DeploymentGuideFabricManual.md`](../DeploymentGuideFabricManual.md) (manual). This provisions the Fabric workspace and populates the lakehouse tables the reports depend on.
-2. Open the Fabric workspace in the [Microsoft Fabric portal](https://app.fabric.microsoft.com/).
-3. The reports and the deployed semantic model will be available.
-
-> **Tip:** Both reports are organized as single-page dashboards so they can be embedded as-is in Fabric apps or Teams channels. Add pages or bookmarks as needed for your audience.
-
 ## Editing the reports
 
 - Open the `.pbix` files in the latest version of [Power BI Desktop](https://powerbi.microsoft.com/desktop/).
