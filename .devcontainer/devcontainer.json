@@ -1,5 +1,5 @@
 {
-    "name": "Unified Data Foundation with Fabric",
+    "name": "Microsoft IQ Solution Accelerator",
     "build": {
         "dockerfile": "Dockerfile"
     },
@@ -36,7 +36,8 @@
                 "ms-toolsai.vscode-jupyter-slideshow",
                 "ms-vscode.powershell",
                 "ms-vscode.vscode-json",
-                "redhat.vscode-yaml"
+                "redhat.vscode-yaml",
+                "synapsevscode.synapse"
             ],
             "settings": {
                 "python.defaultInterpreterPath": "/usr/local/bin/python",
@@ -46,10 +47,27 @@
                 "python.formatting.blackPath": "/usr/local/py-utils/bin/black",
                 "terminal.integrated.defaultProfile.linux": "bash",
                 "files.eol": "\n",
-                "editor.formatOnSave": true
+                "editor.formatOnSave": true,
+                "[python]": {
+                    "editor.defaultFormatter": "ms-python.black-formatter",
+                    "editor.formatOnSave": true,
+                    "editor.codeActionsOnSave": {
+                        "source.organizeImports": "explicit"
+                    }
+                }
             }
         }
     },
     "postCreateCommand": "bash .devcontainer/post-create.sh",
-    "remoteUser": "vscode"
+    "remoteUser": "vscode",
+    "mounts": [
+        "source=${localEnv:HOME}${localEnv:USERPROFILE}/.azure,target=/home/vscode/.azure,type=bind,consistency=cached"
+    ],
+    "forwardPorts": [8000, 8080, 8888],
+    "portsAttributes": {
+        "8888": {
+            "label": "Jupyter Lab",
+            "onAutoForward": "notify"
+        }
+    }
 }
