@@ -4,6 +4,9 @@
         "dockerfile": "Dockerfile"
     },
     "features": {
+        "ghcr.io/azure/azure-dev/azd:latest": {
+            "version": "latest"
+        },
         "ghcr.io/devcontainers/features/azure-cli:1": {
             "version": "latest",
             "installBicep": true
@@ -17,14 +20,19 @@
         "ghcr.io/devcontainers/features/powershell:1": {
             "version": "latest"
         },
-        "ghcr.io/azure/azure-dev/azd:latest": {}
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+        "ghcr.io/devcontainers/features/common-utils:2": {
+            "installZsh": false,
+            "installOhMyZsh": false,
+            "installAptPackages": "unixodbc unixodbc-dev bash"
+        }
     },
     "customizations": {
         "vscode": {
             "extensions": [
                 "GitHub.copilot-chat",
                 "GitHub.copilot",
-                "github.vscode-github-actions",
+                "GitHub.vscode-github-actions",
                 "ms-azuretools.azure-dev",
                 "ms-azuretools.vscode-azurecli",
                 "ms-azuretools.vscode-bicep",
@@ -58,16 +66,23 @@
             }
         }
     },
-    "postCreateCommand": "bash .devcontainer/post-create.sh",
+    "postCreateCommand": "bash .devcontainer/post-create.sh && bash .devcontainer/setup_env.sh",
     "remoteUser": "vscode",
     "mounts": [
         "source=${localEnv:HOME}${localEnv:USERPROFILE}/.azure,target=/home/vscode/.azure,type=bind,consistency=cached"
     ],
-    "forwardPorts": [8000, 8080, 8888],
+    "forwardPorts": [8000, 8080, 8888, 50505],
     "portsAttributes": {
         "8888": {
             "label": "Jupyter Lab",
             "onAutoForward": "notify"
+        },
+        "50505": {
+            "label": "Application",
+            "onAutoForward": "notify"
         }
+    },
+    "hostRequirements": {
+        "memory": "4gb"
     }
 }
