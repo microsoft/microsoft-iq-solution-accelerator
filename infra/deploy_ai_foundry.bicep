@@ -3,6 +3,10 @@
 @description('The name of the solution, used as a base for naming all resources.')
 param solutionName string
 
+@maxLength(5)
+@description('A unique text value for the solution. This is used to ensure resource names are unique for global resources.')
+param solutionUniqueText string
+
 @description('The Azure region where resources will be deployed.')
 param solutionLocation string
 
@@ -49,13 +53,27 @@ param tags object = {}
 param searchServiceLocation string = resourceGroup().location
 
 var abbrs = loadJsonContent('./abbreviations.json')
-var aiServicesName = '${abbrs.ai.aiServices}${solutionName}'
-var workspaceName = '${abbrs.managementGovernance.logAnalyticsWorkspace}${solutionName}'
-var location = solutionLocation //'eastus2'
-var aiProjectName = '${abbrs.ai.aiFoundryProject}${solutionName}'
-var aiSearchName = '${abbrs.ai.aiSearch}${solutionName}'
-var storageName = '${abbrs.storage.storageAccount}${toLower(replace(solutionName, '-', ''))}'
-var aiSearchConnectionName = 'search-connection-${solutionName}'
+
+var solutionSuffix = toLower(trim(replace(
+  replace(
+    replace(
+      replace(
+        replace(
+          replace('${solutionName}${solutionUniqueText}', '-', ''),
+        '_', ''),
+      '.', ''),
+    '/', ''),
+  ' ', ''),
+'*', '')))
+
+var aiServicesName = '${abbrs.ai.aiServices}${solutionSuffix}'
+var workspaceName = '${abbrs.managementGovernance.logAnalyticsWorkspace}${solutionSuffix}'
+var location = solutionLocation
+var aiProjectName = '${abbrs.ai.aiFoundryProject}${solutionSuffix}'
+var aiSearchName = '${abbrs.ai.aiSearch}${solutionSuffix}'
+// Storage account names must be 3-24 chars, all lowercase, no special chars
+var storageName = take(toLower(replace('${abbrs.storage.storageAccount}${solutionSuffix}', '-', '')), 24)
+var aiSearchConnectionName = '${abbrs.ai.aiSearch}con-${solutionSuffix}'
 
 var aiModelDeployments = concat([
   {
