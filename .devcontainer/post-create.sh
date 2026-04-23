@@ -5,7 +5,7 @@
 
 set -e
 
-echo "🚀 Setting up Unified Data Foundation with Fabric development environment..."
+echo "🚀 Setting up Microsoft IQ Solution Accelerator development environment..."
 
 # Note: Core tools already provided by devcontainer.json:
 # - Python 3.x (base image) with pip and venv
@@ -36,27 +36,32 @@ python3 -m pip install --upgrade pip
 # Install Python requirements for the project
 echo "📋 Installing Python dependencies globally..."
 
-# Install Fabric requirements globally so they're pre-installed for deployment scripts
+# Install main Fabric requirements globally (used by deployment scripts)
 # This improves deployment script performance by avoiding repeated installations
-if [ -f "./infra/scripts/fabric/requirements.txt" ]; then
-    echo "📦 Installing Fabric script requirements globally..."
-    python3 -m pip install -r "./infra/scripts/fabric/requirements.txt"
-    echo "✅ Fabric script requirements installed successfully"
+if [ -f "./requirements.txt" ]; then
+    echo "📦 Installing main Fabric requirements globally..."
+    python3 -m pip install -r "./requirements.txt"
+    echo "✅ Main Fabric requirements installed successfully"
 else
-    echo "⚠️ Warning: ./infra/scripts/fabric/requirements.txt not found"
+    echo "⚠️ Warning: ./requirements.txt not found"
 fi
 
-# Verify that other requirements files exist (for reference)
-if [ -f "./src/requirements.txt" ]; then
-    echo "✅ Source requirements.txt found"
+# Install data generation requirements (optional)
+if [ -f "./src/fabric/datagen/requirements.txt" ]; then
+    echo "📦 Installing data generation requirements..."
+    python3 -m pip install -r "./src/fabric/datagen/requirements.txt"
+    echo "✅ Data generation requirements installed successfully"
 else
-    echo "⚠️ Warning: ./src/requirements.txt not found"
+    echo "ℹ️ Info: ./src/fabric/datagen/requirements.txt not found (optional)"
 fi
 
-if [ -f "./infra/scripts/databricks/requirements.txt" ]; then
-    echo "✅ Databricks script requirements.txt found"
+# Install fabric-launcher if in multi-root workspace
+if [ -d "../fabric-launcher" ]; then
+    echo "📦 Installing fabric-launcher in editable mode..."
+    python3 -m pip install -e "../fabric-launcher[dev]"
+    echo "✅ fabric-launcher installed successfully"
 else
-    echo "ℹ️ Info: ./infra/scripts/databricks/requirements.txt not found (optional)"
+    echo "ℹ️ Info: fabric-launcher not found in workspace (optional)"
 fi
 
 # Install additional development tools
@@ -98,8 +103,9 @@ echo 'alias azd-down="azd down"' >> ~/.bashrc
 
 # Make scripts executable and fix line endings
 echo "🔐 Making scripts executable and fixing line endings..."
-find ./infra/scripts -name "*.sh" -type f -exec chmod +x {} \;
-find ./infra/scripts -name "*.sh" -type f -exec sed -i 's/\r$//' {} \;
+find ./infra/scripts -type f -name "*.sh" -exec chmod +x {} \;
+find ./infra/scripts -type f -name "*.py" -exec chmod +x {} \;
+find ./infra/scripts -type f -name "*.sh" -exec sed -i 's/\r$//' {} \;
 
 # Add virtual environment directories to .gitignore if not already present
 echo "📝 Updating .gitignore for virtual environments..."
@@ -110,56 +116,18 @@ if ! grep -q "\.venv/" .gitignore 2>/dev/null; then
     echo "*/.venv/" >> .gitignore
 fi
 
-# Create workspace info
-echo "📄 Creating workspace information..."
-cat > ~/WORKSPACE_INFO.md << 'EOF'
-
-## Available Tools
-- Azure CLI (`az`) + Bicep
-- Azure Developer CLI (`azd`)
-- Python 3.11+ with pip, venv, and common dependencies pre-installed
-- PowerShell
-- Git & GitHub CLI
-- Jupyter Lab
-- Development tools (black, flake8, pytest, mypy)
-- System utilities (curl, wget, jq, tree, vim)
-
-## Project Structure
-- `/infra` - Infrastructure as Code (Bicep templates)
-- `/src` - Source code and notebooks
-- `/docs` - Documentation
-- `/reports` - Power BI reports
-
-## Helpful Commands
-- `azd-env` - Show current azd environment variables
-- `azd-up` - Deploy the solution
-- `azd-down` - Clean up resources
-- `tree` - Show directory structure (excluding __pycache__)
-- `ll` - Detailed file listing
-- `jupyter lab` - Start Jupyter Lab server
-
-## Port Forwarding
-- 8000, 8080, 8888 are forwarded for web applications
-
-## Virtual Environment Notes
-- Python venv module is available and configured in the container base
-- Development tools are pre-installed globally for convenience
-- Fabric deployment dependencies (Azure libraries, requests, etc.) are pre-installed globally for improved performance
-- Additional project dependencies can be installed by deployment scripts in isolated virtual environments
-- This approach balances convenience with flexibility while avoiding version conflicts
-
-Enjoy coding! 🎉
-EOF
-
-echo "✨ Dev container setup complete!"
-echo "📖 Check ~/WORKSPACE_INFO.md for quick start instructions"
 echo ""
-echo "🎯 Next steps:"
-echo "   1. Configure your Git user name and email using 'git config --global user.name \"Your Name\"' and 'git config --global user.email \"your-email@domain.com\"'"
-echo "   2. Run 'az login' to authenticate with Azure"
-echo "   3. Run 'azd auth login' to authenticate with Azure Developer CLI"
-echo "   4. Deploy the solution: azd up"
+echo "✅ Development environment setup complete!"
 echo ""
-echo "🔧 Development shortcuts:"
-echo "   - Use 'azd up' to deploy the full solution"
-echo "   - Use PowerShell scripts in infra/scripts/ for component-specific deployments"
+echo "📖 Quick Start:"
+echo "  1. Authenticate: az login && azd auth login"
+echo "  2. Configure: azd env set AZURE_FABRIC_ADMIN_USER_EMAIL your-email@domain.com"
+echo "  3. Deploy: azd up"
+echo ""
+echo "💡 Helpful aliases:"
+echo "  - azd-env   : Show current azd environment variables"
+echo "  - azd-up    : Deploy the solution"
+echo "  - azd-down  : Clean up resources"
+echo "  - ll        : Detailed file listing"
+echo "  - tree      : Directory structure (excluding __pycache__)"
+echo ""
