@@ -1,0 +1,9 @@
+{
+  "agent_name": "WorkplaceIntelligenceAgent",
+  "agent_id": "WorkplaceIntelligenceAgent",
+  "endpoint": "https://aisa-danlcngcx5m4yb.services.ai.azure.com/api/projects/aifp-danlcngcx5m4yb",
+  "model": "gpt-4.1-mini",
+  "has_workiq": true,
+  "has_sql": false,
+  "search_index": "knowledge_index"
+}
