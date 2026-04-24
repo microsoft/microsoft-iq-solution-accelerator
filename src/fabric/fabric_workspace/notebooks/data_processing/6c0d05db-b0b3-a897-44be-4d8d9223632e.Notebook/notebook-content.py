@@ -1,5 +1,12 @@
 # Fabric notebook source
 
+# METADATA ********************
+
+# META {
+# META   "kernel_info": {
+# META     "name": "synapse_pyspark"
+# META   }
+# META }
 
 # MARKDOWN ********************
 
@@ -30,6 +37,13 @@ DATA_PATH = "Files/data/customer"
 spark.sql(f"CREATE DATABASE IF NOT EXISTS {SCHEMA_NAME}")
 print(f"✅Loading '{SCHEMA_NAME}' schema from: {DATA_PATH}")
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 # 1. Load Customer Table
@@ -41,6 +55,13 @@ customer_df = customer_df \
 customer_df.write.mode("overwrite").saveAsTable(f"{SCHEMA_NAME}.Customer")
 customer_count = customer_df.count()
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 # 2. Load CustomerAccount Table (all STRING columns — no casts needed)
@@ -48,12 +69,26 @@ account_df = spark.read.csv(f"{DATA_PATH}/CustomerAccount_Samples.csv", header=T
 account_df.write.mode("overwrite").saveAsTable(f"{SCHEMA_NAME}.CustomerAccount")
 account_count = account_df.count()
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 # 3. Load CustomerRelationshipType Table (all STRING columns — no casts needed)
 relationship_df = spark.read.csv(f"{DATA_PATH}/CustomerRelationshipType_Samples.csv", header=True, inferSchema=False)
 relationship_df.write.mode("overwrite").saveAsTable(f"{SCHEMA_NAME}.CustomerRelationshipType")
 relationship_count = relationship_df.count()
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
 
 # CELL ********************
 
@@ -64,6 +99,13 @@ trade_name_df = trade_name_df \
     .withColumn("PeriodEndDate", col("PeriodEndDate").cast("date"))
 trade_name_df.write.mode("overwrite").saveAsTable(f"{SCHEMA_NAME}.CustomerTradeName")
 trade_name_count = trade_name_df.count()
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
 
 # CELL ********************
 
@@ -76,6 +118,13 @@ location_df = location_df \
 location_df.write.mode("overwrite").saveAsTable(f"{SCHEMA_NAME}.Location")
 location_count = location_df.count()
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 # Summary
@@ -86,3 +135,10 @@ print(f"   - CustomerAccount: {account_count:,} records")
 print(f"   - CustomerRelationshipType: {relationship_count:,} records")
 print(f"   - CustomerTradeName: {trade_name_count:,} records")
 print(f"   - Location: {location_count:,} records")
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
