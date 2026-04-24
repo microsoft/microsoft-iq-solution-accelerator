@@ -161,7 +161,7 @@ resource resourceGroupTags 'Microsoft.Resources/tags@2021-04-01' = {
 
 // ========== Fabric Capacity Deployment ========== //
 
-var fabricCapacityResourceName = useExistingFabricCapacity ? existingFabricCapacityName : 'fc-${solutionSuffix}'
+var fabricCapacityResourceName = useExistingFabricCapacity ? existingFabricCapacityName : 'fc${solutionSuffix}'
 var fabricCapacityDefaultAdmins = deployer().?userPrincipalName == null
   ? [deployer().objectId]
   : [deployer().userPrincipalName]
