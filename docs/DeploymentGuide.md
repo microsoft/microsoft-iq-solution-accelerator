@@ -98,8 +98,8 @@ cd microsoft-iq-solution-accelerator
 
 # (Optional) Set GitHub token for private repositories
 # The Fabric deployment pulls workspace items from GitHub
-# Create a token with 'repo' scope at https://github.com/settings/tokens
-# azd env set GITHUB_TOKEN "your-github-token"
+# Create a token with 'repo' scope and read permisssions for 'Contents' at https://github.com/settings/personal-access-tokens
+azd env set GITHUB_TOKEN "your-github-token" # optional
 
 # Authenticate with Azure
 azd auth login
