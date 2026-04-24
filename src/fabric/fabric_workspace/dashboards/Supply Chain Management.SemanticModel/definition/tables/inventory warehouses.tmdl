@@ -18,9 +18,9 @@ table 'inventory warehouses'
 			RETURN
 			SWITCH(
 			    TRUE(),
-			    Util <= 0.7, "#60A5FA",   -- Blue (0–70%)
-			    Util <= 0.9, "#FFB900",   -- Yellow (70–90%)
-			    "#E57373"               -- Red (90–100%)
+			    Util <= 0.7, "#0f6cbd",   -- Blue (0–70%)
+			    Util <= 0.9, "#eaa300",   -- Yellow (70–90%)
+			    "#bc4b09"               -- Red (90–100%)
 			)
 			
 			
