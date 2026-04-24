@@ -1,31 +1,31 @@
-ProductCategoryID,ProductLineID,ProductLineName,CategoryName,CategoryDescription,IsActive,CreatedBy,CreatedDate
-151,PL_10,Camping,Tents,Tents for outdoor camping and adventure activities.,TRUE,system,1/1/2018
-152,PL_10,Camping,Backpacks,Backpacks for outdoor camping and adventure activities.,TRUE,system,1/1/2018
-153,PL_10,Camping,Hiking Clothing,Hiking Clothing for outdoor camping and adventure activities.,TRUE,system,1/1/2018
-154,PL_10,Camping,Hiking Footwear,Hiking Footwear for outdoor camping and adventure activities.,TRUE,system,1/1/2018
-155,PL_10,Camping,Camping Tables,Camping Tables for outdoor camping and adventure activities.,TRUE,system,1/1/2018
-156,PL_10,Camping,Camping Stoves,Camping Stoves for outdoor camping and adventure activities.,TRUE,system,1/1/2018
-157,PL_10,Camping,Sleeping Bags,Sleeping Bags for outdoor camping and adventure activities.,TRUE,system,1/1/2018
-158,PL_10,Camping,Lighting,Lighting for outdoor camping and adventure activities.,TRUE,system,1/1/2018
-201,PL_20,Kitchen,Coffee Makers,Coffee Makers for home and business kitchens.,TRUE,system,1/1/2018
-202,PL_20,Kitchen,Cutlery,Cutlery for home and business kitchens.,TRUE,system,1/1/2018
-203,PL_20,Kitchen,Cups & Mugs,Cups & Mugs for home and business kitchens.,TRUE,system,1/1/2018
-204,PL_20,Kitchen,Serving Dishes,Serving Dishes for home and business kitchens.,TRUE,system,1/1/2018
-205,PL_20,Kitchen,Ice Cream Dishes,Ice Cream Dishes for home and business kitchens.,TRUE,system,1/1/2018
-206,PL_20,Kitchen,Mixing Bowls,Mixing Bowls for home and business kitchens.,TRUE,system,1/1/2018
-207,PL_20,Kitchen,Bakeware,Bakeware for home and business kitchens.,TRUE,system,1/1/2018
-208,PL_20,Kitchen,Storage Containers,Storage Containers for home and business kitchens.,TRUE,system,1/1/2018
-209,PL_20,Kitchen,Cooking Utensils,Cooking Utensils for home and business kitchens.,TRUE,system,1/1/2018
-210,PL_20,Kitchen,Measuring Tools,Measuring Tools for home and business kitchens.,TRUE,system,1/1/2018
-211,PL_20,Kitchen,Small Appliances,Small Appliances for home and business kitchens.,TRUE,system,1/1/2018
-212,PL_20,Kitchen,Cutting Boards,Cutting Boards for home and business kitchens.,TRUE,system,1/1/2018
-301,PL_30,Ski,Alpine Skis,Alpine Skis for winter sports and cold weather activities.,TRUE,system,1/1/2018
-302,PL_30,Ski,Cross-Country Skis,Cross-Country Skis for winter sports and cold weather activities.,TRUE,system,1/1/2018
-303,PL_30,Ski,Ski Boots,Ski Boots for winter sports and cold weather activities.,TRUE,system,1/1/2018
-304,PL_30,Ski,Ski Poles,Ski Poles for winter sports and cold weather activities.,TRUE,system,1/1/2018
-305,PL_30,Ski,Ski Apparel,Ski Apparel for winter sports and cold weather activities.,TRUE,system,1/1/2018
-306,PL_30,Ski,Safety Equipment,Safety Equipment for winter sports and cold weather activities.,TRUE,system,1/1/2018
-307,PL_30,Ski,Ski Accessories,Ski Accessories for winter sports and cold weather activities.,TRUE,system,1/1/2018
-308,PL_30,Ski,Ski Maintenance,Ski Maintenance for winter sports and cold weather activities.,TRUE,system,1/1/2018
-309,PL_30,Ski,Snowboards & Equipment,Snowboards & Equipment for winter sports and cold weather activities.,TRUE,system,1/1/2018
-310,PL_30,Ski,Winter Footwear,Winter Footwear for winter sports and cold weather activities.,TRUE,system,1/1/2018
+"ProductCategoryID","ProductLineID","ProductLineName","CategoryName","CategoryDescription","IsActive","CreatedBy","CreatedDate"
+"151","PL_10","Camping","Tents","Tents for outdoor camping and adventure activities.","TRUE","system","2018-01-01"
+"152","PL_10","Camping","Backpacks","Backpacks for outdoor camping and adventure activities.","TRUE","system","2018-01-01"
+"153","PL_10","Camping","Hiking Clothing","Hiking Clothing for outdoor camping and adventure activities.","TRUE","system","2018-01-01"
+"154","PL_10","Camping","Hiking Footwear","Hiking Footwear for outdoor camping and adventure activities.","TRUE","system","2018-01-01"
+"155","PL_10","Camping","Camping Tables","Camping Tables for outdoor camping and adventure activities.","TRUE","system","2018-01-01"
+"156","PL_10","Camping","Camping Stoves","Camping Stoves for outdoor camping and adventure activities.","TRUE","system","2018-01-01"
+"157","PL_10","Camping","Sleeping Bags","Sleeping Bags for outdoor camping and adventure activities.","TRUE","system","2018-01-01"
+"158","PL_10","Camping","Lighting","Lighting for outdoor camping and adventure activities.","TRUE","system","2018-01-01"
+"201","PL_20","Kitchen","Coffee Makers","Coffee Makers for home and business kitchens.","TRUE","system","2018-01-01"
+"202","PL_20","Kitchen","Cutlery","Cutlery for home and business kitchens.","TRUE","system","2018-01-01"
+"203","PL_20","Kitchen","Cups & Mugs","Cups & Mugs for home and business kitchens.","TRUE","system","2018-01-01"
+"204","PL_20","Kitchen","Serving Dishes","Serving Dishes for home and business kitchens.","TRUE","system","2018-01-01"
+"205","PL_20","Kitchen","Ice Cream Dishes","Ice Cream Dishes for home and business kitchens.","TRUE","system","2018-01-01"
+"206","PL_20","Kitchen","Mixing Bowls","Mixing Bowls for home and business kitchens.","TRUE","system","2018-01-01"
+"207","PL_20","Kitchen","Bakeware","Bakeware for home and business kitchens.","TRUE","system","2018-01-01"
+"208","PL_20","Kitchen","Storage Containers","Storage Containers for home and business kitchens.","TRUE","system","2018-01-01"
+"209","PL_20","Kitchen","Cooking Utensils","Cooking Utensils for home and business kitchens.","TRUE","system","2018-01-01"
+"210","PL_20","Kitchen","Measuring Tools","Measuring Tools for home and business kitchens.","TRUE","system","2018-01-01"
+"211","PL_20","Kitchen","Small Appliances","Small Appliances for home and business kitchens.","TRUE","system","2018-01-01"
+"212","PL_20","Kitchen","Cutting Boards","Cutting Boards for home and business kitchens.","TRUE","system","2018-01-01"
+"301","PL_30","Ski","Alpine Skis","Alpine Skis for winter sports and cold weather activities.","TRUE","system","2018-01-01"
+"302","PL_30","Ski","Cross-Country Skis","Cross-Country Skis for winter sports and cold weather activities.","TRUE","system","2018-01-01"
+"303","PL_30","Ski","Ski Boots","Ski Boots for winter sports and cold weather activities.","TRUE","system","2018-01-01"
+"304","PL_30","Ski","Ski Poles","Ski Poles for winter sports and cold weather activities.","TRUE","system","2018-01-01"
+"305","PL_30","Ski","Ski Apparel","Ski Apparel for winter sports and cold weather activities.","TRUE","system","2018-01-01"
+"306","PL_30","Ski","Safety Equipment","Safety Equipment for winter sports and cold weather activities.","TRUE","system","2018-01-01"
+"307","PL_30","Ski","Ski Accessories","Ski Accessories for winter sports and cold weather activities.","TRUE","system","2018-01-01"
+"308","PL_30","Ski","Ski Maintenance","Ski Maintenance for winter sports and cold weather activities.","TRUE","system","2018-01-01"
+"309","PL_30","Ski","Snowboards & Equipment","Snowboards & Equipment for winter sports and cold weather activities.","TRUE","system","2018-01-01"
+"310","PL_30","Ski","Winter Footwear","Winter Footwear for winter sports and cold weather activities.","TRUE","system","2018-01-01"
