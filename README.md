@@ -1,10 +1,10 @@
 # Microsoft IQ solution accelerator
 
-TBD 
+The Microsoft IQ Solution Accelerator is an AI-powered enterprise intelligence solution accelerator that enables faster, more informed decisions by unifying enterprise data, business knowledge, and execution workflows into a shared context. This accelerator connects unified data, semantic models and ontologies in Fabric IQ, enterprise knowledge and retrieval in Foundry IQ, and work context in Work IQ to identify signals, produce impact analysis, recommend disruption mitigation to support human decision making in evaluating business decisions and coordinating responses.
 
 **Key use cases:**
 
-- **TBD** — TBD
+- **Supply Chain**: During supplier disruptions, organizations use unified intelligence to assess risk and inventory levels, evaluate sourcing options across the enterprise, and coordinate actions across teams to protect product availability and ensure continuity of supply.
 - **TBD** — TBD
 
 <br/>
