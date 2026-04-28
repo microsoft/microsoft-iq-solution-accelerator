@@ -1,0 +1,11 @@
+{
+  "index_name": "knowledge_index",
+  "knowledge_base_name": "demo-kb",
+  "knowledge_source_name": "demo-ks",
+  "document_count": 6,
+  "pdf_files": [
+    "delivery_operations.pdf",
+    "inventory_logistics.pdf",
+    "supplier_management.pdf"
+  ]
+}
