@@ -5,14 +5,56 @@
     "solutionName": {
       "value": "${AZURE_ENV_NAME}"
     },
-    "existingFabricCapacityName": {
-      "value": "${AZURE_EXISTING_FABRIC_CAPACITY_NAME}"
-    },
     "location": {
       "value": "${AZURE_LOCATION}"
     },
+    "enableTelemetry": {
+      "value": "${ENABLE_TELEMETRY=true}"
+    },
+    "fabricAdminMembers": {
+      "value": "${FABRIC_ADMIN_MEMBERS=[]}"
+    },
     "skuName": {
-      "value": "${FABRIC_CAPACITY_SKU_NAME}"
+      "value": "${FABRIC_CAPACITY_SKU_NAME=F2}"
+    },
+    "existingFabricCapacityName": {
+      "value": "${AZURE_EXISTING_FABRIC_CAPACITY_NAME=}"
+    },
+    "existingLogAnalyticsWorkspaceId": {
+      "value": "${AZURE_EXISTING_LOG_ANALYTICS_WORKSPACE_ID=}"
+    },
+    "azureExistingAIProjectResourceId": {
+      "value": "${AZURE_EXISTING_AI_PROJECT_RESOURCE_ID=}"
+    },
+    "usecase": {
+      "value": "${AZURE_ENV_USE_CASE=Retail-sales-analysis}"
+    },
+    "searchServiceLocation": {
+      "value": "${AZURE_SEARCH_SERVICE_LOCATION=}"
+    },
+    "aiDeploymentsLocation": {
+      "value": "${AZURE_AI_DEPLOYMENTS_LOCATION}"
+    },
+    "deploymentType": {
+      "value": "${AZURE_OPENAI_MODEL_DEPLOYMENT_TYPE=GlobalStandard}"
+    },
+    "gptModelName": {
+      "value": "${AZURE_OPENAI_DEPLOYMENT_MODEL=gpt-4.1-mini}"
+    },
+    "gptModelVersion": {
+      "value": "${AZURE_OPENAI_MODEL_VERSION=2025-04-14}"
+    },
+    "gptDeploymentCapacity": {
+      "value": "${AZURE_OPENAI_DEPLOYMENT_MODEL_CAPACITY=150}"
+    },
+    "embeddingModel": {
+      "value": "${AZURE_OPENAI_EMBEDDING_MODEL=text-embedding-3-small}"
+    },
+    "embeddingDeploymentCapacity": {
+      "value": "${AZURE_OPENAI_EMBEDDING_CAPACITY=80}"
+    },
+    "deployingUserPrincipalType": {
+      "value": "${DEPLOYING_USER_PRINCIPAL_TYPE=User}"
     }
   }
 }
