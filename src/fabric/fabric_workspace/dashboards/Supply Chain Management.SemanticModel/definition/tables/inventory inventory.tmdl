@@ -5,6 +5,33 @@ table 'inventory inventory'
 		formatString: 0
 		lineageTag: 79371282-cb0b-4ee4-b075-ec04ff934b78
 
+	measure 'Capacity Utilization' =
+			
+			CALCULATE(DIVIDE(
+			    SUM('inventory Inventory'[CurrentStock]),
+			    SUM('inventory Inventory'[MaxStockLevel]),
+			    0
+			), USERELATIONSHIP('inventory inventory'[CreatedDate], 'shared dimdate'[FullDate]))
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 693e8020-0314-4429-98aa-d6d1ec5c1a74
+
+	measure 'Capacity Utilization Color' = ```
+			
+			
+			VAR Util = [Capacity Utilization]   -- value between 0 and 1
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    Util <= 0.7, "#0f6cbd",   -- Blue (0–70%)
+			    Util <= 0.9, "#eaa300",   -- Yellow (70–90%)
+			    "#bc4b09"               -- Red (90–100%)
+			)
+			
+			
+			
+			```
+		lineageTag: 3179cf11-4dfe-487f-9741-2b6110a7abd8
+
 	column InventoryID
 		dataType: string
 		sourceProviderType: varchar(8000)
