@@ -1,1 +1,294 @@
-# Place Holder
+# Microsoft IQ Solution Accelerator
+
+A streamlined Azure AI Foundry solution for document-based question answering using knowledge bases and intelligent agents.
+
+## 🚀 Infrastructure Deployed
+
+This solution automatically deploys:
+
+- **Azure AI Foundry Hub & Project** - Core AI platform for agent management
+- **Azure AI Search** - Document indexing and semantic search capabilities  
+- **Azure Storage Account** - Document storage with direct blob access for citations
+- **Azure OpenAI Models** - GPT-4.1-mini for chat and text-embedding-3-small for search
+- **Managed Identities** - Secure authentication between services
+
+## 🤖 AI Agents Created
+
+### Chat Agent
+- **Purpose**: Document-based question answering and analysis
+- **Knowledge Source**: Foundry IQ Knowledge Base with automatic query planning
+- **Capabilities**: 
+  - Policy and guideline lookups
+  - Document search with semantic ranking
+  - Direct source citations with blob storage links
+  - Chart generation from retrieved data
+
+## 📚 Knowledge Base Features
+
+The knowledge base will be populated with your documents:
+- Upload PDF documents to `src/foundry/data/documents/` folder
+- Automatic page-aware chunking for precise citations
+- Semantic search with vector embeddings
+- Azure Blob Storage integration for direct document access
+
+**Note**: The documents folder is currently empty. Add your PDF documents there and run the upload script to populate the knowledge base.
+
+## 🎯 Sample Questions to Try
+
+*After uploading your documents, try questions like these based on typical business content:*
+
+### Document Discovery
+- "Show me the supplier onboarding process"
+- "Find information about evaluation criteria or approval processes"
+
+### Content Search
+- "What are the qualification criteria for new suppliers?"
+- "How long does the supplier evaluation process take?" 
+- "What documentation is required for supplier approval?"
+- "What are the trial order procedures mentioned?"
+
+### Analysis Requests
+- "Summarize the key steps in the supplier onboarding process"
+- "What performance metrics are used for supplier monitoring?"
+- "Compare the requirements between different procedures"
+
+### Specific Details
+- "What is the minimum reliability score required?"
+- "How much volume can trial orders include?"
+- "What training is provided to suppliers?"
+- "What security standards are mentioned for data exchange?"
+
+## 🔧 Getting Started
+
+1. **Deploy**: Run `azd up` to deploy all infrastructure and create agents
+2. **Access**: Open Azure AI Foundry Studio in the Azure portal
+3. **Chat**: Navigate to the Playground and select your "ChatAgent"
+4. **Ask Questions**: Start with document discovery questions to see what's available
+
+## 💡 Tips for Best Results
+
+- **Add Documents First**: Upload PDF documents to get meaningful responses
+- **Be Specific**: Ask about policies, procedures, or specific document content
+- **Use Context**: Reference document types or names you've uploaded
+- **Request Citations**: The agent will provide direct links to source documents
+- **Ask Follow-ups**: Build on previous answers for deeper analysis
+- **Start Simple**: Begin with "What documents are available?" to understand your knowledge base
+
+## 📁 Document Management
+
+- **Upload Documents**: Add your PDF files to `src/foundry/data/documents/` folder
+- **Run Upload Script**: Execute `python src/foundry/scripts/01_upload_to_search.py` after adding documents
+- **Storage**: Documents are stored in Azure Blob Storage for reliable access
+- **Citations**: Each response includes page numbers and direct document links
+- **Updates**: Add new PDFs and re-run the upload script to update the knowledge base
+
+---
+
+**Next Steps**: Visit the [Azure AI Foundry playground](https://ai.azure.com) to start chatting with your knowledge-powered agent!# Microsoft IQ solution accelerator
+
+TBD 
+
+**Key use cases:**
+
+- **TBD** — TBD
+- **TBD** — TBD
+
+<br/>
+
+<div align="center">
+
+[**SOLUTION OVERVIEW**](#solution-overview) \| [**QUICK DEPLOY**](#quick-deploy) \| [**BUSINESS SCENARIO**](#business-use-case) \| [**SUPPORTING DOCUMENTATION**](#supporting-documentation)
+
+</div>
+<br/>
+
+
+<h2 id="solution-overview"><img src="./docs/images/readme/solution-overview.png" width="48" />
+Solution overview
+</h2>
+This solution accelerator offers a 
+
+
+### Solution architecture
+
+The architecture below illustrates the solution architecture 
+
+| ![image](./docs/images/readme/solution-architecture.png) |
+| -------------------------------------------------------- |
+
+### How to customize
+
+If you'd like to customize the solution accelerator, here are some common areas to start:
+
+You can modify the data models and notebooks in different folders under the `src` folder. Please note that if any part is modified, you will need to modify the associated parts accordingly, as the data model (schemas and tables), notebooks, Power BI semantic models, Power BI dashboards, and sample data are a cohesive set of resources working together as designed.
+
+| Customization Area | Description |
+|---|---|
+| [Customize Fabric Data Agent](./docs/fabric/fabric_data_agent/README.md) | Customize Data Agent |
+| TBD | Text Here|
+
+## Resources
+
+| Resource | Description |
+|---|---|
+| [What's New in Microsoft Fabric](https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new) | Latest features and updates |
+| [Microsoft Fabric Blog](https://blog.fabric.microsoft.com/en-us/blog) | News, tips, and best practices |
+|  |  |
+|  |  |
+
+<br/>
+
+## Features
+<details>
+  <summary>Click to learn more about the key features this solution enables</summary>
+
+  - **TBD** <br/>TBD
+  - **TBD** <br/>TBD
+
+</details>
+
+<br /><br />
+
+<h2 id="quick-deploy"><img src="./docs/images/readme/quick-deploy.png" width="48" />
+Quick deploy
+</h2>
+TBD
+
+### Prerequisites and costs
+
+To deploy this solution accelerator, ensure you have access to an [Azure subscription](https://azure.microsoft.com/free/) with the following permissions:
+
+- **Contributor** role at the subscription level
+- **Role Based Access Control (RBAC)** permissions to assign roles at the subscription and/or resource group level
+- Ability to create resource groups, resources, and app registrations
+
+For detailed setup instructions, see [Azure Account Set Up](./docs/AzureAccountSetUp.md).
+
+**Additional setup for extended architectures:**
+
+| Architecture Option | Additional Setup Required |
+|---|---|
+| TBD |  |
+| TBD | [](./docs/SetupPurview.md) |
+
+Licenses for Microsoft Fabric, TBD ADD MORE
+
+ Below is a high-level overview of the cost considerations for each architecture option:
+
+- **Microsoft Fabric:** Licensing and cost information can be found at [Microsoft Fabric concepts and licenses](https://learn.microsoft.com/en-us/fabric/enterprise/licenses) and [Microsoft Fabric Pricing](https://azure.microsoft.com/en-us/pricing/details/microsoft-fabric/).
+
+- TBD
+
+  
+
+> **Note:** This pricing overview is not comprehensive—actual costs will vary based on your selected SKUs, usage scale, customizations, and tenant integrations. Use these estimates as a starting point and adjust for your specific requirements.
+
+<br/>
+
+| Product | Description | Cost |
+|---|---|---|
+| [Microsoft Fabric](https://learn.microsoft.com/en-us/fabric) | Core Medallion Architecture in Microsoft Fabric, and Unified Data Platform for integration with other platforms such as Azure Databricks and Snowflake. | [Pricing](https://learn.microsoft.com/en-us/fabric/enterprise/buy-subscription#prerequisites) |
+| TBD                                                          |                                                              |                                                              |
+| TBD                                                          |                                                              |                                                              |
+
+<br/>
+
+>⚠️ **Important:** To avoid unnecessary costs, remember to take down your app if it's no longer in use,
+either by deleting the resource group in the Portal or running `azd down`.
+
+<br /><br />
+
+<h2 id="business-use-case"><img src="./docs/images/readme/business-scenario.png" width="48" />
+Business use case
+</h2>
+TBD
+
+**Key use cases by role:**
+
+| Role | Capabilities |
+|---|---|
+| **Data Engineer** |  |
+| **Sales Analyst** |  |
+| **Business User** |  |
+
+> ⚠️ **Note:** The sample data in this repository is synthetic, generated using Python programs, and intended for demonstration purposes only.
+
+### Business value
+<details>
+  <summary>Click to learn more about what value this solution provides</summary>
+
+  - **TBD** <br/> TEXT 
+  - **TBD** <br/> Text
+
+</details>
+
+<br /><br />
+
+<h2 id="supporting-documentation"><img src="./docs/images/readme/supporting-documentation.png" width="48" />
+Supporting documentation
+</h2>
+
+## Guidance
+
+### Security guidelines
+
+This template uses Azure Key Vault to store all connections to communicate between resources.
+
+This template also uses [Managed Identity](https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/overview) for local development and deployment.
+
+To ensure continued best practices in your own repository, we recommend that anyone creating solutions based on our templates ensure that the [GitHub secret scanning](https://docs.github.com/code-security/secret-scanning/about-secret-scanning) setting is enabled.
+
+You may want to consider additional security measures, such as:
+
+* Enabling Microsoft Defender for Cloud to [secure your Azure resources](https://learn.microsoft.com/en-us/azure/defender-for-cloud/).
+* Protecting the Azure Container Apps instance with a [firewall](https://learn.microsoft.com/azure/container-apps/waf-app-gateway) and/or [Virtual Network](https://learn.microsoft.com/azure/container-apps/networking?tabs=workload-profiles-env%2Cazure-cli).
+
+<br/>
+
+### Frequently asked questions
+
+[Click here](./docs/FAQs.md) to learn more about common questions about this solution.
+
+<br/>
+
+### Cross references
+Check out similar solution accelerators
+
+| Solution Accelerator | Description |
+|---|---|
+|                      |             |
+|                      |             |
+
+<br/>   
+
+💡 Want to get familiar with Microsoft's AI and Data Engineering best practices? Check out our playbooks to learn more
+
+| Playbook | Description |
+|:---|:---|
+| [AI&nbsp;playbook](https://learn.microsoft.com/en-us/ai/playbook/) | The Artificial Intelligence (AI) Playbook provides enterprise software engineers with solutions, capabilities, and code developed to solve real-world AI problems. |
+| [Data&nbsp;playbook](https://learn.microsoft.com/en-us/data-engineering/playbook/understanding-data-playbook) | The data playbook provides enterprise software engineers with solutions which contain code developed to solve real-world problems. Everything in the playbook is developed with, and validated by, some of Microsoft's largest and most influential customers and partners. |
+
+<br/> 
+
+## Provide feedback
+
+Have questions, find a bug, or want to request a feature? [Submit a new issue](https://github.com/microsoft/microsoft-iq-solution-accelerator/issues) on this repo and we'll connect.
+
+<br/>
+
+## Responsible AI Transparency FAQ 
+Please refer to [Transparency FAQ](./TRANSPARENCY_FAQ.md) for responsible AI transparency details of this solution accelerator.
+
+<br/>
+
+## Disclaimers
+
+To the extent that the Software includes components or code used in or derived from Microsoft products or services, including without limitation Microsoft Azure Services (collectively, “Microsoft Products and Services”), you must also comply with the Product Terms applicable to such Microsoft Products and Services. You acknowledge and agree that the license governing the Software does not grant you a license or other right to use Microsoft Products and Services. Nothing in the license or this ReadMe file will serve to supersede, amend, terminate or modify any terms in the Product Terms for any Microsoft Products and Services. 
+
+You must also comply with all domestic and international export laws and regulations that apply to the Software, which include restrictions on destinations, end users, and end use. For further information on export restrictions, visit https://aka.ms/exporting. 
+
+You acknowledge that the Software and Microsoft Products and Services (1) are not designed, intended or made available as a medical device(s), and (2) are not designed or intended to be a substitute for professional medical advice, diagnosis, treatment, or judgment and should not be used to replace or as a substitute for professional medical advice, diagnosis, treatment, or judgment. Customer is solely responsible for displaying and/or obtaining appropriate consents, warnings, disclaimers, and acknowledgements to end users of Customer’s implementation of the Online Services. 
+
+You acknowledge the Software is not subject to SOC 1 and SOC 2 compliance audits. No Microsoft technology, nor any of its component technologies, including the Software, is intended or made available as a substitute for the professional advice, opinion, or judgement of a certified financial services professional. Do not use the Software to replace, substitute, or provide professional financial advice or judgment.  
+
+BY ACCESSING OR USING THE SOFTWARE, YOU ACKNOWLEDGE THAT THE SOFTWARE IS NOT DESIGNED OR INTENDED TO SUPPORT ANY USE IN WHICH A SERVICE INTERRUPTION, DEFECT, ERROR, OR OTHER FAILURE OF THE SOFTWARE COULD RESULT IN THE DEATH OR SERIOUS BODILY INJURY OF ANY PERSON OR IN PHYSICAL OR ENVIRONMENTAL DAMAGE (COLLECTIVELY, “HIGH-RISK USE”), AND THAT YOU WILL ENSURE THAT, IN THE EVENT OF ANY INTERRUPTION, DEFECT, ERROR, OR OTHER FAILURE OF THE SOFTWARE, THE SAFETY OF PEOPLE, PROPERTY, AND THE ENVIRONMENT ARE NOT REDUCED BELOW A LEVEL THAT IS REASONABLY, APPROPRIATE, AND LEGAL, WHETHER IN GENERAL OR IN A SPECIFIC INDUSTRY. BY ACCESSING THE SOFTWARE, YOU FURTHER ACKNOWLEDGE THAT YOUR HIGH-RISK USE OF THE SOFTWARE IS AT YOUR OWN RISK.  
