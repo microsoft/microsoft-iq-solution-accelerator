@@ -20,7 +20,7 @@ The data agent uses the ontology to translate natural language questions into st
 
 ## Prerequisites
 
-- A Microsoft Fabric workspace with a deployed lakehouse (`miqdata` or equivalent)
+- A Microsoft Fabric workspace with a deployed lakehouse (`miqsadata` or equivalent)
 - Contributor or higher permissions on the workspace
 - Lakehouse tables loaded (all 22 Delta tables across 6 domain schemas)
 

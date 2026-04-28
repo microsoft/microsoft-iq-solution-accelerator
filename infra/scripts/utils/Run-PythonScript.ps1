@@ -209,8 +209,10 @@ catch {
     Write-Warning "Troubleshooting tips:"
     @(
         "1. Review the error output above for details on what failed",
-        "2. Verify Python 3.9+ is installed and available in PATH",
-        "3. Run 'azd env get-values' to check environment variables are set correctly"
+        "2. If a Monitoring URL was printed above, open it in a browser, navigate to the failed",
+        "   notebook cell, and expand its output to find the root cause error",
+        "3. Verify Python 3.9+ is installed and available in PATH",
+        "4. Run 'azd env get-values' to check environment variables are set correctly"
     ) | ForEach-Object { Write-Host $_ -ForegroundColor White }
     exit 1
 }
