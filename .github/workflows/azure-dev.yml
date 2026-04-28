@@ -62,7 +62,7 @@ jobs:
           echo "Generating a unique resource group name..."
           ACCL_NAME="miq"
           SHORT_UUID=$(uuidgen | cut -d'-' -f1)
-          UNIQUE_RG_NAME="arg-${ACCL_NAME}-${SHORT_UUID}"
+          UNIQUE_RG_NAME="rg-${ACCL_NAME}-${SHORT_UUID}"
           echo "RESOURCE_GROUP_NAME=${UNIQUE_RG_NAME}" >> $GITHUB_ENV
           echo "Generated RESOURCE_GROUP_NAME: ${UNIQUE_RG_NAME}"
 
@@ -83,16 +83,16 @@ jobs:
           echo "RESOURCE_GROUP_NAME=$RESOURCE_GROUP_NAME" >> $GITHUB_OUTPUT
           echo "RESOURCE_GROUP_NAME=$RESOURCE_GROUP_NAME" >> $GITHUB_ENV
 
-      - name: Generate Unique Environment Name
+      - name: Generate Unique Solution Name
         id: generate_env_name
         shell: bash
         run: |
-          COMMON_PART="pslc"
+          COMMON_PART="miqsa"
           TIMESTAMP=$(date +%s)
           UPDATED_TIMESTAMP=$(echo $TIMESTAMP | tail -c 6)
           UNIQUE_ENV_NAME="${COMMON_PART}${UPDATED_TIMESTAMP}"
           echo "ENV_NAME=${UNIQUE_ENV_NAME}" >> $GITHUB_ENV
-          echo "Generated Environment Name: ${UNIQUE_ENV_NAME}"
+          echo "Generated Solution Name: ${UNIQUE_ENV_NAME}"
           
           echo "ENV_NAME=${UNIQUE_ENV_NAME}" >> $GITHUB_OUTPUT
 
@@ -114,7 +114,9 @@ jobs:
             --template-file infra/main.json \
             --parameters infra/main.parameters.json \
             --parameters solutionName=${{ env.ENV_NAME }} \
-            --parameters location=${{ env.AZURE_LOCATION }} || true
+            --parameters location=${{ env.AZURE_LOCATION }} \
+            --parameters aiDeploymentsLocation=${{ env.AZURE_LOCATION }} \
+            --parameters deployingUserPrincipalType=ServicePrincipal || true
           echo "✅ Bicep template validation completed"
 
   deploy:
@@ -150,7 +152,7 @@ jobs:
             --federated-credential-provider "github" \
             --tenant-id "${{ env.AZURE_TENANT_ID }}"
 
-      - name: Deploy using azd up and Run Fabric provisioning script
+      - name: Deploy using azd up
         id: get_output_linux
         shell: bash
         env:
@@ -167,17 +169,10 @@ jobs:
           echo "Setting default subscription..."
           azd config set defaults.subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           
-          # Set additional parameters
+          # Set deployment parameters
           azd env set AZURE_SUBSCRIPTION_ID="${{ secrets.AZURE_SUBSCRIPTION_ID }}"
           azd env set AZURE_LOCATION="$AZURE_LOCATION"
           azd env set AZURE_RESOURCE_GROUP="$RESOURCE_GROUP_NAME"
-
-          # # Set optional workspace administrators if provided via repository variable
-          # FABRIC_WS_ADMINS="${{ vars.FABRIC_WORKSPACE_ADMINISTRATORS }}"
-          # if [ -n "$FABRIC_WS_ADMINS" ]; then
-          #   azd env set FABRIC_WORKSPACE_ADMINISTRATORS "$FABRIC_WS_ADMINS"
-          #   echo "Workspace administrators set: $FABRIC_WS_ADMINS"
-          # fi
 
           # Deploy using azd up
           azd up --no-prompt
@@ -227,7 +222,7 @@ jobs:
           echo "## 📊 Deployment Details" >> $GITHUB_STEP_SUMMARY
           echo "| Resource | Value |" >> $GITHUB_STEP_SUMMARY
           echo "|----------|-------|" >> $GITHUB_STEP_SUMMARY
-          echo "| **Environment** | \`${{ env.ENV_NAME }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Solution Name** | \`${{ env.ENV_NAME }}\` |" >> $GITHUB_STEP_SUMMARY
           echo "| **Azure Region** | \`${{ env.AZURE_LOCATION }}\` |" >> $GITHUB_STEP_SUMMARY
           echo "| **Solution Suffix** | \`${{ env.SOLUTION_SUFFIX }}\` |" >> $GITHUB_STEP_SUMMARY
           echo "| **Resource Group** | [\`${{ env.RESOURCE_GROUP_NAME }}\`](${AZURE_RG_URL}) |" >> $GITHUB_STEP_SUMMARY
@@ -244,17 +239,18 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           
           echo "## 📚 What Was Deployed" >> $GITHUB_STEP_SUMMARY
-          echo "- 🏗️ **Azure Infrastructure**: Fabric capacity and supporting resources" >> $GITHUB_STEP_SUMMARY
+          echo "- 🏗️ **Azure Infrastructure**: Fabric capacity and AI Foundry resources" >> $GITHUB_STEP_SUMMARY
+          echo "- 🤖 **AI Services**: OpenAI models, AI Search, and AI Agent endpoints" >> $GITHUB_STEP_SUMMARY
           echo "- 📁 **Fabric Workspace**: Pre-configured workspace with Microsoft IQ solution items" >> $GITHUB_STEP_SUMMARY
-          echo "- 🔐 **Security Configuration**: Managed identity and admin access setup" >> $GITHUB_STEP_SUMMARY
-          echo "- 📊 **Sample Data**: Lakehouse, notebooks, data agents, and ontology model for Microsoft IQ" >> $GITHUB_STEP_SUMMARY
+          echo "- 🔐 **Security Configuration**: Managed identity and role-based access control" >> $GITHUB_STEP_SUMMARY
+          echo "- 📊 **Sample Data**: Lakehouse, notebooks, data agents, and ontology models" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           
           echo "## 🚀 Next Steps" >> $GITHUB_STEP_SUMMARY
           echo "1. 🔍 **Navigate to Fabric**: Open the [Fabric Portal](${FABRIC_WORKSPACE_URL}) and locate your workspace" >> $GITHUB_STEP_SUMMARY
-          echo "2. 📖 **Review Documentation**: Check the [deployment guide](https://github.com/${{ github.repository }}/blob/main/fabric/docs/DeploymentGuideFabric.md) for detailed usage instructions" >> $GITHUB_STEP_SUMMARY
+          echo "2. 📖 **Review Documentation**: Check the [deployment guide](https://github.com/${{ github.repository }}/blob/main/docs/fabric/DeploymentGuideFabric.md) for detailed usage instructions" >> $GITHUB_STEP_SUMMARY
           echo "3. 🧪 **Explore Samples**: Run the included notebooks and explore the sample workflows" >> $GITHUB_STEP_SUMMARY
-          echo "4. 🔧 **Customize**: Adapt the solution for your specific data foundation requirements" >> $GITHUB_STEP_SUMMARY
+          echo "4. 🔧 **Customize**: Adapt the solution for your specific requirements" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           
           echo "## 🆘 Need Help?" >> $GITHUB_STEP_SUMMARY

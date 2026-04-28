@@ -1,0 +1,9 @@
+{
+  "_comment": "Stub file for workshop deployment without Fabric - agent creation requires this file",
+  "lakehouse_id": null,
+  "lakehouse_name": null,
+  "ontology_id": null,
+  "ontology_name": null,
+  "solution_name": null,
+  "created_at": null
+}
