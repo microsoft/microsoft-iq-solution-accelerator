@@ -1,6 +1,14 @@
 table 'product product'
 	lineageTag: 509ec770-218b-4b2c-9599-34b99a6aa8e6
 
+	measure 'List Price 2' = CALCULATE(SUM('product product'[ListPrice]), USERELATIONSHIP('inventory inventory'[CreatedDate], 'shared dimdate'[FullDate]))
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 20729c7d-df1b-4c48-92f8-3597790c30f6
+
+	measure 'Standard Cost 2' = CALCULATE(SUM('product product'[StandardCost]), USERELATIONSHIP('inventory inventory'[CreatedDate], 'shared dimdate'[FullDate]))
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: e71cc4e0-e3bc-4fbe-818b-138a5a1ee9bb
+
 	column ProductID
 		dataType: string
 		sourceProviderType: varchar(8000)
@@ -69,23 +77,21 @@ table 'product product'
 
 	column ListPrice
 		dataType: double
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
 		lineageTag: 6d51d0f3-49b0-4c9a-8766-475b737ec108
 		summarizeBy: sum
 		sourceColumn: ListPrice
 
 		annotation SummarizationSetBy = Automatic
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
 	column StandardCost
 		dataType: double
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
 		lineageTag: cc1a15b3-2db4-4b10-9db5-2330f42c3e5c
 		summarizeBy: sum
 		sourceColumn: StandardCost
 
 		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column Weight
 		dataType: double
