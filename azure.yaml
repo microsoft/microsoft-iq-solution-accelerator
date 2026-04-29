@@ -23,20 +23,20 @@ hooks:
         Write-Host ""
         Write-Host "=== Post-Deployment Setup ===" -ForegroundColor Yellow
         Write-Host "Installing Python dependencies..."
-        pip install -r src/foundry/scripts/requirements.txt
+        pip install -r infra/scripts/foundry/requirements.txt
         Write-Host ""
         Write-Host "Running post-deployment scripts..."
         Write-Host ""
         
         Write-Host "1. Uploading documents to search index..." -ForegroundColor Cyan
-        python src/foundry/scripts/01_upload_to_search.py
+        python infra/scripts/foundry/01_upload_to_search.py
         
         Write-Host "`n2. Creating AI agents..." -ForegroundColor Cyan
-        python src/foundry/scripts/02_create_agent_no_sql.py
+        python infra/scripts/foundry/02_create_agent_no_sql.py
         Write-Host ""
         Write-Host "=== Deployment Complete ===" -ForegroundColor Green
 
-        ./infra/scripts/utils/Run-PythonScript.ps1 -ScriptPath "infra/scripts/fabric/install_fabric_solution.py"
+        ./infra/scripts/utils/Run-PythonScript.ps1 -ScriptPath "infra/scripts/install_microsoft_iq_solution.py"
       shell: pwsh
       continueOnError: false
       interactive: true
@@ -50,29 +50,29 @@ hooks:
         echo ""
         echo "=== Post-Deployment Setup ==="
         echo "Installing Python dependencies..."
-        pip install -r src/foundry/scripts/requirements.txt
+        pip install -r infra/scripts/foundry/requirements.txt
         echo ""
         echo "Running post-deployment scripts..."
         echo ""
         
         echo "1. Uploading documents to search index..."
-        python src/foundry/scripts/01_upload_to_search.py
+        python infra/scripts/foundry/01_upload_to_search.py
         
         echo ""
         echo "2. Creating AI agents..."
-        python src/foundry/scripts/02_create_agent_no_sql.py
+        python infra/scripts/foundry/02_create_agent_no_sql.py
         echo ""
         echo "=== Deployment Complete ==="
 
-        ./infra/scripts/utils/Run-PythonScript.ps1 -ScriptPath "infra/scripts/fabric/install_fabric_solution.py" -SkipPythonVirtualEnvironment
+        ./infra/scripts/utils/Run-PythonScript.ps1 -ScriptPath "infra/scripts/install_microsoft_iq_solution.py" -SkipPythonVirtualEnvironment
   predown:
     windows:
-      run: ./infra/scripts/utils/Run-PythonScript.ps1 -ScriptPath "infra/scripts/fabric/remove_fabric_solution.py"
+      run: ./infra/scripts/utils/Run-PythonScript.ps1 -ScriptPath "infra/scripts/remove_microsoft_iq_solution.py"
       shell: pwsh
       interactive: true
       continueOnError: false
     posix:
-      run: ./infra/scripts/utils/Run-PythonScript.ps1 -ScriptPath "infra/scripts/fabric/remove_fabric_solution.py" -SkipPythonVirtualEnvironment
+      run: ./infra/scripts/utils/Run-PythonScript.ps1 -ScriptPath "infra/scripts/remove_microsoft_iq_solution.py" -SkipPythonVirtualEnvironment
       shell: pwsh
       interactive: true
       continueOnError: false

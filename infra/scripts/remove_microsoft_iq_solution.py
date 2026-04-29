@@ -2,10 +2,10 @@ import logging
 import sys
 import os
 
-# Add current directory to path so local modules can be imported
+# Add infra/scripts/ to path so the fabric package and its modules can be imported
 sys.path.append(os.path.dirname(__file__))
 
-from helpers.logging_config import setup_logging
+from fabric.helpers.logging_config import setup_logging
 
 # Configure logging before any other imports so that library modules
 # (fabric_api, graph_api, helpers.*) inherit the root logger's settings.
@@ -16,9 +16,9 @@ setup_logging()
 # use this logger; the level and handler are inherited from setup_logging().
 logger = logging.getLogger(__name__)
 
-from fabric_api import create_fabric_client, FabricApiError
-from helpers.config import SOLUTION_NAME, default_workspace_name
-from helpers.utils import get_required_env_var
+from fabric.fabric_api import create_fabric_client, FabricApiError
+from fabric.helpers.config import SOLUTION_NAME, default_workspace_name
+from fabric.helpers.utils import get_required_env_var
 
 
 ####################

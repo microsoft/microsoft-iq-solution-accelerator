@@ -40,7 +40,7 @@ def load_azd_env():
     Returns True if azd env was found and loaded.
     """
     script_dir = Path(__file__).parent
-    azure_dir = script_dir.parent.parent.parent / ".azure"  # Go up three levels: scripts->foundry->src->project root
+    azure_dir = script_dir.parent.parent.parent / ".azure"  # Go up three levels: foundry->scripts->infra->project root
     
     # Get environment name from config.json or AZURE_ENV_NAME
     env_name = os.environ.get("AZURE_ENV_NAME", "")
@@ -108,7 +108,7 @@ def get_required_env(var_name, description=None):
 def get_data_folder():
     """Get data folder path - always use src/foundry/data."""
     script_dir = Path(__file__).parent
-    data_folder = script_dir.parent / "data"
+    data_folder = script_dir.parent.parent.parent / "src" / "foundry" / "data"
     return str(data_folder)
 
 

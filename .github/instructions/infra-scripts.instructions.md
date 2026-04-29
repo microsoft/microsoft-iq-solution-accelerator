@@ -1,6 +1,6 @@
 ---
-description: "Use when editing Python files under infra/scripts/fabric/ or the fabric_solution_installer.ipynb notebook. Covers module architecture, deployment flow, logging conventions, environment variables, and documentation sync with DeploymentGuideFabric.md and DeploymentGuideFabricManual.md."
-applyTo: "infra/scripts/fabric/**/*.py, infra/fabric/deploy/fabric_solution_installer.ipynb"
+description: "Use when editing Python files under infra/scripts/fabric/ or infra/scripts/ entry-point scripts or the fabric_solution_installer.ipynb notebook. Covers module architecture, deployment flow, logging conventions, environment variables, and documentation sync with DeploymentGuideFabric.md and DeploymentGuideFabricManual.md."
+applyTo: "infra/scripts/fabric/**/*.py, infra/scripts/install_microsoft_iq_solution.py, infra/scripts/remove_microsoft_iq_solution.py, infra/fabric/deploy/fabric_solution_installer.ipynb"
 ---
 
 # Fabric deployment scripts and installer notebook — conventions and documentation sync
@@ -8,25 +8,29 @@ applyTo: "infra/scripts/fabric/**/*.py, infra/fabric/deploy/fabric_solution_inst
 ## Module architecture
 
 ```text
-infra/scripts/fabric/
-├── install_fabric_solution.py    # Entry-point: azd postprovision hook (4-step bootstrap)
-├── remove_fabric_solution.py     # Entry-point: azd predown hook (workspace removal)
-├── fabric_api.py                 # Fabric REST API client (workspaces, notebooks, roles, LROs)
-├── graph_api.py                  # Graph API client (user/SP resolution)
-└── helpers/
-    ├── logging_config.py         # setup_logging(), _EmojiFormatter
-    ├── config.py                 # SOLUTION_NAME, REPO_ROOT, default_workspace_name()
-    ├── utils.py                  # File I/O, env vars, notebook encoding, step formatting
-    ├── workspace.py              # setup_workspace() — create/find workspace, resume capacity
-    └── workspace_admins.py       # setup_workspace_administrators() — Graph API + fallback
+infra/scripts/
+├── install_microsoft_iq_solution.py  # Entry-point: azd postprovision hook (4-step bootstrap)
+├── remove_microsoft_iq_solution.py   # Entry-point: azd predown hook (workspace removal)
+└── fabric/                           # Package: Fabric API clients and helpers
+    ├── __init__.py
+    ├── fabric_api.py                 # Fabric REST API client (workspaces, notebooks, roles, LROs)
+    ├── graph_api.py                  # Graph API client (user/SP resolution)
+    └── helpers/
+        ├── logging_config.py         # setup_logging(), _EmojiFormatter
+        ├── config.py                 # SOLUTION_NAME, REPO_ROOT, default_workspace_name()
+        ├── utils.py                  # File I/O, env vars, notebook encoding, step formatting
+        ├── workspace.py              # setup_workspace() — create/find workspace, resume capacity
+        └── workspace_admins.py       # setup_workspace_administrators() — Graph API + fallback
 ```
 
 ### Entry-point vs library modules
 
-- **Entry-point scripts** (`install_fabric_solution.py`, `remove_fabric_solution.py`)
+- **Entry-point scripts** (`install_microsoft_iq_solution.py`, `remove_microsoft_iq_solution.py`)
   call `setup_logging()` once at startup before other imports.
 - **Library modules** (`fabric_api.py`, `graph_api.py`, `helpers/*.py`) never call
   `setup_logging()`. They only acquire loggers via `logging.getLogger(__name__)`.
+  Helper modules use **relative imports** (`from ..fabric_api import …`, `from .config import …`);
+  they never manipulate `sys.path`.
 
 ### Key constants and environment variables
 
@@ -42,7 +46,7 @@ Optional env vars (user-configurable):
 
 ### Deployment flow
 
-[`install_fabric_solution.py`](../../infra/scripts/fabric/install_fabric_solution.py) runs 4 steps:
+[`install_microsoft_iq_solution.py`](../../infra/scripts/install_microsoft_iq_solution.py) runs 4 steps:
 1. `setup_workspace` — create/find workspace, assign capacity, resume if paused (via [`workspace.py`](../../infra/scripts/fabric/helpers/workspace.py))
 2. `setup_administrators` — add admins with Graph API resolution + fallback (via [`workspace_admins.py`](../../infra/scripts/fabric/helpers/workspace_admins.py))
 3. `upload_installer` — upload [`fabric_solution_installer.ipynb`](../../infra/fabric/deploy/fabric_solution_installer.ipynb) (create or update). The notebook is automatically patched before upload to:
@@ -50,11 +54,11 @@ Optional env vars (user-configurable):
    - Inject `GITHUB_TOKEN` if the environment variable is set (for private repository access)
 4. `run_installer` — execute notebook as Fabric job; notebook uses [fabric-launcher](https://github.com/microsoft/fabric-launcher) to deploy items from [`src/fabric/fabric_workspace/`](../../src/fabric/fabric_workspace/) via [Fabric Git integration](https://learn.microsoft.com/fabric/cicd/git-integration/intro-to-git-integration)
 
-[`remove_fabric_solution.py`](../../infra/scripts/fabric/remove_fabric_solution.py) runs as `azd down` predown hook: looks up workspace by name or `FABRIC_WORKSPACE_ID`, deletes it unattended, exits 0 on all errors.
+[`remove_microsoft_iq_solution.py`](../../infra/scripts/remove_microsoft_iq_solution.py) runs as `azd down` predown hook: looks up workspace by name or `FABRIC_WORKSPACE_ID`, deletes it unattended, exits 0 on all errors.
 
 ### Installer notebook
 
-[`fabric_solution_installer.ipynb`](../../infra/fabric/deploy/fabric_solution_installer.ipynb) is the orchestration notebook uploaded and executed by step 3-4 of `install_fabric_solution.py`. 
+[`fabric_solution_installer.ipynb`](../../infra/fabric/deploy/fabric_solution_installer.ipynb) is the orchestration notebook uploaded and executed by step 3-4 of `install_microsoft_iq_solution.py`. 
 
 **Important: Runtime environment**
 - The notebook runs **in the Fabric workspace**, not locally
@@ -70,7 +74,7 @@ The notebook uses [fabric-launcher](https://github.com/microsoft/fabric-launcher
 - Execute post-deployment tasks (run pipeline_main notebook, deploy ontology, move items to folders)
 
 **Key configuration in the notebook:**
-- `GITHUB_OWNER`, `GITHUB_REPO`, `GITHUB_BRANCH` — source repository settings. **Note**: When deployed via `install_fabric_solution.py`, `GITHUB_BRANCH` is automatically set to the currently checked out git branch
+- `GITHUB_OWNER`, `GITHUB_REPO`, `GITHUB_BRANCH` — source repository settings. **Note**: When deployed via `install_microsoft_iq_solution.py`, `GITHUB_BRANCH` is automatically set to the currently checked out git branch
 - `GITHUB_FABRIC_WORKSPACE_PATH` — path to workspace items in repo (default: `"src/fabric/fabric_workspace"`)
 - `LAKEHOUSE_NAME` — target lakehouse for data ingestion (default: `"miqsadata"`)
 - `DATA_FOLDERS` — mapping of source data folders to lakehouse target paths
@@ -108,7 +112,7 @@ When modifying scripts in this folder, check and update **both** the deployment 
 
 After any change to `infra/scripts/fabric/` **or `infra/fabric/deploy/fabric_solution_installer.ipynb`**, review these instruction files and update them if the change affects the documented architecture, module list, env vars, deployment flow, installer configuration, or logging conventions:
 
-- [`.github/instructions/fabric-scripts.instructions.md`](./fabric-scripts.instructions.md) — this file (module architecture, deployment flow, env vars, logging)
+- [`.github/instructions/infra-scripts.instructions.md`](./infra-scripts.instructions.md) — this file (module architecture, deployment flow, env vars, logging)
 - [`.github/instructions/fabric-deployment-docs.instructions.md`](./fabric-deployment-docs.instructions.md) — deployment guide structure, relative paths, source of truth
 - [`.github/instructions/fabric-workspace.instructions.md`](./fabric-workspace.instructions.md) — workspace item inventory (if installer notebook changes affect deployed items)
 
@@ -125,7 +129,7 @@ After any change to `infra/scripts/fabric/` **or `infra/fabric/deploy/fabric_sol
 | Changed solution name or branding | `azure-dev.yml` summary + both deployment guides |
 | Changed deployed items (lakehouse, notebooks, agents) | `azure-dev.yml` summary + §5 Fabric Components |
 | Added/removed/changed Python dependency in local scripts | `requirements.txt` (does NOT affect installer notebook) |
-| Renamed or moved a script file | `azure.yaml` hooks + `azure-dev.yml` if referenced |
+| Renamed or moved a script file | `azure.yaml` hooks + `azure-dev.yml` if referenced + `pyrightconfig.json` `extraPaths` |
 | Changed `Run-PythonScript.ps1` flags | `azure.yaml` hooks + §6 Python Environment |
 | **Installer notebook changes:** | |
 | Changed GitHub source settings (owner/repo/branch/path) | §2 Phase 2 step 3 + manual guide §2 Prerequisites |
@@ -138,7 +142,7 @@ After any change to `infra/scripts/fabric/` **or `infra/fabric/deploy/fabric_sol
 
 ### Relative paths used in the docs (from `docs/fabric/`)
 
-- Scripts: `../../infra/scripts/fabric/install_fabric_solution.py`, `../../infra/scripts/fabric/remove_fabric_solution.py`
+- Entry-point scripts: `../../infra/scripts/install_microsoft_iq_solution.py`, `../../infra/scripts/remove_microsoft_iq_solution.py`
 - Helpers: `../../infra/scripts/fabric/helpers/workspace.py`, `workspace_admins.py`, `utils.py`
 - Installer notebook: `../../infra/fabric/deploy/fabric_solution_installer.ipynb`
 - Workspace items: `../../src/fabric/fabric_workspace/`
