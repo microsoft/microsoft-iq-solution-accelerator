@@ -59,13 +59,13 @@ ProductSupplierID,ProductID,ProductName,ProductLineName,SupplierID,SupplierName,
 58,3102,Winter Hiking Boots - Waterproof,Ski,3,Alpine Ski House,WIN-3102,134.96,1,10000,12,Active,system,12/21/2025
 59,3103,Snowboard Bindings - Pro,Ski,3,Alpine Ski House,WIN-3103,177.45,3,10000,14,Active,system,12/21/2025
 60,3104,Ski Tuning Bench - Portable,Ski,3,Alpine Ski House,WIN-3104,115.52,3,10000,9,Active,system,12/21/2025
-61,1511,Alpine Explorer Tent,Ski,4,Worldwide Importers,ALT-1511,288.7,3,8000,15,Active,system,12/21/2025
-62,1512,SkyView 2-Person Tent,Ski,4,Worldwide Importers,ALT-1512,210.91,4,8000,13,Active,system,12/21/2025
-63,1521,Adventurer Pro Backpack,Ski,4,Worldwide Importers,ALT-1521,118.13,5,8000,14,Active,system,12/21/2025
-64,1522,SummitClimber Backpack,Ski,4,Worldwide Importers,ALT-1522,132.76,2,8000,11,Active,system,12/21/2025
-65,2011,Coffee Maker,Ski,4,Worldwide Importers,ALT-2011,118.4,6,8000,14,Active,system,12/21/2025
-66,2012,Espresso Machine,Ski,4,Worldwide Importers,ALT-2012,274.97,2,8000,11,Active,system,12/21/2025
-67,2021,Chef Knife,Ski,4,Worldwide Importers,ALT-2021,56.88,2,8000,15,Active,system,12/21/2025
+61,1511,Alpine Explorer Tent,Camping,4,Worldwide Importers,ALT-1511,288.7,3,8000,15,Active,system,12/21/2025
+62,1512,SkyView 2-Person Tent,Camping,4,Worldwide Importers,ALT-1512,210.91,4,8000,13,Active,system,12/21/2025
+63,1521,Adventurer Pro Backpack,Camping,4,Worldwide Importers,ALT-1521,118.13,5,8000,14,Active,system,12/21/2025
+64,1522,SummitClimber Backpack,Camping,4,Worldwide Importers,ALT-1522,132.76,2,8000,11,Active,system,12/21/2025
+65,2011,Coffee Maker,Kitchen,4,Worldwide Importers,ALT-2011,118.4,6,8000,14,Active,system,12/21/2025
+66,2012,Espresso Machine,Kitchen,4,Worldwide Importers,ALT-2012,274.97,2,8000,11,Active,system,12/21/2025
+67,2021,Chef Knife,Kitchen,4,Worldwide Importers,ALT-2021,56.88,2,8000,15,Active,system,12/21/2025
 68,3011,Alpine Pro Racing Skis - 170cm,Ski,4,Worldwide Importers,ALT-3011,805.99,4,8000,10,Active,system,12/21/2025
 69,3012,Mountain Master All-Terrain Skis - 165cm,Ski,4,Worldwide Importers,ALT-3012,567.17,4,8000,11,Active,system,12/21/2025
 70,3013,Beginner's Choice Alpine Skis - 160cm,Ski,4,Worldwide Importers,ALT-3013,312.31,6,8000,11,Active,system,12/21/2025
