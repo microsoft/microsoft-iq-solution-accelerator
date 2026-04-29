@@ -4,33 +4,75 @@ name: microsoft-iq-solution-accelerator
 metadata:
   template: microsoft-iq-solution-accelerator@1.0
 
+environment:
+  name: microsoft-iq-solution-accelerator
+  location: westus2
+
 requiredVersions:
   azd: ">=1.23.11"
-
-infra:
-  provider: bicep
-  path: infra
-
+  
 hooks:
   postprovision:
     windows:
+      run: |
+        Write-Host "=== Azure Deployment Complete ===" -ForegroundColor Green
+        Write-Host ""
+        Write-Host "AI Foundry Project Endpoint: $env:AZURE_AI_PROJECT_ENDPOINT" -ForegroundColor Cyan
+        Write-Host "AI Search Endpoint: $env:AZURE_AI_SEARCH_ENDPOINT" -ForegroundColor Cyan
+        Write-Host "Storage Account: $env:AZURE_STORAGE_ACCOUNT_NAME" -ForegroundColor Cyan
+        Write-Host ""
+        Write-Host "=== Post-Deployment Setup ===" -ForegroundColor Yellow
+        Write-Host "Installing Python dependencies..."
+        pip install -r src/foundry/scripts/requirements.txt
+        Write-Host ""
+        Write-Host "Running post-deployment scripts..."
+        Write-Host ""
+        
+        Write-Host "1. Uploading documents to search index..." -ForegroundColor Cyan
+        python src/foundry/scripts/01_upload_to_search.py
+        
+        Write-Host "`n2. Creating AI agents..." -ForegroundColor Cyan
+        python src/foundry/scripts/02_create_agent_no_sql.py
+        Write-Host ""
+        Write-Host "=== Deployment Complete ===" -ForegroundColor Green
+
+        ./infra/scripts/utils/Run-PythonScript.ps1 -ScriptPath "infra/scripts/fabric/install_fabric_solution.py"
       shell: pwsh
-      run: ./infra/scripts/utils/Run-PythonScript.ps1 -ScriptPath "infra/scripts/fabric/install_fabric_solution.py"
-      interactive: true
       continueOnError: false
+      interactive: true
     posix:
-      shell: pwsh
-      run: ./infra/scripts/utils/Run-PythonScript.ps1 -ScriptPath "infra/scripts/fabric/install_fabric_solution.py" -SkipPythonVirtualEnvironment
-      interactive: true
-      continueOnError: false
+      run: |
+        echo "=== Azure Deployment Complete ==="
+        echo ""
+        echo "AI Foundry Project Endpoint: $AZURE_AI_PROJECT_ENDPOINT"
+        echo "AI Search Endpoint: $AZURE_AI_SEARCH_ENDPOINT"
+        echo "Storage Account: $AZURE_STORAGE_ACCOUNT_NAME"
+        echo ""
+        echo "=== Post-Deployment Setup ==="
+        echo "Installing Python dependencies..."
+        pip install -r src/foundry/scripts/requirements.txt
+        echo ""
+        echo "Running post-deployment scripts..."
+        echo ""
+        
+        echo "1. Uploading documents to search index..."
+        python src/foundry/scripts/01_upload_to_search.py
+        
+        echo ""
+        echo "2. Creating AI agents..."
+        python src/foundry/scripts/02_create_agent_no_sql.py
+        echo ""
+        echo "=== Deployment Complete ==="
+
+        ./infra/scripts/utils/Run-PythonScript.ps1 -ScriptPath "infra/scripts/fabric/install_fabric_solution.py" -SkipPythonVirtualEnvironment
   predown:
     windows:
-      shell: pwsh
       run: ./infra/scripts/utils/Run-PythonScript.ps1 -ScriptPath "infra/scripts/fabric/remove_fabric_solution.py"
+      shell: pwsh
       interactive: true
       continueOnError: false
     posix:
-      shell: pwsh
       run: ./infra/scripts/utils/Run-PythonScript.ps1 -ScriptPath "infra/scripts/fabric/remove_fabric_solution.py" -SkipPythonVirtualEnvironment
+      shell: pwsh
       interactive: true
       continueOnError: false

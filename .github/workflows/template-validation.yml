@@ -1,0 +1,43 @@
+name: Azure Template Validation
+
+# Run when commits are pushed to main or triggered manually
+on:
+  workflow_dispatch:
+  push: 
+    branches: 
+      - main 
+    paths:
+      - "infra/**"
+      - ".github/workflows/template-validation.yml"
+
+# Set up permissions for deploying with secretless Azure federated credentials
+# https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-portal%2Clinux#set-up-azure-login-with-openid-connect-authentication
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  template_validation_job:
+    runs-on: ubuntu-latest
+    environment: production
+    name: Template validation
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate Azure Template
+        uses: microsoft/template-validation-action@v0.4.3
+        id: validation
+        env:
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          AZURE_ENV_NAME: ${{ secrets.AZURE_ENV_NAME }}
+          AZURE_LOCATION: ${{ secrets.AZURE_LOCATION }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEPLOYING_USER_PRINCIPAL_TYPE: ServicePrincipal
+
+      - name: Print result
+        run: cat ${{ steps.validation.outputs.resultFile }}
