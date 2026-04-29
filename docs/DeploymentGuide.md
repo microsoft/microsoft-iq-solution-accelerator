@@ -130,22 +130,28 @@ azd up
 
 ## Optional Configuration Variables
 
-Customize your deployment by setting parameters before running `azd up`. Use `azd env set <parameter> <value>` to configure any of the following:
+Customize your deployment by setting `azd` environment variables before running `azd up`. Use `azd env set <VARIABLE> <value>` to configure any of the following:
 
-| Category | Parameter | Description | Default | Example |
-|----------|-----------|-------------|---------|---------|
-| **Common** | `solutionName` | Solution name (3-20 characters) | `miqsa` | `azd env set solutionName myiq` |
-| | `location` | Primary deployment location | `westus2` | `azd env set location eastus` |
-| **Fabric** | `skuName` | Fabric capacity SKU | `F2` | `azd env set skuName F4` |
-| | `existingFabricCapacityName` | Use existing Fabric capacity (optional) | _(empty)_ | `azd env set existingFabricCapacityName "my-capacity"` |
-| | `fabricAdminMembers` | Additional Fabric admins (space-separated object IDs) | _(empty)_ | `azd env set fabricAdminMembers "id1 id2"` |
-| **Microsoft Foundry** | `aiDeploymentsLocation` | AI deployment region | _(required prompt)_ | `azd env set aiDeploymentsLocation eastus` |
-| | `gptModelName` | GPT model to deploy | `gpt-4.1-mini` | `azd env set gptModelName gpt-4o` |
-| | `gptDeploymentCapacity` | GPT capacity (tokens/min in thousands) | `150` | `azd env set gptDeploymentCapacity 200` |
-| | `embeddingModel` | Embedding model to deploy | `text-embedding-3-small` | `azd env set embeddingModel text-embedding-3-small` |
-| | `embeddingDeploymentCapacity` | Embedding capacity (tokens/min in thousands) | `80` | `azd env set embeddingDeploymentCapacity 120` |
-| | `searchServiceLocation` | Azure AI Search service location | Same as `location` | `azd env set searchServiceLocation eastus` |
-| | `usecase` | Industry use case scenario | `Retail-sales-analysis` | `azd env set usecase Insurance-improve-customer-meetings` |
+| Category | Variable | Description | Default | Example |
+|----------|----------|-------------|---------|---------|
+| **Common** | `ENABLE_TELEMETRY` | Enable/disable usage telemetry | `true` | `azd env set ENABLE_TELEMETRY false` |
+| **Fabric Capacity** | `FABRIC_CAPACITY_SKU_NAME` | Fabric capacity SKU | `F2` | `azd env set FABRIC_CAPACITY_SKU_NAME F4` |
+| | `AZURE_EXISTING_FABRIC_CAPACITY_NAME` | Use an existing Fabric capacity (skips creation) | _(empty)_ | `azd env set AZURE_EXISTING_FABRIC_CAPACITY_NAME "my-capacity"` |
+| | `FABRIC_ADMIN_MEMBERS` | Additional Fabric capacity admins (JSON array of UPNs or object IDs) | `[]` | `azd env set FABRIC_ADMIN_MEMBERS '["user@contoso.com"]'` |
+| **Fabric Workspace** | `FABRIC_WORKSPACE_NAME` | Override the default Fabric workspace name | `Microsoft IQ - {suffix}` | `azd env set FABRIC_WORKSPACE_NAME "My Workspace"` |
+| | `FABRIC_WORKSPACE_ADMINISTRATORS` | Comma-separated additional workspace admins | _(empty)_ | `azd env set FABRIC_WORKSPACE_ADMINISTRATORS "user@contoso.com"` |
+| **Microsoft Foundry** | `AZURE_AI_DEPLOYMENTS_LOCATION` | AI deployment region (**required**) | _(prompted)_ | `azd env set AZURE_AI_DEPLOYMENTS_LOCATION eastus` |
+| | `AZURE_OPENAI_DEPLOYMENT_MODEL` | GPT model to deploy | `gpt-4.1-mini` | `azd env set AZURE_OPENAI_DEPLOYMENT_MODEL gpt-4o` |
+| | `AZURE_OPENAI_MODEL_VERSION` | GPT model version | `2025-04-14` | `azd env set AZURE_OPENAI_MODEL_VERSION 2025-04-14` |
+| | `AZURE_OPENAI_DEPLOYMENT_MODEL_CAPACITY` | GPT capacity (tokens/min in thousands) | `150` | `azd env set AZURE_OPENAI_DEPLOYMENT_MODEL_CAPACITY 200` |
+| | `AZURE_OPENAI_MODEL_DEPLOYMENT_TYPE` | GPT deployment type | `GlobalStandard` | `azd env set AZURE_OPENAI_MODEL_DEPLOYMENT_TYPE Standard` |
+| | `AZURE_OPENAI_EMBEDDING_MODEL` | Embedding model to deploy | `text-embedding-3-small` | `azd env set AZURE_OPENAI_EMBEDDING_MODEL text-embedding-3-small` |
+| | `AZURE_OPENAI_EMBEDDING_CAPACITY` | Embedding capacity (tokens/min in thousands) | `80` | `azd env set AZURE_OPENAI_EMBEDDING_CAPACITY 120` |
+| | `AZURE_SEARCH_SERVICE_LOCATION` | Azure AI Search service location | Same as `AZURE_LOCATION` | `azd env set AZURE_SEARCH_SERVICE_LOCATION eastus` |
+| | `AZURE_ENV_USE_CASE` | Industry use case scenario | `Retail-sales-analysis` | `azd env set AZURE_ENV_USE_CASE Insurance-improve-customer-meetings` |
+| | `AZURE_EXISTING_LOG_ANALYTICS_WORKSPACE_ID` | Use an existing Log Analytics workspace | _(empty)_ | `azd env set AZURE_EXISTING_LOG_ANALYTICS_WORKSPACE_ID "/subscriptions/..."` |
+| | `AZURE_EXISTING_AI_PROJECT_RESOURCE_ID` | Use an existing AI Foundry project | _(empty)_ | `azd env set AZURE_EXISTING_AI_PROJECT_RESOURCE_ID "/subscriptions/..."` |
+| | `DEPLOYING_USER_PRINCIPAL_TYPE` | Deploying principal type (use `ServicePrincipal` for CI/CD with OIDC) | `User` | `azd env set DEPLOYING_USER_PRINCIPAL_TYPE ServicePrincipal` |
 | **GitHub** | `GITHUB_TOKEN` | GitHub Personal Access Token (for private repos) | _(empty)_ | `azd env set GITHUB_TOKEN "ghp_..."` |
 
 **Available Fabric SKUs**: `F2`, `F4`, `F8`, `F16`, `F32`, `F64`, `F128`, `F256`, `F512`, `F1024`, `F2048`
@@ -154,7 +160,7 @@ Customize your deployment by setting parameters before running `azd up`. Use `az
 
 **Available Use Cases**: `Retail-sales-analysis`, `Insurance-improve-customer-meetings`
 
-For the complete list of parameters, see [`main.bicep`](../infra/main.bicep).
+**Available Deployment Types**: `GlobalStandard`, `Standard`
 
 ---
 
