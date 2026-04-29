@@ -68,13 +68,12 @@ table 'inventory inventorytransactions'
 
 	column TotalValue
 		dataType: double
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
 		lineageTag: 8f559fab-65ed-4df3-a01a-cb1e97492db6
 		summarizeBy: sum
 		sourceColumn: TotalValue
 
 		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column ReferenceNumber
 		dataType: string
