@@ -18,7 +18,7 @@ Main deployment guide. Section structure:
 5. **Deployment Results** — Azure infrastructure + Fabric Components (workspace, folder structure, lakehouse, notebooks, data agents, ontology). Must match contents of [`fabric/fabric_workspace/`](../../fabric/fabric_workspace/)
 6. **Advanced Configuration** — Infrastructure (Bicep params via [`main.bicep`](../../infra/main.bicep)), Workspace Settings, Admin Assignment, Optional Variables (`GITHUB_TOKEN`, `LOG_LEVEL`, `FABRIC_WORKSPACE_ID`), Python Environment
 7. **Known Limitations** — Graph API lookup fallback, Fabric REST API permissions
-8. **Environment Cleanup** — `azd down` process: predown hook runs [`remove_fabric_solution.py`](../../fabric/infra/scripts/fabric/remove_fabric_solution.py), then Azure resource removal
+8. **Environment Cleanup** — `azd down` process: predown hook runs [`remove_microsoft_iq_solution.py`](../../infra/scripts/remove_microsoft_iq_solution.py), then Azure resource removal
 9. **Additional Resources** — external doc links
 
 ### DeploymentGuideFabricManual.md — Manual portal deployment
@@ -32,8 +32,8 @@ These docs live at `docs/fabric/`. Relative paths from this location:
 | Target | Relative path |
 |---|---|
 | Other docs in same folder | `./DeploymentGuideFabricManual.md` |
-| Install script | `../../infra/scripts/fabric/install_fabric_solution.py` |
-| Remove script | `../../infra/scripts/fabric/remove_fabric_solution.py` |
+| Install script | `../../infra/scripts/install_microsoft_iq_solution.py` |
+| Remove script | `../../infra/scripts/remove_microsoft_iq_solution.py` |
 | Helper modules | `../../infra/scripts/fabric/helpers/workspace.py`, etc. |
 | Installer notebook | `../../infra/fabric/deploy/fabric_solution_installer.ipynb` |
 | Workspace items | `../../src/fabric/fabric_workspace/`<br>`../../src/fabric/definitions/` |
@@ -46,7 +46,7 @@ These docs live at `docs/fabric/`. Relative paths from this location:
 
 | What | Authoritative source |
 |---|---|
-| Script behavior & env vars | Python files in [`infra/scripts/fabric/`](../../infra/scripts/fabric/) |
+| Script behavior & env vars | Python files in [`infra/scripts/`](../../infra/scripts/) — entry points at `install_microsoft_iq_solution.py`, `remove_microsoft_iq_solution.py`; library package at `fabric/` |
 | Workspace items (standard items: lakehouse, notebooks, agents, reports, semantic models) | [`src/fabric/fabric_workspace/`](../../src/fabric/fabric_workspace/) folder structure |
 | Workspace items (ontology definitions) | [`src/fabric/definitions/`](../../src/fabric/definitions/) folder structure |
 | Azure infrastructure | [`infra/main.bicep`](../../infra/main.bicep) |
@@ -57,5 +57,5 @@ When these sources change, the deployment docs must be updated to match.
 
 After modifying deployment docs, also check whether the copilot instruction files need updating:
 - [`.github/instructions/fabric-deployment-docs.instructions.md`](./fabric-deployment-docs.instructions.md) (this file) — section structure, relative paths
-- [`.github/instructions/fabric-scripts.instructions.md`](./fabric-scripts.instructions.md) — if script references or env vars changed
+- [`.github/instructions/infra-scripts.instructions.md`](./infra-scripts.instructions.md) — if script references or env vars changed
 - [`.github/instructions/fabric-workspace.instructions.md`](./fabric-workspace.instructions.md) — if workspace item descriptions changed

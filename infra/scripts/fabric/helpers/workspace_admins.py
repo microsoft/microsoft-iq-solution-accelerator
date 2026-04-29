@@ -12,11 +12,8 @@ import os
 import uuid
 from typing import Optional
 
-# Add parent directory to path
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from fabric_api import FabricApiError, FabricWorkspaceApiClient
-from graph_api import GraphApiError
+from ..fabric_api import FabricApiError, FabricWorkspaceApiClient
+from ..graph_api import GraphApiError
 
 # Module-level logger — inherits configuration from the root logger set up
 # by setup_logging() in the entry-point scripts.  No handlers or levels are

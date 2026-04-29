@@ -10,10 +10,7 @@ import logging
 import sys
 import os
 
-# Add parent directory to path
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from fabric_api import FabricApiClient, FabricApiError
+from ..fabric_api import FabricApiClient, FabricApiError
 
 # Module-level logger — inherits configuration from the root logger set up
 # by setup_logging() in the entry-point scripts.  No handlers or levels are
