@@ -1,0 +1,6 @@
+## Database Schema:
+- tickets: ticket_id (String), customer_name (String), issue_description (String), priority (String), status (String)
+- inspections: inspection_id (String), ticket_id (String), result (String), score (BigInt)
+
+## Table Relationships:
+- inspections.ticket_id = tickets.ticket_id
