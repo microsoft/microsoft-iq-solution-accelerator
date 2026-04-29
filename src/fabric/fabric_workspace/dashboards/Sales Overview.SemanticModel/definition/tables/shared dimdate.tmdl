@@ -1,0 +1,167 @@
+table 'shared dimdate'
+	lineageTag: 474faed6-5a9d-4840-9aaf-835c50827cde
+
+	column DateKey
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 79ff3f57-4c12-4ee6-b73f-6338e3d8b496
+		summarizeBy: none
+		sourceColumn: DateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column FullDate
+		dataType: dateTime
+		isNullable: false
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: e643752c-bea8-48db-82ce-fc5d237a55f4
+		summarizeBy: none
+		sourceColumn: FullDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: b5fa52aa-fa07-42cc-ba94-d38bc439e044
+		summarizeBy: none
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: c94ce955-6349-4f2b-9fc5-f34b5d87a36f
+		summarizeBy: none
+		sourceColumn: Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column QuarterName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 2e21ccce-910b-4dc2-b96d-f92e699fb742
+		summarizeBy: none
+		sourceColumn: QuarterName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: a1fd789c-d32d-41bd-9c3c-1147304df304
+		summarizeBy: none
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: af72256d-3613-4b81-b5fe-6ba95cc78d85
+		summarizeBy: none
+		sourceColumn: MonthName
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeekOfYear
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: be37353f-e6dd-42c7-9207-fbe7c3847161
+		summarizeBy: none
+		sourceColumn: WeekOfYear
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayOfMonth
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: ab59504d-97e3-4e33-a4ac-ce0de506d8ca
+		summarizeBy: none
+		sourceColumn: DayOfMonth
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayOfWeek
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 05b3bd38-3ddf-4b54-8ce9-29be7268dbda
+		summarizeBy: none
+		sourceColumn: DayOfWeek
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 418e39a2-fe4f-41ca-b6f9-5970839c41af
+		summarizeBy: none
+		sourceColumn: DayName
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsWeekend
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 0bebca08-08dd-4cdb-bf99-79dadd72c238
+		summarizeBy: none
+		sourceColumn: IsWeekend
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsHoliday
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 9121577f-b0a2-4d20-a027-48a4471808d2
+		summarizeBy: none
+		sourceColumn: IsHoliday
+
+		annotation SummarizationSetBy = Automatic
+
+	column FiscalYear
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: ee88fc92-6930-4b06-b71b-85e907e6f572
+		summarizeBy: none
+		sourceColumn: FiscalYear
+
+		annotation SummarizationSetBy = Automatic
+
+	column FiscalQuarter
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 5dd450a2-1378-459a-9192-ee6db31e16f3
+		summarizeBy: none
+		sourceColumn: FiscalQuarter
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'shared dimdate' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database(ServerParameter,DatabaseParameter),
+				    shared_dimdate = Source{[Schema="shared",Item="dimdate"]}[Data]
+				in
+				    shared_dimdate
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

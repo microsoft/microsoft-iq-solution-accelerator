@@ -39,19 +39,7 @@ cultureInfo en-US
 			          "ConceptualProperty": "Product Count"
 			        }
 			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "# Products": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
+			      "State": "Generated"
 			    },
 			    "supplychain_suppliers.suppliertype": {
 			      "Definition": {
@@ -140,11 +128,74 @@ cultureInfo en-US
 			    "inventory_warehouses.capacity_utilization_color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "inventory warehouses",
+			          "ConceptualEntity": "inventory inventory",
 			          "ConceptualProperty": "Capacity Utilization Color"
 			        }
 			      },
 			      "State": "Generated"
+			    },
+			    "product_product.list_price_2": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "product product",
+			          "ConceptualProperty": "List Price 2"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "List Price": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "inventory_inventory.stockhealth": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "inventory inventory",
+			          "ConceptualProperty": "StockHealth"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Stock Health": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "product_product.standard_cost_2": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "product product",
+			          "ConceptualProperty": "Standard Cost 2"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Standard Cost": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
 			    }
 			  }
 			}

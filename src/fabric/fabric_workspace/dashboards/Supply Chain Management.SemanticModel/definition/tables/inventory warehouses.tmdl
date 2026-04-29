@@ -1,33 +1,6 @@
 table 'inventory warehouses'
 	lineageTag: f1981197-91ef-4b1e-abb1-c61bdf5010cb
 
-	measure 'Capacity Utilization' =
-			
-			DIVIDE(
-			    SUM('inventory Inventory'[CurrentStock]),
-			    SUM('inventory Inventory'[MaxStockLevel]),
-			    0
-			)
-		formatString: 0.0%;-0.0%;0.0%
-		lineageTag: 693e8020-0314-4429-98aa-d6d1ec5c1a74
-
-	measure 'Capacity Utilization Color' = ```
-			
-			
-			VAR Util = [Capacity Utilization]   -- value between 0 and 1
-			RETURN
-			SWITCH(
-			    TRUE(),
-			    Util <= 0.7, "#0f6cbd",   -- Blue (0–70%)
-			    Util <= 0.9, "#eaa300",   -- Yellow (70–90%)
-			    "#bc4b09"               -- Red (90–100%)
-			)
-			
-			
-			
-			```
-		lineageTag: 3179cf11-4dfe-487f-9741-2b6110a7abd8
-
 	column WarehouseID
 		dataType: string
 		lineageTag: 0af59500-61d2-425f-ba08-2ff8ae5d3d04
