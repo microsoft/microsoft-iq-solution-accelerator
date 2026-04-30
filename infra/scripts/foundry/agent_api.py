@@ -28,9 +28,9 @@ def create_agent_client(endpoint: str):
         Authenticated ``AIProjectClient`` instance.
     """
     from azure.ai.projects import AIProjectClient
-    from azure.identity import AzureCliCredential, AzureDeveloperCliCredential, ChainedTokenCredential
+    from azure.identity import DefaultAzureCredential
 
-    credential = ChainedTokenCredential(AzureDeveloperCliCredential(), AzureCliCredential())
+    credential = DefaultAzureCredential()
     return AIProjectClient(endpoint=endpoint, credential=credential)
 
 
@@ -154,14 +154,14 @@ def create_kb_mcp_connection(
         True if the connection was created or updated successfully.
     """
     import requests as http_requests
-    from azure.identity import AzureCliCredential, AzureDeveloperCliCredential, ChainedTokenCredential, get_bearer_token_provider
+    from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 
     mcp_endpoint = (
         f"{search_endpoint.rstrip('/')}/knowledgebases/{kb_name}"
         f"/mcp?api-version=2025-11-01-preview"
     )
 
-    credential = ChainedTokenCredential(AzureDeveloperCliCredential(), AzureCliCredential())
+    credential = DefaultAzureCredential()
     token = get_bearer_token_provider(credential, "https://management.azure.com/.default")()
     headers = {"Authorization": f"Bearer {token}"}
 
