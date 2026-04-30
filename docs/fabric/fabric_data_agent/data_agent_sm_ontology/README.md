@@ -26,7 +26,7 @@ Lakehouse → Semantic Model → Ontology → Data Agent
 
 ## Prerequisites
 
-- A Microsoft Fabric workspace with a deployed lakehouse (`fabriciq_team_lake` or equivalent)
+- A Microsoft Fabric workspace with a deployed lakehouse (`miqsadata` or equivalent)
 - Contributor or higher permissions on the workspace
 - Lakehouse tables loaded (16 Delta tables across 4 domain schemas)
 - Familiarity with [Fabric Semantic Models](https://learn.microsoft.com/fabric/get-started/direct-lake-overview)
