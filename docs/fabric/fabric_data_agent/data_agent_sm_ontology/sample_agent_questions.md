@@ -24,7 +24,7 @@ Test questions to validate the Semantic Model → Ontology data agent. Organized
 | 4 | Beginner | Supply Chain | List all suppliers. | Entity listing |
 | 5 | Intermediate | Inventory | Which products are below their reorder point? | Filter + comparison logic |
 | 6 | Intermediate | Inventory | What is the current stock of Alpine Explorer Tent? | Product → Inventory join |
-| 7 | Intermediate | Inventory | Show all purchase orders with status Pending. | Status filter |
+| 7 | Intermediate | Inventory | Show all purchase orders with status Delivered. | Status filter (valid values: Delivered, Sent, InTransit) |
 | 8 | Intermediate | Supply Chain | Which products are supplied by Contoso Ltd? | Bridge entity traversal |
 | 9 | Intermediate | Inventory | Which warehouse has the most available stock? | Aggregation + sorting |
 | 10 | Intermediate | Inventory | How much of Coffee Mug is reserved in stock? | Specific product lookup |
