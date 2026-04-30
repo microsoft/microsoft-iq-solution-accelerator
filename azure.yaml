@@ -14,57 +14,15 @@ requiredVersions:
 hooks:
   postprovision:
     windows:
-      run: |
-        Write-Host "=== Azure Deployment Complete ===" -ForegroundColor Green
-        Write-Host ""
-        Write-Host "AI Foundry Project Endpoint: $env:AZURE_AI_PROJECT_ENDPOINT" -ForegroundColor Cyan
-        Write-Host "AI Search Endpoint: $env:AZURE_AI_SEARCH_ENDPOINT" -ForegroundColor Cyan
-        Write-Host "Storage Account: $env:AZURE_STORAGE_ACCOUNT_NAME" -ForegroundColor Cyan
-        Write-Host ""
-        Write-Host "=== Post-Deployment Setup ===" -ForegroundColor Yellow
-        Write-Host "Installing Python dependencies..."
-        pip install -r infra/scripts/foundry/requirements.txt
-        Write-Host ""
-        Write-Host "Running post-deployment scripts..."
-        Write-Host ""
-        
-        Write-Host "1. Uploading documents to search index..." -ForegroundColor Cyan
-        python infra/scripts/foundry/01_upload_to_search.py
-        
-        Write-Host "`n2. Creating AI agents..." -ForegroundColor Cyan
-        python infra/scripts/foundry/02_create_agent_no_sql.py
-        Write-Host ""
-        Write-Host "=== Deployment Complete ===" -ForegroundColor Green
-
-        ./infra/scripts/utils/Run-PythonScript.ps1 -ScriptPath "infra/scripts/install_microsoft_iq_solution.py"
+      run: ./infra/scripts/utils/Run-PythonScript.ps1 -ScriptPath "infra/scripts/install_microsoft_iq_solution.py"
       shell: pwsh
       continueOnError: false
       interactive: true
     posix:
-      run: |
-        echo "=== Azure Deployment Complete ==="
-        echo ""
-        echo "AI Foundry Project Endpoint: $AZURE_AI_PROJECT_ENDPOINT"
-        echo "AI Search Endpoint: $AZURE_AI_SEARCH_ENDPOINT"
-        echo "Storage Account: $AZURE_STORAGE_ACCOUNT_NAME"
-        echo ""
-        echo "=== Post-Deployment Setup ==="
-        echo "Installing Python dependencies..."
-        pip install -r infra/scripts/foundry/requirements.txt
-        echo ""
-        echo "Running post-deployment scripts..."
-        echo ""
-        
-        echo "1. Uploading documents to search index..."
-        python infra/scripts/foundry/01_upload_to_search.py
-        
-        echo ""
-        echo "2. Creating AI agents..."
-        python infra/scripts/foundry/02_create_agent_no_sql.py
-        echo ""
-        echo "=== Deployment Complete ==="
-
-        ./infra/scripts/utils/Run-PythonScript.ps1 -ScriptPath "infra/scripts/install_microsoft_iq_solution.py" -SkipPythonVirtualEnvironment
+      run: ./infra/scripts/utils/Run-PythonScript.ps1 -ScriptPath "infra/scripts/install_microsoft_iq_solution.py" -SkipPythonVirtualEnvironment
+      shell: pwsh
+      continueOnError: false
+      interactive: true
   predown:
     windows:
       run: ./infra/scripts/utils/Run-PythonScript.ps1 -ScriptPath "infra/scripts/remove_microsoft_iq_solution.py"
