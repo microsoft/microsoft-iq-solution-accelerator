@@ -28,12 +28,6 @@ relationship 207b4705-5b30-16ca-b5de-6bdd1e45de36
 	fromColumn: 'inventory purchaseorders'.SupplierID
 	toColumn: 'supplychain suppliers'.SupplierID
 
-relationship 2c3f8845-5b74-7787-41c3-b33b88452c14
-	crossFilteringBehavior: bothDirections
-	fromCardinality: one
-	fromColumn: 'inventory purchaseorderitems'.PurchaseOrderItemID
-	toColumn: 'inventory purchaseorders'.PurchaseOrderID
-
 relationship 64aec540-6424-02e4-62a2-b3063508593e
 	fromColumn: 'product product'.ProductCategoryID
 	toColumn: 'product productcategory'.ProductCategoryID
@@ -45,4 +39,23 @@ relationship d4bccfeb-af24-90c5-86f1-0ddffc066464
 relationship 435d8326-620a-b6bb-9802-0d50ff126396
 	fromColumn: 'supplychain supplychainevents'.SupplierID
 	toColumn: 'supplychain suppliers'.SupplierID
+
+relationship d731b300-5542-b262-aa1b-36925467d220
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'inventory purchaseorderitems'.PurchaseOrderItemID
+	toColumn: 'inventory purchaseorders'.PurchaseOrderID
+
+relationship 6b173d7c-11b7-33a7-14f3-fb65ce16b96a
+	fromColumn: 'inventory purchaseorders'.OrderDate
+	toColumn: 'shared dimdate'.FullDate
+
+relationship a9f922a9-6054-fc7e-e14a-783dcbd9f91b
+	fromColumn: 'inventory inventorytransactions'.TransactionDate
+	toColumn: 'shared dimdate'.FullDate
+
+relationship 7b7376cd-828b-4cc3-4f3c-023603445efb
+	isActive: false
+	fromColumn: 'inventory inventory'.CreatedDate
+	toColumn: 'shared dimdate'.FullDate
 
