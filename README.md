@@ -25,7 +25,9 @@ This solution accelerator offers a
 
 ### Solution architecture
 
-The architecture below illustrates the solution architecture 
+The architecture below illustrates the solution architecture. For detailed architecture description, please refer 
+
+[Architecture Description Page](./docs/TechnicalArchitecture.md).
 
 | ![image](./docs/images/readme/solution-architecture.png) |
 | -------------------------------------------------------- |
