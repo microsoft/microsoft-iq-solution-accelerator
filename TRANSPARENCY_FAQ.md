@@ -14,7 +14,7 @@ The solution accelerator illustrates how enterprises can move from early disrupt
 
 M365 Copilot: TBD
 
-Foundry IQ: TBD
+Foundry IQ component uses GPT-4.1-mini for chat and text-embedding-3-small for search. 
 
 The Fabric IQ component uses built-in AI capabilities provided by the Fabric Platform, such as Copilot for Power BI and Fabric. The Fabric IQ component source code does not explicitly use generative AI. The source code consists of PySpark Notebooks. The source code also includes Python Programs that can be used to generate configurable sample data. 
 
