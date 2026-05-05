@@ -43,9 +43,9 @@ CREATE TABLE IF NOT EXISTS {SCHEMA_NAME}.{TABLE_NAME} (
     CustomerAccountID STRING,
     OrderDate DATE,
     OrderStatus STRING,
-    SubTotal DECIMAL(18,2),
-    TaxAmount DECIMAL(18,2),
-    OrderTotal DECIMAL(18,2),
+    SubTotal DOUBLE,
+    TaxAmount DOUBLE,
+    OrderTotal DOUBLE,
     PaymentMethod STRING,
     IsoCurrencyCode STRING,
     CreatedBy STRING 
@@ -67,10 +67,10 @@ CREATE TABLE IF NOT EXISTS {SCHEMA_NAME}.{TABLE_NAME} (
     ProductID STRING,           -- FK to Product
     ProductName STRING,
     Quantity INT,
-    UnitPrice DECIMAL(18,2),
-    LineTotal DECIMAL(18,2),
-    DiscountAmount DECIMAL(18,2), 
-    TaxAmount DECIMAL(18,2)
+    UnitPrice DOUBLE,
+    LineTotal DOUBLE,
+    DiscountAmount DOUBLE, 
+    TaxAmount DOUBLE
 )
 USING DELTA
 """
