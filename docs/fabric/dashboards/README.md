@@ -60,18 +60,17 @@ Key visuals and their purpose:
 | Avg Warehouse Utilization | Card | Average capacity utilization across warehouses |
 | Total Procurement Value | Card | Aggregate value of purchase orders |
 | Supplier Avg Reliability Score | Card | Portfolio-level supplier reliability |
-| Inventory Health at a Glance | Clustered bar chart | Stock health status breakdown (e.g., healthy, low, overstocked) |
-| Procurement Status | Donut chart | Breakdown of purchase orders by status |
-| Procurement Trend Analysis | Line & clustered column combo | Purchase order value and volume over time |
-| Warehouse Capacity | Clustered bar chart | Per-warehouse capacity utilization |
-| Top 5 Product Profitability Analysis | Clustered column chart | Margin view using list price vs. standard cost |
-| Supplier Performance Matrix | Scatter chart | Reliability vs. risk / lead time across suppliers |
+| Procurement Trend Analysis | Clustered column chart | Purchase order value over time (monthly) |
+| Inventory Health at a Glance | Clustered bar chart | Stock health status breakdown (Healthy Stock, Low Stock, Reorder Soon, High Stock) |
+| Top 5 Product Profitability Analysis | Clustered column chart | Margin view using list price vs. standard cost for top products |
+| Warehouse Capacity | Clustered bar chart with reference lines | Per-warehouse capacity utilization with High (>70%) and Critical (>90%) thresholds |
+| Procurement Status | Donut chart | Breakdown of purchase orders by status (Delivered, Confirmed, Sent, InTransit) |
 | Time Period / Product Line / Warehouse Locations slicers | Slicer | Filter by time period, product line, and warehouse |
 
 ### Typical questions answered
 
 - How much stock do we currently hold and how healthy is it?
 - How well are our warehouses utilized, and which ones are near capacity?
-- How is procurement spend trending over time?
-- Which suppliers deliver the best reliability-to-risk profile?
+- How is procurement spend trending over time, and what is the current status of purchase orders?
+- How reliable are our suppliers overall?
 - Which products contribute the most profit given list price vs. standard cost?
