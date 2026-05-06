@@ -50,9 +50,9 @@ CREATE TABLE IF NOT EXISTS {SCHEMA_NAME}.{TABLE_NAME} (
     OrderID STRING,           -- FK to shared Order table  
     InvoiceDate DATE,
     DueDate DATE,
-    SubTotal DECIMAL(18,2),
-    TaxAmount DECIMAL(18,2),
-    TotalAmount DECIMAL(18,2),
+    SubTotal DOUBLE,
+    TaxAmount DOUBLE,
+    TotalAmount DOUBLE,
     InvoiceStatus STRING,
     CreatedBy STRING
 )
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS {SCHEMA_NAME}.{TABLE_NAME} (
     AccountStatus STRING,     -- e.g., Active, Closed, Suspended
     CreatedDate DATE,
     ClosedDate DATE,
-    Balance DECIMAL(18,2),
+    Balance DOUBLE,
     Currency STRING,
     Description STRING,
     CreatedBy STRING
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS {SCHEMA_NAME}.{TABLE_NAME} (
     InvoiceID STRING,         -- FK to Invoice table
     CustomerID STRING,        -- FK to shared Customer table
     PaymentDate DATE,
-    PaymentAmount DECIMAL(18,2),
+    PaymentAmount DOUBLE,
     PaymentMethod STRING,
     PaymentStatus STRING,
     CreatedBy STRING
