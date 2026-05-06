@@ -88,7 +88,10 @@ This phase creates the physical resources in your Azure subscription.
 ### 2️⃣ Phase 2: Data Platform (Fabric)
 
 *Powered by [Python](https://www.python.org/) & [Fabric REST APIs](https://learn.microsoft.com/rest/api/fabric/)*
-This phase is orchestrated by [`install_fabric_solution.py`](../../infra/scripts/fabric/install_fabric_solution.py), which performs 4 bootstrap steps and then delegates the remaining solution setup to the installer notebook:
+This phase is orchestrated by [`install_fabric_solution.py`](../../infra/scripts/fabric/install_fabric_solution.py), which performs 4 Fabric bootstrap steps and then delegates the remaining solution setup to the installer notebook. Two Foundry steps run **before** the Fabric steps using environment variables sourced from `main.bicep` outputs (`AZURE_AI_SEARCH_ENDPOINT`, `AZURE_STORAGE_BLOB_ENDPOINT`, `AZURE_AI_AGENT_ENDPOINT`, `AI_SERVICE_NAME`, `AZURE_AI_PROJECT_NAME`):
+
+- **Knowledge Base Setup**: Creates the Azure AI Search index, uploads PDFs from [`src/foundry/data`](../../src/foundry/data/), and provisions the Foundry IQ knowledge source and knowledge base (via [`foundry/step_knowledge_base.py`](../../infra/scripts/foundry/step_knowledge_base.py))
+- **Agent Setup**: Creates an AI Foundry agent wired up to the Knowledge Base MCP tool (via [`foundry/step_agent_setup.py`](../../infra/scripts/foundry/step_agent_setup.py))
 
 1. **Workspace Setup**: Creates or configures the [workspace](https://learn.microsoft.com/fabric/get-started/workspaces) and assigns it to the Fabric capacity (resumes paused capacities automatically)
 2. **Workspace Administrators**: Adds administrators to the workspace (using [Graph API](https://learn.microsoft.com/graph/overview) resolution with fallback)
@@ -105,9 +108,12 @@ The Fabric deployment entry-point is [`install_fabric_solution.py`](../../infra/
 
 | Helper Module | Purpose | Key Functions |
 |---------------|---------|---------------|
-| [`workspace.py`](../../infra/scripts/fabric/helpers/workspace.py) | Workspace creation, capacity assignment, and auto-resume of paused capacities | `setup_workspace()` |
-| [`workspace_admins.py`](../../infra/scripts/fabric/helpers/workspace_admins.py) | Administrator management with Graph API integration and fallback handling | `setup_workspace_administrators()` |
-| [`utils.py`](../../infra/scripts/fabric/helpers/utils.py) | Common utilities | Notebook encoding, environment variable helpers, step logging |
+| [`common/config.py`](../../infra/scripts/common/config.py) + [`common/env_utils.py`](../../infra/scripts/common/env_utils.py) + [`common/env.py`](../../infra/scripts/common/env.py) + [`common/logging_config.py`](../../infra/scripts/common/logging_config.py) + [`common/pdf_utils.py`](../../infra/scripts/common/pdf_utils.py) + [`common/step_printer.py`](../../infra/scripts/common/step_printer.py) | Cross-cutting helpers (azd, repo paths, env vars, file I/O, logging, PDF chunking, step formatting). Imported by both domain packages and the entry-point scripts. | `SOLUTION_NAME`, `REPO_ROOT`, `DATA_DIR`, `default_workspace_name()`, `get_required_env_var()`, `read_file_content()`, `parse_workspace_administrators()`, `load_all_env()`, `setup_logging()`, `process_pdfs_to_documents()`, `print_step()`, `print_steps_summary()` |
+| [`fabric/step_workspace_setup.py`](../../infra/scripts/fabric/step_workspace_setup.py) | Workspace creation, capacity assignment, and auto-resume of paused capacities | `setup_workspace()` |
+| [`fabric/step_workspace_admins.py`](../../infra/scripts/fabric/step_workspace_admins.py) | Administrator management with Graph API integration and fallback handling | `setup_workspace_administrators()` |
+| [`fabric/step_notebook_installer.py`](../../infra/scripts/fabric/step_notebook_installer.py) | Installer notebook upload, in-memory patching (`GITHUB_BRANCH`, `GITHUB_TOKEN`), and Fabric job execution | `upload_installer_notebook()`, `run_installer_notebook()` |
+| [`foundry/step_knowledge_base.py`](../../infra/scripts/foundry/step_knowledge_base.py) | Foundry IQ setup: AI Search index, knowledge source, knowledge base | `setup_knowledge_base()` |
+| [`foundry/step_agent_setup.py`](../../infra/scripts/foundry/step_agent_setup.py) | Foundry IQ setup: AI Foundry agent + Knowledge Base MCP project connection | `setup_agent()` |
 
 Fabric item definitions are organized in two locations:
 
@@ -460,7 +466,7 @@ The solution accelerator provides flexible configuration options to customize yo
 > - CI/CD workflow: [`.github/workflows/azure-dev.yml`](../../.github/workflows/azure-dev.yml) - GitHub Actions pipeline
 > - Fabric deployment: [`infra/scripts/fabric/install_fabric_solution.py`](../../infra/scripts/fabric/install_fabric_solution.py) - Fabric solution bootstrap orchestrator
 > - Installer notebook: [`infra/fabric/deploy/fabric_solution_installer.ipynb`](../../infra/fabric/deploy/fabric_solution_installer.ipynb) - Full solution deployment notebook
-> - Helper modules: [`infra/scripts/fabric/helpers/`](../../infra/scripts/fabric/helpers/) - Bootstrap helper functions
+> - Helper modules: [`infra/scripts/common/`](../../infra/scripts/common/), [`infra/scripts/fabric/`](../../infra/scripts/fabric/), and [`infra/scripts/foundry/`](../../infra/scripts/foundry/) - Bootstrap helper functions
 
 ### 🏗️ Infrastructure Configuration
 
@@ -788,7 +794,7 @@ This section documents known limitations in the deployment process and their wor
 - This can result in workspaces that are only accessible to the deployment service principal
 
 **Technical Details**:
-The [`workspace_admins.py`](../../infra/scripts/fabric/helpers/workspace_admins.py) helper module implements fallback logic:
+The [`step_workspace_admins.py`](../../infra/scripts/fabric/step_workspace_admins.py) helper module implements fallback logic:
 
 ```python
 def detect_principal_type(admin_identifier, graph_client=None):
@@ -818,7 +824,7 @@ def detect_principal_type(admin_identifier, graph_client=None):
 
    The helper module automatically detects whether an identifier is a UPN or object ID and handles accordingly.
 
-2. **Post-Deployment Admin Assignment**: If Graph API permissions cannot be granted, add administrators manually after deployment through the Fabric portal workspace settings, or use the dedicated helper module [`workspace_admins.py`](../../infra/scripts/fabric/helpers/workspace_admins.py) with appropriate credentials that have Graph API access.
+2. **Post-Deployment Admin Assignment**: If Graph API permissions cannot be granted, add administrators manually after deployment through the Fabric portal workspace settings, or use the dedicated helper module [`step_workspace_admins.py`](../../infra/scripts/fabric/step_workspace_admins.py) with appropriate credentials that have Graph API access.
 
 ---
 

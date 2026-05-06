@@ -41,7 +41,7 @@ The deployment creates two integrated components in a single Azure Resource Grou
 
 ### Deployment Phases
 
-The deployment follows a **three-phase automated workflow**:
+The deployment follows a **two-phase automated workflow**:
 
 #### Phase 1: Infrastructure (Bicep)
 Provisions all Azure resources via [`main.bicep`](../infra/main.bicep):
@@ -50,28 +50,17 @@ Provisions all Azure resources via [`main.bicep`](../infra/main.bicep):
 - AI Search service and Storage account
 - [OpenAI model deployments](https://learn.microsoft.com/azure/ai-services/openai/how-to/create-resource)
 
-#### Phase 2: Microsoft Foundry Setup (Python)
-Runs automatically after infrastructure deployment:
-1. **Document Upload** ([`01_upload_to_search.py`](../src/foundry/scripts/01_upload_to_search.py)):
-   - Creates [search index](https://learn.microsoft.com/azure/search/search-what-is-an-index) with vector search configuration
-   - Uploads PDF documents from `data/documents/` folder
-   - Creates Knowledge Base and Knowledge Source for Foundry IQ
-2. **Agent Creation** ([`02_create_agent_no_sql.py`](../src/foundry/scripts/02_create_agent_no_sql.py)):
-   - Creates Chat Agent with Knowledge Base tool ([MCP](https://modelcontextprotocol.io/introduction))
-   - Configures agent instructions and retrieval settings
-   - Saves agent configuration for testing
+#### Phase 2: Solution Bootstrap (Python)
+Orchestrated by [`install_microsoft_iq_solution.py`](../infra/scripts/install_microsoft_iq_solution.py), which runs as the `azd up` post-provision hook and executes 6 steps in order:
 
-#### Phase 3: Fabric Workspace Setup (Python)
-Orchestrated by [`install_fabric_solution.py`](../infra/scripts/fabric/install_fabric_solution.py):
-1. Creates workspace and assigns it to Fabric capacity
-2. Adds [workspace administrators](https://learn.microsoft.com/fabric/get-started/roles-workspaces)
-3. Uploads and runs [`fabric_solution_installer.ipynb`](../infra/fabric/deploy/fabric_solution_installer.ipynb):
-   - Uses [`fabric-launcher`](https://github.com/microsoft/fabric-launcher) to deploy items from GitHub
-   - Creates lakehouse, notebooks, semantic models, reports
-   - Deploys data agents and ontology definitions
-   - Runs data ingestion pipeline
+1. **`setup_knowledge_base`** — Create the Azure AI Search index, upload PDFs from [`src/foundry/data/documents/`](../src/foundry/data/documents/), and provision the Foundry IQ knowledge source and knowledge base (via [`foundry/step_knowledge_base.py`](../infra/scripts/foundry/step_knowledge_base.py)).
+2. **`setup_agent`** — Create the AI Foundry chat agent wired up to the Knowledge Base via [MCP](https://modelcontextprotocol.io/introduction) (via [`foundry/step_agent_setup.py`](../infra/scripts/foundry/step_agent_setup.py)). Runs in best-effort mode: transient platform errors are recorded as warnings and the deployment continues.
+3. **`setup_workspace`** — Create or find the Fabric workspace and assign it to the capacity, resuming the capacity if paused (via [`fabric/step_workspace_setup.py`](../infra/scripts/fabric/step_workspace_setup.py)).
+4. **`setup_administrators`** — Add [workspace administrators](https://learn.microsoft.com/fabric/get-started/roles-workspaces) using [Graph API](https://learn.microsoft.com/graph/overview) resolution with fallback (via [`fabric/step_workspace_admins.py`](../infra/scripts/fabric/step_workspace_admins.py)).
+5. **`upload_installer`** — Upload [`fabric_solution_installer.ipynb`](../infra/fabric/deploy/fabric_solution_installer.ipynb), patched in-memory with the current git branch and `GITHUB_TOKEN` if set (via [`fabric/step_notebook_installer.py`](../infra/scripts/fabric/step_notebook_installer.py)).
+6. **`run_installer`** — Execute the installer notebook as a Fabric job. The notebook uses [`fabric-launcher`](https://github.com/microsoft/fabric-launcher) to deploy items from [`src/fabric/fabric_workspace/`](../src/fabric/fabric_workspace/), then runs post-deployment tasks: `pipeline_main` for data ingestion, ontology deployment, and folder organization.
 
-All phases execute automatically with a single `azd up` command.
+Both phases execute automatically with a single `azd up` command.
 
 ---
 
@@ -170,26 +159,29 @@ After successful deployment, you will have:
 
 ### Fabric IQ Components
 
-**Workspace Structure**:
+**Workspace Structure** (deployed from [`src/fabric/fabric_workspace/`](../src/fabric/fabric_workspace/)):
 ```
-Microsoft IQ Solution
+Microsoft IQ - {suffix}
 ├── 📊 Lakehouses
-│   └── miqsa_lakehouse (with sample data tables)
+│   └── miqsadata (with sample data tables)
 ├── 📓 Notebooks
-│   ├── pipeline_main (data ingestion)
-│   ├── pipeline_ingest_data (table creation)
-│   └── Additional processing notebooks
+│   ├── pipeline_main          (data ingestion orchestrator)
+│   ├── pipeline_update        (pipeline maintenance)
+│   ├── data_processing/       (per-domain load notebooks)
+│   ├── schema/                (per-domain table schemas)
+│   └── …
 ├── 📈 Semantic Models & Reports
-│   └── Business intelligence dashboards
+│   ├── RetailSupplyChainModel.SemanticModel
+│   └── Supply Chain Management.SemanticModel
+├── 🧬 Ontologies
+│   └── RetailSupplyChainOntologyModel
 └── 🤖 Data Agents
-    ├── EM Ontology Agent
-    ├── SM Ontology Agent
-    └── Lakehouse Agent
+    └── RetailSC Ontology Agent
 ```
 
 Access your workspace:
 - Open [Microsoft Fabric portal](https://app.fabric.microsoft.com)
-- Navigate to your workspace (named after your solution)
+- Navigate to your workspace (default name: `Microsoft IQ - {SOLUTION_SUFFIX}`)
 
 ### Microsoft Foundry Components
 
@@ -202,7 +194,7 @@ Access your workspace:
 **Test the Agent**:
 ```bash
 # From the repository root
-python src/foundry/scripts/test_agent.py
+python infra/scripts/foundry/test_agent.py
 ```
 
 ### Environment Variables
@@ -221,10 +213,11 @@ Key outputs:
 
 ### Next Steps
 
-1. **Add Your Documents**: Upload PDFs to `src/foundry/data/documents/` and run:
+1. **Add Your Documents**: Upload PDFs to [`src/foundry/data/documents/`](../src/foundry/data/documents/) and re-run the deployment to refresh the knowledge base:
    ```bash
-   python src/foundry/scripts/01_upload_to_search.py
+   azd up
    ```
+   This re-executes `setup_knowledge_base` (Step 1), which re-uploads PDFs to blob storage and re-indexes them.
 
 2. **Explore Fabric Workspace**: Open notebooks and run data pipelines
 
@@ -243,11 +236,9 @@ azd down
 ```
 
 This command:
-- Runs the pre-down hook to remove Fabric workspace items
-- Deletes the Azure Resource Group and all resources
-- Preserves your local `.azure/{environment}` configuration (optional)
-
-**Note**: The cleanup process pauses the Fabric capacity before removal to avoid lingering charges.
+- Runs the `predown` hook ([`remove_microsoft_iq_solution.py`](../infra/scripts/remove_microsoft_iq_solution.py)) to delete the Fabric workspace
+- Deletes the Azure Resource Group and all resources inside it (including the Fabric capacity)
+- Preserves your local `.azure/{environment}` configuration unless you also pass `--purge`
 
 ---
 

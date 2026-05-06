@@ -9,40 +9,32 @@
         "targetPropertyId": "2288658247792705776"
       },
       {
-        "sourceColumnName": "PurchaseOrderNumber",
-        "targetPropertyId": "2288658223807741098"
+        "sourceColumnName": "ActualDeliveryDate",
+        "targetPropertyId": "2288658139572744898"
       },
       {
-        "sourceColumnName": "SupplierID",
-        "targetPropertyId": "2288658201838121870"
+        "sourceColumnName": "CreatedBy",
+        "targetPropertyId": "2288658030105387268"
       },
       {
-        "sourceColumnName": "SupplierName",
-        "targetPropertyId": "2288657987375990678"
+        "sourceColumnName": "CreatedDate",
+        "targetPropertyId": "2288658011219764981"
       },
       {
-        "sourceColumnName": "OrderDate",
-        "targetPropertyId": "2288658182087485314"
+        "sourceColumnName": "DeliveryLocation",
+        "targetPropertyId": "2288657966046802822"
       },
       {
         "sourceColumnName": "ExpectedDeliveryDate",
         "targetPropertyId": "2288658160873992517"
       },
       {
-        "sourceColumnName": "ActualDeliveryDate",
-        "targetPropertyId": "2288658139572744898"
+        "sourceColumnName": "Notes",
+        "targetPropertyId": "2288658051190031379"
       },
       {
-        "sourceColumnName": "Status",
-        "targetPropertyId": "2288658116304959952"
-      },
-      {
-        "sourceColumnName": "TotalOrderValue",
-        "targetPropertyId": "2288658096896959591"
-      },
-      {
-        "sourceColumnName": "DeliveryLocation",
-        "targetPropertyId": "2288657966046802822"
+        "sourceColumnName": "OrderDate",
+        "targetPropertyId": "2288658182087485314"
       },
       {
         "sourceColumnName": "OrderedBy",
@@ -53,16 +45,24 @@
         "targetPropertyId": "2288657945419907652"
       },
       {
-        "sourceColumnName": "Notes",
-        "targetPropertyId": "2288658051190031379"
+        "sourceColumnName": "PurchaseOrderNumber",
+        "targetPropertyId": "2288658223807741098"
       },
       {
-        "sourceColumnName": "CreatedBy",
-        "targetPropertyId": "2288658030105387268"
+        "sourceColumnName": "Status",
+        "targetPropertyId": "2288658116304959952"
       },
       {
-        "sourceColumnName": "CreatedDate",
-        "targetPropertyId": "2288658011219764981"
+        "sourceColumnName": "SupplierID",
+        "targetPropertyId": "2288658201838121870"
+      },
+      {
+        "sourceColumnName": "SupplierName",
+        "targetPropertyId": "2288657987375990678"
+      },
+      {
+        "sourceColumnName": "TotalOrderValue",
+        "targetPropertyId": "1074776727820563070"
       }
     ],
     "sourceTableProperties": {

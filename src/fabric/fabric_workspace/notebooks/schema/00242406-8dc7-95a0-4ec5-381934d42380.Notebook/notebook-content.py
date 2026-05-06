@@ -60,9 +60,9 @@ CREATE TABLE IF NOT EXISTS {SCHEMA_NAME}.{TABLE_NAME} (
     ProductModel STRING,
     ProductCategoryID STRING,
     CategoryName STRING,
-    ListPrice DECIMAL(18,2),
-    StandardCost DECIMAL(18,2),
-    Weight DECIMAL(18,3),
+    ListPrice DOUBLE,
+    StandardCost DOUBLE,
+    Weight DOUBLE,
     WeightUom STRING,     -- kg, lb, oz
     ProductStatus STRING, -- active, inactive, discontinued
     CreatedDate DATE,

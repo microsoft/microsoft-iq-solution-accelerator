@@ -61,13 +61,6 @@
       "valueType": "String"
     },
     {
-      "id": "2288658096896959591",
-      "name": "TotalOrderValue",
-      "redefines": null,
-      "baseTypeNamespaceType": null,
-      "valueType": "Double"
-    },
-    {
       "id": "2288658075591060896",
       "name": "OrderedBy",
       "redefines": null,
@@ -115,6 +108,13 @@
       "redefines": null,
       "baseTypeNamespaceType": null,
       "valueType": "String"
+    },
+    {
+      "id": "1074776727820563070",
+      "name": "TotalOrderValue",
+      "redefines": null,
+      "baseTypeNamespaceType": null,
+      "valueType": "Double"
     }
   ],
   "timeseriesProperties": []
