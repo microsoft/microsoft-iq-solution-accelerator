@@ -113,8 +113,8 @@ trade_name_count = trade_name_df.count()
 location_df = spark.read.csv(f"{DATA_PATH}/Location_Samples.csv", header=True, inferSchema=False)
 location_df = location_df \
     .withColumn("IsActive", col("IsActive").cast("boolean")) \
-    .withColumn("Latitude", col("Latitude").cast("decimal(10,7)")) \
-    .withColumn("Longitude", col("Longitude").cast("decimal(10,7)"))
+    .withColumn("Latitude", col("Latitude").cast("double")) \
+    .withColumn("Longitude", col("Longitude").cast("double"))
 location_df.write.mode("overwrite").saveAsTable(f"{SCHEMA_NAME}.Location")
 location_count = location_df.count()
 

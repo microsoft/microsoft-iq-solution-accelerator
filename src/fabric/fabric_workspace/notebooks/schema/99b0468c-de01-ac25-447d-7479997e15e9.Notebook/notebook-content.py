@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS {SCHEMA_NAME}.{TABLE_NAME} (
     SupplierID STRING,        -- Links to Suppliers table
     SupplierName STRING,     -- Denormalized for usability
     SupplierProductCode STRING, -- Supplier's internal SKU
-    WholesaleCost DECIMAL(10,2), -- Cost per unit
+    WholesaleCost DOUBLE, -- Cost per unit
     MinOrderQuantity INT,    -- Minimum order size
     MaxOrderQuantity INT,    -- Maximum order size (NULL = no limit)
     LeadTimeDays INT,        -- Product-specific lead time
@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS {SCHEMA_NAME}.{TABLE_NAME} (
     GeographicArea STRING,    -- Affected region/country
     IndustryImpact STRING,    -- Outdoor, Retail, Manufacturing, Logistics
     PredictedDuration INT,    -- Expected duration in days
-    ActualDuration DECIMAL(5,2), -- Actual duration in days (NULL if ongoing)
+    ActualDuration DOUBLE, -- Actual duration in days (NULL if ongoing)
     AlertLevel STRING,        -- Green, Yellow, Orange, Red
     ReportedBy STRING,        -- Who reported the disruption
     CreatedBy STRING,         -- System user
@@ -116,9 +116,9 @@ CREATE TABLE IF NOT EXISTS {SCHEMA_NAME}.{TABLE_NAME} (
     ProductLineName STRING,   -- Affected category: Camping, Kitchen, Ski
     ImpactLevel STRING,       -- None, Low, Medium, High
     DeliveryDelay INT,        -- Additional days delay caused
-    CostIncrease DECIMAL(5,2), -- % increase in costs (0.00-100.00)
+    CostIncrease DOUBLE, -- % increase in costs (0.00-100.00)
     AlternativeAction STRING, -- Action taken to mitigate
-    EstimatedRevenueImpact DECIMAL(12,2), -- Financial impact estimate
+    EstimatedRevenueImpact DOUBLE, -- Financial impact estimate
     CreatedBy STRING,         -- System user
     CreatedDate DATE          -- Record creation
 )

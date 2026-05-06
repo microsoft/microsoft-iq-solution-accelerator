@@ -41,9 +41,9 @@ product_df = spark.read.csv(f"{DATA_PATH}/Product_Samples_Combined.csv", header=
 product_df = product_df \
     .withColumn("ProductID", col("ProductID").cast("string")) \
     .withColumn("ProductLineID", col("ProductLineID").cast("string")) \
-    .withColumn("ListPrice", col("ListPrice").cast("decimal(18,2)")) \
-    .withColumn("StandardCost", col("StandardCost").cast("decimal(18,2)")) \
-    .withColumn("Weight", col("Weight").cast("decimal(18,3)")) \
+    .withColumn("ListPrice", col("ListPrice").cast("double")) \
+    .withColumn("StandardCost", col("StandardCost").cast("double")) \
+    .withColumn("Weight", col("Weight").cast("double")) \
     .withColumn("CreatedDate", col("CreatedDate").cast("date")) \
     .withColumn("SellStartDate", col("SellStartDate").cast("date")) \
     .withColumn("SellEndDate", col("SellEndDate").cast("date")) \
