@@ -51,9 +51,9 @@ for df in invoice_dfs[1:]:
 combined_invoices_df = combined_invoices_df \
     .withColumn("InvoiceDate", col("InvoiceDate").cast("date")) \
     .withColumn("DueDate", col("DueDate").cast("date")) \
-    .withColumn("SubTotal", col("SubTotal").cast("decimal(18,2)")) \
-    .withColumn("TaxAmount", col("TaxAmount").cast("decimal(18,2)")) \
-    .withColumn("TotalAmount", col("TotalAmount").cast("decimal(18,2)"))
+    .withColumn("SubTotal", col("SubTotal").cast("double")) \
+    .withColumn("TaxAmount", col("TaxAmount").cast("double")) \
+    .withColumn("TotalAmount", col("TotalAmount").cast("double"))
 combined_invoices_df.write.mode("overwrite").saveAsTable(f"{SCHEMA_NAME}.invoice")
 invoices_count = combined_invoices_df.count()
 
@@ -72,7 +72,7 @@ for df in account_dfs[1:]:
 combined_accounts_df = combined_accounts_df \
     .withColumn("CreatedDate", col("CreatedDate").cast("date")) \
     .withColumn("ClosedDate", col("ClosedDate").cast("date")) \
-    .withColumn("Balance", col("Balance").cast("decimal(18,2)"))
+    .withColumn("Balance", col("Balance").cast("double"))
 combined_accounts_df.write.mode("overwrite").saveAsTable(f"{SCHEMA_NAME}.account")
 accounts_count = combined_accounts_df.count()
 
@@ -90,7 +90,7 @@ for df in payment_dfs[1:]:
 
 combined_payments_df = combined_payments_df \
     .withColumn("PaymentDate", col("PaymentDate").cast("date")) \
-    .withColumn("PaymentAmount", col("PaymentAmount").cast("decimal(18,2)"))
+    .withColumn("PaymentAmount", col("PaymentAmount").cast("double"))
 combined_payments_df.write.mode("overwrite").saveAsTable(f"{SCHEMA_NAME}.payment")
 finance_payments_count = combined_payments_df.count()
 

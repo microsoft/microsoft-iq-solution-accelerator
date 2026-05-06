@@ -75,7 +75,7 @@ inventory_df = inventory_df \
     .withColumn("SafetyStockLevel", col("SafetyStockLevel").cast("int")) \
     .withColumn("ReorderPoint", col("ReorderPoint").cast("int")) \
     .withColumn("MaxStockLevel", col("MaxStockLevel").cast("int")) \
-    .withColumn("AverageCost", col("AverageCost").cast("decimal(10,2)")) \
+    .withColumn("AverageCost", col("AverageCost").cast("double")) \
     .withColumn("LastUpdated", col("LastUpdated").cast("date")) \
     .withColumn("CreatedDate", col("CreatedDate").cast("date"))
 inventory_df.write.mode("overwrite").saveAsTable(f"{SCHEMA_NAME}.Inventory")
@@ -94,8 +94,8 @@ inventory_count = inventory_df.count()
 transactions_df = spark.read.csv(f"{DATA_PATH}/InventoryTransactions.csv", header=True, inferSchema=False)
 transactions_df = transactions_df \
     .withColumn("Quantity", col("Quantity").cast("int")) \
-    .withColumn("UnitCost", col("UnitCost").cast("decimal(10,2)")) \
-    .withColumn("TotalValue", col("TotalValue").cast("decimal(10,2)")) \
+    .withColumn("UnitCost", col("UnitCost").cast("double")) \
+    .withColumn("TotalValue", col("TotalValue").cast("double")) \
     .withColumn("StockBefore", col("StockBefore").cast("int")) \
     .withColumn("StockAfter", col("StockAfter").cast("int")) \
     .withColumn("TransactionDate", col("TransactionDate").cast("date")) \
@@ -115,7 +115,7 @@ transactions_count = transactions_df.count()
 # 4. Load PurchaseOrders Table
 orders_df = spark.read.csv(f"{DATA_PATH}/PurchaseOrders.csv", header=True, inferSchema=False)
 orders_df = orders_df \
-    .withColumn("TotalOrderValue", col("TotalOrderValue").cast("decimal(12,2)")) \
+    .withColumn("TotalOrderValue", col("TotalOrderValue").cast("double")) \
     .withColumn("OrderDate", col("OrderDate").cast("date")) \
     .withColumn("ExpectedDeliveryDate", col("ExpectedDeliveryDate").cast("date")) \
     .withColumn("ActualDeliveryDate", col("ActualDeliveryDate").cast("date")) \
@@ -137,8 +137,8 @@ order_items_df = spark.read.csv(f"{DATA_PATH}/PurchaseOrderItems.csv", header=Tr
 order_items_df = order_items_df \
     .withColumn("QuantityOrdered", col("QuantityOrdered").cast("int")) \
     .withColumn("QuantityReceived", col("QuantityReceived").cast("int")) \
-    .withColumn("UnitCost", col("UnitCost").cast("decimal(10,2)")) \
-    .withColumn("LineTotal", col("LineTotal").cast("decimal(12,2)")) \
+    .withColumn("UnitCost", col("UnitCost").cast("double")) \
+    .withColumn("LineTotal", col("LineTotal").cast("double")) \
     .withColumn("ExpectedDate", col("ExpectedDate").cast("date")) \
     .withColumn("ReceivedDate", col("ReceivedDate").cast("date")) \
     .withColumn("CreatedDate", col("CreatedDate").cast("date"))
@@ -164,9 +164,9 @@ forecast_df = forecast_df \
     .withColumn("BaselineDemand", col("BaselineDemand").cast("int")) \
     .withColumn("ForecastHorizon", col("ForecastHorizon").cast("int")) \
     .withColumn("ActualDemand", col("ActualDemand").cast("int")) \
-    .withColumn("ConfidenceLevel", col("ConfidenceLevel").cast("decimal(5,2)")) \
-    .withColumn("SeasonalMultiplier", col("SeasonalMultiplier").cast("decimal(5,2)")) \
-    .withColumn("AccuracyScore", col("AccuracyScore").cast("decimal(5,2)")) \
+    .withColumn("ConfidenceLevel", col("ConfidenceLevel").cast("double")) \
+    .withColumn("SeasonalMultiplier", col("SeasonalMultiplier").cast("double")) \
+    .withColumn("AccuracyScore", col("AccuracyScore").cast("double")) \
     .withColumn("ForecastDate", col("ForecastDate").cast("date")) \
     .withColumn("CreatedDate", col("CreatedDate").cast("date")) \
     .drop("SalesTrendMultiplier", "CompoundTrendMultiplier")
