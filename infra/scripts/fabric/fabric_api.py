@@ -27,7 +27,7 @@ import time
 
 import requests
 from typing import Dict, List, Optional, Union, Any
-from azure.identity import AzureCliCredential, AzureDeveloperCliCredential, ChainedTokenCredential
+from azure.identity import DefaultAzureCredential
 
 # Module-level logger — inherits level and handler from the root logger
 # configured by setup_logging() in the entry-point scripts.  API-internal
@@ -67,16 +67,13 @@ class FabricApiClient:
         Args:
             api_url: Base URL for Fabric API
             resource_url: Resource URL for authentication scope
-            credential: Azure credential object (defaults to AzureCliCredential)
+            credential: Azure credential object (defaults to DefaultAzureCredential)
             timeout_sec: Default timeout for API requests
         """
         self.api_url = api_url.rstrip('/')
         self.resource_url = resource_url
         self.timeout_sec = timeout_sec
-        self._credential = credential or ChainedTokenCredential(
-            AzureDeveloperCliCredential(),
-            AzureCliCredential(),
-        )
+        self._credential = credential or DefaultAzureCredential()
         self._token = None
         self._token_expiry = None
     

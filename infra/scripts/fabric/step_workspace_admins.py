@@ -12,11 +12,8 @@ import os
 import uuid
 from typing import Optional
 
-# Add parent directory to path
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from fabric_api import FabricApiError, FabricWorkspaceApiClient
-from graph_api import GraphApiError
+from fabric.fabric_api import FabricApiError, FabricWorkspaceApiClient
+from fabric.graph_api import GraphApiError
 
 # Module-level logger — inherits configuration from the root logger set up
 # by setup_logging() in the entry-point scripts.  No handlers or levels are
@@ -59,7 +56,7 @@ def detect_principal_type(admin_identifier, graph_client=None):
         if graph_client:
             principal_type, object_id, principal_data = graph_client.resolve_principal(admin_identifier)
             return principal_type, object_id, principal_data
-        
+
     except GraphApiError as e:
         # Convert Graph API errors to Unknown type for fallback handling
         logger.warning(f"Graph API lookup failed for '{admin_identifier}': {str(e)}")
@@ -69,7 +66,7 @@ def detect_principal_type(admin_identifier, graph_client=None):
         # Fallback to original logic if Graph API is not available
         logger.warning(f"Graph API lookup failed for '{admin_identifier}': {str(e)}")
         logger.warning(f"     Falling back to basic identifier pattern detection...")
-        
+
         if is_valid_guid(admin_identifier):
             return "ServicePrincipal", admin_identifier, {"id": admin_identifier, "displayName": "Unknown"}
         elif "@" in admin_identifier and "." in admin_identifier:
@@ -78,13 +75,22 @@ def detect_principal_type(admin_identifier, graph_client=None):
             logger.warning(f"     Unable to determine principal type - will try both ServicePrincipal and User...")
             return "Unknown", admin_identifier, {"id": admin_identifier, "displayName": "Unknown"}
 
+    # No graph_client supplied and no exception raised — fall back to pattern detection
+    if is_valid_guid(admin_identifier):
+        return "ServicePrincipal", admin_identifier, {"id": admin_identifier, "displayName": "Unknown"}
+    elif "@" in admin_identifier and "." in admin_identifier:
+        return "User", admin_identifier, {"userPrincipalName": admin_identifier, "displayName": "Unknown"}
+    return "Unknown", admin_identifier, {"id": admin_identifier, "displayName": "Unknown"}
+
 
 def get_existing_admin_principals(workspace_client: FabricWorkspaceApiClient) -> set:
     """Get set of existing admin principal IDs for duplicate checking."""
     try:
         logger.info(f"    Checking existing role assignments...")
-        assignments = workspace_client.list_role_assignments(get_all=True)
-        
+        # get_all=True guarantees a list[dict[str, Any]] return; narrow the type for pyright.
+        assignments_result = workspace_client.list_role_assignments(get_all=True)
+        assignments: list = assignments_result if isinstance(assignments_result, list) else assignments_result.get('value', [])
+
         existing_principals = set()
         admin_count = 0
         
@@ -204,14 +210,15 @@ def add_workspace_admin(workspace_client, admin_identifier, existing_principals,
             403: "Ensure you have Admin permissions on this workspace", 
             404: "Check if the principal exists in your Azure AD tenant"
         }
-        hint = error_hints.get(e.status_code, "Check API permissions and principal validity")
+        status_code = e.status_code if e.status_code is not None else -1
+        hint = error_hints.get(status_code, "Check API permissions and principal validity")
         return {'status': 'failed', 'message': f'API error ({e.status_code}): {hint}'}
         
     except Exception as e:
         return {'status': 'failed', 'message': f'Unexpected error: {str(e)}'}
 
 
-def setup_workspace_administrators(workspace_client, fabric_admins: list = None, graph_client = None) -> dict:
+def setup_workspace_administrators(workspace_client, fabric_admins: Optional[list] = None, graph_client=None) -> dict:
     """
     Add administrators to a Fabric workspace.
     
@@ -271,8 +278,14 @@ def setup_workspace_administrators(workspace_client, fabric_admins: list = None,
     if workspace_stats['added'] > 0 or workspace_stats['skipped'] > 0:
         return workspace_stats
     elif workspace_stats['failed'] > 0:
-        logger.error(f"Failed to add workspace administrators")
-        return None
+        # Hard failure: every administrator failed.  Raise so the entry-point
+        # script aborts via its `_abort` handler instead of silently moving on.
+        error_summary = "; ".join(workspace_stats['errors'][:3])
+        if len(workspace_stats['errors']) > 3:
+            error_summary += f" (+{len(workspace_stats['errors']) - 3} more)"
+        raise FabricApiError(
+            f"Failed to add workspace administrators: {error_summary}"
+        )
     else:
         logger.info(f"No administrators to add")
         return workspace_stats
@@ -290,7 +303,7 @@ if __name__ == "__main__":
         epilog="""
 Examples:
   # Add admins by CSV string
-  python workspace_admins.py --workspace-id "12345678-1234-1234-1234-123456789012" --admins-csv "user1@contoso.com,user2@contoso.com,87654321-4321-4321-4321-210987654321"
+  python step_workspace_admins.py --workspace-id "12345678-1234-1234-1234-123456789012" --admins-csv "user1@contoso.com,user2@contoso.com,87654321-4321-4321-4321-210987654321"
         """
     )
     

@@ -2,10 +2,10 @@ import logging
 import sys
 import os
 
-# Add current directory to path so local modules can be imported
+# Add infra/scripts/ to path so the fabric package and its modules can be imported
 sys.path.append(os.path.dirname(__file__))
 
-from helpers.logging_config import setup_logging
+from common.logging_config import setup_logging
 
 # Configure logging before any other imports so that library modules
 # (fabric_api, graph_api, helpers.*) inherit the root logger's settings.
@@ -16,9 +16,9 @@ setup_logging()
 # use this logger; the level and handler are inherited from setup_logging().
 logger = logging.getLogger(__name__)
 
-from fabric_api import create_fabric_client, FabricApiError
-from helpers.config import SOLUTION_NAME, default_workspace_name
-from helpers.utils import get_required_env_var
+from common.config import SOLUTION_NAME, default_workspace_name
+from common.env_utils import get_required_env_var
+from fabric.fabric_api import create_fabric_client, FabricApiError
 
 
 ####################
@@ -89,6 +89,7 @@ try:
         logger.info(f"Found workspace: '{workspace_display_name}' (ID: {workspace_id})")
     else:
         # If workspace ID is provided, verify it exists
+        assert workspace_id is not None  # else branch implies FABRIC_WORKSPACE_ID was set
         logger.info(f"Verifying workspace ID: '{workspace_id}'")
         workspaces = fabric_client.list_workspaces()
         workspace = next(
@@ -145,6 +146,7 @@ logger.info(f"Proceeding with workspace deletion...")
 
 try:
     logger.info(f"Deleting workspace: '{workspace_display_name}'")
+    assert workspace_id is not None  # set by the lookup/verify block above
     fabric_client.delete_workspace(workspace_id)
     logger.info(f"Workspace '{workspace_display_name}' deleted successfully")
 

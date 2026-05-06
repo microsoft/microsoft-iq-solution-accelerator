@@ -45,7 +45,7 @@ suppliers_count = suppliers_df.count()
 # 2. Load ProductSuppliers Table
 product_suppliers_df = spark.read.csv(f"{DATA_PATH}/ProductSuppliers_Sample.csv", header=True, inferSchema=False)
 product_suppliers_df = product_suppliers_df \
-    .withColumn("WholesaleCost", col("WholesaleCost").cast("decimal(10,2)")) \
+    .withColumn("WholesaleCost", col("WholesaleCost").cast("double")) \
     .withColumn("MinOrderQuantity", col("MinOrderQuantity").cast("int")) \
     .withColumn("MaxOrderQuantity", col("MaxOrderQuantity").cast("int")) \
     .withColumn("LeadTimeDays", col("LeadTimeDays").cast("int")) \
@@ -61,7 +61,7 @@ supply_chain_events_df = supply_chain_events_df \
     .withColumn("StartDate", col("StartDate").cast("date")) \
     .withColumn("EndDate", col("EndDate").cast("date")) \
     .withColumn("PredictedDuration", col("PredictedDuration").cast("int")) \
-    .withColumn("ActualDuration", col("ActualDuration").cast("decimal(5,2)")) \
+    .withColumn("ActualDuration", col("ActualDuration").cast("double")) \
     .withColumn("CreatedDate", col("CreatedDate").cast("date"))
 supply_chain_events_df.write.mode("overwrite").saveAsTable(f"{SCHEMA_NAME}.SupplyChainEvents")
 events_count = supply_chain_events_df.count()
@@ -72,8 +72,8 @@ events_count = supply_chain_events_df.count()
 event_impacts_df = spark.read.csv(f"{DATA_PATH}/SupplyChainEventImpacts_Sample.csv", header=True, inferSchema=False)
 event_impacts_df = event_impacts_df \
     .withColumn("DeliveryDelay", col("DeliveryDelay").cast("int")) \
-    .withColumn("CostIncrease", col("CostIncrease").cast("decimal(5,2)")) \
-    .withColumn("EstimatedRevenueImpact", col("EstimatedRevenueImpact").cast("decimal(12,2)")) \
+    .withColumn("CostIncrease", col("CostIncrease").cast("double")) \
+    .withColumn("EstimatedRevenueImpact", col("EstimatedRevenueImpact").cast("double")) \
     .withColumn("CreatedDate", col("CreatedDate").cast("date"))
 event_impacts_df.write.mode("overwrite").saveAsTable(f"{SCHEMA_NAME}.SupplyChainEventImpacts")
 impacts_count = event_impacts_df.count()

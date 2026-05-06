@@ -42,12 +42,19 @@
     Retrieves the ontology definition and saves it to the specified custom folder path
 
 .NOTES
-    Requires Azure Developer CLI (azd) or Azure CLI (az) to be installed and logged in with appropriate permissions.
-    The script will try azd first, then fall back to az if azd is not available.
-    
+    Uses the same credential chain as Azure SDK's DefaultAzureCredential (as used by the
+    Python install script via azure.identity.DefaultAzureCredential). Credentials are tried
+    in the following order, matching DefaultAzureCredential:
+        1. Azure CLI         (az account get-access-token)
+        2. Azure PowerShell  (Get-AzAccessToken from the Az.Accounts module)
+        3. Azure Developer CLI (azd auth token)
+
+    The first available credential that returns a token is used.
+
     To authenticate:
-    - Run 'azd auth login' for Azure Developer CLI, or
-    - Run 'az login' for Azure CLI
+    - Run 'az login' for Azure CLI, or
+    - Run 'Connect-AzAccount' for Azure PowerShell, or
+    - Run 'azd auth login' for Azure Developer CLI
 
     Required Scopes:
     - Item.ReadWrite.All
@@ -115,79 +122,111 @@ function Write-Log {
 function Get-AuthToken {
     <#
     .SYNOPSIS
-        Get or refresh authentication token for Fabric API from azd or az CLI
+        Get or refresh authentication token for Fabric API.
+
+    .DESCRIPTION
+        Mirrors azure.identity.DefaultAzureCredential (used by the Python install
+        script) by trying the developer credential sources in the same order:
+            1. Azure CLI         (az account get-access-token)
+            2. Azure PowerShell  (Get-AzAccessToken)
+            3. Azure Developer CLI (azd auth token)
+
+        Each provider returns either a hashtable with @{ Token; Expiry } or
+        $null. The first non-null result wins.
     #>
 
-    try {
-        # Check if we need to refresh the token (refresh 5 minutes before expiry)
-        $currentTime = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
-
-        if (-not $script:AccessToken -or ($script:TokenExpiry -and $currentTime -gt ($script:TokenExpiry - 300))) {
-            $tokenData = $null
-            $authMethod = $null
-
-            # Try Azure Developer CLI (azd) first
-            try {
-                Write-Log "Attempting to get authentication token from Azure Developer CLI (azd)"
-                $azdTokenResponse = azd auth token --scope $script:ResourceUrl --output json 2>$null
-                
-                if ($LASTEXITCODE -eq 0 -and $azdTokenResponse) {
-                    $tokenData = $azdTokenResponse | ConvertFrom-Json
-                    
-                    # azd returns token and expiresOn
-                    if ($tokenData.token) {
-                        $script:AccessToken = $tokenData.token
-                        $authMethod = "azd"
-                        
-                        # Parse expiry time
-                        if ($tokenData.expiresOn) {
-                            $expiryDateTime = [DateTime]::Parse($tokenData.expiresOn)
-                            $script:TokenExpiry = [DateTimeOffset]::new($expiryDateTime).ToUnixTimeSeconds()
-                        }
-                        else {
-                            # Default to 1 hour if no expiry provided
-                            $script:TokenExpiry = $currentTime + 3600
-                        }
-                    }
-                }
-            }
-            catch {
-                Write-Log "Azure Developer CLI (azd) not available or failed: $($_.Exception.Message)" "WARNING"
-            }
-
-            # Fall back to Azure CLI (az) if azd didn't work
-            if (-not $authMethod) {
-                try {
-                    Write-Log "Attempting to get authentication token from Azure CLI (az)"
-                    $azTokenResponse = az account get-access-token --resource $script:ResourceUrl --query "{accessToken:accessToken,expiresOn:expiresOn}" --output json 2>$null
-
-                    if ($LASTEXITCODE -eq 0 -and $azTokenResponse) {
-                        $tokenData = $azTokenResponse | ConvertFrom-Json
-                        $script:AccessToken = $tokenData.accessToken
-                        $authMethod = "az"
-
-                        # Parse expiry time (Azure CLI returns ISO 8601 format)
-                        $expiryDateTime = [DateTime]::Parse($tokenData.expiresOn)
-                        $script:TokenExpiry = [DateTimeOffset]::new($expiryDateTime).ToUnixTimeSeconds()
-                    }
-                }
-                catch {
-                    Write-Log "Azure CLI (az) authentication failed: $($_.Exception.Message)" "ERROR"
-                }
-            }
-
-            if (-not $authMethod) {
-                throw "Authentication failed with both azd and az. Please run 'azd auth login' or 'az login' first."
-            }
-
-            Write-Log "Authentication successful using $authMethod"
-        }
-
+    # Refresh token 5 minutes before expiry
+    $currentTime = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
+    if ($script:AccessToken -and $script:TokenExpiry -and $currentTime -le ($script:TokenExpiry - 300)) {
         return $script:AccessToken
     }
-    catch {
-        throw "Authentication failed: $($_.Exception.Message)"
+
+    $defaultExpiry = $currentTime + 3600
+
+    # --- Provider 1: Azure CLI -------------------------------------------------
+    $tryAzCli = {
+        if (-not (Get-Command -Name az -ErrorAction SilentlyContinue)) {
+            Write-Log "Azure CLI (az) not found in PATH, skipping" "WARNING"; return $null
+        }
+        Write-Log "Attempting to get authentication token from Azure CLI (az)"
+        $resp = & az account get-access-token --resource $script:ResourceUrl --output json 2>&1
+        if ($LASTEXITCODE -ne 0) {
+            Write-Log "Azure CLI (az) returned exit code $LASTEXITCODE. Output: $($resp | Out-String)" "WARNING"; return $null
+        }
+        $data = ($resp | Out-String) | ConvertFrom-Json -ErrorAction Stop
+        if (-not $data.accessToken) { return $null }
+        return @{
+            Token  = $data.accessToken
+            Expiry = [DateTimeOffset]::new([DateTime]::Parse($data.expiresOn)).ToUnixTimeSeconds()
+        }
     }
+
+    # --- Provider 2: Azure PowerShell -----------------------------------------
+    $tryAzPwsh = {
+        if (-not (Get-Command -Name Get-AzAccessToken -ErrorAction SilentlyContinue)) {
+            Write-Log "Azure PowerShell (Az.Accounts) module not available, skipping" "WARNING"; return $null
+        }
+        Write-Log "Attempting to get authentication token from Azure PowerShell (Get-AzAccessToken)"
+        $supportsPlainText = (Get-Command Get-AzAccessToken).Parameters.ContainsKey('AsPlainText')
+        if ($supportsPlainText) {
+            $plain = Get-AzAccessToken -ResourceUrl $script:ResourceUrl -AsPlainText -ErrorAction Stop
+            if (-not $plain) { return $null }
+            return @{ Token = [string]$plain; Expiry = $defaultExpiry }
+        }
+        $tok = Get-AzAccessToken -ResourceUrl $script:ResourceUrl -ErrorAction Stop
+        if (-not $tok.Token) { return $null }
+        # Older Az.Accounts may return SecureString — materialize via NetworkCredential.
+        $tokenStr = if ($tok.Token -is [System.Security.SecureString]) {
+            [System.Net.NetworkCredential]::new('', $tok.Token).Password
+        } else { [string]$tok.Token }
+        $expiry = if ($tok.ExpiresOn) {
+            [DateTimeOffset]::new($tok.ExpiresOn.UtcDateTime).ToUnixTimeSeconds()
+        } else { $defaultExpiry }
+        return @{ Token = $tokenStr; Expiry = $expiry }
+    }
+
+    # --- Provider 3: Azure Developer CLI --------------------------------------
+    $tryAzd = {
+        if (-not (Get-Command -Name azd -ErrorAction SilentlyContinue)) {
+            Write-Log "Azure Developer CLI (azd) not found in PATH, skipping" "WARNING"; return $null
+        }
+        Write-Log "Attempting to get authentication token from Azure Developer CLI (azd)"
+        # azd requires the v2 scope format (resource URI + /.default).
+        $scope = "$($script:ResourceUrl.TrimEnd('/'))/.default"
+        $resp = & azd auth token --scope $scope --output json 2>&1
+        if ($LASTEXITCODE -ne 0) {
+            Write-Log "Azure Developer CLI (azd) returned exit code $LASTEXITCODE. Output: $($resp | Out-String)" "WARNING"; return $null
+        }
+        $data = ($resp | Out-String) | ConvertFrom-Json -ErrorAction Stop
+        if (-not $data.token) { return $null }
+        $expiry = if ($data.expiresOn) {
+            [DateTimeOffset]::new([DateTime]::Parse($data.expiresOn)).ToUnixTimeSeconds()
+        } else { $defaultExpiry }
+        return @{ Token = $data.token; Expiry = $expiry }
+    }
+
+    $providers = @(
+        @{ Name = 'az';           Invoke = $tryAzCli  },
+        @{ Name = 'Az PowerShell';Invoke = $tryAzPwsh },
+        @{ Name = 'azd';          Invoke = $tryAzd    }
+    )
+
+    foreach ($p in $providers) {
+        try {
+            $result = & $p.Invoke
+            if ($result) {
+                $script:AccessToken = $result.Token
+                $script:TokenExpiry = $result.Expiry
+                Write-Log "Authentication successful using $($p.Name)"
+                return $script:AccessToken
+            }
+        }
+        catch {
+            Write-Log "$($p.Name) authentication failed: $($_.Exception.Message)" "WARNING"
+        }
+    }
+
+    throw "Authentication failed with az, Azure PowerShell, and azd. Please run 'az login', 'Connect-AzAccount', or 'azd auth login' first."
 }
 
 function Invoke-FabricApiRequest {
