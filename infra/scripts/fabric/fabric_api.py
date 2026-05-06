@@ -858,6 +858,10 @@ class FabricWorkspaceApiClient(FabricApiClient):
                     error_msg = 'No location header in 202 response'
                     self._log(f"Failed to start notebook {notebook_id}: {error_msg}", "ERROR")
                     return {'status': 'Failed', 'error': error_msg}
+
+                # Extract job instance ID from the location URL (last path segment, strip query string)
+                url_path = job_monitoring_url.split('?')[0].rstrip('/')
+                job_instance_id = url_path.split('/')[-1] if '/' in url_path else None
                 
                 # Monitor the long-running operation
                 try:
@@ -877,6 +881,9 @@ class FabricWorkspaceApiClient(FabricApiClient):
                         try:
                             job_data = lro_response.json()
                             job_status = job_data.get('status', 'Completed')
+                            # Ensure the job instance ID is always present in details
+                            if job_instance_id and 'id' not in job_data:
+                                job_data['id'] = job_instance_id
                             
                             return {
                                 'status': job_status,
@@ -888,13 +895,14 @@ class FabricWorkspaceApiClient(FabricApiClient):
                             return {
                                 'status': 'Completed',
                                 'duration': duration_str,
-                                'details': {}
+                                'details': {'id': job_instance_id} if job_instance_id else {}
                             }
                             
                     else:
                         return {
                             'status': 'Failed',
                             'duration': duration_str,
+                            'details': {'id': job_instance_id} if job_instance_id else {},
                             'error': f"Unexpected response status: {lro_response.status_code}"
                         }
                         
@@ -907,12 +915,14 @@ class FabricWorkspaceApiClient(FabricApiClient):
                         return {
                             'status': 'Timeout',
                             'duration': duration_str,
+                            'details': {'id': job_instance_id} if job_instance_id else {},
                             'error': str(e)
                         }
                     else:
                         return {
                             'status': 'Failed',
                             'duration': duration_str,
+                            'details': {'id': job_instance_id} if job_instance_id else {},
                             'error': str(e)
                         }
             
@@ -933,6 +943,67 @@ class FabricWorkspaceApiClient(FabricApiClient):
             elapsed_time = time.time() - start_time
             duration_str = self._format_duration(elapsed_time)
             raise FabricApiError(f"Unexpected error executing notebook {notebook_id}: {str(e)}")
+
+    # Job instance and Livy session operations
+    def list_item_job_instances(self, item_id: str) -> List[Dict[str, Any]]:
+        """
+        List job instances for a specific item (e.g. notebook).
+
+        Args:
+            item_id: Item ID (e.g. notebook GUID)
+
+        Returns:
+            List of job instance objects from the ``value`` field of the response.
+
+        Raises:
+            FabricApiError: If the request fails.
+
+        Reference:
+            https://learn.microsoft.com/en-us/rest/api/fabric/core/job-scheduler/list-item-job-instances
+        """
+        self._log(f"Listing job instances for item {item_id} in workspace {self.workspace_id}")
+        try:
+            response = self._make_request(f"workspaces/{self.workspace_id}/items/{item_id}/jobs/instances")
+            if response.status_code == 200:
+                instances = response.json().get("value", [])
+                self._log(f"Retrieved {len(instances)} job instance(s) for item {item_id}")
+                return instances
+            else:
+                raise FabricApiError(f"Failed to list job instances for item {item_id}: HTTP {response.status_code}")
+        except FabricApiError:
+            raise
+        except Exception as e:
+            raise FabricApiError(f"Unexpected error listing job instances for item {item_id}: {str(e)}")
+
+    def list_livy_sessions(self, notebook_id: str) -> List[Dict[str, Any]]:
+        """
+        List Livy sessions for a specific notebook.
+
+        Args:
+            notebook_id: Notebook ID (GUID)
+
+        Returns:
+            List of Livy session objects from the ``value`` field of the response.
+
+        Raises:
+            FabricApiError: If the request fails.
+
+        Reference:
+            https://learn.microsoft.com/en-us/rest/api/fabric/notebook/livy-sessions/list-livy-sessions
+        """
+        self._log(f"Listing Livy sessions for notebook {notebook_id} in workspace {self.workspace_id}")
+        try:
+            response = self._make_request(f"workspaces/{self.workspace_id}/notebooks/{notebook_id}/livySessions")
+            if response.status_code == 200:
+                sessions = response.json().get("value", [])
+                self._log(f"Retrieved {len(sessions)} Livy session(s) for notebook {notebook_id}")
+                return sessions
+            else:
+                raise FabricApiError(f"Failed to list Livy sessions for notebook {notebook_id}: HTTP {response.status_code}")
+        except FabricApiError:
+            raise
+        except Exception as e:
+            raise FabricApiError(f"Unexpected error listing Livy sessions for notebook {notebook_id}: {str(e)}")
 
     # Role assignment operations
     def add_role_assignment(self, 

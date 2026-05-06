@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS {SCHEMA_NAME}.{TABLE_NAME} (
     ReorderPoint INT,           -- Trigger point for new orders
     MaxStockLevel INT,          -- Maximum warehouse capacity
     LastUpdated DATE,           -- Last inventory update
-    AverageCost DECIMAL(10,2),  -- Weighted average unit cost
+    AverageCost DOUBLE,  -- Weighted average unit cost
     Status STRING,              -- Active, Excess, Low Stock, Out of Stock
     CreatedBy STRING,           -- System user
     CreatedDate DATE       -- Record creation date
@@ -152,8 +152,8 @@ CREATE TABLE IF NOT EXISTS {SCHEMA_NAME}.{TABLE_NAME} (
     TransactionType STRING,     -- Receipt, Sale, Adjustment, Transfer
     TransactionDate DATE,       -- When transaction occurred
     Quantity INT,               -- Quantity moved (positive/negative)
-    UnitCost DECIMAL(10,2),     -- Cost per unit at time of transaction
-    TotalValue DECIMAL(10,2),   -- Total value of transaction
+    UnitCost DOUBLE,     -- Cost per unit at time of transaction
+    TotalValue DOUBLE,   -- Total value of transaction
     ReferenceNumber STRING,     -- PO number, SO number, etc.
     ReasonCode STRING,          -- Reason for adjustment/transfer
     StockBefore INT,            -- Stock level before transaction
@@ -189,7 +189,7 @@ CREATE TABLE IF NOT EXISTS {SCHEMA_NAME}.{TABLE_NAME} (
     ExpectedDeliveryDate DATE,  -- Expected delivery date
     ActualDeliveryDate DATE,    -- Actual delivery date (NULL if pending)
     Status STRING,              -- Pending, Shipped, Delivered, Cancelled
-    TotalOrderValue DECIMAL(12,2), -- Total monetary value
+    TotalOrderValue DOUBLE, -- Total monetary value
     DeliveryLocation STRING,    -- Foreign key to Warehouses.WarehouseID
     OrderedBy STRING,           -- Employee who created order
     Priority STRING,            -- Low, Medium, High, Urgent
@@ -222,8 +222,8 @@ CREATE TABLE IF NOT EXISTS {SCHEMA_NAME}.{TABLE_NAME} (
     ProductName STRING,         -- Denormalized product name
     QuantityOrdered INT,        -- Quantity requested
     QuantityReceived INT,       -- Quantity actually received
-    UnitCost DECIMAL(10,2),     -- Cost per unit
-    LineTotal DECIMAL(12,2),    -- QuantityOrdered * UnitCost
+    UnitCost DOUBLE,     -- Cost per unit
+    LineTotal DOUBLE,    -- QuantityOrdered * UnitCost
     Status STRING,              -- Pending, Partial, Complete, Cancelled
     ExpectedDate DATE,          -- Expected receipt date for this line
     ReceivedDate DATE,          -- Actual receipt date (NULL if pending)
@@ -256,14 +256,14 @@ CREATE TABLE IF NOT EXISTS {SCHEMA_NAME}.{TABLE_NAME} (
     ForecastDate DATE,          -- Future date being predicted
     ForecastPeriod STRING,      -- Weekly, Monthly, Quarterly
     PredictedDemand INT,        -- Forecasted units needed
-    ConfidenceLevel DECIMAL(5,2), -- 0-100% confidence score
-    SeasonalMultiplier DECIMAL(5,2), -- Seasonal adjustment factor
+    ConfidenceLevel DOUBLE, -- 0-100% confidence score
+    SeasonalMultiplier DOUBLE, -- Seasonal adjustment factor
     TrendDirection STRING,      -- Growing, Stable, Declining
     BaselineDemand INT,         -- Historical average demand
     MethodUsed STRING,          -- Forecast algorithm/method
     ForecastHorizon INT,        -- Days into future
     ActualDemand INT,           -- NULL until period completes
-    AccuracyScore DECIMAL(5,2), -- NULL until actual vs predicted calculated
+    AccuracyScore DOUBLE, -- NULL until actual vs predicted calculated
     CreatedBy STRING,           -- System user or model
     CreatedDate DATE       -- When forecast generated
 )

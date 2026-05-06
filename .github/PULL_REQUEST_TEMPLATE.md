@@ -23,23 +23,17 @@
   * !: A breaking change is indicated with a `!` after the listed prefixes above, e.g. `feat!`, `fix!`, `refactor!`, etc.
 -->
 
-## How to Test
-*  Get the code
+## Golden Path Validation
+- [ ] I have tested the primary workflows (the "golden path") to ensure they function correctly without errors.
 
-```
-git clone [repo-address]
-cd [repo-name]
-git checkout [branch-name]
-```
-
-* Test the code
-<!-- Add steps to run the tests suite and/or manually test -->
-```
-```
+## Deployment Validation
+- [ ] I have validated the deployment process successfully and all services are running as expected with this change.
 
 ## What to Check
 Verify that the following are valid
 * ...
 
 ## Other Information
+
 <!-- Add any other helpful information that may be needed here. -->
+

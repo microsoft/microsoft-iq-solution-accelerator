@@ -285,6 +285,43 @@ def _upload_installer_notebook(workspace_client, notebook_path: str, github_toke
     return notebook_id
 
 
+def _get_monitoring_url(workspace_client, notebook_id: str, job_instance_id: str) -> str | None:
+    """Return the Fabric monitoring URL for a failed notebook job.
+
+    Looks up the Livy session matching *job_instance_id* and builds the
+    monitoring URL from its ``livyId``.
+
+    Args:
+        workspace_client: Authenticated :class:`FabricWorkspaceApiClient`.
+        notebook_id: ID of the notebook whose job failed.
+        job_instance_id: Job instance ID from the :meth:`schedule_notebook_job` result.
+
+    Returns:
+        str: Monitoring URL, or ``None`` if it cannot be determined.
+    """
+    try:
+        livy_sessions = workspace_client.list_livy_sessions(notebook_id)
+        matched_session = next(
+            (s for s in livy_sessions if s.get("jobInstanceId") == job_instance_id), None
+        )
+        if not matched_session:
+            logger.debug(f"   No Livy session matched job instance {job_instance_id}")
+            return None
+
+        livy_id = matched_session.get("livyId")
+        if not livy_id:
+            logger.debug("   Livy session has no livyId field")
+            return None
+
+        return (
+            f"https://app.fabric.microsoft.com/workloads/de-ds/monitor"
+            f"/{notebook_id}/{livy_id}?experience=fabric-developer"
+        )
+    except Exception as exc:
+        logger.debug(f"   Could not retrieve monitoring URL: {exc}")
+        return None
+
+
 def _run_installer_notebook(workspace_client, notebook_id: str, monitor_interval: int = 20) -> None:
     """Schedule and monitor the installer notebook job until completion.
 
@@ -308,8 +345,18 @@ def _run_installer_notebook(workspace_client, notebook_id: str, monitor_interval
 
     if status != "Completed":
         error_detail = result.get("error", "No error details available")
+        job_instance_id = result.get("details", {}).get("id")
+        monitoring_url = _get_monitoring_url(workspace_client, notebook_id, job_instance_id) if job_instance_id else None
+        if monitoring_url:
+            logger.info(f"   Open the monitoring URL below to inspect the notebook output and find the error:")
+            logger.info(f"   Monitoring URL: {monitoring_url}")
         raise FabricApiError(
             f"Installer notebook finished with status '{status}'. Error: {error_detail}"
+            + (
+                f"\n      To diagnose: open the monitoring URL, navigate to the failed cell,"
+                f" and expand its output to find the error.\n      Monitoring URL: {monitoring_url}"
+                if monitoring_url else ""
+            )
         )
 
     logger.info(f"   Installer notebook completed successfully")
