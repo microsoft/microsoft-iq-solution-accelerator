@@ -44,9 +44,9 @@ for product_line in PRODUCT_LINES:
     df = spark.read.csv(f"{DATA_PATH}/{product_line}/Order_Samples_{product_line.title()}.csv", header=True, inferSchema=False)
     df = df \
         .withColumn("OrderDate", col("OrderDate").cast("date")) \
-        .withColumn("SubTotal", col("SubTotal").cast("decimal(18,2)")) \
-        .withColumn("TaxAmount", col("TaxAmount").cast("decimal(18,2)")) \
-        .withColumn("OrderTotal", col("OrderTotal").cast("decimal(18,2)"))
+        .withColumn("SubTotal", col("SubTotal").cast("double")) \
+        .withColumn("TaxAmount", col("TaxAmount").cast("double")) \
+        .withColumn("OrderTotal", col("OrderTotal").cast("double"))
     order_dfs.append(df)
 
 combined_orders_df = order_dfs[0]
@@ -65,10 +65,10 @@ for product_line in PRODUCT_LINES:
     df = df \
         .withColumn("OrderLineNumber", col("OrderLineNumber").cast("int")) \
         .withColumn("Quantity", col("Quantity").cast("int")) \
-        .withColumn("UnitPrice", col("UnitPrice").cast("decimal(18,2)")) \
-        .withColumn("LineTotal", col("LineTotal").cast("decimal(18,2)")) \
-        .withColumn("DiscountAmount", col("DiscountAmount").cast("decimal(18,2)")) \
-        .withColumn("TaxAmount", col("TaxAmount").cast("decimal(18,2)"))
+        .withColumn("UnitPrice", col("UnitPrice").cast("double")) \
+        .withColumn("LineTotal", col("LineTotal").cast("double")) \
+        .withColumn("DiscountAmount", col("DiscountAmount").cast("double")) \
+        .withColumn("TaxAmount", col("TaxAmount").cast("double"))
     orderline_dfs.append(df)
 
 combined_orderlines_df = orderline_dfs[0]
