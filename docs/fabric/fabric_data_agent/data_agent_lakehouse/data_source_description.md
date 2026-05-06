@@ -94,8 +94,8 @@ Master data entities for customer identity, accounts, locations, and relationshi
 | CountryId | STRING | Country code | US, CA |
 | SubdivisionName | STRING | State or province full name | Texas, Washington |
 | Region | STRING | Business region classification | Northeast, West Coast, Midwest, South |
-| Latitude | DECIMAL(10,7) | Geographic latitude | 30.2672000 |
-| Longitude | DECIMAL(10,7) | Geographic longitude | -97.7431000 |
+| Latitude | DOUBLE | Geographic latitude | 30.2672000 |
+| Longitude | DOUBLE | Geographic longitude | -97.7431000 |
 | Note | STRING | Additional location notes | "Primary shipping address" |
 
 ---
@@ -154,9 +154,9 @@ Product catalog and category data used across sales, inventory, and supply chain
 | ProductModel | STRING | Model or series name | "Summit Pro", "Trail Lite" |
 | ProductCategoryID | STRING | Foreign key to ProductCategory | 151, 152, 153 |
 | CategoryName | STRING | Denormalized category name | Camping, Kitchen, Ski |
-| ListPrice | DECIMAL(18,2) | Suggested retail price | 249.99, 1499.00 |
-| StandardCost | DECIMAL(18,2) | Manufacturing or procurement cost | 124.50, 750.00 |
-| Weight | DECIMAL(18,3) | Product weight | 2.500, 15.750 |
+| ListPrice | DOUBLE | Suggested retail price | 249.99, 1499.00 |
+| StandardCost | DOUBLE | Manufacturing or procurement cost | 124.50, 750.00 |
+| Weight | DOUBLE | Product weight | 2.500, 15.750 |
 | WeightUom | STRING | Unit of measure for weight | kg, lb, oz |
 | ProductStatus | STRING | Current lifecycle status | active, inactive, discontinued |
 | CreatedDate | DATE | Date product was created in system | 2023-01-15 |
@@ -210,9 +210,9 @@ Sales transaction data covering orders, line items, and payment records.
 | CustomerAccountId | STRING | Foreign key to CustomerAccount table | CA-0001, CA-0002, CA-0003 |
 | OrderDate | DATE | Date order was placed | 2025-03-15 |
 | OrderStatus | STRING | Current order processing status | Completed, Pending, Cancelled |
-| SubTotal | DECIMAL(18,2) | Order total before tax | 2399.95 |
-| TaxAmount | DECIMAL(18,2) | Tax amount (5% flat rate) | 120.00 |
-| OrderTotal | DECIMAL(18,2) | Final total including tax | 2519.95 |
+| SubTotal | DOUBLE | Order total before tax | 2399.95 |
+| TaxAmount | DOUBLE | Tax amount (5% flat rate) | 120.00 |
+| OrderTotal | DOUBLE | Final total including tax | 2519.95 |
 | PaymentMethod | STRING | Payment method used | VISA, MC, PayPal, Discover |
 | IsoCurrencyCode | STRING | Currency code | USD |
 | CreatedBy | STRING | System/user who created the order | SampleGen |
@@ -234,11 +234,11 @@ Sales transaction data covering orders, line items, and payment records.
 | OrderLineNumber | INT | Sequential line number within the order | 1, 2, 3 |
 | ProductId | STRING | Foreign key to Product table | UUID format |
 | ProductName | STRING | Denormalized product name | "Summit Pro Tent 4-Person" |
-| Quantity | DECIMAL(18,2) | Number of units ordered | 1, 2, 5 |
-| UnitPrice | DECIMAL(18,2) | Price per unit at time of order | 249.99 |
-| LineTotal | DECIMAL(18,2) | Quantity × UnitPrice | 499.98 |
-| DiscountAmount | DECIMAL(18,2) | Discount applied to the line | 0.00, 25.00 |
-| TaxAmount | DECIMAL(18,2) | Tax for this line item (5%) | 25.00 |
+| Quantity | DOUBLE | Number of units ordered | 1, 2, 5 |
+| UnitPrice | DOUBLE | Price per unit at time of order | 249.99 |
+| LineTotal | DOUBLE | Quantity × UnitPrice | 499.98 |
+| DiscountAmount | DOUBLE | Discount applied to the line | 0.00, 25.00 |
+| TaxAmount | DOUBLE | Tax for this line item (5%) | 25.00 |
 
 ---
 
@@ -270,9 +270,9 @@ Financial data covering accounts, invoicing, and payment processing.
 | OrderId | STRING | Foreign key to Sales Order table | UUID format |
 | InvoiceDate | DATE | Date invoice was created | 2025-03-15 |
 | DueDate | DATE | Payment due date | 2025-04-14 |
-| SubTotal | DECIMAL(18,2) | Invoice amount before tax | 2399.95 |
-| TaxAmount | DECIMAL(18,2) | Tax portion of invoice | 120.00 |
-| TotalAmount | DECIMAL(18,2) | Total invoice amount | 2519.95 |
+| SubTotal | DOUBLE | Invoice amount before tax | 2399.95 |
+| TaxAmount | DOUBLE | Tax portion of invoice | 120.00 |
+| TotalAmount | DOUBLE | Total invoice amount | 2519.95 |
 | InvoiceStatus | STRING | Current invoice status | Paid, Pending, Overdue, Cancelled |
 | CreatedBy | STRING | System/user who created the invoice | SampleGen |
 
@@ -290,7 +290,7 @@ Financial data covering accounts, invoicing, and payment processing.
 | AccountStatus | STRING | Current account status | Active, Closed, Suspended |
 | CreatedDate | DATE | Account creation date | 2022-12-21 |
 | ClosedDate | DATE | Closure date (NULL if still open) | NULL, 2025-06-30 |
-| Balance | DECIMAL(18,2) | Current account balance | 0.00, 20642.95, -1500.00 |
+| Balance | DOUBLE | Current account balance | 0.00, 20642.95, -1500.00 |
 | Currency | STRING | Account currency | USD, EUR, GBP |
 | Description | STRING | Account purpose description | "Customer receivable account (Fabric)" |
 | CreatedBy | STRING | User/system who created the account | SampleGen |
@@ -312,7 +312,7 @@ Financial data covering accounts, invoicing, and payment processing.
 | InvoiceId | STRING | Foreign key to Invoice table | UUID format |
 | CustomerId | STRING | Foreign key to Customer table | UUID format |
 | PaymentDate | DATE | Date payment was received | 2025-03-20 |
-| PaymentAmount | DECIMAL(18,2) | Amount paid | 2519.95 |
+| PaymentAmount | DOUBLE | Amount paid | 2519.95 |
 | PaymentMethod | STRING | Payment method used | VISA, MC, Discover, PayPal |
 | PaymentStatus | STRING | Current payment status | Completed, Pending, Failed, Refunded |
 | CreatedBy | STRING | User/system who created the record | SampleGen |
@@ -338,7 +338,6 @@ Inventory management data covering warehouses, stock levels, purchase orders, an
 | AddressCity | STRING | City | Dallas, Chicago, Seattle |
 | AddressState | STRING | State abbreviation | TX, IL, WA |
 | ManagerName | STRING | Warehouse manager | "John Martinez" |
-| Priority | DECIMAL(3,2) | Inventory allocation priority (0.0–1.0) | 0.60, 0.25, 0.15 |
 | MaxCapacity | INT | Maximum storage capacity (units) | 50000 |
 | AutomationLevel | STRING | Level of warehouse automation | High, Medium, Low |
 
@@ -360,7 +359,7 @@ Inventory management data covering warehouses, stock levels, purchase orders, an
 | SafetyStockLevel | INT | Minimum acceptable stock threshold | 100 |
 | ReorderPoint | INT | Trigger point for new purchase orders | 150 |
 | MaxStockLevel | INT | Maximum stock allowed in warehouse | 2000 |
-| AverageCost | DECIMAL(10,2) | Weighted average unit cost | 124.50 |
+| AverageCost | DOUBLE | Weighted average unit cost | 124.50 |
 | Status | STRING | Stock status classification | Active, Excess, Low Stock, Out of Stock |
 
 ---
@@ -377,8 +376,8 @@ Inventory management data covering warehouses, stock levels, purchase orders, an
 | TransactionType | STRING | Type of movement | Receipt, Sale, Adjustment, Transfer |
 | TransactionDate | TIMESTAMP | When the transaction occurred | 2025-11-01 09:00:00 |
 | Quantity | INT | Units moved (positive = in, negative = out) | 200, -15 |
-| UnitCost | DECIMAL(10,2) | Cost per unit at time of transaction | 124.50 |
-| TotalValue | DECIMAL(10,2) | Total monetary value of transaction | 24900.00 |
+| UnitCost | DOUBLE | Cost per unit at time of transaction | 124.50 |
+| TotalValue | DOUBLE | Total monetary value of transaction | 24900.00 |
 | ReferenceNumber | STRING | PO number, order number, etc. | PO-001, F100055 |
 | ReasonCode | STRING | Reason for adjustment or transfer | Cycle Count, Damage, Return |
 | StockBefore | INT | Stock level before transaction | 300 |
@@ -399,7 +398,7 @@ Inventory management data covering warehouses, stock levels, purchase orders, an
 | ExpectedDeliveryDate | DATE | Expected delivery date | 2025-11-01 |
 | ActualDeliveryDate | DATE | Actual delivery date (NULL if pending) | NULL, 2025-11-03 |
 | Status | STRING | PO processing status | Pending, Shipped, Delivered, Cancelled |
-| TotalOrderValue | DECIMAL(12,2) | Total monetary value of PO | 48750.00 |
+| TotalOrderValue | DOUBLE | Total monetary value of PO | 48750.00 |
 | DeliveryLocation | STRING | Warehouse receiving the order | Main, Backup, Regional |
 | Priority | STRING | Order urgency | Low, Medium, High, Urgent |
 
@@ -421,8 +420,8 @@ Inventory management data covering warehouses, stock levels, purchase orders, an
 | ProductCategory | STRING | Product category | Camping, Kitchen, Ski |
 | QuantityOrdered | INT | Units requested | 200 |
 | QuantityReceived | INT | Units actually received | 200, 150 |
-| UnitCost | DECIMAL(10,2) | Per-unit wholesale cost | 124.50 |
-| LineTotal | DECIMAL(12,2) | QuantityOrdered × UnitCost | 24900.00 |
+| UnitCost | DOUBLE | Per-unit wholesale cost | 124.50 |
+| LineTotal | DOUBLE | QuantityOrdered × UnitCost | 24900.00 |
 | Status | STRING | Line item fulfillment status | Pending, Partial, Complete, Cancelled |
 | ExpectedDate | DATE | Expected receipt date for this line | 2025-11-01 |
 | ReceivedDate | DATE | Actual receipt date (NULL if pending) | NULL, 2025-11-03 |
@@ -440,8 +439,8 @@ Inventory management data covering warehouses, stock levels, purchase orders, an
 | ForecastDate | DATE | Future date being forecasted | 2026-04-01 |
 | ForecastPeriod | STRING | Forecast granularity | Weekly, Monthly, Quarterly |
 | PredictedDemand | INT | Forecasted units needed | 150 |
-| ConfidenceLevel | DECIMAL(5,2) | Confidence score (0–100%) | 85.50 |
-| SeasonalMultiplier | DECIMAL(5,2) | Seasonal adjustment factor | 1.25, 0.80 |
+| ConfidenceLevel | DOUBLE | Confidence score (0–100%) | 85.50 |
+| SeasonalMultiplier | DOUBLE | Seasonal adjustment factor | 1.25, 0.80 |
 | TrendDirection | STRING | Directional trend | Growing, Stable, Declining |
 | BaselineDemand | INT | Historical average demand | 120 |
 | MethodUsed | STRING | Forecasting algorithm or method | "Moving Average", "Seasonal Decomposition" |
@@ -493,7 +492,7 @@ Supplier master data, product-supplier relationships, and disruption event track
 | SupplierID | INT | Foreign key to Suppliers table | 1 |
 | SupplierName | STRING | Denormalized supplier name | "Contoso Camping Equipment" |
 | SupplierProductCode | STRING | Supplier's internal SKU | CCA-TENT-001 |
-| WholesaleCost | DECIMAL(10,2) | Supplier cost per unit (60–80% of retail) | 124.50 |
+| WholesaleCost | DOUBLE | Supplier cost per unit (60–80% of retail) | 124.50 |
 | MinOrderQuantity | INT | Minimum order size | 50 |
 | MaxOrderQuantity | INT | Maximum order size (NULL = no limit) | 500, NULL |
 | LeadTimeDays | INT | Product-specific lead time | 14 |
@@ -519,9 +518,9 @@ Supplier master data, product-supplier relationships, and disruption event track
 | ProductCategory | STRING | Affected product category | Camping, Kitchen, Ski, NULL |
 | ImpactLevel | STRING | Impact severity on operations | None, Low, Medium, High |
 | DeliveryDelay | INT | Additional days of delay caused | 0, 5, 14 |
-| CostIncrease | DECIMAL(5,2) | Percentage cost increase (0–100) | 0.00, 12.50 |
+| CostIncrease | DOUBLE | Percentage cost increase (0–100) | 0.00, 12.50 |
 | AlternativeAction | STRING | Mitigation action taken | "Switched to backup supplier" |
-| EstimatedRevenueImpact | DECIMAL(12,2) | Estimated financial impact | 50000.00 |
+| EstimatedRevenueImpact | DOUBLE | Estimated financial impact | 50000.00 |
 
 **Business Rules**:
 - `EndDate = NULL` means the disruption is still ongoing

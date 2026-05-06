@@ -108,8 +108,8 @@ CREATE TABLE IF NOT EXISTS {SCHEMA_NAME}.{TABLE_NAME} (
     CountryID STRING,
     SubdivisionName STRING,
     Region STRING,        -- "Northeast", "West Coast", "Midwest"
-    Latitude DECIMAL(10,7),
-    Longitude DECIMAL(10,7),
+    Latitude DOUBLE,
+    Longitude DOUBLE,
     Note STRING
 )
 USING DELTA
