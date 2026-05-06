@@ -34,7 +34,7 @@ These docs live at `docs/fabric/`. Relative paths from this location:
 | Other docs in same folder | `./DeploymentGuideFabricManual.md` |
 | Install script | `../../infra/scripts/install_microsoft_iq_solution.py` |
 | Remove script | `../../infra/scripts/remove_microsoft_iq_solution.py` |
-| Helper modules | `../../infra/scripts/fabric/helpers/workspace.py`, etc. |
+| Helper modules | `../../infra/scripts/common/config.py`, `logging_config.py`, `env_utils.py`, `env.py`, `pdf_utils.py`, `step_printer.py`<br>`../../infra/scripts/fabric/step_workspace_setup.py`, `step_workspace_admins.py`, `step_notebook_installer.py`<br>`../../infra/scripts/foundry/step_knowledge_base.py`, `step_agent_setup.py` |
 | Installer notebook | `../../infra/fabric/deploy/fabric_solution_installer.ipynb` |
 | Workspace items | `../../src/fabric/fabric_workspace/`<br>`../../src/fabric/definitions/` |
 | Bicep template | `../../infra/main.bicep` |
@@ -46,12 +46,12 @@ These docs live at `docs/fabric/`. Relative paths from this location:
 
 | What | Authoritative source |
 |---|---|
-| Script behavior & env vars | Python files in [`infra/scripts/`](../../infra/scripts/) — entry points at `install_microsoft_iq_solution.py`, `remove_microsoft_iq_solution.py`; library package at `fabric/` |
+| Script behavior & env vars | Python files in [`infra/scripts/`](../../infra/scripts/) — entry points at `install_microsoft_iq_solution.py`, `remove_microsoft_iq_solution.py`; library packages at `common/`, `fabric/`, `foundry/` |
 | Workspace items (standard items: lakehouse, notebooks, agents, reports, semantic models) | [`src/fabric/fabric_workspace/`](../../src/fabric/fabric_workspace/) folder structure |
 | Workspace items (ontology definitions) | [`src/fabric/definitions/`](../../src/fabric/definitions/) folder structure |
 | Azure infrastructure | [`infra/main.bicep`](../../infra/main.bicep) |
 | azd hooks & orchestration | [`azure.yaml`](../../azure.yaml) |
-| Solution name & defaults | [`infra/scripts/fabric/helpers/config.py`](../../infra/scripts/fabric/helpers/config.py) |
+| Solution name & defaults | [`infra/scripts/common/config.py`](../../infra/scripts/common/config.py) |
 
 When these sources change, the deployment docs must be updated to match.
 
