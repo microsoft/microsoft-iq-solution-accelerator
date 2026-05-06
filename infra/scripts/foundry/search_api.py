@@ -65,7 +65,7 @@ def create_or_update_search_index(
     """Create or update an Azure AI Search index with semantic and vector-search config.
 
     The index schema matches the document shape produced by
-    :func:`~foundry.helpers.pdf_utils.process_pdfs_to_documents`.
+    :func:`~common.pdf_utils.process_pdfs_to_documents`.
     The configured vectorizer enables query-time embedding generation
     using the specified Azure OpenAI model.
 

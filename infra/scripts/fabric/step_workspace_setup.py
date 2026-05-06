@@ -10,7 +10,7 @@ import logging
 import sys
 import os
 
-from ..fabric_api import FabricApiClient, FabricApiError
+from fabric.fabric_api import FabricApiClient, FabricApiError
 
 # Module-level logger — inherits configuration from the root logger set up
 # by setup_logging() in the entry-point scripts.  No handlers or levels are
@@ -190,7 +190,7 @@ def main():
         epilog="""
 Examples:
   # Create workspace and assign to capacity
-  python workspace.py --capacity-name "MyCapacity" --workspace-name "MyWorkspace"
+  python step_workspace_setup.py --capacity-name "MyCapacity" --workspace-name "MyWorkspace"
         """
     )
     

@@ -1,6 +1,6 @@
 ---
-description: "Use when editing Python files under infra/scripts/fabric/ or infra/scripts/ entry-point scripts or the fabric_solution_installer.ipynb notebook. Covers module architecture, deployment flow, logging conventions, environment variables, and documentation sync with DeploymentGuideFabric.md and DeploymentGuideFabricManual.md."
-applyTo: "infra/scripts/fabric/**/*.py, infra/scripts/install_microsoft_iq_solution.py, infra/scripts/remove_microsoft_iq_solution.py, infra/fabric/deploy/fabric_solution_installer.ipynb"
+description: "Use when editing Python files under infra/scripts/common/, infra/scripts/fabric/, infra/scripts/foundry/, the entry-point scripts, or the fabric_solution_installer.ipynb notebook. Covers module architecture, deployment flow, logging conventions, environment variables, and documentation sync with DeploymentGuideFabric.md and DeploymentGuideFabricManual.md."
+applyTo: "infra/scripts/common/**/*.py, infra/scripts/fabric/**/*.py, infra/scripts/foundry/**/*.py, infra/scripts/install_microsoft_iq_solution.py, infra/scripts/remove_microsoft_iq_solution.py, infra/fabric/deploy/fabric_solution_installer.ipynb"
 ---
 
 # Fabric deployment scripts and installer notebook — conventions and documentation sync
@@ -9,33 +9,79 @@ applyTo: "infra/scripts/fabric/**/*.py, infra/scripts/install_microsoft_iq_solut
 
 ```text
 infra/scripts/
-├── install_microsoft_iq_solution.py  # Entry-point: azd postprovision hook (4-step bootstrap)
+├── install_microsoft_iq_solution.py  # Entry-point: azd postprovision hook (6-step bootstrap)
 ├── remove_microsoft_iq_solution.py   # Entry-point: azd predown hook (workspace removal)
-└── fabric/                           # Package: Fabric API clients and helpers
+├── common/                           # Package: cross-cutting helpers (azd, repo paths, env vars, PDFs)
+│   ├── __init__.py
+│   ├── config.py                     # SOLUTION_NAME, REPO_ROOT, DATA_DIR, default_workspace_name()
+│   ├── logging_config.py             # setup_logging(), _EmojiFormatter
+│   ├── env_utils.py                  # get_required_env_var, read_file_content,
+│   │                                 # parse_workspace_administrators
+│   ├── env.py                        # azd/.env loaders, get_required_env, get_data_folder
+│   ├── pdf_utils.py                  # PDF extraction + sentence-aware chunking
+│   └── step_printer.py               # print_step, print_steps_summary
+├── fabric/                           # Package: Fabric REST clients and Fabric-domain step orchestration
+│   ├── __init__.py
+│   ├── fabric_api.py                 # Fabric REST API client (workspaces, notebooks, roles, LROs)
+│   ├── graph_api.py                  # Graph API client (user/SP resolution)
+│   ├── notebook_installer.py         # INSTALLER_NOTEBOOK_NAME, get_notebook_path, encode_notebook,
+│   │                                 # upload_installer_notebook, run_installer_notebook
+│   ├── workspace.py                  # setup_workspace() — create/find workspace, resume capacity
+│   └── workspace_admins.py           # setup_workspace_administrators() — Graph API + fallback
+└── foundry/                          # Package: Foundry / AI Search clients and step orchestration
     ├── __init__.py
-    ├── fabric_api.py                 # Fabric REST API client (workspaces, notebooks, roles, LROs)
-    ├── graph_api.py                  # Graph API client (user/SP resolution)
-    └── helpers/
-        ├── logging_config.py         # setup_logging(), _EmojiFormatter
-        ├── config.py                 # SOLUTION_NAME, REPO_ROOT, default_workspace_name()
-        ├── utils.py                  # File I/O, env vars, notebook encoding, step formatting
-        ├── workspace.py              # setup_workspace() — create/find workspace, resume capacity
-        └── workspace_admins.py       # setup_workspace_administrators() — Graph API + fallback
+    ├── search_api.py                 # Azure AI Search: index, knowledge source, knowledge base
+    ├── blob_api.py                   # Azure Blob Storage upload helpers
+    ├── agent_api.py                  # AI Foundry agent + KB MCP project connection
+    ├── knowledge_base.py             # setup_knowledge_base() — search index + KS + KB
+    └── agent_setup.py                # setup_agent() — agent + KB MCP connection
 ```
 
 ### Entry-point vs library modules
 
 - **Entry-point scripts** (`install_microsoft_iq_solution.py`, `remove_microsoft_iq_solution.py`)
   call `setup_logging()` once at startup before other imports.
-- **Library modules** (`fabric_api.py`, `graph_api.py`, `helpers/*.py`) never call
+- **Library modules** (`common/*.py`, `fabric/*.py`, `foundry/*.py`) never call
   `setup_logging()`. They only acquire loggers via `logging.getLogger(__name__)`.
-  Helper modules use **relative imports** (`from ..fabric_api import …`, `from .config import …`);
-  they never manipulate `sys.path`.
+  Library modules use **absolute** package imports (`from common.config import …`,
+  `from fabric.fabric_api import …`, `from foundry.search_api import …`); they never
+  use `from ..` relative imports and never manipulate `sys.path`.
+
+### Cross-package helpers (`common/`)
+
+Anything that is not specific to a Fabric or Foundry REST surface lives in
+`common/`. This includes solution / repo-path constants, azd environment
+loaders, env-var parsing, file I/O, logging configuration, step header
+formatting, and PDF chunking. Both domain packages and the entry-point
+scripts import from here directly:
+
+- [`common/config.py`](../../infra/scripts/common/config.py) — `SOLUTION_NAME = "Microsoft IQ"`, `REPO_ROOT`, `DATA_DIR` (Foundry data folder), and `default_workspace_name(suffix)` for the Fabric workspace name format.
+- [`common/logging_config.py`](../../infra/scripts/common/logging_config.py) — `setup_logging()` with `LOG_LEVEL` env var support and `_EmojiFormatter`.
+- [`common/env_utils.py`](../../infra/scripts/common/env_utils.py) — `get_required_env_var()`, `read_file_content()`, and `parse_workspace_administrators()` (combines `AZURE_FABRIC_CAPACITY_ADMINISTRATORS` and `FABRIC_WORKSPACE_ADMINISTRATORS`).
+- [`common/env.py`](../../infra/scripts/common/env.py) — azd/.env loaders (`load_azd_env`, `load_project_env`, `load_all_env`), `get_required_env`, `get_data_folder`, `print_env_status`. Used by standalone Foundry scripts (e.g. `foundry/test_agent.py`) that run outside `azd`.
+- [`common/pdf_utils.py`](../../infra/scripts/common/pdf_utils.py) — `extract_pages_from_pdf`, `chunk_text_by_sentences`, `process_pdfs_to_documents` (used by `setup_knowledge_base`).
+- [`common/step_printer.py`](../../infra/scripts/common/step_printer.py) — `print_step()`, `print_steps_summary()`.
+
+The domain packages (`fabric/`, `foundry/`) only contain modules that talk to
+Fabric / Foundry REST APIs or orchestrate a deployment step on top of those
+clients.
+
+### Foundry-side step orchestration
+
+`foundry/step_knowledge_base.py` (`setup_knowledge_base()`) and `foundry/step_agent_setup.py`
+(`setup_agent()`) follow the same pattern as the Fabric-side `fabric/step_workspace_setup.py`
+(`setup_workspace()`) and `fabric/step_workspace_admins.py`
+(`setup_workspace_administrators()`): each is a single top-level function that the
+entry-point script calls once, takes the config values it needs as parameters, owns
+its file I/O (`ontology_config.json`, `search_ids.json`, `agent_ids.json`), and
+raises on hard errors. Skip-when-not-configured logic stays in the entry point.
 
 ### Key constants and environment variables
 
-From [`helpers/config.py`](../../infra/scripts/fabric/helpers/config.py):
+From [`common/config.py`](../../infra/scripts/common/config.py):
 - `SOLUTION_NAME = "Microsoft IQ"`
+- `REPO_ROOT` — absolute path to the repository root
+- `DATA_DIR` — repo-relative path to `src/foundry/data`
 - `default_workspace_name(suffix)` → `"Microsoft IQ - {suffix}"`
 
 Required env vars (set by azd/Bicep outputs — do not set manually):
@@ -46,13 +92,15 @@ Optional env vars (user-configurable):
 
 ### Deployment flow
 
-[`install_microsoft_iq_solution.py`](../../infra/scripts/install_microsoft_iq_solution.py) runs 4 steps:
-1. `setup_workspace` — create/find workspace, assign capacity, resume if paused (via [`workspace.py`](../../infra/scripts/fabric/helpers/workspace.py))
-2. `setup_administrators` — add admins with Graph API resolution + fallback (via [`workspace_admins.py`](../../infra/scripts/fabric/helpers/workspace_admins.py))
-3. `upload_installer` — upload [`fabric_solution_installer.ipynb`](../../infra/fabric/deploy/fabric_solution_installer.ipynb) (create or update). The notebook is automatically patched before upload to:
+[`install_microsoft_iq_solution.py`](../../infra/scripts/install_microsoft_iq_solution.py) runs 6 steps unconditionally (matching `ALL_DEPLOYMENT_STEPS`). All required env vars are sourced from `main.bicep` outputs via `azd`; the script aborts on the first step that raises:
+1. `setup_knowledge_base` — create AI Search index, upload PDFs, create Foundry IQ knowledge source and knowledge base (via [`foundry/step_knowledge_base.py`](../../infra/scripts/foundry/step_knowledge_base.py))
+2. `setup_agent` — create AI Foundry agent with Knowledge Base MCP tool (via [`foundry/step_agent_setup.py`](../../infra/scripts/foundry/step_agent_setup.py))
+3. `setup_workspace` — create/find workspace, assign capacity, resume if paused (via [`fabric/step_workspace_setup.py`](../../infra/scripts/fabric/step_workspace_setup.py))
+4. `setup_administrators` — add admins with Graph API resolution + fallback (via [`fabric/step_workspace_admins.py`](../../infra/scripts/fabric/step_workspace_admins.py))
+5. `upload_installer` — upload [`fabric_solution_installer.ipynb`](../../infra/fabric/deploy/fabric_solution_installer.ipynb) (create or update; via [`fabric/step_notebook_installer.py`](../../infra/scripts/fabric/step_notebook_installer.py)). The notebook is automatically patched before upload to:
    - Set `GITHUB_BRANCH` to the currently checked out git branch (detected via `git branch --show-current`)
    - Inject `GITHUB_TOKEN` if the environment variable is set (for private repository access)
-4. `run_installer` — execute notebook as Fabric job; notebook uses [fabric-launcher](https://github.com/microsoft/fabric-launcher) to deploy items from [`src/fabric/fabric_workspace/`](../../src/fabric/fabric_workspace/) via [Fabric Git integration](https://learn.microsoft.com/fabric/cicd/git-integration/intro-to-git-integration)
+6. `run_installer` — execute notebook as Fabric job (via [`fabric/step_notebook_installer.py`](../../infra/scripts/fabric/step_notebook_installer.py)); notebook uses [fabric-launcher](https://github.com/microsoft/fabric-launcher) to deploy items from [`src/fabric/fabric_workspace/`](../../src/fabric/fabric_workspace/) via [Fabric Git integration](https://learn.microsoft.com/fabric/cicd/git-integration/intro-to-git-integration)
 
 [`remove_microsoft_iq_solution.py`](../../infra/scripts/remove_microsoft_iq_solution.py) runs as `azd down` predown hook: looks up workspace by name or `FABRIC_WORKSPACE_ID`, deletes it unattended, exits 0 on all errors.
 
@@ -106,11 +154,11 @@ When modifying scripts in this folder, check and update **both** the deployment 
 ### Project configuration files
 
 - [`azure.yaml`](../../azure.yaml) — azd project config. Defines `postprovision` (install) and `predown` (remove) hooks that invoke [`Run-PythonScript.ps1`](../../infra/scripts/utils/Run-PythonScript.ps1) with the script path. Update when script paths change, scripts are added/removed, or hook behavior changes (e.g., new flags for `Run-PythonScript.ps1`).
-- [`requirements.txt`](../../requirements.txt) — Python dependencies for **local scripts only** (`infra/scripts/fabric/`). Does **not** affect the installer notebook, which runs in Fabric and manages its own dependencies via `%pip install`. Update when adding, removing, or changing a package import in the local Python scripts. Current deps: `azure-identity`, `requests`, `azure-mgmt-fabric`.
+- [`requirements.txt`](../../requirements.txt) — Python dependencies for **local scripts only** (`infra/scripts/common/`, `infra/scripts/fabric/`, and `infra/scripts/foundry/`). Does **not** affect the installer notebook, which runs in Fabric and manages its own dependencies via `%pip install`. Update when adding, removing, or changing a package import in the local Python scripts.
 
 ### Copilot instruction files
 
-After any change to `infra/scripts/fabric/` **or `infra/fabric/deploy/fabric_solution_installer.ipynb`**, review these instruction files and update them if the change affects the documented architecture, module list, env vars, deployment flow, installer configuration, or logging conventions:
+After any change to `infra/scripts/common/`, `infra/scripts/fabric/`, `infra/scripts/foundry/`, **or `infra/fabric/deploy/fabric_solution_installer.ipynb`**, review these instruction files and update them if the change affects the documented architecture, module list, env vars, deployment flow, installer configuration, or logging conventions:
 
 - [`.github/instructions/infra-scripts.instructions.md`](./infra-scripts.instructions.md) — this file (module architecture, deployment flow, env vars, logging)
 - [`.github/instructions/fabric-deployment-docs.instructions.md`](./fabric-deployment-docs.instructions.md) — deployment guide structure, relative paths, source of truth
@@ -121,29 +169,33 @@ After any change to `infra/scripts/fabric/` **or `infra/fabric/deploy/fabric_sol
 | New/renamed environment variable | §6 Advanced Configuration tables |
 | Changed deployment steps in `main()` | §2 Deployment Overview — Phase 2 |
 | Changed error handling / exit behavior | §7 Known Limitations or §8 Cleanup |
-| Changed helper module API | §2 Deployment Architecture table |
+| Changed Fabric helper module API (`fabric/step_workspace_setup.py`, `fabric/step_workspace_admins.py`, `fabric/step_notebook_installer.py`) | §2 Deployment Architecture table |
+| Changed Foundry helper module API (`foundry/step_knowledge_base.py`, `foundry/step_agent_setup.py`) | §2 Deployment Architecture table |
+| Changed cross-cutting helper API (`common/config.py`, `common/logging_config.py`, `common/env_utils.py`, `common/env.py`, `common/pdf_utils.py`, `common/step_printer.py`) | §2 Deployment Architecture table |
 | Changed workspace naming / defaults | §6 Workspace Settings table + `azure-dev.yml` summary |
 | Changed admin handling logic | §6 Admin Assignment + §7 Graph API Limitation |
-| Changed notebook upload/run logic | §2 Phase 2 steps 3-4 + manual guide step 3. **Note**: Automatic git branch detection and GITHUB_BRANCH patching (added 2026-04) ensures the notebook downloads from the currently checked out branch |
+| Changed notebook upload/run logic | §2 Phase 2 steps 5-6 + manual guide step 3. **Note**: Automatic git branch detection and GITHUB_BRANCH patching (added 2026-04) ensures the notebook downloads from the currently checked out branch |
 | Changed installer notebook reference | Both guides: notebook links |
 | Changed solution name or branding | `azure-dev.yml` summary + both deployment guides |
 | Changed deployed items (lakehouse, notebooks, agents) | `azure-dev.yml` summary + §5 Fabric Components |
 | Added/removed/changed Python dependency in local scripts | `requirements.txt` (does NOT affect installer notebook) |
-| Renamed or moved a script file | `azure.yaml` hooks + `azure-dev.yml` if referenced + `pyrightconfig.json` `extraPaths` |
+| Renamed or moved a script file | `azure.yaml` hooks + `azure-dev.yml` if referenced + `pyrightconfig.json` `extraPaths` (only if `infra/scripts/` itself moves) |
 | Changed `Run-PythonScript.ps1` flags | `azure.yaml` hooks + §6 Python Environment |
 | **Installer notebook changes:** | |
-| Changed GitHub source settings (owner/repo/branch/path) | §2 Phase 2 step 3 + manual guide §2 Prerequisites |
+| Changed GitHub source settings (owner/repo/branch/path) | §2 Phase 2 step 5 + manual guide §2 Prerequisites |
 | Changed lakehouse name or data folder mappings | §5 Fabric Components + manual guide §3 Run Installer |
-| Changed fabric-launcher configuration (stages, validation) | §2 Phase 2 step 3 + §5 Fabric Components + manual guide §4 Verify |
-| Added/removed post-deployment tasks (notebooks, ontology) | §2 Phase 2 step 4 + §5 Fabric Components |
+| Changed fabric-launcher configuration (stages, validation) | §2 Phase 2 step 5 + §5 Fabric Components + manual guide §4 Verify |
+| Added/removed post-deployment tasks (notebooks, ontology) | §2 Phase 2 step 6 + §5 Fabric Components |
 | Changed `%pip install` dependencies in notebook | §1 Prerequisites (both guides) — notebook runs in Fabric, not local env |
 | Changed notebook cell structure or markdown instructions | Manual guide §3 Run Installer + §4 Verify |
-| Changed notebook execution parameters or timeout | §2 Phase 2 step 4 + manual guide §5 Troubleshooting |
+| Changed notebook execution parameters or timeout | §2 Phase 2 step 6 + manual guide §5 Troubleshooting |
 
 ### Relative paths used in the docs (from `docs/fabric/`)
 
 - Entry-point scripts: `../../infra/scripts/install_microsoft_iq_solution.py`, `../../infra/scripts/remove_microsoft_iq_solution.py`
-- Helpers: `../../infra/scripts/fabric/helpers/workspace.py`, `workspace_admins.py`, `utils.py`
+- Fabric helpers: `../../infra/scripts/fabric/step_workspace_setup.py`, `step_workspace_admins.py`, `step_notebook_installer.py`
+- Foundry helpers: `../../infra/scripts/foundry/step_knowledge_base.py`, `step_agent_setup.py`, `search_api.py`, `blob_api.py`, `agent_api.py`
+- Cross-cutting helpers: `../../infra/scripts/common/config.py`, `logging_config.py`, `env_utils.py`, `env.py`, `pdf_utils.py`, `step_printer.py`
 - Installer notebook: `../../infra/fabric/deploy/fabric_solution_installer.ipynb`
 - Workspace items: `../../src/fabric/fabric_workspace/`
 - Repo root: `../../infra/main.bicep`, `../../azure.yaml`, `../../.github/workflows/azure-dev.yml`
@@ -231,4 +283,4 @@ logger.info("      Status: Completed")            # detail, 6 spaces
 
 `setup_logging()` pins `azure`, `urllib3`, `requests`, and `msal` loggers to
 WARNING. If adding a new noisy dependency, suppress it the same way in
-[`helpers/logging_config.py`](../../infra/scripts/fabric/helpers/logging_config.py).
+[`common/logging_config.py`](../../infra/scripts/common/logging_config.py).

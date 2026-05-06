@@ -1,5 +1,5 @@
 """
-Environment loading utilities for Foundry deployment scripts.
+Environment loading utilities for the Microsoft IQ deployment scripts.
 
 Provides a unified way to load configuration from:
     1. Azure service settings from azd environment (.azure/<env>/.env)
@@ -23,18 +23,17 @@ import logging
 import os
 import sys
 from pathlib import Path
+from typing import Optional
 
 from dotenv import load_dotenv
+
+from common.config import REPO_ROOT
 
 # Module-level logger — inherits configuration from the root logger set up
 # by setup_logging() in the entry-point scripts.
 logger = logging.getLogger(__name__)
 
-# Paths derived from the repository layout.
-# env.py lives at <repo-root>/infra/scripts/foundry/helpers/env.py
-# so we walk up 4 levels to reach <repo-root>.
-_FILE_DIR = Path(__file__).parent
-_PROJECT_ROOT = _FILE_DIR.parent.parent.parent.parent
+_PROJECT_ROOT = Path(REPO_ROOT)
 
 
 def load_azd_env() -> bool:
@@ -96,7 +95,7 @@ def load_all_env() -> tuple:
     return azd_loaded, project_loaded
 
 
-def get_required_env(var_name: str, description: str = None) -> str:
+def get_required_env(var_name: str, description: Optional[str] = None) -> str:
     """Get a required environment variable or exit with an error.
 
     Args:
