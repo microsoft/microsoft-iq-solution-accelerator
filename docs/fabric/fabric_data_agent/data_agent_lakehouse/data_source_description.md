@@ -338,7 +338,6 @@ Inventory management data covering warehouses, stock levels, purchase orders, an
 | AddressCity | STRING | City | Dallas, Chicago, Seattle |
 | AddressState | STRING | State abbreviation | TX, IL, WA |
 | ManagerName | STRING | Warehouse manager | "John Martinez" |
-| Priority | DOUBLE | Inventory allocation priority (0.0–1.0) | 0.60, 0.25, 0.15 |
 | MaxCapacity | INT | Maximum storage capacity (units) | 50000 |
 | AutomationLevel | STRING | Level of warehouse automation | High, Medium, Low |
 
