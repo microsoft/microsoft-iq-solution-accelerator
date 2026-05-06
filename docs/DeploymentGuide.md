@@ -13,6 +13,23 @@ The Microsoft IQ Solution Accelerator is an end-to-end data and AI platform that
 
 The deployment is fully automated and idempotent, using Azure Developer CLI to orchestrate infrastructure provisioning and post-deployment configuration.
 
+### Table of Contents
+
+1. [Deployment Overview](#deployment-overview)
+   - [Infrastructure Provisioned](#infrastructure-provisioned)
+   - [Deployment Phases](#deployment-phases)
+2. [Deployment Environment Setup](#deployment-environment-setup)
+3. [Deployment Commands](#deployment-commands)
+4. [Optional Configuration Variables](#optional-configuration-variables)
+5. [Deployment Results](#deployment-results)
+   - [Azure Resources (Resource Group)](#azure-resources-resource-group)
+   - [Fabric IQ Components](#fabric-iq-components)
+   - [Microsoft Foundry Components](#microsoft-foundry-components)
+   - [Environment Variables](#environment-variables)
+   - [Next Steps](#next-steps)
+6. [Environment Cleanup](#environment-cleanup)
+7. [Additional Resources](#additional-resources)
+
 ---
 
 ## Deployment Overview
@@ -245,6 +262,8 @@ After successful deployment, you will have a single Azure Resource Group contain
 | **Log Analytics workspace + Application Insights** | Diagnostic and monitoring sink for the Foundry project, AI Search, and the chat agent. Reused if `AZURE_EXISTING_LOG_ANALYTICS_WORKSPACE_ID` is set. |
 | **Foundry connections** | Project connections wiring Foundry to AI Search, Blob Storage, and the Knowledge Base MCP endpoint (`{solution_suffix}-kb-mcp-connection`). |
 
+**Access in the Azure portal**: open [portal.azure.com](https://portal.azure.com) → **Resource groups** → select the group named after your `azd` environment (the value of `AZURE_RESOURCE_GROUP`, shown by `azd env get-values`). Use the resource list to navigate to any individual resource. Diagnostic logs are available under **Monitoring → Logs** on the Foundry project, AI Search, and Storage resources.
+
 ### Fabric IQ Components
 
 The installer notebook deploys workspace items from [`src/fabric/fabric_workspace/`](../src/fabric/fabric_workspace/) into the Fabric workspace:
@@ -269,8 +288,10 @@ Microsoft IQ - {suffix}
 ```
 
 Access your workspace:
-- Open the [Microsoft Fabric portal](https://app.fabric.microsoft.com).
-- Navigate to your workspace (default name: `Microsoft IQ - {SOLUTION_SUFFIX}`).
+- Open the [Microsoft Fabric portal](https://app.fabric.microsoft.com) and sign in with the same account used for `azd auth login`.
+- Switch the experience to **Fabric Developer** (top-right) and select your workspace from the left sidebar (default name: `Microsoft IQ - {SOLUTION_SUFFIX}`).
+- The lakehouse, notebooks, semantic models, ontologies, and data agents above appear under the workspace's items list — use the folder filters to narrow by type.
+- Direct link template: `https://app.fabric.microsoft.com/groups/{workspace_id}?experience=fabric-developer` (the `workspace_id` is printed in the deployment summary and saved as `FABRIC_WORKSPACE_ID` in your `azd` environment).
 
 ### Microsoft Foundry Components
 
@@ -286,7 +307,7 @@ Sourced and named by [`install_microsoft_iq_solution.py`](../infra/scripts/insta
 
 #### Verify in the Foundry portal
 
-Open [ai.azure.com](https://ai.azure.com), select your Foundry project, and confirm:
+Open [ai.azure.com](https://ai.azure.com) and sign in with the same account used for `azd auth login`. From the landing page, select your hub and then your project (the project name is stored as `AZURE_AI_PROJECT_NAME` in your `azd` environment; the endpoint is `AZURE_AI_AGENT_ENDPOINT`). Once inside the project, confirm:
 
 1. **Knowledge Bases** → `{solution_suffix}-kb` exists, status is *Ready*, and it lists `{solution_suffix}-ks` as its source.
 2. **Agents** → an agent named `ChatAgent` exists, its model matches `AZURE_AI_AGENT_MODEL_DEPLOYMENT_NAME` / `AZURE_CHAT_MODEL` (default `gpt-4.1-mini`), and the **Tools** panel shows the `{solution_suffix}-kb-mcp-connection` MCP tool attached.
