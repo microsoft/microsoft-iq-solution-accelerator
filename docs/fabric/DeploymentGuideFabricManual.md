@@ -1,107 +1,89 @@
-# Deployment Guide (Manual Option) for Microsoft IQ: Fabric IQ
+# Manual Deployment Guide — Fabric workspace only
 
-This guide describes how to deploy the **Microsoft IQ: Fabric IQ** solution accelerator by importing and running the [fabric_solution_installer.ipynb](../infra/deploy/fabric_solution_installer.ipynb) notebook directly in a Microsoft Fabric workspace — no local tooling or scripts required.
+This guide imports and runs [`fabric_solution_installer.ipynb`](../../infra/fabric/deploy/fabric_solution_installer.ipynb) directly in a Microsoft Fabric workspace. **No `azd`, no Bicep, no local scripts** — and **no Foundry resources** are deployed.
 
-## When to Use Manual Installation
+## When to use this option
 
-- You prefer not to install `azd` or run local scripts
-- You have an existing Fabric capacity and want a quick, portal-only deployment
-- You're evaluating the solution with minimal setup
+Use this guide if any of the following applies:
+
+- You already have a Fabric capacity and only want the **Fabric workspace contents** (lakehouse, notebooks, semantic models, ontology, data agent).
+- You don't want to install `azd` or PowerShell, or run the local Python deployment scripts.
+- You're evaluating the solution and want the fastest portal-only path.
+
+> **Important — what is *not* deployed**
+>
+> This option does **not** create any Azure resources outside Fabric. In particular, it does **not** deploy:
+>
+> - The Microsoft Foundry hub/project, Azure AI Search, Azure Storage, Azure OpenAI deployments, or the `ChatAgent` agent.
+> - The Knowledge Base / Knowledge Source / KB MCP connection covered in [`DeploymentGuide.md`](../DeploymentGuide.md) §5.
+>
+> If you want the full data + AI experience (Fabric IQ + Microsoft Foundry), use the [top-level Deployment Guide](../DeploymentGuide.md) instead.
 
 ## Prerequisites
 
-- **Microsoft Fabric capacity** must already exist (Fabric capacity or trial)
-- **Fabric workspace** with capacity assigned
-- **Workspace permissions** to create and manage Fabric items
+- A **Microsoft Fabric capacity** (paid F-SKU or trial) on the tenant.
+- A **Fabric workspace** assigned to that capacity, plus permission to create and manage workspace items.
+- Internet access from the Fabric runtime — the installer notebook downloads source code from GitHub via [`fabric-launcher`](https://github.com/microsoft/fabric-launcher).
+- (Optional) A **GitHub Personal Access Token** with `repo` scope and `Contents: read` if you forked the accelerator as a private repository.
 
-## How to Install
+## Install in three steps
 
-### Step 1: Create a Fabric Workspace
+### 1 · Create a Fabric workspace
 
-1. Log in to [Microsoft Fabric](https://app.fabric.microsoft.com)
-2. Click **Workspaces** → **+ New workspace**
-3. Name your workspace (e.g., `Microsoft IQ`)
-4. Assign a Fabric capacity or trial capacity
-5. Click **Apply**
+1. Sign in to [Microsoft Fabric](https://app.fabric.microsoft.com).
+2. **Workspaces** → **+ New workspace**.
+3. Give it a name (e.g., `Microsoft IQ`) and assign a Fabric capacity.
+4. Click **Apply**.
 
-### Step 2: Download the Solution Installer Notebook
+### 2 · Download the installer notebook
 
-Download the [fabric_solution_installer.ipynb](../infra/deploy/fabric_solution_installer.ipynb) notebook to a local folder on your computer.
+Download [`fabric_solution_installer.ipynb`](../../infra/fabric/deploy/fabric_solution_installer.ipynb) from the repository (right-click → *Save link as…* on GitHub) and save it locally as a `.ipynb` file.
 
-### Step 3: Import and Run the Solution Installer
+### 3 · Import and run the notebook in Fabric
 
-1. In your Fabric workspace, click **+ New item** → **Import notebook**
-2. Navigate to the folder where you saved [fabric_solution_installer.ipynb](../infra/deploy/fabric_solution_installer.ipynb)
-3. Upload and open the **fabric_solution_installer** notebook
-4. **(Optional)** If you want to deploy from a different branch, edit the `GITHUB_BRANCH` variable in the configuration cell (default: `"main"`)
-5. Click **Run all** to execute the deployment
+1. In your workspace, **+ New item** → **Import notebook** → upload the `.ipynb` file you just downloaded.
+2. Open the notebook. In the first configuration cell, optionally edit:
+   - `GITHUB_BRANCH` — defaults to `"main"`. Change it to deploy from a fork or feature branch.
+   - `GITHUB_TOKEN` — paste your PAT here if your fork is private.
+3. Click **Run all**.
 
-The installer notebook will:
+The notebook installs `fabric-launcher`, downloads items from [`src/fabric/fabric_workspace/`](../../src/fabric/fabric_workspace/) and ontology definitions from [`src/fabric/definitions/`](../../src/fabric/definitions/), runs `pipeline_main` to ingest sample data, then deploys the ontology and organizes items into folders.
 
-- ✅ Install required Python packages
-- ✅ Create the `miqsadata` lakehouse
-- ✅ Deploy and configure all solution notebooks (26 notebooks)
-- ✅ Upload sample data files across 6 business domains
-- ✅ Deploy AI data agent, ontology, semantic models, and reports
-- ✅ Run post-deployment configuration tasks
+For a detailed breakdown of what the installer does internally, see *[Inside the installer notebook](./DeploymentGuideFabric.md#inside-the-installer-notebook)* in the Fabric deep-dive guide.
 
----
+## Verification
 
-## Deployment Verification
+After the notebook completes, the workspace should contain:
 
-After the notebook completes, verify the following items exist in your workspace:
+- **Lakehouse** `miqsadata` — 25 tables across 6 business domains plus `DimDate`, with sample CSVs loaded under *Files*.
+- **26 notebooks** under `data_management/`, `data_processing/`, `query_samples/`, `schema/`, plus `pipeline_main` / `pipeline_update` / `reset_or_debug` / `sampe_data_query` at the root.
+- **AI data agent** `RetailSC Ontology Agent` for natural-language querying through the ontology.
+- **Ontology** `RetailSupplyChainOntologyModel` and **semantic models** `RetailSupplyChainModel`, `Sales Overview`, `Supply Chain Management`.
+- **Power BI reports** `Sales Overview` and `Supply Chain Management`.
 
-- **✅ Lakehouse**: `miqsadata` with 25 tables across 6 business domains plus shared dimension (customer, product, sales, finance, inventory, supplychain, shared)
-- **✅ Notebooks**: 26 notebooks organized in `data_management/`, `data_processing/`, `query_samples/`, `schema/`, and root pipeline notebooks
-- **✅ Sample Data**: CSV files loaded in the lakehouse Files section
-- **✅ Data Agent**: `RetailSC Ontology Agent` for natural language querying through the ontology
-- **✅ Ontology**: `RetailSupplyChainOntologyModel` providing a business-friendly semantic layer
-- **✅ Semantic Models**: `RetailSupplyChainModel`, `Sales Overview`, `Supply Chain Management`
-- **✅ Reports**: `Sales Overview`, `Supply Chain Management` Power BI reports
-
-Items are deployed from the [`src/fabric/fabric_workspace/`](../../src/fabric/fabric_workspace/) folder (standard items) and [`src/fabric/definitions/`](../../src/fabric/definitions/) folder (ontology definitions) in the repository.
-
----
+The full inventory and table-level breakdown is documented in [Fabric workspace contents](./DeploymentGuideFabric.md#fabric-workspace-contents).
 
 ## Troubleshooting
 
-| Issue | Possible Cause | Resolution |
-|-------|----------------|------------|
-| Notebook import fails | File format unsupported | Ensure you downloaded the raw `.ipynb` file |
-| Workspace capacity error | No capacity assigned | Assign a Fabric capacity or trial to the workspace |
-| Installer notebook cell fails | Missing permissions or dependency | Review the failed cell output for details and re-run from that cell |
-| Items not created | Notebook run incomplete | Confirm all cells completed; re-run any failed cells individually |
-
----
+| Issue | Likely cause | Resolution |
+|---|---|---|
+| Notebook import fails | Wrong file format | Make sure you downloaded the raw `.ipynb` file, not GitHub's HTML page. |
+| Workspace capacity error | No capacity assigned | Assign a Fabric capacity (or trial) in **Workspace settings**. |
+| `pipeline_main` Spark session fails | Transient Fabric platform issue | Re-run the failed cell. See [Known limitations](./DeploymentGuideFabric.md#known-limitations) §3. |
+| `fabric-launcher` cannot download repo | Private fork without `GITHUB_TOKEN` | Set `GITHUB_TOKEN` in the configuration cell and re-run from that cell. |
+| Items missing after run | Some cells did not finish | Confirm every cell shows a green check; re-run any that errored. |
 
 ## Cleanup
 
-To remove the deployed solution, delete the workspace from the Fabric portal:
+Delete the workspace from the Fabric portal:
 
-1. Navigate to [Microsoft Fabric](https://app.fabric.microsoft.com)
-2. Open **Workspace settings** for the installed workspace
-3. Scroll to the bottom and select **Delete this workspace**
+1. [Microsoft Fabric](https://app.fabric.microsoft.com) → open the workspace.
+2. **Workspace settings** → scroll to **Delete this workspace**.
 
-> ⚠️ **Important:** Deleting the workspace removes all contained items permanently.
+> Deleting the workspace permanently removes all items inside it. The Fabric capacity itself (and any other Azure resource) is unaffected.
 
----
+## Next steps
 
-## Next Steps
-
-After successful deployment:
-
-1. **Explore the workspace**: Review the deployed lakehouse, notebooks, data agents, and ontology model
-2. **Customize for your needs**: Modify notebooks and data pipelines for your specific requirements
-3. **Consider automation**: Use `azd up` for repeatable infrastructure provisioning alongside Fabric deployment — see [DeploymentGuideFabric.md](./DeploymentGuideFabric.md)
-
----
-
-## Additional Resources
-
-- [Microsoft Fabric Documentation](https://learn.microsoft.com/fabric/)
-- [Fabric Workspace Management](https://learn.microsoft.com/fabric/admin/workspaces)
-- [Main Deployment Guide (azd)](./DeploymentGuideFabric.md)
-
----
-
-*This manual deployment guide is part of the Microsoft IQ: Fabric IQ solution accelerator. For the latest updates and documentation, visit the [official repository](https://github.com/microsoft/microsoft-iq-solution-accelerator).*
+- For a fully automated end-to-end deployment that also provisions Foundry, the chat agent, and the knowledge base, switch to the [top-level Deployment Guide](../DeploymentGuide.md).
+- For Fabric internals (bootstrap step modules, installer notebook configuration, capacity SKU sizing, known limitations), see the [Fabric deep-dive](./DeploymentGuideFabric.md).
+- Microsoft Fabric documentation: [learn.microsoft.com/fabric](https://learn.microsoft.com/fabric/).
