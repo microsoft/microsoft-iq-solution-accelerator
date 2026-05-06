@@ -222,13 +222,16 @@ def create_or_update_agent(
     from azure.ai.projects.models import MCPTool, PromptAgentDefinition
 
     # Delete existing agent if present so the definition is always up to date.
+    # The lookup raises when the agent does not yet exist; that's expected and
+    # is the only case we silently absorb here.  Any other failure (including
+    # a failed delete) propagates to the caller, which decides how to react.
     try:
         existing = project_client.agents.get(agent_name)
-        if existing:
-            project_client.agents.delete(agent_name)
-            logger.debug(f"      Deleted existing agent '{agent_name}'")
     except Exception:
-        pass  # agent does not yet exist
+        existing = None  # agent does not yet exist
+    if existing:
+        project_client.agents.delete(agent_name)
+        logger.debug(f"      Deleted existing agent '{agent_name}'")
 
     mcp_tool = MCPTool(
         server_label="knowledge-base",
