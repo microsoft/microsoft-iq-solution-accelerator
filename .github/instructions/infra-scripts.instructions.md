@@ -144,6 +144,7 @@ When modifying scripts in this folder, check and update **both** the deployment 
 
 ### Deployment guides
 
+- [`docs/DeploymentGuide.md`](../../docs/DeploymentGuide.md) — **Top-level entry-point guide** (single `azd up` walkthrough). Sections: Introduction, Deployment Overview (Phases 1–2 with the 6 `step_*` modules listed in order), Deployment Commands, Optional Configuration Variables, Deployment Results (Fabric IQ + Foundry components), Environment Cleanup, Additional Resources. Keep it short — deeper details belong in `DeploymentGuideFabric.md`.
 - [`docs/fabric/DeploymentGuideFabric.md`](../../docs/fabric/DeploymentGuideFabric.md) — Automated deployment guide (`azd`). Sections: §1 Prerequisites, §2 Deployment Overview (two-phase architecture, helper module table, idempotency), §3 Deployment Options (6 environments), §4 Deployment Commands, §5 Deployment Results (Azure resources + Fabric Components), §6 Advanced Configuration (infra, workspace, admin, optional vars, Python env), §7 Known Limitations, §8 Environment Cleanup, §9 Additional Resources.
 - [`docs/fabric/DeploymentGuideFabricManual.md`](../../docs/fabric/DeploymentGuideFabricManual.md) — Manual portal-only guide. Import and run [`fabric_solution_installer.ipynb`](../../infra/fabric/deploy/fabric_solution_installer.ipynb) directly in Fabric. Sections: prerequisites, 3-step install, verification, troubleshooting, cleanup, next steps.
 
@@ -161,34 +162,37 @@ When modifying scripts in this folder, check and update **both** the deployment 
 After any change to `infra/scripts/common/`, `infra/scripts/fabric/`, `infra/scripts/foundry/`, **or `infra/fabric/deploy/fabric_solution_installer.ipynb`**, review these instruction files and update them if the change affects the documented architecture, module list, env vars, deployment flow, installer configuration, or logging conventions:
 
 - [`.github/instructions/infra-scripts.instructions.md`](./infra-scripts.instructions.md) — this file (module architecture, deployment flow, env vars, logging)
+- [`.github/instructions/deployment-guide.instructions.md`](./deployment-guide.instructions.md) — top-level `docs/DeploymentGuide.md` structure, relative paths, source of truth
 - [`.github/instructions/fabric-deployment-docs.instructions.md`](./fabric-deployment-docs.instructions.md) — deployment guide structure, relative paths, source of truth
 - [`.github/instructions/fabric-workspace.instructions.md`](./fabric-workspace.instructions.md) — workspace item inventory (if installer notebook changes affect deployed items)
 
 | Script change | Update in docs |
 |---|---|
-| New/renamed environment variable | §6 Advanced Configuration tables |
-| Changed deployment steps in `main()` | §2 Deployment Overview — Phase 2 |
-| Changed error handling / exit behavior | §7 Known Limitations or §8 Cleanup |
-| Changed Fabric helper module API (`fabric/step_workspace_setup.py`, `fabric/step_workspace_admins.py`, `fabric/step_notebook_installer.py`) | §2 Deployment Architecture table |
-| Changed Foundry helper module API (`foundry/step_knowledge_base.py`, `foundry/step_agent_setup.py`) | §2 Deployment Architecture table |
-| Changed cross-cutting helper API (`common/config.py`, `common/logging_config.py`, `common/env_utils.py`, `common/env.py`, `common/pdf_utils.py`, `common/step_printer.py`) | §2 Deployment Architecture table |
-| Changed workspace naming / defaults | §6 Workspace Settings table + `azure-dev.yml` summary |
-| Changed admin handling logic | §6 Admin Assignment + §7 Graph API Limitation |
-| Changed notebook upload/run logic | §2 Phase 2 steps 5-6 + manual guide step 3. **Note**: Automatic git branch detection and GITHUB_BRANCH patching (added 2026-04) ensures the notebook downloads from the currently checked out branch |
-| Changed installer notebook reference | Both guides: notebook links |
-| Changed solution name or branding | `azure-dev.yml` summary + both deployment guides |
-| Changed deployed items (lakehouse, notebooks, agents) | `azure-dev.yml` summary + §5 Fabric Components |
+| New/renamed environment variable | `DeploymentGuide.md` §4 Optional Configuration Variables + `DeploymentGuideFabric.md` §6 Advanced Configuration tables |
+| Changed deployment steps in `main()` (order, name, or `_warn_step` vs. `_abort` semantics) | `DeploymentGuide.md` §2 Phase 2 list + `DeploymentGuideFabric.md` §2 Deployment Overview Phase 2 |
+| Changed error handling / exit behavior | `DeploymentGuideFabric.md` §7 Known Limitations or §8 Cleanup |
+| Changed Fabric helper module API (`fabric/step_workspace_setup.py`, `fabric/step_workspace_admins.py`, `fabric/step_notebook_installer.py`) | `DeploymentGuide.md` §2 Phase 2 step links + `DeploymentGuideFabric.md` §2 Deployment Architecture table |
+| Changed Foundry helper module API (`foundry/step_knowledge_base.py`, `foundry/step_agent_setup.py`) | `DeploymentGuide.md` §2 Phase 2 step links + `DeploymentGuideFabric.md` §2 Deployment Architecture table |
+| Changed cross-cutting helper API (`common/config.py`, `common/logging_config.py`, `common/env_utils.py`, `common/env.py`, `common/pdf_utils.py`, `common/step_printer.py`) | `DeploymentGuideFabric.md` §2 Deployment Architecture table |
+| Changed workspace naming / defaults | `DeploymentGuide.md` §5 Fabric IQ Components workspace tree + `DeploymentGuideFabric.md` §6 Workspace Settings table + `azure-dev.yml` summary |
+| Changed admin handling logic | `DeploymentGuideFabric.md` §6 Admin Assignment + §7 Graph API Limitation |
+| Changed notebook upload/run logic | `DeploymentGuide.md` §2 Phase 2 steps 5-6 + `DeploymentGuideFabric.md` §2 Phase 2 steps 5-6 + manual guide step 3. **Note**: Automatic git branch detection and GITHUB_BRANCH patching (added 2026-04) ensures the notebook downloads from the currently checked out branch |
+| Changed installer notebook reference | All three deployment guides: notebook links |
+| Changed solution name or branding | `azure-dev.yml` summary + all three deployment guides |
+| Changed deployed items (lakehouse, notebooks, agents) | `azure-dev.yml` summary + `DeploymentGuide.md` §5 Fabric IQ Components + `DeploymentGuideFabric.md` §5 Fabric Components |
+| Changed Foundry resource naming (search index, KB, agent) | `DeploymentGuide.md` §5 Microsoft Foundry Components |
 | Added/removed/changed Python dependency in local scripts | `requirements.txt` (does NOT affect installer notebook) |
 | Renamed or moved a script file | `azure.yaml` hooks + `azure-dev.yml` if referenced + `pyrightconfig.json` `extraPaths` (only if `infra/scripts/` itself moves) |
-| Changed `Run-PythonScript.ps1` flags | `azure.yaml` hooks + §6 Python Environment |
+| Changed `Run-PythonScript.ps1` flags | `azure.yaml` hooks + `DeploymentGuideFabric.md` §6 Python Environment |
+| Changed cleanup behavior (`remove_microsoft_iq_solution.py` or `predown` hook) | `DeploymentGuide.md` §6 Environment Cleanup + `DeploymentGuideFabric.md` §8 Environment Cleanup |
 | **Installer notebook changes:** | |
-| Changed GitHub source settings (owner/repo/branch/path) | §2 Phase 2 step 5 + manual guide §2 Prerequisites |
-| Changed lakehouse name or data folder mappings | §5 Fabric Components + manual guide §3 Run Installer |
-| Changed fabric-launcher configuration (stages, validation) | §2 Phase 2 step 5 + §5 Fabric Components + manual guide §4 Verify |
-| Added/removed post-deployment tasks (notebooks, ontology) | §2 Phase 2 step 6 + §5 Fabric Components |
-| Changed `%pip install` dependencies in notebook | §1 Prerequisites (both guides) — notebook runs in Fabric, not local env |
+| Changed GitHub source settings (owner/repo/branch/path) | `DeploymentGuideFabric.md` §2 Phase 2 step 5 + manual guide §2 Prerequisites |
+| Changed lakehouse name or data folder mappings | `DeploymentGuide.md` §5 Fabric IQ Components + `DeploymentGuideFabric.md` §5 Fabric Components + manual guide §3 Run Installer |
+| Changed fabric-launcher configuration (stages, validation) | `DeploymentGuideFabric.md` §2 Phase 2 step 5 + §5 Fabric Components + manual guide §4 Verify |
+| Added/removed post-deployment tasks (notebooks, ontology) | `DeploymentGuideFabric.md` §2 Phase 2 step 6 + §5 Fabric Components |
+| Changed `%pip install` dependencies in notebook | `DeploymentGuideFabric.md` §1 Prerequisites + manual guide prerequisites — notebook runs in Fabric, not local env |
 | Changed notebook cell structure or markdown instructions | Manual guide §3 Run Installer + §4 Verify |
-| Changed notebook execution parameters or timeout | §2 Phase 2 step 6 + manual guide §5 Troubleshooting |
+| Changed notebook execution parameters or timeout | `DeploymentGuideFabric.md` §2 Phase 2 step 6 + manual guide §5 Troubleshooting |
 
 ### Relative paths used in the docs (from `docs/fabric/`)
 
