@@ -78,14 +78,13 @@ table 'inventory purchaseorders'
 
 	column TotalOrderValue
 		dataType: double
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
 		sourceProviderType: decimal(12, 2)
 		lineageTag: 7dbd6d72-b0ee-4930-a25e-55c9526c25e2
 		summarizeBy: sum
 		sourceColumn: TotalOrderValue
 
 		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column OrderedBy
 		dataType: string
