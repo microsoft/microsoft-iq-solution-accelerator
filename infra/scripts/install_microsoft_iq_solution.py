@@ -227,21 +227,32 @@ def main() -> None:
             logger.warning(f"\n⚠️  Warnings during deployment ({len(warnings_collected)}):")
             for _i, _w in enumerate(warnings_collected, 1):
                 logger.warning(f"   {_i}. {_w['step']}: {_w['error']}")
+                if _w.get("guidance"):
+                    logger.warning(f"      {_w['guidance']}")
         sys.exit(1)
 
-    def _warn_step(step_name: str, error: Exception) -> None:
+    def _warn_step(step_name: str, error: Exception, guidance: str | None = None) -> None:
         """Record a non-fatal step failure and let the deployment continue.
 
-        Used by best-effort steps (e.g. setup_agent) where the Foundry agents
-        API is platform-dependent and occasionally returns transient errors
-        that should not abort the deployment.  The warning is shown again in
-        the final summary so it is not lost in the scrollback.
+        Used by best-effort steps (e.g. setup_agent) where the underlying
+        platform API is occasionally flaky and returns transient errors that
+        should not abort the deployment.  The warning is shown again in the
+        final summary so it is not lost in the scrollback.
+
+        Args:
+            step_name: Name of the step that failed.
+            error: The exception raised by the step.
+            guidance: Optional step-specific message (e.g. how to verify the
+                resource was created). When provided, it is logged after the
+                error and included in the final summary so users still see it
+                even if it scrolled off-screen during deployment.
         """
-        logger.warning(
-            f"⚠️  Step '{step_name}' did not complete cleanly (continuing in "
-            f"best-effort mode): {error}"
+        logger.warning(f"⚠️  Step '{step_name}' reported an error: {error}")
+        if guidance:
+            logger.warning(f"   {guidance}")
+        warnings_collected.append(
+            {"step": step_name, "error": str(error), "guidance": guidance or ""}
         )
-        warnings_collected.append({"step": step_name, "error": str(error)})
         executed_steps.append(f"{step_name} (with warnings)")
 
     # ------------------------------------------------------------------
@@ -299,7 +310,17 @@ def main() -> None:
         logger.info("Successfully completed: setup_agent")
         executed_steps.append("setup_agent")
     except Exception as exc:
-        _warn_step("setup_agent", exc)
+        _warn_step(
+            "setup_agent",
+            exc,
+            guidance=(
+                "This is often caused by a transient platform-level issue "
+                "with the AI Foundry agents API and may not indicate a real "
+                "failure. Please open the AI Foundry project and verify "
+                "whether the agent was created. If it was not, re-run the "
+                "deployment."
+            ),
+        )
 
     # ------------------------------------------------------------------
     # Step 3 – Set up Fabric workspace
@@ -381,6 +402,8 @@ def main() -> None:
         logger.warning(f"\n⚠️  Warnings during deployment ({len(warnings_collected)}):")
         for _i, _w in enumerate(warnings_collected, 1):
             logger.warning(f"   {_i}. {_w['step']}: {_w['error']}")
+            if _w.get("guidance"):
+                logger.warning(f"      {_w['guidance']}")
 
     logger.info(f"\n{'='*60}")
     logger.info(f"🎉 {SOLUTION_NAME.upper()} INSTALLATION COMPLETE!")
