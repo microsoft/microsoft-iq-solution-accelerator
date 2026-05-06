@@ -224,7 +224,7 @@ def main() -> None:
         uncompleted = [s for s in ALL_DEPLOYMENT_STEPS if s not in completed]
         print_steps_summary(SOLUTION_NAME, solution_suffix, executed_steps, failed_steps, uncompleted)
         if warnings_collected:
-            logger.warning(f"\n⚠️  Warnings during deployment ({len(warnings_collected)}):")
+            logger.warning(f"\nWarnings during deployment ({len(warnings_collected)}):")
             for _i, _w in enumerate(warnings_collected, 1):
                 logger.warning(f"   {_i}. {_w['step']}: {_w['error']}")
                 if _w.get("guidance"):
@@ -247,7 +247,7 @@ def main() -> None:
                 error and included in the final summary so users still see it
                 even if it scrolled off-screen during deployment.
         """
-        logger.warning(f"⚠️  Step '{step_name}' reported an error: {error}")
+        logger.warning(f"Step '{step_name}' reported an error: {error}")
         if guidance:
             logger.warning(f"   {guidance}")
         warnings_collected.append(
@@ -398,13 +398,6 @@ def main() -> None:
 
     print_steps_summary(SOLUTION_NAME, solution_suffix, executed_steps, failed_steps, [])
 
-    if warnings_collected:
-        logger.warning(f"\n⚠️  Warnings during deployment ({len(warnings_collected)}):")
-        for _i, _w in enumerate(warnings_collected, 1):
-            logger.warning(f"   {_i}. {_w['step']}: {_w['error']}")
-            if _w.get("guidance"):
-                logger.warning(f"      {_w['guidance']}")
-
     logger.info(f"\n{'='*60}")
     logger.info(f"🎉 {SOLUTION_NAME.upper()} INSTALLATION COMPLETE!")
     logger.info(f"{'='*60}")
@@ -413,6 +406,13 @@ def main() -> None:
     logger.info(f"Workspace:  {workspace_name}")
     logger.info(f"URL:        {workspace_url}")
     logger.info(f"{'='*60}")
+
+    if warnings_collected:
+        logger.warning(f"\nWarnings during deployment ({len(warnings_collected)}):")
+        for _i, _w in enumerate(warnings_collected, 1):
+            logger.warning(f"   {_i}. {_w['step']}: {_w['error']}")
+            if _w.get("guidance"):
+                logger.warning(f"      {_w['guidance']}")
 
 
 if __name__ == "__main__":
