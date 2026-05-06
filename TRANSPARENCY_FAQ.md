@@ -12,7 +12,15 @@ The solution accelerator illustrates how enterprises can move from early disrupt
 
 ## Does this Solution Accelerator use Generative AI?  
 
-M365 Copilot: TBD
+M365 Copilot user can choose one from below generative AI models: 
+
+- GPT-5 Chat
+- GPT-5-Auto
+- GPT-5 Reasoning
+- GPT-4.1 
+- Claude Sonnet 4.5
+- Claude Sonnet 4.6
+- Claude Opus 4.6 
 
 Foundry IQ component uses GPT-4.1-mini for chat and text-embedding-3-small for search. 
 
