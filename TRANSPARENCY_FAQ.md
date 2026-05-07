@@ -17,10 +17,10 @@ Microsoft M365 Copilot users can choose one of the following generative AI model
 - GPT-5 Chat
 - GPT-5-Auto
 - GPT-5 Reasoning
-- GPT-4.1 
+- GPT-4.1
 - Claude Sonnet 4.5
 - Claude Sonnet 4.6
-- Claude Opus 4.6 
+- Claude Opus 4.6
 
 Foundry IQ component uses GPT-4.1-mini for chat and text-embedding-3-small for search. 
 
