@@ -122,18 +122,32 @@ jobs:
           bicep lint infra/main.bicep
           echo "✅ Bicep linting completed"
 
-      - name: Validate Bicep Template
-        # Assumes the resource group already exists; `az deployment group
-        # validate` is RG-scoped and will be reused by `azd up` in the
-        # deploy job.
+      - name: Install azd
+        uses: Azure/setup-azd@v2
+
+      - name: Azure Developer CLI login
+        shell: bash
+        run: |
+          azd auth login \
+            --client-id "${{ env.AZURE_CLIENT_ID }}" \
+            --federated-credential-provider "github" \
+            --tenant-id "${{ env.AZURE_TENANT_ID }}"
+
+      - name: Validate Bicep Template (azd provision --preview)
+        # Uses `azd provision --preview` instead of `az deployment group validate`
+        # so azd's `${VAR=default}` substitution in main.parameters.json is
+        # applied identically to the deploy job. Assumes the resource group
+        # already exists (azd preview is RG-scoped here).
+        shell: bash
+        env:
+          AZURE_RESOURCE_GROUP: ${{ env.RESOURCE_GROUP_NAME }}
         run: |
           set -e
           echo "Validating Bicep template against resource group '$RESOURCE_GROUP_NAME'..."
 
-          az deployment group validate \
-            --resource-group "$RESOURCE_GROUP_NAME" \
-            --template-file infra/main.json \
-            --parameters infra/main.parameters.json
+          azd config set defaults.subscription "$AZURE_SUBSCRIPTION_ID"
+          azd env new "$ENV_NAME" --no-prompt || true
+          azd provision --preview --no-prompt
           echo "✅ Bicep template validation completed"
 
   deploy:
