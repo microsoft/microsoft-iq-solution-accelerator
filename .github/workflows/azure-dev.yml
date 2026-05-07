@@ -37,7 +37,7 @@ env:
 
   # --- azd environment / resource group ---
   # Override via repo/environment Variables to redeploy into an existing
-  # environment. `azd up` creates the resource group if it doesn't exist.
+  # environment. `azd up` creates the resource group if it doesn't exist. 
   ENV_NAME: ${{ vars.ENV_NAME || 'miqsad'}}
   RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME || 'rg-miqsad' }}
 
