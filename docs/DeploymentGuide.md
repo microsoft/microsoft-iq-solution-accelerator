@@ -220,7 +220,7 @@ Customize your deployment by setting `azd` environment variables before running 
 | | `AZURE_EXISTING_FABRIC_CAPACITY_NAME` | Use an existing Fabric capacity (skips creation) | _(empty)_ | `azd env set AZURE_EXISTING_FABRIC_CAPACITY_NAME "my-capacity"` |
 | | `FABRIC_ADMIN_MEMBERS` | Additional Fabric capacity admins (JSON array of UPNs or object IDs) | `[]` | `azd env set FABRIC_ADMIN_MEMBERS '["user@contoso.com"]'` |
 | **Fabric Workspace** | `FABRIC_WORKSPACE_NAME` | Override the default Fabric workspace name | `Microsoft IQ - {suffix}` | `azd env set FABRIC_WORKSPACE_NAME "My Workspace"` |
-| | `FABRIC_WORKSPACE_ADMINISTRATORS` | Comma-separated additional workspace admins | _(empty)_ | `azd env set FABRIC_WORKSPACE_ADMINISTRATORS "user@contoso.com"` |
+| | `FABRIC_WORKSPACE_ADMINISTRATORS` | Comma-separated additional workspace admins (UPNs and/or object IDs) | _(empty)_ | `azd env set FABRIC_WORKSPACE_ADMINISTRATORS "user@contoso.com,11111111-2222-3333-4444-555555555555"` |
 | **Microsoft Foundry** | `AZURE_AI_DEPLOYMENTS_LOCATION` | AI deployment region (**required**) | _(prompted)_ | `azd env set AZURE_AI_DEPLOYMENTS_LOCATION eastus` |
 | | `AZURE_OPENAI_DEPLOYMENT_MODEL` | GPT model to deploy | `gpt-4.1-mini` | `azd env set AZURE_OPENAI_DEPLOYMENT_MODEL gpt-4o` |
 | | `AZURE_OPENAI_MODEL_VERSION` | GPT model version | `2025-04-14` | `azd env set AZURE_OPENAI_MODEL_VERSION 2025-04-14` |
