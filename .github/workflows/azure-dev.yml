@@ -20,7 +20,7 @@ on:
       - ".github/workflows/azure-dev.yml"
 
 # Set up permissions for deploying with secretless Azure federated credentials
-permissions: 
+permissions:
   id-token: write
   contents: read
 
@@ -61,6 +61,7 @@ env:
 
   # --- Common ---
   # ENABLE_TELEMETRY: ${{ vars.ENABLE_TELEMETRY }}
+  DEPLOYING_USER_PRINCIPAL_TYPE: ${{ vars.DEPLOYING_USER_PRINCIPAL_TYPE || 'ServicePrincipal' }}
 
   # --- Fabric capacity (Bicep) ---
   # FABRIC_CAPACITY_SKU_NAME: ${{ vars.FABRIC_CAPACITY_SKU_NAME }}
