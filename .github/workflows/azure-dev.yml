@@ -28,72 +28,68 @@ env:
   # ==================================================================
   # Required variables
   # ==================================================================
-  # These are needed for the workflow itself (Azure OIDC login, azd
-  # environment naming, runtime config). Without them the workflow
-  # cannot authenticate or run `azd up`.
+  # Needed for Azure OIDC login and `azd up`.
 
-  # --- Azure federated credentials (repository or environment Secrets) ---
+  # --- Azure federated credentials (Secrets) ---
   AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
   AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
   AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
   # --- azd environment / resource group ---
-  # Both default to a value derived from `github.run_number` so each run
-  # gets a unique pair, but can be overridden via repository/environment
-  # Variables (e.g. to redeploy into an existing environment). `azd up`
-  # creates the resource group if it does not already exist.
+  # Override via repo/environment Variables to redeploy into an existing
+  # environment. `azd up` creates the resource group if it doesn't exist.
   ENV_NAME: ${{ vars.ENV_NAME || 'miqsad'}}
   RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME || 'rg-miqsad' }}
 
   # ==================================================================
-  # Optional variables
+  # Optional variables (commented out by default)
   # ==================================================================
-  # All variables below have defaults defined either in
-  # infra/main.bicep, infra/main.parameters.json, or
-  # infra/scripts/install_microsoft_iq_solution.py. Configure them
-  # per-environment in GitHub under Settings → Environments → Variables
-  # (or repository Variables) using the same name as the variable below;
-  # leave them unset to fall back to the in-repo defaults.
+  # Defaults live in infra/main.bicep, infra/main.parameters.json, or
+  # infra/scripts/install_microsoft_iq_solution.py.
+  #
+  # Do NOT uncomment a line unless the matching repo/environment Variable
+  # is set. An unset `${{ vars.* }}` resolves to '', which azd passes
+  # through to Bicep and breaks params with @allowed / @minLength(1).
   #
   # Reference: docs/DeploymentGuide.md → "Optional Configuration Variables".
 
-  # --- Azure region ---
-  AZURE_LOCATION: ${{ vars.AZURE_LOCATION }}
-
-  # --- Common ---
-  ENABLE_TELEMETRY: ${{ vars.ENABLE_TELEMETRY }}
-
-  # --- Fabric capacity (Bicep parameters) ---
-  FABRIC_CAPACITY_SKU_NAME: ${{ vars.FABRIC_CAPACITY_SKU_NAME }}
-  AZURE_EXISTING_FABRIC_CAPACITY_NAME: ${{ vars.AZURE_EXISTING_FABRIC_CAPACITY_NAME }}
-  FABRIC_ADMIN_MEMBERS: ${{ vars.FABRIC_ADMIN_MEMBERS }}
-
-  # --- Fabric workspace (install_microsoft_iq_solution.py) ---
-  FABRIC_WORKSPACE_NAME: ${{ vars.FABRIC_WORKSPACE_NAME }}
-  FABRIC_WORKSPACE_ADMINISTRATORS: ${{ vars.FABRIC_WORKSPACE_ADMINISTRATORS }}
-  
-  # --- Fabric notebook (used by Fabric Installer Notebook for private repo access) ---
+  # --- Fabric notebook private-repo access (Secret, safe if empty) ---
   GITHUB_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
 
-  # --- Microsoft Foundry / OpenAI (Bicep parameters) ---
-  AZURE_AI_DEPLOYMENTS_LOCATION: ${{ vars.AZURE_AI_DEPLOYMENTS_LOCATION }}
-  AZURE_OPENAI_DEPLOYMENT_MODEL: ${{ vars.AZURE_OPENAI_DEPLOYMENT_MODEL }}
-  AZURE_OPENAI_MODEL_VERSION: ${{ vars.AZURE_OPENAI_MODEL_VERSION }}
-  AZURE_OPENAI_DEPLOYMENT_MODEL_CAPACITY: ${{ vars.AZURE_OPENAI_DEPLOYMENT_MODEL_CAPACITY }}
-  AZURE_OPENAI_MODEL_DEPLOYMENT_TYPE: ${{ vars.AZURE_OPENAI_MODEL_DEPLOYMENT_TYPE }}
-  AZURE_OPENAI_EMBEDDING_MODEL: ${{ vars.AZURE_OPENAI_EMBEDDING_MODEL }}
-  AZURE_OPENAI_EMBEDDING_CAPACITY: ${{ vars.AZURE_OPENAI_EMBEDDING_CAPACITY }}
-  AZURE_SEARCH_SERVICE_LOCATION: ${{ vars.AZURE_SEARCH_SERVICE_LOCATION }}
-  AZURE_ENV_USE_CASE: ${{ vars.AZURE_ENV_USE_CASE }}
-  AZURE_EXISTING_LOG_ANALYTICS_WORKSPACE_ID: ${{ vars.AZURE_EXISTING_LOG_ANALYTICS_WORKSPACE_ID }}
-  AZURE_EXISTING_AI_PROJECT_RESOURCE_ID: ${{ vars.AZURE_EXISTING_AI_PROJECT_RESOURCE_ID }}
+  # --- Azure region ---
+  # AZURE_LOCATION: ${{ vars.AZURE_LOCATION }}
 
-  # --- Foundry agent / Knowledge Base overrides (install_microsoft_iq_solution.py) ---
-  AZURE_AI_ENDPOINT: ${{ vars.AZURE_AI_ENDPOINT }}
-  AZURE_CHAT_MODEL: ${{ vars.AZURE_CHAT_MODEL }}
-  AZURE_AI_SEARCH_INDEX: ${{ vars.AZURE_AI_SEARCH_INDEX }}
-  AZURE_AI_AGENT_MODEL_DEPLOYMENT_NAME: ${{ vars.AZURE_AI_AGENT_MODEL_DEPLOYMENT_NAME }}
-  KB_MCP_CONNECTION_NAME: ${{ vars.KB_MCP_CONNECTION_NAME }}
+  # --- Common ---
+  # ENABLE_TELEMETRY: ${{ vars.ENABLE_TELEMETRY }}
+
+  # --- Fabric capacity (Bicep) ---
+  # FABRIC_CAPACITY_SKU_NAME: ${{ vars.FABRIC_CAPACITY_SKU_NAME }}
+  # AZURE_EXISTING_FABRIC_CAPACITY_NAME: ${{ vars.AZURE_EXISTING_FABRIC_CAPACITY_NAME }}
+  # FABRIC_ADMIN_MEMBERS: ${{ vars.FABRIC_ADMIN_MEMBERS }}
+
+  # --- Fabric workspace (postprovision) ---
+  # FABRIC_WORKSPACE_NAME: ${{ vars.FABRIC_WORKSPACE_NAME }}
+  # FABRIC_WORKSPACE_ADMINISTRATORS: ${{ vars.FABRIC_WORKSPACE_ADMINISTRATORS }}
+
+  # --- Microsoft Foundry / OpenAI (Bicep) ---
+  # AZURE_AI_DEPLOYMENTS_LOCATION: ${{ vars.AZURE_AI_DEPLOYMENTS_LOCATION }}
+  # AZURE_OPENAI_DEPLOYMENT_MODEL: ${{ vars.AZURE_OPENAI_DEPLOYMENT_MODEL }}
+  # AZURE_OPENAI_MODEL_VERSION: ${{ vars.AZURE_OPENAI_MODEL_VERSION }}
+  # AZURE_OPENAI_DEPLOYMENT_MODEL_CAPACITY: ${{ vars.AZURE_OPENAI_DEPLOYMENT_MODEL_CAPACITY }}
+  # AZURE_OPENAI_MODEL_DEPLOYMENT_TYPE: ${{ vars.AZURE_OPENAI_MODEL_DEPLOYMENT_TYPE }}
+  # AZURE_OPENAI_EMBEDDING_MODEL: ${{ vars.AZURE_OPENAI_EMBEDDING_MODEL }}
+  # AZURE_OPENAI_EMBEDDING_CAPACITY: ${{ vars.AZURE_OPENAI_EMBEDDING_CAPACITY }}
+  # AZURE_SEARCH_SERVICE_LOCATION: ${{ vars.AZURE_SEARCH_SERVICE_LOCATION }}
+  # AZURE_ENV_USE_CASE: ${{ vars.AZURE_ENV_USE_CASE }}
+  # AZURE_EXISTING_LOG_ANALYTICS_WORKSPACE_ID: ${{ vars.AZURE_EXISTING_LOG_ANALYTICS_WORKSPACE_ID }}
+  # AZURE_EXISTING_AI_PROJECT_RESOURCE_ID: ${{ vars.AZURE_EXISTING_AI_PROJECT_RESOURCE_ID }}
+
+  # --- Foundry agent / Knowledge Base overrides (postprovision) ---
+  # AZURE_AI_ENDPOINT: ${{ vars.AZURE_AI_ENDPOINT }}
+  # AZURE_CHAT_MODEL: ${{ vars.AZURE_CHAT_MODEL }}
+  # AZURE_AI_SEARCH_INDEX: ${{ vars.AZURE_AI_SEARCH_INDEX }}
+  # AZURE_AI_AGENT_MODEL_DEPLOYMENT_NAME: ${{ vars.AZURE_AI_AGENT_MODEL_DEPLOYMENT_NAME }}
+  # KB_MCP_CONNECTION_NAME: ${{ vars.KB_MCP_CONNECTION_NAME }}
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -174,9 +170,7 @@ jobs:
         id: get_output_linux
         shell: bash
         env:
-          # AZURE_RESOURCE_GROUP is required by main.parameters.json and
-          # azd; expose the build-job RG name under that variable so it is
-          # picked up by azd substitution and the postprovision hook.
+          # Required by main.parameters.json and the postprovision hook.
           AZURE_RESOURCE_GROUP: ${{ env.RESOURCE_GROUP_NAME }}
         run: |
           set -e
@@ -187,15 +181,10 @@ jobs:
           echo "Setting default subscription..."
           azd config set defaults.subscription "$AZURE_SUBSCRIPTION_ID"
 
-          # All optional azd parameters are exposed via the workflow `env:`
-          # block (sourced from repo/environment Variables). azd substitutes
-          # them into infra/main.parameters.json directly from the OS env,
-          # and install_microsoft_iq_solution.py reads them via os.getenv,
-          # so no explicit `azd env set` calls are required here.
-          #
-          # GITHUB_TOKEN is also exposed via the workflow `env:` block so
-          # install_microsoft_iq_solution.py can patch it into the installer
-          # notebook for private-repo access.
+          # Optional parameters are sourced from the workflow `env:` block
+          # (azd substitutes them into main.parameters.json; the
+          # postprovision script reads them via os.getenv), so no explicit
+          # `azd env set` calls are needed here.
           azd up --no-prompt
 
       - name: Output Deployment Summary
