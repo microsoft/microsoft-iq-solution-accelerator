@@ -20,7 +20,7 @@ on:
       - ".github/workflows/azure-dev.yml"
 
 # Set up permissions for deploying with secretless Azure federated credentials
-permissions:
+permissions: 
   id-token: write
   contents: read
 
