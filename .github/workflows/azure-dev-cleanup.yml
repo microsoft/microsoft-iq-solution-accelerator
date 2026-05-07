@@ -1,25 +1,15 @@
 name: Cleanup Azure Resources
 
 # Manually triggered tear-down for a Microsoft IQ deployment created by
-# .github/workflows/azure-dev.yml. Provide the azd environment name and the
-# Azure resource group name from the original deploy run; both are visible
-# in the deploy job summary and as job outputs.
-
+# .github/workflows/azure-dev.yml.
+#
+# `azd down` invokes the predown hook in azure.yaml, which runs
+# infra/scripts/remove_microsoft_iq_solution.py. That script deletes the
+# Fabric workspace and uses SOLUTION_SUFFIX to derive the default
+# workspace name (or honours FABRIC_WORKSPACE_NAME / FABRIC_WORKSPACE_ID
+# if set).
 on:
   workflow_dispatch:
-    inputs:
-      env_name:
-        description: "azd environment / solution name (e.g. miqsad)"
-        required: true
-        type: string
-      resource_group:
-        description: "Azure resource group to tear down (e.g. rg-miqsad)"
-        required: true
-        type: string
-      solution_suffix:
-        description: "(optional) SOLUTION_SUFFIX from the deploy run; required for azd down to remove the Fabric workspace"
-        required: false
-        type: string
 
 # Set up permissions for deploying with secretless Azure federated credentials
 permissions:
@@ -27,26 +17,51 @@ permissions:
   contents: read
 
 env:
+  # ==================================================================
+  # Required variables
+  # ==================================================================
+  # Needed for Azure OIDC login and `azd down`.
+
+  # --- Azure federated credentials (Secrets) ---
   AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
   AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
   AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-  AZURE_LOCATION: 'westus3'
+
+  # --- azd environment / resource group ---
+  # Override via repo/environment Variables to tear down a specific
+  # environment. Must match the values used by azure-dev.yml.
+  ENV_NAME: ${{ vars.ENV_NAME || 'miqsad'}}
+  RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME || 'rg-miqsad' }}
+
+  # ==================================================================
+  # Optional variables (commented out by default)
+  # ==================================================================
+  # The predown hook (remove_microsoft_iq_solution.py) needs to identify
+  # the Fabric workspace to delete. By default it derives the workspace
+  # name from SOLUTION_SUFFIX (written to the azd environment by
+  # main.bicep during `azd up`). To target a workspace explicitly,
+  # uncomment the relevant line and set the matching repo/environment
+  # Variable.
+  #
+  # Do NOT uncomment a line unless the matching repo/environment Variable
+  # is set. An unset `${{ vars.* }}` resolves to ''.
+
+  # --- Fabric workspace selection (predown) ---
+  # SOLUTION_SUFFIX: ${{ vars.SOLUTION_SUFFIX }}
+  # FABRIC_WORKSPACE_NAME: ${{ vars.FABRIC_WORKSPACE_NAME }}
+  # FABRIC_WORKSPACE_ID: ${{ vars.FABRIC_WORKSPACE_ID }}
 
 jobs:
   cleanup:
     runs-on: ubuntu-latest
     name: Cleanup Resources
     environment: 'miq-dev'
-    env:
-      RESOURCE_GROUP_NAME: ${{ inputs.resource_group }}
-      ENV_NAME: ${{ inputs.env_name }}
-      SOLUTION_SUFFIX: ${{ inputs.solution_suffix }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Azure CLI login
-        uses: azure/login@v2
+        uses: azure/login@v3
         with:
           client-id: ${{ env.AZURE_CLIENT_ID }}
           tenant-id: ${{ env.AZURE_TENANT_ID }}
@@ -64,9 +79,9 @@ jobs:
             --tenant-id "${{ env.AZURE_TENANT_ID }}"
 
       - name: Restore azd Environment and Run azd down
-        if: env.SOLUTION_SUFFIX != ''
         shell: bash
         env:
+          # Required by the predown hook (remove_microsoft_iq_solution.py).
           AZURE_RESOURCE_GROUP: ${{ env.RESOURCE_GROUP_NAME }}
         run: |
           set -e
@@ -75,12 +90,11 @@ jobs:
           azd env select "$ENV_NAME"
           azd config set defaults.subscription "$AZURE_SUBSCRIPTION_ID"
 
-          # azd down needs SOLUTION_SUFFIX (used by the predown hook to
-          # locate the Fabric workspace) and AZURE_RESOURCE_GROUP. The
-          # rest is read from the OS environment.
-          azd env set SOLUTION_SUFFIX "$SOLUTION_SUFFIX"
+          # Workspace-identifying values are sourced from the workflow
+          # `env:` block (azd's predown hook reads them via os.getenv),
+          # so no explicit `azd env set` calls are needed beyond the
+          # resource group.
           azd env set AZURE_RESOURCE_GROUP "$AZURE_RESOURCE_GROUP"
-          echo "✅ azd environment restored"
 
           echo "🗑️  Running azd down to remove Fabric workspace and Azure resources..."
           azd down --force --purge --no-prompt || echo "⚠️ azd down failed, will fall back to direct RG deletion"
@@ -101,6 +115,7 @@ jobs:
           fi
 
       - name: Output Cleanup Summary
+        shell: bash
         run: |
           CLEANUP_TIME=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
           echo "# 🧹 Microsoft IQ Cleanup Summary" >> $GITHUB_STEP_SUMMARY
@@ -111,8 +126,12 @@ jobs:
           echo "|----------|--------|" >> $GITHUB_STEP_SUMMARY
           echo "| **azd environment** | \`${ENV_NAME}\` |" >> $GITHUB_STEP_SUMMARY
           echo "| **Resource Group** | \`${RESOURCE_GROUP_NAME}\` — deletion initiated |" >> $GITHUB_STEP_SUMMARY
-          if [ -n "$SOLUTION_SUFFIX" ]; then
+          if [ -n "${FABRIC_WORKSPACE_NAME:-}" ]; then
+            echo "| **Fabric Workspace** | Deleted via \`azd down\` (name \`${FABRIC_WORKSPACE_NAME}\`) |" >> $GITHUB_STEP_SUMMARY
+          elif [ -n "${FABRIC_WORKSPACE_ID:-}" ]; then
+            echo "| **Fabric Workspace** | Deleted via \`azd down\` (ID \`${FABRIC_WORKSPACE_ID}\`) |" >> $GITHUB_STEP_SUMMARY
+          elif [ -n "${SOLUTION_SUFFIX:-}" ]; then
             echo "| **Fabric Workspace** | Deleted via \`azd down\` (suffix \`${SOLUTION_SUFFIX}\`) |" >> $GITHUB_STEP_SUMMARY
           else
-            echo "| **Fabric Workspace** | ⚠️ Skipped — \`solution_suffix\` input not provided. Delete the workspace manually if it still exists. |" >> $GITHUB_STEP_SUMMARY
+            echo "| **Fabric Workspace** | Deleted via \`azd down\` (suffix read from azd environment) |" >> $GITHUB_STEP_SUMMARY
           fi
