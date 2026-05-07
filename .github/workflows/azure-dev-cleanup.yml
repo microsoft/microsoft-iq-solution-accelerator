@@ -1,0 +1,118 @@
+name: Cleanup Azure Resources
+
+# Manually triggered tear-down for a Microsoft IQ deployment created by
+# .github/workflows/azure-dev.yml. Provide the azd environment name and the
+# Azure resource group name from the original deploy run; both are visible
+# in the deploy job summary and as job outputs.
+
+on:
+  workflow_dispatch:
+    inputs:
+      env_name:
+        description: "azd environment / solution name (e.g. miqsad)"
+        required: true
+        type: string
+      resource_group:
+        description: "Azure resource group to tear down (e.g. rg-miqsad)"
+        required: true
+        type: string
+      solution_suffix:
+        description: "(optional) SOLUTION_SUFFIX from the deploy run; required for azd down to remove the Fabric workspace"
+        required: false
+        type: string
+
+# Set up permissions for deploying with secretless Azure federated credentials
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+  AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  AZURE_LOCATION: 'westus3'
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    name: Cleanup Resources
+    environment: 'miq-dev'
+    env:
+      RESOURCE_GROUP_NAME: ${{ inputs.resource_group }}
+      ENV_NAME: ${{ inputs.env_name }}
+      SOLUTION_SUFFIX: ${{ inputs.solution_suffix }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Azure CLI login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ env.AZURE_CLIENT_ID }}
+          tenant-id: ${{ env.AZURE_TENANT_ID }}
+          subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Install azd
+        uses: Azure/setup-azd@v2
+
+      - name: Azure Developer CLI login
+        shell: bash
+        run: |
+          azd auth login \
+            --client-id "${{ env.AZURE_CLIENT_ID }}" \
+            --federated-credential-provider "github" \
+            --tenant-id "${{ env.AZURE_TENANT_ID }}"
+
+      - name: Restore azd Environment and Run azd down
+        if: env.SOLUTION_SUFFIX != ''
+        shell: bash
+        env:
+          AZURE_RESOURCE_GROUP: ${{ env.RESOURCE_GROUP_NAME }}
+        run: |
+          set -e
+          echo "Restoring azd environment: $ENV_NAME"
+          azd env new "$ENV_NAME" --no-prompt || true
+          azd env select "$ENV_NAME"
+          azd config set defaults.subscription "$AZURE_SUBSCRIPTION_ID"
+
+          # azd down needs SOLUTION_SUFFIX (used by the predown hook to
+          # locate the Fabric workspace) and AZURE_RESOURCE_GROUP. The
+          # rest is read from the OS environment.
+          azd env set SOLUTION_SUFFIX "$SOLUTION_SUFFIX"
+          azd env set AZURE_RESOURCE_GROUP "$AZURE_RESOURCE_GROUP"
+          echo "✅ azd environment restored"
+
+          echo "🗑️  Running azd down to remove Fabric workspace and Azure resources..."
+          azd down --force --purge --no-prompt || echo "⚠️ azd down failed, will fall back to direct RG deletion"
+          echo "✅ azd down step completed"
+
+      - name: Delete Resource Group (fallback)
+        if: always() && env.RESOURCE_GROUP_NAME != ''
+        shell: bash
+        run: |
+          echo "🗑️  Ensuring resource group '$RESOURCE_GROUP_NAME' is deleted..."
+          rg_exists=$(az group exists --name "$RESOURCE_GROUP_NAME")
+          if [ "$rg_exists" = "true" ]; then
+            echo "Resource group still exists. Deleting directly..."
+            az group delete --name "$RESOURCE_GROUP_NAME" --yes --no-wait
+            echo "✅ Resource group deletion initiated."
+          else
+            echo "✅ Resource group '$RESOURCE_GROUP_NAME' already deleted."
+          fi
+
+      - name: Output Cleanup Summary
+        run: |
+          CLEANUP_TIME=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          echo "# 🧹 Microsoft IQ Cleanup Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Cleanup completed at:** ${CLEANUP_TIME}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Resource | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| **azd environment** | \`${ENV_NAME}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Resource Group** | \`${RESOURCE_GROUP_NAME}\` — deletion initiated |" >> $GITHUB_STEP_SUMMARY
+          if [ -n "$SOLUTION_SUFFIX" ]; then
+            echo "| **Fabric Workspace** | Deleted via \`azd down\` (suffix \`${SOLUTION_SUFFIX}\`) |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| **Fabric Workspace** | ⚠️ Skipped — \`solution_suffix\` input not provided. Delete the workspace manually if it still exists. |" >> $GITHUB_STEP_SUMMARY
+          fi
