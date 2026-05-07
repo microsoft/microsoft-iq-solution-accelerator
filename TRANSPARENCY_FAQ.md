@@ -12,7 +12,7 @@ The solution accelerator illustrates how enterprises can move from early disrupt
 
 ## Does this Solution Accelerator use Generative AI?  
 
-M365 Copilot user can choose one from below generative AI models: 
+Microsoft M365 Copilot users can choose one of the following generative AI models:
 
 - GPT-5 Chat
 - GPT-5-Auto
