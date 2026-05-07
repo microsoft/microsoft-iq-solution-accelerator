@@ -91,7 +91,7 @@ param searchServiceLocation string = resourceGroup().location
   }
 })
 @description('Location for AI Foundry deployment. This is the location where the AI Foundry resources will be deployed.')
-param aiDeploymentsLocation string
+param aiDeploymentsLocation string = 'westus'
 
 @minLength(1)
 @description('GPT model deployment type')
