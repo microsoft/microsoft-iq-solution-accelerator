@@ -1,6 +1,6 @@
 name: CI/CD Azure
 
-# Trigger the workflow on push to main/master or manual dispatch
+# Trigger the workflow on push to main/master or manual dispatch 
 on:
   workflow_dispatch:
   push:
