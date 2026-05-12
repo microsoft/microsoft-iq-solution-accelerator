@@ -87,6 +87,7 @@ from common.config import SOLUTION_NAME, default_workspace_name
 from common.env_utils import (
     get_required_env_var,
     parse_workspace_administrators,
+    set_azd_env_var,
 )
 from common.step_printer import print_step, print_steps_summary
 from fabric.fabric_api import create_fabric_client, create_workspace_fabric_client
@@ -337,6 +338,9 @@ def main() -> None:
         )
         logger.info("Successfully completed: setup_workspace")
         executed_steps.append("setup_workspace")
+        # Persist for downstream automation (e.g. CI deployment summary).
+        set_azd_env_var("FABRIC_WORKSPACE_ID", workspace_id)
+        set_azd_env_var("FABRIC_WORKSPACE_NAME", workspace_name)
     except Exception as exc:
         _abort("setup_workspace", exc)
 

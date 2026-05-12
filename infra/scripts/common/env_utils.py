@@ -10,6 +10,8 @@ These helpers are imported by the entry-point scripts and by both the
 import json
 import logging
 import os
+import shutil
+import subprocess
 import sys
 from typing import Optional
 
@@ -96,4 +98,37 @@ def parse_workspace_administrators(
         )
 
     return administrators if administrators else None
+
+
+def set_azd_env_var(name: str, value: str) -> bool:
+    """Persist a key/value into the active azd environment.
+
+    Best-effort wrapper around ``azd env set``. Returns ``False`` (and
+    logs) if the ``azd`` CLI is unavailable or the command fails (e.g.
+    no active azd environment). Empty values are skipped.
+    """
+    if not value:
+        return False
+
+    if shutil.which("azd") is None:
+        logger.debug(f"Skipping azd env set for '{name}' – 'azd' CLI not found")
+        return False
+
+    try:
+        subprocess.run(
+            ["azd", "env", "set", name, value],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        return True
+    except subprocess.CalledProcessError as exc:
+        stderr = (exc.stderr or "").strip()
+        logger.warning(
+            f"Could not persist '{name}' to azd environment: {stderr or exc}"
+        )
+        return False
+    except OSError as exc:
+        logger.warning(f"Could not invoke 'azd env set' for '{name}': {exc}")
+        return False
 
