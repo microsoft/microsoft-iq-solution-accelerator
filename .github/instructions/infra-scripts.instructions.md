@@ -165,6 +165,7 @@ After any change to `infra/scripts/common/`, `infra/scripts/fabric/`, `infra/scr
 - [`.github/instructions/deployment-guide.instructions.md`](./deployment-guide.instructions.md) — top-level `docs/DeploymentGuide.md` structure, relative paths, source of truth
 - [`.github/instructions/fabric-deployment-docs.instructions.md`](./fabric-deployment-docs.instructions.md) — deployment guide structure, relative paths, source of truth
 - [`.github/instructions/fabric-workspace.instructions.md`](./fabric-workspace.instructions.md) — workspace item inventory (if installer notebook changes affect deployed items)
+- [`.github/instructions/devcontainer.instructions.md`](./devcontainer.instructions.md) — dev container configuration; consult when a script change affects what the [`.devcontainer/`](../../.devcontainer/) post-create flow installs, chmods, or expects to exist (e.g., renaming a helper script that [`setup_env.sh`](../../.devcontainer/setup_env.sh) references, or adding a Python dependency that should be pre-installed by [`post-create.sh`](../../.devcontainer/post-create.sh))
 
 | Script change | Update in docs |
 |---|---|
