@@ -34,7 +34,7 @@
                 "GitHub.copilot",
                 "GitHub.vscode-github-actions",
                 "ms-azuretools.azure-dev",
-                "ms-azuretools.vscode-azurecli",
+                "ms-vscode.azurecli",
                 "ms-azuretools.vscode-bicep",
                 "ms-python.black-formatter",
                 "ms-python.python",
@@ -43,7 +43,6 @@
                 "ms-toolsai.vscode-jupyter-cell-tags",
                 "ms-toolsai.vscode-jupyter-slideshow",
                 "ms-vscode.powershell",
-                "ms-vscode.vscode-json",
                 "redhat.vscode-yaml",
                 "synapsevscode.synapse"
             ],

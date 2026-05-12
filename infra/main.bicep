@@ -65,7 +65,7 @@ param azureExistingAIProjectResourceId string = ''
   'Retail-sales-analysis'
   'Insurance-improve-customer-meetings'
 ])
-param usecase string = 'Retail-sales-analysis'
+param useCase string = 'Retail-sales-analysis'
 
 @description('Location for AI services deployment. This is the location where the Search service resource will be deployed.')
 param searchServiceLocation string = resourceGroup().location
@@ -254,7 +254,7 @@ output AZURE_AI_AGENT_ENDPOINT string = aifoundry.outputs.projectEndpoint
 output AZURE_AI_AGENT_MODEL_DEPLOYMENT_NAME string = gptModelName
 
 @description('Deployed use case identifier (e.g., Retail-sales-analysis)')
-output USE_CASE string = usecase
+output USE_CASE string = useCase
 
 @description('Azure AI Search service endpoint URL')
 output AZURE_AI_SEARCH_ENDPOINT string = aifoundry.outputs.aiSearchTarget
