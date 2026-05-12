@@ -247,7 +247,7 @@ def create_or_update_agent(
         tools=[mcp_tool],
     )
 
-    return project_client.agents.create(
-        name=agent_name,
+    return project_client.agents.create_version(
+        agent_name=agent_name,
         definition=agent_definition,
     )
