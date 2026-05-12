@@ -213,23 +213,39 @@ jobs:
       - name: Output Deployment Summary
         shell: bash
         run: |
-          # Read deployment outputs that the summary depends on directly
-          # from the azd environment file. These are written by main.bicep
-          # and install_microsoft_iq_solution.py during `azd up` above.
-          SOLUTION_SUFFIX=$(azd env get-value SOLUTION_SUFFIX 2>/dev/null || echo "")
-          AZURE_FABRIC_CAPACITY_NAME=$(azd env get-value AZURE_FABRIC_CAPACITY_NAME 2>/dev/null || echo "")
-          AZURE_AI_PROJECT_NAME=$(azd env get-value AZURE_AI_PROJECT_NAME 2>/dev/null || echo "")
-          AZURE_AI_AGENT_ENDPOINT=$(azd env get-value AZURE_AI_AGENT_ENDPOINT 2>/dev/null || echo "")
-          AZURE_AI_SEARCH_ENDPOINT=$(azd env get-value AZURE_AI_SEARCH_ENDPOINT 2>/dev/null || echo "")
-          FABRIC_WORKSPACE_ID=$(azd env get-value FABRIC_WORKSPACE_ID 2>/dev/null || echo "")
+          # `azd env get-value` prints an "ERROR: key not found" banner to
+          # stdout on missing keys; strip it so missing values become "".
+          get_azd_env() {
+            local raw
+            raw=$(azd env get-value "$1" 2>/dev/null || true)
+            if printf '%s' "$raw" | grep -qiE '^(ERROR|Suggestion):'; then
+              echo ""
+            else
+              printf '%s' "$raw"
+            fi
+          }
 
-          # Capture deployment completion time
+          # Read deployment outputs written by main.bicep and the
+          # postprovision installer during `azd up`.
+          SOLUTION_SUFFIX=$(get_azd_env SOLUTION_SUFFIX)
+          AZURE_FABRIC_CAPACITY_NAME=$(get_azd_env AZURE_FABRIC_CAPACITY_NAME)
+          AZURE_AI_PROJECT_NAME=$(get_azd_env AZURE_AI_PROJECT_NAME)
+          AZURE_AI_AGENT_ENDPOINT=$(get_azd_env AZURE_AI_AGENT_ENDPOINT)
+          AZURE_AI_SEARCH_ENDPOINT=$(get_azd_env AZURE_AI_SEARCH_ENDPOINT)
+          FABRIC_WORKSPACE_ID=$(get_azd_env FABRIC_WORKSPACE_ID)
+          FABRIC_WORKSPACE_NAME=$(get_azd_env FABRIC_WORKSPACE_NAME)
+
+          # AZURE_LOCATION is not exported by the workflow `env:` block;
+          # prefer the azd env value, then the workflow variable.
+          AZURE_LOCATION_VALUE=$(get_azd_env AZURE_LOCATION)
+          AZURE_LOCATION_VALUE="${AZURE_LOCATION_VALUE:-${AZURE_LOCATION:-unknown}}"
+
           DEPLOYMENT_TIME=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
 
-          # Construct URLs
           AZURE_RG_URL="https://portal.azure.com/#@${AZURE_TENANT_ID}/resource/subscriptions/${AZURE_SUBSCRIPTION_ID}/resourceGroups/${RESOURCE_GROUP_NAME}/overview"
           AZURE_FABRIC_CAPACITY_URL="https://portal.azure.com/#@${AZURE_TENANT_ID}/resource/subscriptions/${AZURE_SUBSCRIPTION_ID}/resourceGroups/${RESOURCE_GROUP_NAME}/providers/Microsoft.Fabric/capacities/${AZURE_FABRIC_CAPACITY_NAME}/overview"
-          FABRIC_WORKSPACE_NAME="Microsoft IQ - ${SOLUTION_SUFFIX}"
+          # Fallback if the installer did not persist FABRIC_WORKSPACE_NAME.
+          FABRIC_WORKSPACE_NAME="${FABRIC_WORKSPACE_NAME:-Microsoft IQ - ${SOLUTION_SUFFIX}}"
           FABRIC_PORTAL_URL="https://app.fabric.microsoft.com"
           if [ -n "${FABRIC_WORKSPACE_ID}" ]; then
             FABRIC_WORKSPACE_URL="https://app.fabric.microsoft.com/groups/${FABRIC_WORKSPACE_ID}?experience=fabric-developer"
@@ -255,7 +271,7 @@ jobs:
           echo "| Resource | Value |" >> $GITHUB_STEP_SUMMARY
           echo "|----------|-------|" >> $GITHUB_STEP_SUMMARY
           echo "| **Solution Name** | \`${ENV_NAME}\` |" >> $GITHUB_STEP_SUMMARY
-          echo "| **Azure Region** | \`${AZURE_LOCATION}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Azure Region** | \`${AZURE_LOCATION_VALUE}\` |" >> $GITHUB_STEP_SUMMARY
           echo "| **Solution Suffix** | \`${SOLUTION_SUFFIX}\` |" >> $GITHUB_STEP_SUMMARY
           echo "| **Resource Group** | [\`${RESOURCE_GROUP_NAME}\`](${AZURE_RG_URL}) |" >> $GITHUB_STEP_SUMMARY
           echo "| **Fabric Capacity** | [\`${AZURE_FABRIC_CAPACITY_NAME}\`](${AZURE_FABRIC_CAPACITY_URL}) |" >> $GITHUB_STEP_SUMMARY
