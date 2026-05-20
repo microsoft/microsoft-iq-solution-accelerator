@@ -5,12 +5,11 @@ The Microsoft IQ Solution Accelerator is an AI-powered enterprise intelligence s
 **Key use cases:**
 
 - **Supply Chain**: During supplier disruptions, organizations use unified intelligence to assess risk and inventory levels, evaluate sourcing options across the enterprise, and coordinate actions across teams to protect product availability and ensure continuity of supply.
-- **TBD** — TBD
+- **TBD** — (Note: Will delete if no additional use case to be supported.)
 
 <br/>
 
 <div align="center">
-
 [**SOLUTION OVERVIEW**](#solution-overview) \| [**QUICK DEPLOY**](#quick-deploy) \| [**BUSINESS SCENARIO**](#business-use-case) \| [**SUPPORTING DOCUMENTATION**](#supporting-documentation)
 
 </div>
@@ -58,7 +57,7 @@ You can modify the data models and notebooks in different folders under the `src
 <details>
   <summary>Click to learn more about the key features this solution enables</summary>
 
-  - **TBD** <br/>TBD
+  - **Supply Chain Disruption Management Work Flow** <br/>Work IQ intelligent workflow trigged by supply chain disruption events. The workflow enables supply chain management team to leverage 
   - **TBD** <br/>TBD
 
 </details>
