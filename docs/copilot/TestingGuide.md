@@ -1,6 +1,8 @@
-# Testing Guide
+# Copilot Studio Integration - Testing Guide
 
 This guide provides instructions for QA testers to verify the end-to-end functionality of the Microsoft IQ Solution Accelerator from a user's perspective. The focus is on testing the golden path: sending an email that triggers the agent to orchestrate responses from both Fabric IQ (data platform) and Foundry IQ (knowledge base), then receiving synthesized recommendations in Microsoft Teams.
+
+Before testing, ensure the solution is fully deployed using the [Deployment Guide](./DeploymentGuide.md).
 
 ---
 
@@ -9,6 +11,8 @@ This guide provides instructions for QA testers to verify the end-to-end functio
 1. [Resource Review Portals](#resource-review-portals)
 2. [Adding the Copilot Studio Agent to Teams](#adding-the-copilot-studio-agent-to-teams)
 3. [Golden Path Testing Flow](#golden-path-testing-flow)
+4. [Monitoring and Logs](#monitoring-and-logs)
+5. [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -167,4 +171,55 @@ Continue the conversation in Teams to test context retention:
 - "Based on current inventory and our reorder policy, when should we place the next order?"
 
 The agent should maintain context from previous messages and provide relevant, coherent responses.
+
+---
+
+## Monitoring and Logs
+
+After running tests, review these sources to confirm all components executed correctly:
+
+**Power Automate Run History**
+- Navigate to **Power Automate** → **My flows** → **3IQ Email Trigger Flow** → **Run history**
+- Each test email should appear as a run with **Succeeded** status
+- Click on any run to view detailed step-by-step execution
+
+**Copilot Studio Analytics**
+- Open **Copilot Studio** → **3IQ Accelerator Agent** → **Analytics**
+- Review session metrics: sessions triggered, resolution rate, escalations
+- Click into a session to review the full conversation transcript and which topics were triggered
+
+**Agent Traces**
+- Fabric Agent: [Fabric Portal](https://app.fabric.microsoft.com) → Workspace → Data Agent → Activity logs
+- Foundry Agent: [Azure AI Foundry](https://ai.azure.com) → Project → **Tracing & Monitoring**
+
+---
+
+## Troubleshooting
+
+### Email Doesn't Trigger Flow
+- Verify the flow is **On** in Power Automate
+- Check that the email folder and subject filter match the trigger configuration
+- Re-authenticate the Office 365 Outlook connection if needed
+
+### Flow Fails at Agent Invocation
+- Confirm the agent is **Published** in Copilot Studio (not draft)
+- Test the agent independently in the Copilot Studio test panel
+- Check authentication and connection settings in the flow
+
+### Agent Returns Empty or Generic Response
+- Test Fabric Data Agent and Foundry Agent directly in their respective portals
+- Verify agent authentication to both Fabric and Foundry is working
+- Review agent conversation logs in Copilot Studio Analytics
+
+### Response Timeout
+- Ensure Fabric capacity is running (not paused)
+- Check OpenAI model deployments have sufficient tokens per minute (TPM)
+- Verify Azure AI Search service can handle the request volume
+
+### No Teams Message Received
+- Verify Teams channel is enabled in Copilot Studio under **Channels**
+- Confirm the agent is installed in your Teams
+- Check that the flow includes a "Send Teams message" action
+
+For deeper investigation, see the [Deployment Guide troubleshooting section](./DeploymentGuide.md#troubleshooting).
 
