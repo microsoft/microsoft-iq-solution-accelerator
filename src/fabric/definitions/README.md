@@ -1,6 +1,6 @@
 # About `definitions` folder
 
-This directory contains Microsoft Fabric item definitions downloaded from the Fabric workspace 'Microsoft IQ - dev'. Definitions stored here are deployed to the Fabric workspace as a post-deployment step in the [`fabric_solution_installer.ipynb`](../../infra/fabric/deploy/fabric_solution_installer.ipynb) notebook.
+This directory contains Microsoft Fabric item definitions downloaded from the Fabric workspace 'Microsoft IQ - dev'. Definitions stored here are deployed to the Fabric workspace as a post-deployment step in the [`fabric_solution_installer.ipynb`](../../../infra/fabric/deploy/fabric_solution_installer.ipynb) notebook.
 
 Definitions are obtained leveraging Fabric REST API GET DEFINITION operations, such as the generic [Get Item Definition](https://learn.microsoft.com/en-us/rest/api/fabric/core/items/get-item-definition?tabs=HTTP) API or item-type-specific definition APIs.
 
