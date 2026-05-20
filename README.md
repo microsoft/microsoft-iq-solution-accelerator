@@ -33,9 +33,12 @@ The architecture below illustrates the solution architecture. For detailed archi
 
 ### How to customize
 
-If you'd like to customize the solution accelerator, here are some common areas to start: 
+If you'd like to customize the solution accelerator, here are some common areas to start with steps to take:  
 
-
+1.  Review the schema and data loaded for Fabric Lakehouse to understand the differences between the sample data structure and your business data. Refer to [Fabric Component Overview](./docs/fabric/README.md) for more details. 
+2. Review the documents stored in Foundry. Refer to [Foundry Component Overview](./docs/foundry/README.md) for more details. 
+3. Review the supply chain management agent implemented in Microsoft 365 Copilot and compare it with your business needs. Refer to [Copilot Component Overview](./docs/copilot/README.md) for more details. 
+4. Then develop a customization plan. 
 
 ## Features
 <details>
@@ -78,8 +81,9 @@ The table below lists the major Microsoft products utilized, with product, descr
 
 | Product | Description | Cost |
 |---|---|---|
-| [Microsoft 365 Copilot](https://learn.microsoft.com/en-us/microsoft-365/copilot/) | Microsoft 365 Copilot is an AI-powered tool that helps with your work tasks. Users enter a prompt, and Copilot responds with AI-generated information using both web and organizational data that the user has permission to access | [Pricing]([Microsoft 365 Copilot Plans and Pricing—AI for Business ) |
-| [Microsoft Foundry]((https://learn.microsoft.com/en-us/azure/foundry/)) | Microsoft Foundry is a unified Azure platform-as-a-service offering for enterprise AI operations, model builders, and application development. This foundation combines production-grade infrastructure with friendly interfaces, enabling developers to focus on building applications rather than managing infrastructure. | [Pricing]([Microsoft Foundry - Pricing ) |
+| [Microsoft 365 Copilot](https://learn.microsoft.com/en-us/microsoft-365/copilot/) | Microsoft 365 Copilot is an AI-powered tool that helps with your work tasks. Users enter a prompt, and Copilot responds with AI-generated information using both web and organizational data that the user has permission to access | [Pricing](https://www.microsoft.com/en-us/microsoft-365-copilot/pricing
+) |
+| [Microsoft Foundry]((https://learn.microsoft.com/en-us/azure/foundry/)) | Microsoft Foundry is a unified Azure platform-as-a-service offering for enterprise AI operations, model builders, and application development. This foundation combines production-grade infrastructure with friendly interfaces, enabling developers to focus on building applications rather than managing infrastructure. | [Pricing](https://azure.microsoft.com/en-us/pricing/details/microsoft-foundry/) |
 | [Microsoft Fabric](https://learn.microsoft.com/en-us/fabric) | Microsoft Fabric is an analytics platform that supports end‑to‑end data workflows, including data ingestion, transformation, real‑time stream processing, analytics, and reporting. It provides integrated experiences such as Data Engineering, Data Factory, Data Science, Real‑Time Intelligence, Data Warehouse, and Databases, which operate over a shared compute and storage model. | [Pricing](https://learn.microsoft.com/en-us/fabric/enterprise/buy-subscription#prerequisites) |
 
 <br/>
@@ -113,7 +117,7 @@ The Microsoft IQ solution accelerator leverages a shared intelligence layer that
 
     Fabric IQ enables consistent impact assessment across suppliers, products, and distribution centers, so teams can understand what’s at risk before decisions are made.
 
-  - **Reason through feasible options **
+  - **Reason through feasible options**
 
     Foundry IQ retrieves and reasons over supplier contracts, SLAs, lead times, policies, and historical performance to evaluate feasible sourcing and replanning paths.
 
