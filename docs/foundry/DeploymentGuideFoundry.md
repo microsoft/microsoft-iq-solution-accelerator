@@ -42,7 +42,7 @@ In addition to the [common requirements](../DeploymentGuide.md#deployment-enviro
 ### Model availability
 
 - **`gpt-4.1-mini`** (or your `AZURE_CHAT_MODEL` override) available in the target `AZURE_AI_DEPLOYMENTS_LOCATION` region.
-- **`text-embedding-3-small`** (or your `AZURE_EMBEDDING_MODEL` override) available in the same region.
+- **`text-embedding-3-small`** (or your `AZURE_OPENAI_EMBEDDING_MODEL` override) available in the same region.
 
 > Check model availability at [Azure OpenAI model summary](https://learn.microsoft.com/azure/ai-services/openai/concepts/models#model-summary-table-and-region-availability).
 
@@ -178,7 +178,7 @@ Foundry-specific variables set via `azd env set <KEY> <VALUE>` before `azd up`:
 |---|---|---|
 | `AZURE_AI_DEPLOYMENTS_LOCATION` | Region for AI model deployments (**required**) | _(prompted)_ |
 | `AZURE_CHAT_MODEL` | Chat completion model name | `gpt-4.1-mini` |
-| `AZURE_EMBEDDING_MODEL` | Embedding model name | `text-embedding-3-small` |
+| `AZURE_OPENAI_EMBEDDING_MODEL` | Embedding model name | `text-embedding-3-small` |
 | `AZURE_AI_SEARCH_INDEX` | Search index name | `{solution_suffix}-documents` |
 | `KB_MCP_CONNECTION_NAME` | MCP connection name | `{solution_suffix}-kb-mcp-connection` |
 | `AZURE_EXISTING_AI_PROJECT_RESOURCE_ID` | Use an existing Foundry project | _(empty)_ |
