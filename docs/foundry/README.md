@@ -22,7 +22,7 @@ The deployment provisions these Azure resources automatically via `azd up`:
 
 | Resource | Purpose |
 |---|---|
-| **Microsoft Foundry Hub & Project** | Core AI platform — agents, model deployments, knowledge bases, and connections. |
+| **Azure AI Foundry Hub & Project** | Core AI platform — agents, model deployments, knowledge bases, and connections. |
 | **Azure AI Search** | Document indexing with vector embeddings and keyword search for hybrid retrieval. |
 | **Azure Storage Account** | Blob storage for PDF documents; provides direct citation links in agent responses. |
 | **Azure OpenAI Models** | `gpt-4.1-mini` for chat completion (150K TPM) and `text-embedding-3-small` for embeddings (80K TPM). |
