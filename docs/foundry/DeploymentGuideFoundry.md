@@ -54,7 +54,7 @@ Phase 1 (Bicep) creates the following Foundry-related resources in a single reso
 
 | Resource | Purpose |
 |---|---|
-| **[Microsoft Foundry Hub & Project](https://learn.microsoft.com/azure/ai-studio/concepts/ai-resources)** | Container for agents, model deployments, knowledge bases, and connections. |
+| **[Azure AI Foundry Hub & Project](https://learn.microsoft.com/azure/ai-studio/concepts/ai-resources)** | Container for agents, model deployments, knowledge bases, and connections. |
 | **[Azure AI Search](https://learn.microsoft.com/azure/search/search-what-is-azure-search)** | Document indexing with vector + keyword hybrid search. |
 | **[Azure Storage Account](https://learn.microsoft.com/azure/storage/common/storage-account-overview)** | Blob storage for PDF documents with direct citation links. |
 | **Azure OpenAI deployments** | `gpt-4.1-mini` for chat (150K TPM) and `text-embedding-3-small` for embeddings (80K TPM). |
