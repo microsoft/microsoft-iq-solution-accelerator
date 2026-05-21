@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-05-22T00:33:00.000Z" agent="Copilot" version="24.0.0" type="device">
+  <diagram id="foundry-iq-architecture" name="Foundry IQ Architecture">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="600" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="title" value="Foundry IQ — Knowledge Base Pipeline" style="text;html=1;fontSize=20;fontStyle=1;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontColor=#1B1B2F;fontFamily=Segoe UI;" vertex="1" parent="1">
+          <mxGeometry x="350" y="20" width="500" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Phase 1 Label -->
+        <mxCell id="phase1_label" value="Document Processing" style="text;html=1;fontSize=13;fontStyle=1;fillColor=none;align=center;verticalAlign=middle;fontColor=#0078D4;fontFamily=Segoe UI;" vertex="1" parent="1">
+          <mxGeometry x="100" y="75" width="700" height="25" as="geometry" />
+        </mxCell>
+
+        <!-- PDF Documents -->
+        <mxCell id="pdf" value="&lt;b&gt;PDF Documents&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#666&quot;&gt;Your source files&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E6F2FF;strokeColor=#0078D4;strokeWidth=2;fontSize=12;fontFamily=Segoe UI;arcSize=20;verticalAlign=middle;spacingTop=5;spacingBottom=5;" vertex="1" parent="1">
+          <mxGeometry x="40" y="120" width="150" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Blob Storage -->
+        <mxCell id="blob" value="&lt;b&gt;Azure Blob&lt;br&gt;Storage&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#666&quot;&gt;Document store&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E6F2FF;strokeColor=#0078D4;strokeWidth=2;fontSize=12;fontFamily=Segoe UI;arcSize=20;verticalAlign=middle;spacingTop=5;spacingBottom=5;" vertex="1" parent="1">
+          <mxGeometry x="250" y="120" width="150" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Page-aware Chunking -->
+        <mxCell id="chunk" value="&lt;b&gt;Page-Aware&lt;br&gt;Chunking&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#666&quot;&gt;Split by pages&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E6F2FF;strokeColor=#0078D4;strokeWidth=2;fontSize=12;fontFamily=Segoe UI;arcSize=20;verticalAlign=middle;spacingTop=5;spacingBottom=5;" vertex="1" parent="1">
+          <mxGeometry x="460" y="120" width="150" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Vector Embeddings -->
+        <mxCell id="embed" value="&lt;b&gt;Vector&lt;br&gt;Embeddings&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#666&quot;&gt;Semantic encoding&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E6F2FF;strokeColor=#0078D4;strokeWidth=2;fontSize=12;fontFamily=Segoe UI;arcSize=20;verticalAlign=middle;spacingTop=5;spacingBottom=5;" vertex="1" parent="1">
+          <mxGeometry x="670" y="120" width="150" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- AI Search Index -->
+        <mxCell id="search" value="&lt;b&gt;Azure AI&lt;br&gt;Search Index&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#666&quot;&gt;Hybrid retrieval&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E6F2FF;strokeColor=#0078D4;strokeWidth=2;fontSize=12;fontFamily=Segoe UI;arcSize=20;verticalAlign=middle;spacingTop=5;spacingBottom=5;" vertex="1" parent="1">
+          <mxGeometry x="880" y="120" width="150" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Arrows Phase 1 -->
+        <mxCell id="a1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#0078D4;strokeWidth=2;fontSize=10;endArrow=blockThin;endFill=1;" edge="1" source="pdf" target="blob" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#0078D4;strokeWidth=2;fontSize=10;endArrow=blockThin;endFill=1;" edge="1" source="blob" target="chunk" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#0078D4;strokeWidth=2;fontSize=10;endArrow=blockThin;endFill=1;" edge="1" source="chunk" target="embed" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#0078D4;strokeWidth=2;fontSize=10;endArrow=blockThin;endFill=1;" edge="1" source="embed" target="search" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Phase 2 Label -->
+        <mxCell id="phase2_label" value="Agent Pipeline" style="text;html=1;fontSize=13;fontStyle=1;fillColor=none;align=center;verticalAlign=middle;fontColor=#00B294;fontFamily=Segoe UI;" vertex="1" parent="1">
+          <mxGeometry x="350" y="230" width="500" height="25" as="geometry" />
+        </mxCell>
+
+        <!-- Vertical connector from Search to Knowledge Source -->
+        <mxCell id="a5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#00B294;strokeWidth=2;fontSize=10;endArrow=blockThin;endFill=1;" edge="1" source="search" target="ks" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Knowledge Source -->
+        <mxCell id="ks" value="&lt;b&gt;Knowledge&lt;br&gt;Source&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#666&quot;&gt;Index pointer&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E6FFF5;strokeColor=#00B294;strokeWidth=2;fontSize=12;fontFamily=Segoe UI;arcSize=20;verticalAlign=middle;spacingTop=5;spacingBottom=5;" vertex="1" parent="1">
+          <mxGeometry x="880" y="270" width="150" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Knowledge Base -->
+        <mxCell id="kb" value="&lt;b&gt;Knowledge&lt;br&gt;Base&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#666&quot;&gt;Query planning&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E6FFF5;strokeColor=#00B294;strokeWidth=2;fontSize=12;fontFamily=Segoe UI;arcSize=20;verticalAlign=middle;spacingTop=5;spacingBottom=5;" vertex="1" parent="1">
+          <mxGeometry x="670" y="270" width="150" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- MCP Connection -->
+        <mxCell id="mcp" value="&lt;b&gt;MCP&lt;br&gt;Connection&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#666&quot;&gt;Tool protocol&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E6FFF5;strokeColor=#00B294;strokeWidth=2;fontSize=12;fontFamily=Segoe UI;arcSize=20;verticalAlign=middle;spacingTop=5;spacingBottom=5;" vertex="1" parent="1">
+          <mxGeometry x="460" y="270" width="150" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Azure AI Foundry Agent -->
+        <mxCell id="agent" value="&lt;b&gt;Azure AI Foundry&lt;br&gt;Agent&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#666&quot;&gt;ChatAgent&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#FF8C00;strokeWidth=2;fontSize=12;fontFamily=Segoe UI;arcSize=20;verticalAlign=middle;spacingTop=5;spacingBottom=5;" vertex="1" parent="1">
+          <mxGeometry x="250" y="270" width="150" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- User -->
+        <mxCell id="user" value="&lt;b&gt;User&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#666&quot;&gt;Ask questions&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E5F5;strokeColor=#9B59B6;strokeWidth=2;fontSize=12;fontFamily=Segoe UI;arcSize=20;verticalAlign=middle;spacingTop=5;spacingBottom=5;" vertex="1" parent="1">
+          <mxGeometry x="40" y="270" width="150" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Arrows Phase 2 (right to left) -->
+        <mxCell id="a6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#00B294;strokeWidth=2;fontSize=10;endArrow=blockThin;endFill=1;" edge="1" source="ks" target="kb" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a7" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#00B294;strokeWidth=2;fontSize=10;endArrow=blockThin;endFill=1;" edge="1" source="kb" target="mcp" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a8" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#FF8C00;strokeWidth=2;fontSize=10;endArrow=blockThin;endFill=1;" edge="1" source="mcp" target="agent" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a9" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#9B59B6;strokeWidth=2;fontSize=10;endArrow=blockThin;endFill=1;startArrow=blockThin;startFill=1;" edge="1" source="user" target="agent" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Legend -->
+        <mxCell id="leg_title" value="Legend" style="text;html=1;fontSize=11;fontStyle=1;fillColor=none;align=left;verticalAlign=middle;fontColor=#333;fontFamily=Segoe UI;" vertex="1" parent="1">
+          <mxGeometry x="1080" y="120" width="80" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="leg1" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E6F2FF;strokeColor=#0078D4;strokeWidth=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1080" y="145" width="16" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="leg1t" value="Document Processing" style="text;html=1;fontSize=10;fillColor=none;align=left;verticalAlign=middle;fontColor=#666;fontFamily=Segoe UI;" vertex="1" parent="1">
+          <mxGeometry x="1100" y="143" width="140" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="leg2" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E6FFF5;strokeColor=#00B294;strokeWidth=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1080" y="168" width="16" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="leg2t" value="Agent Pipeline" style="text;html=1;fontSize=10;fillColor=none;align=left;verticalAlign=middle;fontColor=#666;fontFamily=Segoe UI;" vertex="1" parent="1">
+          <mxGeometry x="1100" y="166" width="140" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="leg3" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#FF8C00;strokeWidth=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1080" y="191" width="16" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="leg3t" value="AI Agent" style="text;html=1;fontSize=10;fillColor=none;align=left;verticalAlign=middle;fontColor=#666;fontFamily=Segoe UI;" vertex="1" parent="1">
+          <mxGeometry x="1100" y="189" width="140" height="20" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
