@@ -1,18 +1,16 @@
 # Foundry IQ — Intelligent Document Q&A
 
-## What Is This?
+## Overview
 
-Foundry IQ is the **document question-answering** component of the Microsoft IQ Solution Accelerator. Upload your PDF documents, and an AI-powered agent will answer questions about them — with direct references back to the exact pages and sources.
+Foundry IQ is the **document question-answering** component of the Microsoft IQ Solution Accelerator. It enables users to upload PDF documents and interact with an AI-powered agent that answers questions with direct references to the exact pages and sources.
 
-**In simple terms:** You give it your documents. You ask questions in plain English. It gives you answers with citations — like having a research assistant who has read every page.
+### Key Capabilities
 
-### What can it do?
-
-- **Answer questions** about your uploaded documents in natural language
-- **Cite sources** — every answer includes page numbers and links to the original documents
-- **Search intelligently** — finds relevant information even when you don't use the exact words from the document
-- **Summarize and compare** — can pull together information across multiple documents
-- **Generate charts** from data found in your documents
+- **Natural language Q&A** — ask questions about your uploaded documents in plain English
+- **Source citations** — every answer includes page numbers and links to the original documents
+- **Intelligent search** — finds relevant information even when the exact words from the document are not used
+- **Summarization and comparison** — synthesizes information across multiple documents
+- **Chart generation** — creates visual representations from data found in your documents
 
 ## Sample Questions
 
