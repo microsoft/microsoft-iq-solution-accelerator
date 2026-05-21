@@ -1,87 +1,107 @@
-# Microsoft IQ Solution Accelerator
+# Foundry IQ Architecture
 
-A streamlined Azure AI Foundry solution for document-based question answering using knowledge bases and intelligent agents.
+## Overview
 
-## 🚀 Infrastructure Deployed
+The Foundry component of the Microsoft IQ Solution Accelerator implements a document-based question answering system using Azure AI Foundry. It combines a Knowledge Base pipeline with an intelligent Chat Agent to deliver grounded answers with source citations from your PDF documents.
 
-This solution automatically deploys:
+## Foundry IQ Architecture
 
-- **Azure AI Foundry Hub & Project** - Core AI platform for agent management
-- **Azure AI Search** - Document indexing and semantic search capabilities  
-- **Azure Storage Account** - Document storage with direct blob access for citations
-- **Azure OpenAI Models** - GPT-4.1-mini for chat and text-embedding-3-small for search
-- **Managed Identities** - Secure authentication between services
+The key components of the Foundry IQ architecture are as follows:
 
-## 🤖 AI Agents Created
+- Azure AI Foundry Hub & Project for agent management and model deployments
+- Azure AI Search for document indexing with hybrid (vector + keyword) retrieval
+- Azure Blob Storage for PDF document storage with direct citation links
+- Knowledge Base pipeline with page-aware chunking and semantic search
+- Chat Agent with MCP-based tool access to the Knowledge Base
+
+## Key Components
+
+### Infrastructure
+
+The deployment provisions these Azure resources automatically via `azd up`:
+
+| Resource | Purpose |
+|---|---|
+| **Microsoft Foundry Hub & Project** | Core AI platform — agents, model deployments, knowledge bases, and connections. |
+| **Azure AI Search** | Document indexing with vector embeddings and keyword search for hybrid retrieval. |
+| **Azure Storage Account** | Blob storage for PDF documents; provides direct citation links in agent responses. |
+| **Azure OpenAI Models** | `gpt-4.1-mini` for chat completion (150K TPM) and `text-embedding-3-small` for embeddings (80K TPM). |
+| **Managed Identity** | Secure service-to-service authentication — no secrets stored. |
+
+### Knowledge Base
+
+The Knowledge Base pipeline transforms raw PDFs into a searchable, citation-ready index:
+
+1. **Upload** — PDFs from [`src/foundry/data/documents/`](../../src/foundry/data/documents/) are stored in Azure Blob Storage.
+2. **Chunking** — Documents are split into page-aware chunks, preserving page numbers for precise citations.
+3. **Embedding** — Each chunk is vectorized using `text-embedding-3-small` for semantic search.
+4. **Indexing** — Chunks are indexed in Azure AI Search with both vector and full-text content for hybrid retrieval.
+5. **Knowledge Source & Base** — A Foundry IQ knowledge source points to the search index; a knowledge base enables automatic query planning over it.
+
+The accelerator ships with 11 sample PDFs covering supply chain, inventory, delivery, and quality management. Replace them with your own documents for domain-specific answers.
 
 ### Chat Agent
-- **Purpose**: Document-based question answering and analysis
-- **Knowledge Source**: Foundry IQ Knowledge Base with automatic query planning
-- **Capabilities**: 
-  - Policy and guideline lookups
-  - Document search with semantic ranking
-  - Direct source citations with blob storage links
-  - Chart generation from retrieved data
 
-## 📚 Knowledge Base Features
+| Setting | Detail |
+|---|---|
+| **Agent name** | `ChatAgent` |
+| **Model** | `gpt-4.1-mini` (configurable via `AZURE_CHAT_MODEL`) |
+| **Tool** | Knowledge Base via [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) connection |
+| **Capabilities** | Document Q&A · semantic search · page-level citations with blob links · chart generation |
 
-The knowledge base will be populated with your documents:
-- Upload PDF documents to `src/foundry/data/documents/` folder
-- Automatic page-aware chunking for precise citations
-- Semantic search with vector embeddings
-- Azure Blob Storage integration for direct document access
+The agent uses **automatic query planning** — it decomposes user questions into optimal search queries, then synthesizes answers grounded in your documents with direct source citations.
 
-**Note**: The documents folder is currently empty. Add your PDF documents there and run the upload script to populate the knowledge base.
+Additional information on the deployment pipeline and scripts can be found in [Deployment Guide — Foundry deep-dive](./DeploymentGuideFoundry.md).
 
-## 🎯 Sample Questions to Try
+## Getting Started
 
-*After uploading your documents, try questions like these based on typical business content:*
+1. **Deploy**: Run `azd up` to provision all infrastructure and create the agent.
+2. **Add documents**: Place your PDF files in [`src/foundry/data/documents/`](../../src/foundry/data/documents/) and re-run `azd up` to rebuild the knowledge base.
+3. **Access the agent**: Open [Azure AI Foundry](https://ai.azure.com) → select your hub → select your project → **Agents** → `ChatAgent`.
+4. **Start chatting**: Begin with discovery questions like *"What documents are available?"* to explore your knowledge base.
 
-### Document Discovery
-- "Show me the supplier onboarding process"
-- "Find information about evaluation criteria or approval processes"
+> For the full deployment walkthrough, see the [top-level Deployment Guide](../DeploymentGuide.md). For Foundry-specific internals, troubleshooting, and configuration, see the [Foundry Deployment Deep-Dive](./DeploymentGuideFoundry.md).
 
-### Content Search
-- "What are the qualification criteria for new suppliers?"
-- "How long does the supplier evaluation process take?" 
-- "What documentation is required for supplier approval?"
-- "What are the trial order procedures mentioned?"
+## Document Management
 
-### Analysis Requests
-- "Summarize the key steps in the supplier onboarding process"
-- "What performance metrics are used for supplier monitoring?"
-- "Compare the requirements between different procedures"
+| Action | How |
+|---|---|
+| **Add documents** | Place PDF files in [`src/foundry/data/documents/`](../../src/foundry/data/documents/) |
+| **Update the knowledge base** | Re-run `azd up` — this re-uploads PDFs and rebuilds the search index |
+| **Verify indexing** | Check [ai.azure.com](https://ai.azure.com) → Knowledge Bases → `{solution_suffix}-kb` → status *Ready* |
+| **Test the agent** | Run `python infra/scripts/foundry/test_agent.py` from the repository root |
 
-### Specific Details
-- "What is the minimum reliability score required?"
-- "How much volume can trial orders include?"
-- "What training is provided to suppliers?"
-- "What security standards are mentioned for data exchange?"
+### Citation behavior
 
-## 🔧 Getting Started
+Each agent response includes:
+- **Page numbers** referencing the exact source page in the original PDF
+- **Direct blob links** to the source documents in Azure Storage
+- **Source attribution** showing which document(s) were used
 
-1. **Deploy**: Run `azd up` to deploy all infrastructure and create agents
-2. **Access**: Open Azure AI Foundry Studio in the Azure portal
-3. **Chat**: Navigate to the Playground and select your "ChatAgent"
-4. **Ask Questions**: Start with document discovery questions to see what's available
+## Tips for Best Results
 
-## 💡 Tips for Best Results
+- **Be specific** — ask about policies, procedures, or specific document content rather than broad topics.
+- **Use context** — reference document types or names you've uploaded for more precise retrieval.
+- **Request citations** — the agent provides direct links to source pages; ask for them explicitly if needed.
+- **Ask follow-ups** — build on previous answers for deeper analysis.
+- **Start with discovery** — begin with *"What documents are available?"* to understand your knowledge base scope.
 
-- **Add Documents First**: Upload PDF documents to get meaningful responses
-- **Be Specific**: Ask about policies, procedures, or specific document content
-- **Use Context**: Reference document types or names you've uploaded
-- **Request Citations**: The agent will provide direct links to source documents
-- **Ask Follow-ups**: Build on previous answers for deeper analysis
-- **Start Simple**: Begin with "What documents are available?" to understand your knowledge base
+## Sample Questions
 
-## 📁 Document Management
+For a comprehensive list of example queries organized by category, see **[Sample Questions](./sample_questions.md)**.
 
-- **Upload Documents**: Add your PDF files to `src/foundry/data/documents/` folder
-- **Run Upload Script**: Execute `python src/foundry/scripts/01_upload_to_search.py` after adding documents
-- **Storage**: Documents are stored in Azure Blob Storage for reliable access
-- **Citations**: Each response includes page numbers and direct document links
-- **Updates**: Add new PDFs and re-run the upload script to update the knowledge base
+Quick examples:
+- *"What are the qualification criteria for new suppliers?"*
+- *"Summarize the key steps in the supplier onboarding process"*
+- *"What performance metrics are used for supplier monitoring?"*
 
 ---
 
-**Next Steps**: Visit the [Azure AI Foundry playground](https://ai.azure.com) to start chatting with your knowledge-powered agent!
+## Documentation
+
+| Document | Description |
+|---|---|
+| [Foundry IQ Architecture](./README.md) | This file — architecture overview and getting started. |
+| [Deployment Guide — Foundry Deep-Dive](./DeploymentGuideFoundry.md) | Foundry-specific deployment details, scripts, configuration, and troubleshooting. |
+| [Sample Questions](./sample_questions.md) | Example queries for the Chat Agent organized by category. |
+| [Top-level Deployment Guide](../DeploymentGuide.md) | Full `azd up` walkthrough for the complete solution. |
