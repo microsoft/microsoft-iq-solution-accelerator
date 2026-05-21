@@ -1,6 +1,6 @@
 # Deployment Guide — Foundry IQ Deep-Dive
 
-This is a **Foundry-focused companion** to the top-level [DeploymentGuide.md](../DeploymentGuide.md). It covers everything specific to the **Foundry IQ** half of the accelerator — the Azure AI infrastructure, Knowledge Base pipeline, Chat Agent setup, deployment scripts, and known limitations.
+This is a **Foundry-focused companion** to the top-level [DeploymentGuide.md](../DeploymentGuide.md). It covers everything specific to the **Foundry IQ** half of the accelerator — the Azure AI infrastructure, Knowledge Base pipeline, Azure AI Foundry Agent setup, deployment scripts, and known limitations.
 
 > **Looking for the standard `azd up` walkthrough?** Use [`docs/DeploymentGuide.md`](../DeploymentGuide.md). It covers prerequisites, environment setup options, `azd up` commands, optional configuration variables, and cleanup. This guide is for users who want to understand or extend the Foundry-specific behavior.
 
@@ -20,7 +20,7 @@ There are two deployment paths:
 3. [Phase 2 — Foundry Bootstrap Details](#phase-2--foundry-bootstrap-details)
 4. [Helper Modules](#helper-modules)
 5. [Knowledge Base Pipeline](#knowledge-base-pipeline)
-6. [Chat Agent Configuration](#chat-agent-configuration)
+6. [Azure AI Foundry Agent Configuration](#azure-ai-foundry-agent-configuration)
 7. [Idempotency](#idempotency)
 8. [Configuration Variables](#configuration-variables)
 9. [Verification](#verification)
@@ -104,7 +104,7 @@ The knowledge base pipeline transforms raw PDF documents into a searchable, cita
 ```
 PDF documents → Blob Storage upload → Page-aware chunking → Vector embeddings → AI Search index
                                                                                       ↓
-                                                                           Knowledge Source → Knowledge Base → MCP Connection → Chat Agent
+                                                                           Knowledge Source → Knowledge Base → MCP Connection → Azure AI Foundry Agent
 ```
 
 ### Document processing
@@ -145,7 +145,7 @@ Replace these with your own documents and re-run `azd up` to rebuild the knowled
 
 ---
 
-## Chat Agent Configuration
+## Azure AI Foundry Agent Configuration
 
 The `ChatAgent` is configured with:
 
@@ -253,7 +253,7 @@ azd up
 
 - [Top-level Deployment Guide](../DeploymentGuide.md) — the standard `azd up` walkthrough.
 - [Foundry IQ Architecture Overview](./README.md) — architecture and getting started.
-- [Sample Questions](./sample_questions.md) — example queries for the Chat Agent.
+- [Sample Questions](./sample_questions.md) — example queries for the Azure AI Foundry Agent.
 - [Azure AI Foundry documentation](https://learn.microsoft.com/azure/ai-studio/)
 - [Azure AI Search documentation](https://learn.microsoft.com/azure/search/)
 - [Azure OpenAI documentation](https://learn.microsoft.com/azure/ai-services/openai/)
