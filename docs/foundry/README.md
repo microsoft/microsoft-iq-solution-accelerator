@@ -6,7 +6,7 @@ The Foundry component of the Microsoft IQ Solution Accelerator implements a docu
 
 ## Foundry IQ Architecture
 
-The key components of the Foundry IQ architecture are as follows
+The key components of the Foundry IQ architecture are as follows:
 
 - Azure AI Foundry Hub & Project for agent management and model deployments
 - Azure AI Search index with hybrid (vector and keyword) retrieval
