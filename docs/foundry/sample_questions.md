@@ -1,6 +1,6 @@
-# Sample Questions — Foundry IQ Chat Agent
+# Sample Questions — Azure AI Foundry Agent
 
-After uploading your documents to the knowledge base, use these example questions to explore the Chat Agent's capabilities. Adapt them to match the content of your own documents.
+After uploading your documents to the knowledge base, use these example questions to explore the Azure AI Foundry Agent's capabilities. Adapt them to match the content of your own documents.
 
 ---
 

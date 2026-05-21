@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Foundry component of the Microsoft IQ Solution Accelerator implements a document-based question answering system using Azure AI Foundry. It combines a Knowledge Base pipeline with an intelligent Chat Agent to deliver grounded answers with source citations from your PDF documents.
+The Foundry component of the Microsoft IQ Solution Accelerator implements a document-based question answering system using Azure AI Foundry. It combines a Knowledge Base pipeline with an intelligent Azure AI Foundry Agent to deliver grounded answers with source citations from your PDF documents.
 
 ## Foundry IQ Architecture
 
@@ -12,7 +12,7 @@ The key components of the Foundry IQ architecture are as follows:
 - Azure AI Search for document indexing with hybrid (vector + keyword) retrieval
 - Azure Blob Storage for PDF document storage with direct citation links
 - Knowledge Base pipeline with page-aware chunking and semantic search
-- Chat Agent with MCP-based tool access to the Knowledge Base
+- Azure AI Foundry Agent with MCP-based tool access to the Knowledge Base
 
 ## Key Components
 
@@ -40,7 +40,7 @@ The Knowledge Base pipeline transforms raw PDFs into a searchable, citation-read
 
 The accelerator ships with 11 sample PDFs covering supply chain, inventory, delivery, and quality management. Replace them with your own documents for domain-specific answers.
 
-### Chat Agent
+### Azure AI Foundry Agent
 
 | Setting | Detail |
 |---|---|
@@ -103,5 +103,5 @@ Quick examples:
 |---|---|
 | [Foundry IQ Architecture](./README.md) | This file — architecture overview and getting started. |
 | [Deployment Guide — Foundry Deep-Dive](./DeploymentGuideFoundry.md) | Foundry-specific deployment details, scripts, configuration, and troubleshooting. |
-| [Sample Questions](./sample_questions.md) | Example queries for the Chat Agent organized by category. |
+| [Sample Questions](./sample_questions.md) | Example queries for the Azure AI Foundry Agent organized by category. |
 | [Top-level Deployment Guide](../DeploymentGuide.md) | Full `azd up` walkthrough for the complete solution. |
