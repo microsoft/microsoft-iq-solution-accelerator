@@ -61,7 +61,9 @@ If you'd like to customize the solution accelerator, here are some common areas 
 <h2 id="quick-deploy"><img src="./docs/images/readme/quick-deploy.png" width="48" />
 Quick deploy
 </h2>
-To deploy the solution accelerator to your environment, please follow the instructions in the [deployment guide](./docs/DeploymentGuide.md). 
+<br />
+
+To deploy the solution accelerator to your environment, please follow the instructions [deployment guide](./docs/DeploymentGuide.md).
 
 ### Prerequisites and costs
 
