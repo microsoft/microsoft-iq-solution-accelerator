@@ -26,7 +26,7 @@ This solution accelerator offers a ready-to-deploy, integrated business solution
 
 The architecture below illustrates the solution architecture. For detailed architecture description, please refer to the 
 
-[architecture description page](./docs/TechnicalArchitecture.md).
+[architecture description](./docs/TechnicalArchitecture.md).
 
 | ![image](./docs/images/readme/solution-architecture.png) |
 | -------------------------------------------------------- |
@@ -35,10 +35,11 @@ The architecture below illustrates the solution architecture. For detailed archi
 
 If you'd like to customize the solution accelerator, here are some common areas to start with steps to take:  
 
-1.  Review the schema and data loaded for Fabric Lakehouse to understand the differences between the sample data structure and your business data. Refer to [Fabric Component Overview](./docs/fabric/README.md) for more details. 
-2. Review the documents stored in Foundry. Refer to [Foundry Component Overview](./docs/foundry/README.md) for more details. 
-3. Review the supply chain management agent implemented in Microsoft 365 Copilot and compare it with your business needs. Refer to [Copilot Component Overview](./docs/copilot/README.md) for more details. 
-4. Then develop a customization plan. 
+1.  Review the documentations in the [docs](./docs) folder and subfolders, including [architecture description](./docs/TechnicalArchitecture.md).
+2.  Review the schema and data loaded for Fabric Lakehouse to understand the differences between the sample data structure and your business data. Refer to [Fabric Component Overview](./docs/fabric/README.md) for more details. 
+3.  Review the documents stored in Foundry. Refer to [Foundry Component Overview](./docs/foundry/README.md) for more details. 
+4.  Review the supply chain management agent implemented in Microsoft 365 Copilot and compare it with your business needs. Refer to [Copilot Component Overview](./docs/copilot/README.md) for more details. 
+5.  Then develop a customization plan. 
 
 ## Features
 <details>
@@ -61,7 +62,9 @@ If you'd like to customize the solution accelerator, here are some common areas 
 <h2 id="quick-deploy"><img src="./docs/images/readme/quick-deploy.png" width="48" />
 Quick deploy
 </h2>
-Please follow the instructions provided in the [deployment guide](./docs/DeploymentGuide.md).
+<br />
+
+To deploy the solution accelerator to your environment, please follow the instructions [deployment guide](./docs/DeploymentGuide.md).
 
 ### Prerequisites and costs
 
