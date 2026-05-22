@@ -191,7 +191,7 @@ The installer notebook ([`fabric_solution_installer.ipynb`](../../infra/fabric/d
 **Current deployed items:**
 
 - **1 lakehouse**: `miqsadata` — 25 tables across 6 business domains (customer, product, sales, finance, inventory, supplychain) plus the shared `DimDate` dimension, [shortcut](https://learn.microsoft.com/fabric/onelake/onelake-shortcuts-overview)-enabled
-- **26 notebooks**: data_management (4), data_processing (7), query_samples (4), schema (7), root (4 — `pipeline_main`, `pipeline_update`, `reset_or_debug`, `sampe_data_query`)
+- **26 notebooks**: data_management (4), data_processing (7), query_samples (4), schema (7), root (4 — `pipeline_main`, `pipeline_update`, `reset_or_debug`, `sample_data_query`)
 - **1 AI data agent**: `RetailSC Ontology Agent` (NL queries via ontology semantic model)
 - **1 ontology model**: `RetailSupplyChainOntologyModel`
 - **Semantic models + reports**: `RetailSupplyChainModel`, `Sales Overview`, `Supply Chain Management`

@@ -54,7 +54,7 @@ fabric_workspace/
     ├── data_processing/ (7)       # load_customer, load_finance, load_inventory, load_product, load_sales, load_supplychain, load_shared
     ├── query_samples/ (4)         # get_data_summary, list_schema_tables, order_counts, sql_order_counts
     ├── schema/ (7)                # model_customer, model_finance, model_inventory, model_product, model_sales, model_supplychain, model_shared
-    └── (root) (4)                 # pipeline_main, pipeline_update, reset_or_debug, sampe_data_query
+    └── (root) (4)                 # pipeline_main, pipeline_update, reset_or_debug, sample_data_query
 ```
 
 > The folder names above (`data_agent/`, `ontology/`, `dashboards/`, `lakehouses/`, `notebooks/`) reflect the post-installer layout produced by `fabric_solution_installer.ipynb`. The on-disk Fabric Git format under `src/fabric/fabric_workspace/` may use flatter naming — always reconcile against the live folder structure when items are added or moved.

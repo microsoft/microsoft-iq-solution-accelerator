@@ -75,7 +75,7 @@ After the notebook completes, the workspace should contain:
   | `data_processing/` | 7 | `load_customer`, `load_finance`, `load_inventory`, `load_product`, `load_sales`, `load_supplychain`, `load_shared` |
   | `query_samples/` | 4 | `get_data_summary`, `list_schema_tables`, `order_counts`, `sql_order_counts` |
   | `schema/` | 7 | `model_customer`, `model_finance`, `model_inventory`, `model_product`, `model_sales`, `model_supplychain`, `model_shared` |
-  | (root) | 4 | `pipeline_main` (orchestrator), `pipeline_update`, `reset_or_debug`, `sampe_data_query` |
+  | (root) | 4 | `pipeline_main` (orchestrator), `pipeline_update`, `reset_or_debug`, `sample_data_query` |
 
 - **AI data agent** `RetailSC Ontology Agent` for natural-language querying through the ontology.
 - **Ontology** `RetailSupplyChainOntologyModel` and **semantic models** `RetailSupplyChainModel`, `Sales Overview`, `Supply Chain Management`.
