@@ -1,5 +1,5 @@
 ---
-description: "Use when editing Fabric workspace items under fabric/fabric_workspace/. Covers Fabric Git format, item types, .platform files, parameter.yml parameterization, notebook format, and documentation sync with DeploymentGuideFabric.md."
+description: "Use when editing Fabric workspace items under fabric/fabric_workspace/. Covers Fabric Git format, item types, .platform files, parameter.yml parameterization, notebook format, and documentation sync with docs/DeploymentGuide.md and docs/fabric/DeploymentGuideFabricManual.md."
 applyTo: "fabric/fabric_workspace/**"
 ---
 
@@ -41,39 +41,41 @@ Every item folder contains a `.platform` JSON file with Fabric metadata (type, c
 
 ```text
 fabric_workspace/
-├── fabric_data_agents/           # AI Data Agents
-│   ├── data_agent_lakehouse.DataAgent/   # NL query over lakehouse (22 tables, 6 domains)
-│   └── data_agent_ontology.DataAgent/    # Ontology-based queries
-├── fabric_ontology/
-│   └── ontology_semantic_model.Ontology/ # Business-friendly semantic layer
+├── data_agent/                    # AI Data Agent(s)
+│   └── RetailSC Ontology Agent.DataAgent/   # NL queries via ontology semantic model
+├── ontology/
+│   └── RetailSupplyChainOntologyModel.Ontology/ # Business-friendly semantic layer
 ├── lakehouses/
-│   └── miqsadata.Lakehouse/     # Unified data store (shortcut-enabled)
-└── notebooks/                    # 23 notebooks
-    ├── data_management/ (4)      # create_scheme_tables, drop_all_tables, load_data_all_tables, truncate_all_tables
-    ├── data_processing/ (6)      # load_customer, load_finance, load_inventory, load_product, load_sales, load_supplychain
-    ├── query_samples/ (4)        # get_data_summary, list_schema_tables, order_counts, sql_order_counts
-    ├── schema/ (6)               # model_customer, model_finance, model_inventory, model_product, model_sales, model_supplychain
-    ├── pipeline_main/            # Orchestration entry-point
-    ├── pipeline_update/          # Pipeline update utility
-    └── reset_or_debug/           # Debug and reset utility
+│   └── miqsadata.Lakehouse/      # Unified data store (shortcut-enabled, 25 tables)
+├── dashboards/                    # Semantic models + Power BI reports
+│                                  # (RetailSupplyChainModel, Sales Overview, Supply Chain Management)
+└── notebooks/                     # 26 notebooks
+    ├── data_management/ (4)       # create_scheme_tables, drop_all_tables, load_data_all_tables, truncate_all_tables
+    ├── data_processing/ (7)       # load_customer, load_finance, load_inventory, load_product, load_sales, load_supplychain, load_shared
+    ├── query_samples/ (4)         # get_data_summary, list_schema_tables, order_counts, sql_order_counts
+    ├── schema/ (7)                # model_customer, model_finance, model_inventory, model_product, model_sales, model_supplychain, model_shared
+    └── (root) (4)                 # pipeline_main, pipeline_update, reset_or_debug, sample_data_query
 ```
 
-### Business domains (22 tables)
+> The folder names above (`data_agent/`, `ontology/`, `dashboards/`, `lakehouses/`, `notebooks/`) reflect the post-installer layout produced by `fabric_solution_installer.ipynb`. The on-disk Fabric Git format under `src/fabric/fabric_workspace/` may use flatter naming — always reconcile against the live folder structure when items are added or moved.
+
+### Business domains (25 tables)
 
 | Domain | Tables |
 |---|---|
-| Customer | Customer, CustomerRelationshipType, CustomerTradeName, Location, CustomerAccount |
-| Product | Product, ProductCategory |
-| Sales | Order, OrderLine, OrderPayment |
-| Finance | invoice, account, payment |
-| Inventory | Warehouses, Inventory, InventoryTransactions, PurchaseOrders, PurchaseOrderItems, DemandForecast |
-| Supply chain | Suppliers, ProductSuppliers, SupplyChainEvents |
+| Customer (5) | `Customer`, `CustomerTradeName`, `CustomerRelationshipType`, `Location`, `CustomerAccount` |
+| Product (3) | `ProductLine`, `Product`, `ProductCategory` |
+| Sales (3) | `Order`, `OrderLine`, `OrderPayment` |
+| Finance (3) | `invoice`, `account`, `payment` |
+| Inventory (6) | `Warehouses`, `Inventory`, `InventoryTransactions`, `PurchaseOrders`, `PurchaseOrderItems`, `DemandForecast` |
+| Supply chain (4) | `Suppliers`, `ProductSuppliers`, `SupplyChainEvents`, `SupplyChainEventImpacts` |
+| Shared (1) | `DimDate` |
 
 ## Documentation sync
 
 When adding, removing, or renaming items, update:
 
-- [`docs/fabric/DeploymentGuideFabric.md`](../../docs/fabric/DeploymentGuideFabric.md) — §5 Deployment Results > Fabric Components (folder structure, item counts, notebook table, domain table)
-- [`docs/fabric/DeploymentGuideFabricManual.md`](../../docs/fabric/DeploymentGuideFabricManual.md) — installer outcome list and Deployment Verification section
+- [`docs/DeploymentGuide.md`](../../docs/DeploymentGuide.md) — §7 Deployment Results → *Fabric IQ Components* (workspace tree must match the live items)
+- [`docs/fabric/DeploymentGuideFabricManual.md`](../../docs/fabric/DeploymentGuideFabricManual.md) — *Verification* section (lakehouse table breakdown, notebook counts)
 
 Also review [`.github/instructions/fabric-workspace.instructions.md`](./fabric-workspace.instructions.md) (this file) and [`.github/instructions/infra-scripts.instructions.md`](./infra-scripts.instructions.md) to keep the item inventory and counts current.

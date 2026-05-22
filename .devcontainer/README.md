@@ -149,7 +149,6 @@ If you open this repo together with a sibling [fabric-launcher](https://github.c
 - [Dev Containers Documentation](https://code.visualstudio.com/docs/devcontainers/containers)
 - [Dev Container Features (containers.dev)](https://containers.dev/features)
 - [Top-level Deployment Guide](../docs/DeploymentGuide.md)
-- [Fabric Deployment Guide (automated)](../docs/fabric/DeploymentGuideFabric.md)
 - [Fabric Deployment Guide (manual)](../docs/fabric/DeploymentGuideFabricManual.md)
 
 ## Customization

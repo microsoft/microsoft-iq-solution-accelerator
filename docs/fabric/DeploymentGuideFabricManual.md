@@ -49,19 +49,37 @@ Download [`fabric_solution_installer.ipynb`](../../infra/fabric/deploy/fabric_so
 
 The notebook installs `fabric-launcher`, downloads items from [`src/fabric/fabric_workspace/`](../../src/fabric/fabric_workspace/) and ontology definitions from [`src/fabric/definitions/`](../../src/fabric/definitions/), runs `pipeline_main` to ingest sample data, then deploys the ontology and organizes items into folders.
 
-For a detailed breakdown of what the installer does internally, see *[Inside the installer notebook](./DeploymentGuideFabric.md#inside-the-installer-notebook)* in the Fabric deep-dive guide.
+The notebook's first cell documents every configurable variable (`GITHUB_OWNER`, `GITHUB_REPO`, `GITHUB_BRANCH`, `GITHUB_FABRIC_WORKSPACE_PATH`, `LAKEHOUSE_NAME`, `DATA_FOLDERS`, `ONTOLOGY_NAMES`, `ONTOLOGY_TARGET_FOLDER`, `item_type_stages`). Read it before running if you need to change defaults.
 
 ## Verification
 
 After the notebook completes, the workspace should contain:
 
-- **Lakehouse** `miqsadata` — 25 tables across 6 business domains plus `DimDate`, with sample CSVs loaded under *Files*.
-- **26 notebooks** under `data_management/`, `data_processing/`, `query_samples/`, `schema/`, plus `pipeline_main` / `pipeline_update` / `reset_or_debug` / `sampe_data_query` at the root.
+- **Lakehouse** `miqsadata` — **25 tables across 6 business domains plus a shared `DimDate`**, with sample CSVs loaded under *Files*:
+
+  | Domain | Tables |
+  |---|---|
+  | Customer (5) | `Customer`, `CustomerTradeName`, `CustomerRelationshipType`, `Location`, `CustomerAccount` |
+  | Product (3) | `ProductLine`, `Product`, `ProductCategory` |
+  | Sales (3) | `Order`, `OrderLine`, `OrderPayment` |
+  | Finance (3) | `invoice`, `account`, `payment` |
+  | Inventory (6) | `Warehouses`, `Inventory`, `InventoryTransactions`, `PurchaseOrders`, `PurchaseOrderItems`, `DemandForecast` |
+  | Supply chain (4) | `Suppliers`, `ProductSuppliers`, `SupplyChainEvents`, `SupplyChainEventImpacts` |
+  | Shared (1) | `DimDate` |
+
+- **26 notebooks** organized by function:
+
+  | Folder | Count | Contents |
+  |---|---|---|
+  | `data_management/` | 4 | `create_scheme_tables`, `drop_all_tables`, `load_data_all_tables`, `truncate_all_tables` |
+  | `data_processing/` | 7 | `load_customer`, `load_finance`, `load_inventory`, `load_product`, `load_sales`, `load_supplychain`, `load_shared` |
+  | `query_samples/` | 4 | `get_data_summary`, `list_schema_tables`, `order_counts`, `sql_order_counts` |
+  | `schema/` | 7 | `model_customer`, `model_finance`, `model_inventory`, `model_product`, `model_sales`, `model_supplychain`, `model_shared` |
+  | (root) | 4 | `pipeline_main` (orchestrator), `pipeline_update`, `reset_or_debug`, `sample_data_query` |
+
 - **AI data agent** `RetailSC Ontology Agent` for natural-language querying through the ontology.
 - **Ontology** `RetailSupplyChainOntologyModel` and **semantic models** `RetailSupplyChainModel`, `Sales Overview`, `Supply Chain Management`.
 - **Power BI reports** `Sales Overview` and `Supply Chain Management`.
-
-The full inventory and table-level breakdown is documented in [Fabric workspace contents](./DeploymentGuideFabric.md#fabric-workspace-contents).
 
 ## Troubleshooting
 
@@ -69,7 +87,7 @@ The full inventory and table-level breakdown is documented in [Fabric workspace 
 |---|---|---|
 | Notebook import fails | Wrong file format | Make sure you downloaded the raw `.ipynb` file, not GitHub's HTML page. |
 | Workspace capacity error | No capacity assigned | Assign a Fabric capacity (or trial) in **Workspace settings**. |
-| `pipeline_main` Spark session fails | Transient Fabric platform issue | Re-run the failed cell. See [Known limitations](./DeploymentGuideFabric.md#known-limitations) §3. |
+| `pipeline_main` Spark session fails | Transient Fabric platform issue (Spark session provisioning, managed VNet connectivity, or notebook scheduler latency) | Re-run the failed cell, or re-run the whole notebook. Typically succeeds on the next attempt. |
 | `fabric-launcher` cannot download repo | Private fork without `GITHUB_TOKEN` | Set `GITHUB_TOKEN` in the configuration cell and re-run from that cell. |
 | Items missing after run | Some cells did not finish | Confirm every cell shows a green check; re-run any that errored. |
 
@@ -85,5 +103,5 @@ Delete the workspace from the Fabric portal:
 ## Next steps
 
 - For a fully automated end-to-end deployment that also provisions Foundry, the chat agent, and the knowledge base, switch to the [top-level Deployment Guide](../DeploymentGuide.md).
-- For Fabric internals (bootstrap step modules, installer notebook configuration, capacity SKU sizing, known limitations), see the [Fabric deep-dive](./DeploymentGuideFabric.md).
+- For the Work IQ (Copilot Studio) component that orchestrates Fabric IQ + Foundry IQ from a single conversational ingress, see the [Copilot Studio Deployment Guide](../copilot/DeploymentGuide.md).
 - Microsoft Fabric documentation: [learn.microsoft.com/fabric](https://learn.microsoft.com/fabric/).
