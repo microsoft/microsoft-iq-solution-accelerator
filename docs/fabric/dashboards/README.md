@@ -1,6 +1,6 @@
 # Power BI Dashboards
 
-This folder documents the Power BI reports shipped with the Microsoft IQ Solution Accelerator. The `.pbix` files live under [`src/fabric/dashboards/`](../../../src/fabric/dashboards/) and are intended to be published to the Microsoft Fabric workspace created by the accelerator (see [`DeploymentGuideFabric.md`](../DeploymentGuideFabric.md)).
+This folder documents the Power BI reports shipped with the Microsoft IQ Solution Accelerator. The `.pbix` files live under [`src/fabric/dashboards/`](../../../src/fabric/dashboards/) and are intended to be published to the Microsoft Fabric workspace created by the accelerator (see [`DeploymentGuide.md`](../../DeploymentGuide.md)).
 
 Two reports are provided:
 
