@@ -68,7 +68,36 @@ You can modify the data models and notebooks in different folders under the `src
 <h2 id="quick-deploy"><img src="./docs/images/readme/quick-deploy.png" width="48" />
 Quick deploy
 </h2>
-TBD
+
+## Getting Started
+
+### Deploy the solution
+
+Follow these steps to deploy the Microsoft IQ Solution Accelerator:
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/microsoft/microsoft-iq-solution-accelerator.git
+   cd microsoft-iq-solution-accelerator
+   ```
+
+2. **Log in to Azure**
+   ```bash
+   azd auth login
+   ```
+
+3. **Deploy the solution**
+   ```bash
+   azd up
+   ```
+   This will prompt you to select your Azure subscription and region, then provision all infrastructure and deploy the solution end-to-end.
+
+4. **Verify the deployment**
+   ```bash
+   azd env get-values
+   ```
+
+For more detailed instructions, see the [Deployment Guide](./docs/DeploymentGuide.md).
 
 ### Prerequisites and costs
 
