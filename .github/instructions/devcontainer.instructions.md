@@ -100,8 +100,7 @@ When any of the columns below change, update the matching section of [`.devconta
 
 Most `.devcontainer/` changes are local. Cross-check these files only when the change affects the **deployment surface**, not just the developer environment:
 
-- [`docs/DeploymentGuide.md`](../../docs/DeploymentGuide.md) §3 *Deployment Commands* — only when prerequisites for `azd up` change in a way that affects users running outside the dev container (e.g. a new required tool that everyone now needs locally).
-- [`docs/fabric/DeploymentGuideFabric.md`](../../docs/fabric/DeploymentGuideFabric.md) §1 *Prerequisites* — same condition as above.
+- [`docs/DeploymentGuide.md`](../../docs/DeploymentGuide.md) *Deployment Commands* — only when prerequisites for `azd up` change in a way that affects users running outside the dev container (e.g. a new required tool that everyone now needs locally).
 - [`requirements.txt`](../../requirements.txt) — when adding a Python package that the local deployment scripts need. Do **not** add packages here purely for dev tooling; install those in [`post-create.sh`](../../.devcontainer/post-create.sh) instead.
 
 Routine dev container changes (a new VS Code extension, an extra apt package, an additional alias) do not require updates to the deployment guides.
