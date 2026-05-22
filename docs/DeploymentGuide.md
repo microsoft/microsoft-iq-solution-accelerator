@@ -300,7 +300,10 @@ Microsoft IQ - {suffix}
 │   └── …
 ├── 📈 Semantic Models & Reports
 │   ├── RetailSupplyChainModel.SemanticModel
-│   └── Supply Chain Management.SemanticModel
+│   ├── Sales Overview.SemanticModel
+│   ├── Sales Overview.Report
+│   ├── Supply Chain Management.SemanticModel
+│   └── Supply Chain Management.Report
 ├── 🧬 Ontologies
 │   └── RetailSupplyChainOntologyModel
 └── 🤖 Data Agents
