@@ -311,11 +311,10 @@ jobs:
           echo "## 🚀 Next Steps" >> $GITHUB_STEP_SUMMARY
           echo "1. 📁 **Open the Fabric workspace**: [\`${FABRIC_WORKSPACE_NAME}\`](${FABRIC_WORKSPACE_URL}) — explore the lakehouse, notebooks, semantic models, and data agents" >> $GITHUB_STEP_SUMMARY
           echo "2. 🤖 **Verify the Foundry agent**: open the [Foundry portal](${FOUNDRY_PORTAL_URL}), select project \`${AZURE_AI_PROJECT_NAME}\`, and confirm \`ChatAgent\` and \`${KNOWLEDGE_BASE_NAME}\` exist" >> $GITHUB_STEP_SUMMARY
-          echo "3. 📖 **Review documentation**: see the [Deployment Guide](https://github.com/${{ github.repository }}/blob/main/docs/DeploymentGuide.md) for verification, configuration, and cleanup steps" >> $GITHUB_STEP_SUMMARY
+          echo "3. 📖 **Follow post-deployment steps**: see the [Deployment Guide](https://github.com/${{ github.repository }}/blob/main/docs/DeploymentGuide.md) for Work IQ post-deployment configuration, verification, and cleanup steps" >> $GITHUB_STEP_SUMMARY
           echo "4. 🔧 **Customize**: drop additional PDFs in \`src/foundry/data/documents/\` and re-run \`azd up\` to refresh the knowledge base" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
 
           echo "## 🆘 Need Help?" >> $GITHUB_STEP_SUMMARY
           echo "- 🐛 [Report Issues](https://github.com/${{ github.repository }}/issues)" >> $GITHUB_STEP_SUMMARY
           echo "- 📘 [Deployment Guide](https://github.com/${{ github.repository }}/blob/main/docs/DeploymentGuide.md)" >> $GITHUB_STEP_SUMMARY
-          echo "- 🧱 [Fabric Deployment Guide](https://github.com/${{ github.repository }}/blob/main/docs/fabric/DeploymentGuideFabric.md)" >> $GITHUB_STEP_SUMMARY
