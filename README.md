@@ -4,12 +4,14 @@ The Microsoft IQ Solution Accelerator is an AI-powered enterprise intelligence a
 
 **Key Use Case and Customization:**
 
-- **Supply Chain Management Key Use Case**:  During supplier disruptions, organizations use unified intelligence to assess risk and inventory levels, evaluate sourcing options across the enterprise, and coordinate actions across teams to protect product availability and ensure continuity of supply.
+- **Supply Chain Management Key Use Case**:  During supplier disruptions, organizations use unified intelligence to assess risk and inventory levels, evaluate sourcing options, and coordinate actions across teams to protect product availability and ensure continuity of supply.
 - **Reusability and Customization**: The architecture is reusable and can be customized to work with other business use cases. Please refer to [How to customize](#how-to-customize).
 
 <br/>
 
 <div align="center">
+
+
 [**SOLUTION OVERVIEW**](#solution-overview) \| [**QUICK DEPLOY**](#quick-deploy) \| [**BUSINESS SCENARIO**](#business-use-case) \| [**SUPPORTING DOCUMENTATION**](#supporting-documentation)
 
 </div>
