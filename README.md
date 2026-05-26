@@ -4,7 +4,7 @@ The Microsoft IQ Solution Accelerator is an AI-powered enterprise intelligence a
 
 **Key Use Cases and Customization:**
 
-- **Supply Chain Management Key Use Case**: During supplier disruptions, teams assess risk and inventory, evaluate sourcing options, and coordinate actions to protect product availability and continuity of supply.
+- **Supply Chain Use Case**: During supplier disruptions, teams assess risk and inventory, evaluate sourcing options, and coordinate actions to protect product availability and continuity of supply.
 - **Reusability and Customization**: The architecture can be adapted for other business scenarios. Please refer to [How to customize](#how-to-customize).
 
 <br/>
@@ -21,12 +21,12 @@ The Microsoft IQ Solution Accelerator is an AI-powered enterprise intelligence a
 <h2 id="solution-overview"><img src="./docs/images/readme/solution-overview.png" width="48" />
 Solution overview
 </h2>
-This is a ready-to-deploy solution built on Microsoft 365 Copilot, Microsoft Foundry, and Microsoft Fabric. It combines Work IQ, Foundry IQ, and Fabric IQ to support end-to-end disruption detection, analysis, and response.
+This is a ready-to-deploy solution accelerator built on Microsoft 365 Copilot, Microsoft Foundry, and Microsoft Fabric. It combines Work IQ, Foundry IQ, and Fabric IQ to support end-to-end disruption detection, analysis, and response.
 
 
 ### Solution architecture
 
-The architecture below illustrates the solution architecture. For a detailed architecture description, please refer to the [architecture description](./docs/TechnicalArchitecture.md).
+The diagram below illustrates the solution architecture. For a detailed architecture description, see the [architecture description](./docs/TechnicalArchitecture.md).
 
 | ![image](./docs/images/readme/solution-architecture.png) |
 | -------------------------------------------------------- |
@@ -38,7 +38,7 @@ If you'd like to customize the solution accelerator, here are some common areas 
 1.  Review the documentation in the [docs](./docs) folder and subfolders, including [architecture description](./docs/TechnicalArchitecture.md).
 2.  Review the schema and data loaded for Fabric Lakehouse to understand the differences between the sample data structure and your business data. Refer to [Fabric Component Overview](./docs/fabric/README.md) for more details. 
 3.  Review the documents stored in Foundry. Refer to [Foundry Component Overview](./docs/foundry/README.md) for more details. 
-4.  Review the supply chain management agent implemented in Microsoft 365 Copilot and compare it with your business needs. Refer to [Copilot Component Overview](./docs/copilot/README.md) for more details. 
+4.  Review the Copilot Studio Agent and workflow, and compare it with your business process. Refer to [Copilot Component Overview](./docs/copilot/README.md) for more details. 
 5.  Then develop a customization plan. 
 
 ## Features
@@ -113,19 +113,15 @@ The Microsoft IQ Solution Accelerator leverages a shared intelligence layer that
 <details>
   <summary>Click to learn more about what value this solution provides</summary>
 
-  - **Role-aware signal detection** <br/>Work IQ monitors role‑aware signals across emails, chats, meetings, and operational activity to detect early signs of disruption, surfacing what matters to the right people at the right time. 
+  - **Role-aware signal detection and decisions in workflow** <br/>Copilot Studio Agent coordinates sub‑agents, people, and workflows to validate disruptions, align stakeholders, and act. Data-driven decisions are supported by Foundry Chat Agent and Fabric Ontology Data Agent. 
 
   - **Assess impact in a timely manner**
 
-    Fabric IQ enables consistent impact assessment across suppliers, products, and distribution centers, so teams can understand what’s at risk before decisions are made.
+    Fabric Ontology Data Agent enables consistent impact assessment across suppliers, products, and distribution centers, so teams can understand what’s at risk before decisions are made.
 
   - **Reason through feasible options**
 
-    Foundry IQ retrieves and reasons over supplier contracts, SLAs, lead times, policies, and historical performance to evaluate feasible sourcing and replanning paths.
-
-  - **Execute decisions in workflow**
-
-    A supply‑chain agent, orchestrated through Copilot Studio, coordinates sub‑agents, people, and workflows across Microsoft 365 to validate disruptions, align stakeholders, and act.
+    Foundry Chat Agent retrieves and reasons over supplier contracts, SLAs, lead times, policies, and historical performance to evaluate feasible sourcing and replanning paths.
 
 </details>
 
