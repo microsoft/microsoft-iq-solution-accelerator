@@ -1,15 +1,15 @@
 # Microsoft IQ Solution Accelerator
 
-The Microsoft IQ Solution Accelerator is an AI-powered enterprise intelligence solution accelerator that enables faster, more informed decisions by unifying enterprise data, business knowledge, and execution workflows into a shared context. This accelerator connects unified data, semantic models and ontologies in Fabric IQ, enterprise knowledge and retrieval in Foundry IQ, and work context in Work IQ to identify signals, produce impact analysis, recommend disruption mitigation to support human decision making in evaluating business decisions and coordinating responses.
+The Microsoft IQ Solution Accelerator is an AI-powered enterprise intelligence accelerator that enables faster, more informed decisions by unifying enterprise data, business knowledge, and execution workflows into a shared context. It connects unified data, semantic models and ontologies in Fabric IQ, enterprise knowledge and retrieval in Foundry IQ, and work context in Work IQ to identify signals, assess impact, and recommend disruption mitigation, supporting human decision-making and coordinated responses.
 
-**Key use case(s):**
+**Key Use Case and Customization:**
 
-- **Supply Chain**: During supplier disruptions, organizations use unified intelligence to assess risk and inventory levels, evaluate sourcing options across the enterprise, and coordinate actions across teams to protect product availability and ensure continuity of supply.
+- **Supply Chain Management Key Use Case**:  During supplier disruptions, organizations use unified intelligence to assess risk and inventory levels, evaluate sourcing options across the enterprise, and coordinate actions across teams to protect product availability and ensure continuity of supply.
+- **Reusability and Customization**: The architecture is reusable and can be customized to work with other business use cases. Please refer to [How to customize](#how-to-customize).
 
 <br/>
 
 <div align="center">
-
 [**SOLUTION OVERVIEW**](#solution-overview) \| [**QUICK DEPLOY**](#quick-deploy) \| [**BUSINESS SCENARIO**](#business-use-case) \| [**SUPPORTING DOCUMENTATION**](#supporting-documentation)
 
 </div>
@@ -35,7 +35,7 @@ The architecture below illustrates the solution architecture. For detailed archi
 
 If you'd like to customize the solution accelerator, here are some common areas to start with steps to take:  
 
-1.  Review the documentations in the [docs](./docs) folder and subfolders, including [architecture description](./docs/TechnicalArchitecture.md).
+1.  Review the documentation in the [docs](./docs) folder and subfolders, including [architecture description](./docs/TechnicalArchitecture.md).
 2.  Review the schema and data loaded for Fabric Lakehouse to understand the differences between the sample data structure and your business data. Refer to [Fabric Component Overview](./docs/fabric/README.md) for more details. 
 3.  Review the documents stored in Foundry. Refer to [Foundry Component Overview](./docs/foundry/README.md) for more details. 
 4.  Review the supply chain management agent implemented in Microsoft 365 Copilot and compare it with your business needs. Refer to [Copilot Component Overview](./docs/copilot/README.md) for more details. 
@@ -45,7 +45,7 @@ If you'd like to customize the solution accelerator, here are some common areas 
 <details>
   <summary>Click to learn more about the key features this solution enables</summary>
 
-  - **Microsoft Supply Chain Disruption Management Workflow** <br/>Microsoft 365 Copilot intelligent workflow triggered by supply chain disruption events. The workflow enables the supply chain management team to leverage 
+  - **Microsoft Supply Chain Disruption Management Workflow** <br/>Microsoft 365 Copilot intelligent workflow triggered by supply chain disruption events. The workflow enables the supply chain management team to detect and manage supply chain disruptions. 
 
   - **Foundry IQ Chat Agent** <br/>
 
@@ -98,7 +98,7 @@ either by deleting the resource group in the Portal or running `azd down`.
 <h2 id="business-use-case"><img src="./docs/images/readme/business-scenario.png" width="48" />
 Business use case
 </h2>
-The Microsoft IQ solution accelerator leverages a shared intelligence layer that connects enterprise data, knowledge, and workflows to enable faster, more informed operational decisions. The accelerator integrates signals across customer, product, sales, inventory, and supply chain to detect risks early, assess business impact, and align cross-functional response. 
+The Microsoft IQ Solution Accelerator leverages a shared intelligence layer that connects enterprise data, knowledge, and workflows to enable faster, more informed operational decisions. The accelerator integrates signals across customer, product, sales, inventory, and supply chain to detect risks early, assess business impact, and align cross-functional response efforts.
 
 **Key use cases by role:**
 
@@ -127,7 +127,6 @@ The Microsoft IQ solution accelerator leverages a shared intelligence layer that
 
     A supply‑chain agent, orchestrated through Copilot Studio, coordinates sub‑agents, people, and workflows across Microsoft 365 to validate disruptions, align stakeholders, and act.
 
-
 </details>
 
 <br /><br />
@@ -140,7 +139,7 @@ Supporting documentation
 
 ### Security guidelines
 
-This template uses Azure Key Vault to store all connections to communicate between resources.
+This template uses Azure Key Vault to store all connections used to communicate between resources.
 
 This template also uses [Managed Identity](https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/overview) for local development and deployment.
 
@@ -161,7 +160,7 @@ You may want to consider additional security measures, such as:
 
 ### Cross references
 
-Check out similar solution accelerators
+Check out similar solution accelerators.
 
 | Solution Accelerator                                         | Description                                                  |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
