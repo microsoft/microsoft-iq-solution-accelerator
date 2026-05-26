@@ -2,10 +2,10 @@
 
 The Microsoft IQ Solution Accelerator is an AI-powered enterprise intelligence accelerator that enables faster, more informed decisions by unifying enterprise data, business knowledge, and execution workflows into a shared context. It connects unified data, semantic models and ontologies in Fabric IQ, enterprise knowledge and retrieval in Foundry IQ, and work context in Work IQ to identify signals, assess impact, and recommend disruption mitigation, supporting human decision-making and coordinated responses.
 
-**Key Use Case and Customization:**
+**Key Use Cases and Customization:**
 
-- **Supply Chain Management Key Use Case**:  During supplier disruptions, organizations use unified intelligence to assess risk and inventory levels, evaluate sourcing options, and coordinate actions across teams to protect product availability and ensure continuity of supply.
-- **Reusability and Customization**: The architecture is reusable and can be customized to work with other business use cases. Please refer to [How to customize](#how-to-customize).
+- **Supply Chain Management Key Use Case**: During supplier disruptions, teams assess risk and inventory, evaluate sourcing options, and coordinate actions to protect product availability and continuity of supply.
+- **Reusability and Customization**: The architecture can be adapted for other business scenarios. Please refer to [How to customize](#how-to-customize).
 
 <br/>
 
@@ -21,14 +21,12 @@ The Microsoft IQ Solution Accelerator is an AI-powered enterprise intelligence a
 <h2 id="solution-overview"><img src="./docs/images/readme/solution-overview.png" width="48" />
 Solution overview
 </h2>
-This solution accelerator offers a ready-to-deploy, integrated business solution that leverages advanced technology platforms with generative AI capabilities, including Microsoft 365 Copilot, Microsoft Foundry, and Microsoft Fabric. The AI capabilities include Work IQ, Foundry IQ, and Fabric IQ. 
+This is a ready-to-deploy solution built on Microsoft 365 Copilot, Microsoft Foundry, and Microsoft Fabric. It combines Work IQ, Foundry IQ, and Fabric IQ to support end-to-end disruption detection, analysis, and response.
 
 
 ### Solution architecture
 
-The architecture below illustrates the solution architecture. For detailed architecture description, please refer to the 
-
-[architecture description](./docs/TechnicalArchitecture.md).
+The architecture below illustrates the solution architecture. For a detailed architecture description, please refer to the [architecture description](./docs/TechnicalArchitecture.md).
 
 | ![image](./docs/images/readme/solution-architecture.png) |
 | -------------------------------------------------------- |
@@ -47,15 +45,15 @@ If you'd like to customize the solution accelerator, here are some common areas 
 <details>
   <summary>Click to learn more about the key features this solution enables</summary>
 
-  - **Microsoft Supply Chain Disruption Management Workflow** <br/>Microsoft 365 Copilot intelligent workflow triggered by supply chain disruption events. The workflow enables the supply chain management team to detect and manage supply chain disruptions. 
+  - **Copilot Studio Agent and Supply Chain Management Workflow** <br/>Powered by AI, Copilot Studio Agent orchestrates the response workflow when disruption signals appear, helping teams triage issues and act quickly.
 
-  - **Foundry IQ Chat Agent** <br/>
+  - **Foundry Chat Agent** <br/>
 
-    Utilized by the Microsoft 365 Copilot intelligent workflow, the Foundry Chat Agent can answer questions on supplier terms and conditions, and related policies. 
+    Used within the Copilot workflow, the Foundry Chat Agent answers questions about supplier contracts, terms, and policies.
 
   - **Fabric Ontology Data Agent** <br/>
 
-    Utilized by the Microsoft 365 Copilot intelligent workflow, the Fabric Ontology Data Agent can answer questions on enterprise business data, including data about customer, product, inventory, suppliers, and demand forecast. 
+    Used within the Copilot workflow, the Fabric Ontology Data Agent answers questions about enterprise data, including customers, products, inventory, suppliers, and demand forecasts.
 
 </details>
 
@@ -66,7 +64,7 @@ Quick deploy
 </h2>
 <br />
 
-To deploy the solution accelerator to your environment, please follow the instructions [deployment guide](./docs/DeploymentGuide.md).
+To deploy the solution in your environment, follow the [deployment guide](./docs/DeploymentGuide.md).
 
 ### Prerequisites and costs
 
