@@ -34,11 +34,11 @@ Before testing, familiarize yourself with the deployed resources by visiting the
 
 ### Copilot Studio
 - **URL**: [https://copilotstudio.microsoft.com](https://copilotstudio.microsoft.com)
-- **What to Review**: The 3IQ Accelerator Agent and its configured topics
+- **What to Review**: The Microsoft IQ Accelerator Agent and its configured topics
 
 ### Power Automate
 - **URL**: [https://make.powerautomate.com](https://make.powerautomate.com)
-- **What to Review**: The 3IQ Email Trigger Flow that monitors for incoming emails
+- **What to Review**: The Microsoft IQ Email Trigger Flow that monitors for incoming emails
 
 ---
 
@@ -54,7 +54,7 @@ You need to add the agent to Microsoft Teams to receive responses from the email
 - Click **Add** to install the agent
 
 **Option 2: From Copilot Studio**
-- In [Copilot Studio](https://copilotstudio.microsoft.com), open the 3IQ Accelerator Agent
+- In [Copilot Studio](https://copilotstudio.microsoft.com), open the Microsoft IQ Accelerator Agent
 - Navigate to **Channels** → **Microsoft Teams** → **Availability options**
 - Copy the Teams app link and share with testers
 
@@ -179,12 +179,12 @@ The agent should maintain context from previous messages and provide relevant, c
 After running tests, review these sources to confirm all components executed correctly:
 
 **Power Automate Run History**
-- Navigate to **Power Automate** → **My flows** → **3IQ Email Trigger Flow** → **Run history**
+- Navigate to **Power Automate** → **My flows** → **Microsoft IQ Email Trigger Flow** → **Run history**
 - Each test email should appear as a run with **Succeeded** status
 - Click on any run to view detailed step-by-step execution
 
 **Copilot Studio Analytics**
-- Open **Copilot Studio** → **3IQ Accelerator Agent** → **Analytics**
+- Open **Copilot Studio** → **Microsoft IQ Accelerator Agent** → **Analytics**
 - Review session metrics: sessions triggered, resolution rate, escalations
 - Click into a session to review the full conversation transcript and which topics were triggered
 
