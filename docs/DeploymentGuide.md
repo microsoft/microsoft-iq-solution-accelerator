@@ -10,8 +10,9 @@ The Microsoft IQ Solution Accelerator is an end-to-end data and AI platform that
 
 - **Fabric IQ**: Data lakehouse, notebooks, semantic models, and data agents for unified data foundation
 - **Microsoft Foundry**: Intelligent agents with knowledge base search for document-based question answering
+- **Work IQ**: Copilot Studio email-triggered agent (deployed manually after `azd up`) that orchestrates Fabric IQ and Foundry IQ from a single conversational ingress — see [Post-Deployment Steps — Work IQ](#post-deployment-steps--work-iq)
 
-The deployment is fully automated and idempotent, using Azure Developer CLI to orchestrate infrastructure provisioning and post-deployment configuration.
+The `azd up` deployment is fully automated and idempotent, provisioning Fabric IQ and Microsoft Foundry. Work IQ is configured manually after `azd up` completes by importing the Power Platform solution at [`src/copilot/sln/MicrosoftIQAccelerator`](../src/copilot/sln/MicrosoftIQAccelerator).
 
 ### Table of Contents
 
