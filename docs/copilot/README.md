@@ -37,6 +37,14 @@ This solution demonstrates the power of unified intelligence, connecting dispara
 - **Foundry Agent Connection**: Integration with Azure AI Foundry for knowledge base search and retrieval
 - **Power Platform Solution**: Pre-configured package containing the agent, flows, and connections
 
+### Work IQ
+
+[Work IQ](https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/work-iq) is the intelligence layer that personalizes Microsoft 365 Copilot for users and organizations.
+
+- Connects the Copilot Studio Agent to **Microsoft Graph** for the organization
+- Grants access to Microsoft 365 tenant data: Outlook emails, Teams messages, SharePoint content, and collaboration signals
+- Enables the agent to **draft and send emails** on behalf of users as part of its workflow orchestration
+
 ---
 
 ## Architecture
