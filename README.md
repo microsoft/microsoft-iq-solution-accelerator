@@ -1,14 +1,16 @@
 # Microsoft IQ Solution Accelerator
 
-The Microsoft IQ Solution Accelerator is an AI-powered enterprise intelligence solution accelerator that enables faster, more informed decisions by unifying enterprise data, business knowledge, and execution workflows into a shared context. This accelerator connects unified data, semantic models and ontologies in Fabric IQ, enterprise knowledge and retrieval in Foundry IQ, and work context in Work IQ to identify signals, produce impact analysis, recommend disruption mitigation to support human decision making in evaluating business decisions and coordinating responses.
+The Microsoft IQ Solution Accelerator is an AI-powered enterprise intelligence accelerator that enables faster, more informed decisions by unifying enterprise data, business knowledge, and execution workflows into a shared context. It connects unified data, semantic models and ontologies in Fabric IQ, enterprise knowledge and retrieval in Foundry IQ, and work context in Work IQ to identify signals, assess impact, and recommend disruption mitigation, supporting human decision-making and coordinated responses.
 
-**Key use case(s):**
+**Key Use Cases and Customization:**
 
-- **Supply Chain**: During supplier disruptions, organizations use unified intelligence to assess risk and inventory levels, evaluate sourcing options across the enterprise, and coordinate actions across teams to protect product availability and ensure continuity of supply.
+- **Supply Chain Use Case**: During supplier disruptions, teams assess risk and inventory, evaluate sourcing options, and coordinate actions to protect product availability and continuity of supply.
+- **Reusability and Customization**: The architecture can be adapted for other business scenarios. Please refer to [How to customize](#how-to-customize).
 
 <br/>
 
 <div align="center">
+
 
 [**SOLUTION OVERVIEW**](#solution-overview) \| [**QUICK DEPLOY**](#quick-deploy) \| [**BUSINESS SCENARIO**](#business-use-case) \| [**SUPPORTING DOCUMENTATION**](#supporting-documentation)
 
@@ -19,14 +21,12 @@ The Microsoft IQ Solution Accelerator is an AI-powered enterprise intelligence s
 <h2 id="solution-overview"><img src="./docs/images/readme/solution-overview.png" width="48" />
 Solution overview
 </h2>
-This solution accelerator offers a ready-to-deploy, integrated business solution that leverages advanced technology platforms with generative AI capabilities, including Microsoft 365 Copilot, Microsoft Foundry, and Microsoft Fabric. The AI capabilities include Work IQ, Foundry IQ, and Fabric IQ. 
+This is a ready-to-deploy solution accelerator built on Microsoft 365 Copilot, Microsoft Foundry, and Microsoft Fabric. It combines Work IQ, Foundry IQ, and Fabric IQ to support end-to-end disruption detection, analysis, and response.
 
 
 ### Solution architecture
 
-The architecture below illustrates the solution architecture. For detailed architecture description, please refer to the 
-
-[architecture description](./docs/TechnicalArchitecture.md).
+The diagram below illustrates the solution architecture. For a detailed architecture description, see the [architecture description](./docs/TechnicalArchitecture.md).
 
 | ![image](./docs/images/readme/solution-architecture.png) |
 | -------------------------------------------------------- |
@@ -35,25 +35,25 @@ The architecture below illustrates the solution architecture. For detailed archi
 
 If you'd like to customize the solution accelerator, here are some common areas to start with steps to take:  
 
-1.  Review the documentations in the [docs](./docs) folder and subfolders, including [architecture description](./docs/TechnicalArchitecture.md).
+1.  Review the documentation in the [docs](./docs) folder and subfolders, including [architecture description](./docs/TechnicalArchitecture.md).
 2.  Review the schema and data loaded for Fabric Lakehouse to understand the differences between the sample data structure and your business data. Refer to [Fabric Component Overview](./docs/fabric/README.md) for more details. 
 3.  Review the documents stored in Foundry. Refer to [Foundry Component Overview](./docs/foundry/README.md) for more details. 
-4.  Review the supply chain management agent implemented in Microsoft 365 Copilot and compare it with your business needs. Refer to [Copilot Component Overview](./docs/copilot/README.md) for more details. 
+4.  Review the Copilot Studio Agent and workflow, and compare it with your business process. Refer to [Copilot Component Overview](./docs/copilot/README.md) for more details. 
 5.  Then develop a customization plan. 
 
 ## Features
 <details>
   <summary>Click to learn more about the key features this solution enables</summary>
 
-  - **Microsoft Supply Chain Disruption Management Workflow** <br/>Microsoft 365 Copilot intelligent workflow triggered by supply chain disruption events. The workflow enables the supply chain management team to leverage 
+  - **Copilot Studio Agent and Supply Chain Management Workflow** <br/>Powered by AI, Copilot Studio Agent orchestrates the response workflow when disruption signals appear, helping teams triage issues and act quickly.
 
-  - **Foundry IQ Chat Agent** <br/>
+  - **Foundry Chat Agent** <br/>
 
-    Utilized by the Microsoft 365 Copilot intelligent workflow, the Foundry Chat Agent can answer questions on supplier terms and conditions, and related policies. 
+    Used within the Copilot workflow, the Foundry Chat Agent answers questions about supplier contracts, terms, and policies.
 
   - **Fabric Ontology Data Agent** <br/>
 
-    Utilized by the Microsoft 365 Copilot intelligent workflow, the Fabric Ontology Data Agent can answer questions on enterprise business data, including data about customer, product, inventory, suppliers, and demand forecast. 
+    Used within the Copilot workflow, the Fabric Ontology Data Agent answers questions about enterprise data, including customers, products, inventory, suppliers, and demand forecasts.
 
 </details>
 
@@ -64,7 +64,7 @@ Quick deploy
 </h2>
 <br />
 
-To deploy the solution accelerator to your environment, please follow the instructions [deployment guide](./docs/DeploymentGuide.md).
+To deploy the solution in your environment, follow the [deployment guide](./docs/DeploymentGuide.md).
 
 ### Prerequisites and costs
 
@@ -98,7 +98,7 @@ either by deleting the resource group in the Portal or running `azd down`.
 <h2 id="business-use-case"><img src="./docs/images/readme/business-scenario.png" width="48" />
 Business use case
 </h2>
-The Microsoft IQ solution accelerator leverages a shared intelligence layer that connects enterprise data, knowledge, and workflows to enable faster, more informed operational decisions. The accelerator integrates signals across customer, product, sales, inventory, and supply chain to detect risks early, assess business impact, and align cross-functional response. 
+The Microsoft IQ Solution Accelerator leverages a shared intelligence layer that connects enterprise data, knowledge, and workflows to enable faster, more informed operational decisions. The accelerator integrates signals across customer, product, sales, inventory, and supply chain to detect risks early, assess business impact, and align cross-functional response efforts.
 
 **Key use cases by role:**
 
@@ -113,20 +113,15 @@ The Microsoft IQ solution accelerator leverages a shared intelligence layer that
 <details>
   <summary>Click to learn more about what value this solution provides</summary>
 
-  - **Role-aware signal detection** <br/>Work IQ monitors role‑aware signals across emails, chats, meetings, and operational activity to detect early signs of disruption, surfacing what matters to the right people at the right time. 
+  - **Role-aware signal detection and decisions in workflow** <br/>Copilot Studio Agent coordinates sub‑agents, people, and workflows to validate disruptions, align stakeholders, and act. Data-driven decisions are supported by Foundry Chat Agent and Fabric Ontology Data Agent. 
 
   - **Assess impact in a timely manner**
 
-    Fabric IQ enables consistent impact assessment across suppliers, products, and distribution centers, so teams can understand what’s at risk before decisions are made.
+    Fabric Ontology Data Agent enables consistent impact assessment across suppliers, products, and distribution centers, so teams can understand what’s at risk before decisions are made.
 
   - **Reason through feasible options**
 
-    Foundry IQ retrieves and reasons over supplier contracts, SLAs, lead times, policies, and historical performance to evaluate feasible sourcing and replanning paths.
-
-  - **Execute decisions in workflow**
-
-    A supply‑chain agent, orchestrated through Copilot Studio, coordinates sub‑agents, people, and workflows across Microsoft 365 to validate disruptions, align stakeholders, and act.
-
+    Foundry Chat Agent retrieves and reasons over supplier contracts, SLAs, lead times, policies, and historical performance to evaluate feasible sourcing and replanning paths.
 
 </details>
 
@@ -140,7 +135,7 @@ Supporting documentation
 
 ### Security guidelines
 
-This template uses Azure Key Vault to store all connections to communicate between resources.
+This template uses Azure Key Vault to store all connections used to communicate between resources.
 
 This template also uses [Managed Identity](https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/overview) for local development and deployment.
 
@@ -161,7 +156,7 @@ You may want to consider additional security measures, such as:
 
 ### Cross references
 
-Check out similar solution accelerators
+Check out similar solution accelerators.
 
 | Solution Accelerator                                         | Description                                                  |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
