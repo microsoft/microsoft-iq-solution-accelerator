@@ -41,7 +41,9 @@ If you'd like to customize the solution accelerator, here are some common areas 
 2.  Review the schema and data loaded for Fabric Lakehouse to understand the differences between the sample data structure and your business data. Refer to [Fabric Component Overview](./docs/fabric/README.md) for more details. 
 3.  Review the documents stored in Foundry. Refer to [Foundry Component Overview](./docs/foundry/README.md) for more details. 
 4.  Review the Copilot Studio Agent and workflow, and compare it with your business process. Refer to [Copilot Component Overview](./docs/copilot/README.md) for more details. 
-5.  Then develop a customization plan. 
+5.  Review the source code in the [src](./src) folder and sample data in the [data](./infra/data) folder to evaluate the needed source code change and sample data update. To help you refresh sample data, we have included documented and reusable sample data generation process and code in [datagen](./src/fabric/datagen) folder. The folder contains documented Python code, PowerShell script, input data folder, and output data folder. 
+6.  Develop plan that identifies gaps and desired customizations. 
+7.  Customize according to the plan. 
 
 ## Features
 <details>
