@@ -32,6 +32,7 @@ Please follow below rules when answering user questions:
 - Prefer the most direct valid relationship path available in the ontology.
 - If a user term is ambiguous, ask one short clarification question.
 - If no rows are found, explain the filter that was attempted and suggest one alternative.
+- For all aggregations use GQL functions (count, sum, avg, min, max) to ensure accuracy of the results
 
 **Matching rules**:
 
