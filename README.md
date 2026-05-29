@@ -31,6 +31,8 @@ The diagram below illustrates the solution architecture. For a detailed architec
 | ![image](./docs/images/readme/solution-architecture.png) |
 | -------------------------------------------------------- |
 
+**Preview notice:** Some platform capabilities and integrations used in this solution, included MCP server integration, are currently in preview. These features are provided "as-is," "with all faults," and "as available" and may change or be updated without notice. As such, the solution is best suited for evaluation, experimentation and demonstration scenarios.
+
 ### How to customize
 
 If you'd like to customize the solution accelerator, here are some common areas to start with steps to take:  
@@ -39,7 +41,9 @@ If you'd like to customize the solution accelerator, here are some common areas 
 2.  Review the schema and data loaded for Fabric Lakehouse to understand the differences between the sample data structure and your business data. Refer to [Fabric Component Overview](./docs/fabric/README.md) for more details. 
 3.  Review the documents stored in Foundry. Refer to [Foundry Component Overview](./docs/foundry/README.md) for more details. 
 4.  Review the Copilot Studio Agent and workflow, and compare it with your business process. Refer to [Copilot Component Overview](./docs/copilot/README.md) for more details. 
-5.  Then develop a customization plan. 
+5.  Review the source code in the [src](./src) folder and sample data in the [data](./infra/fabric/data) folder to evaluate the needed source code change and sample data update. To help you refresh sample data, we have included documented and reusable sample data generation process and code in [datagen](./src/fabric/datagen) folder. The folder contains documented Python code, PowerShell script, input data folder, and output data folder. 
+6.  Develop plan that identifies gaps and desired customizations. 
+7.  Customize according to the plan. 
 
 ## Features
 <details>
@@ -162,6 +166,7 @@ Check out similar solution accelerators.
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | [Agentic applications for unified data foundation](https://github.com/microsoft/agentic-applications-for-unified-data-foundation-solution-accelerator) | Agentic AI application that provides natural language query of the data using unified data foundation, extending the Fabric Data Agent capabilities included in this solution. |
 | [Real-Time Intelligence for Operations Solution Accelerator](https://github.com/microsoft/real-time-intelligence-operations-solution-accelerator) | This solution accelerator provides a complete real-time intelligence platform for manufacturing operations. It analyzes live and historical telemetry data through interactive dashboards, automatically detects anomalies with email alerts, and includes an AI-powered data agent for conversational insights. |
+| [Unified Data Foundation with Microsoft Fabric](https://github.com/microsoft/unified-data-foundation-with-fabric-solution-accelerator) | Unified Data Foundation with Microsoft Fabric with Options to Integrate with Azure Databricks and Microsoft Purview. |
 
 <br/>
 
