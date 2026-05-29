@@ -7,6 +7,8 @@ The Microsoft IQ Solution Accelerator is an AI-powered enterprise intelligence a
 - **Supply Chain Use Case**: During supplier disruptions, teams assess risk and inventory, evaluate sourcing options, and coordinate actions to protect product availability and continuity of supply.
 - **Reusability and Customization**: The architecture can be adapted for other business scenarios. Please refer to [How to customize](#how-to-customize).
 
+**Preview notice:** Some platform capabilities and integrations used in this solution, including MCP server integration, are currently in preview, so certain responses or behaviors may occasionally vary from expectations. The solution remains suitable for evaluation, experimentation, and demonstration purposes as these capabilities continue to mature.
+
 <br/>
 
 <div align="center">
