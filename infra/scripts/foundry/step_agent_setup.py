@@ -41,40 +41,23 @@ def setup_agent(
     """Create or update an AI Foundry agent wired up to the Knowledge Base MCP tool.
 
     Args:
-        solution_name: Default scenario name when ``ontology_config.json`` is absent.
+        solution_name: Overall generic name for the project/solution
         agent_endpoint: Azure AI Project endpoint URL.
         agent_model: Chat model deployment name for the agent.
         search_endpoint: Azure AI Search service endpoint URL.
         search_index_name: Name of the search index that backs the KB.
-        knowledge_base_name: Default KB name (overridden by ``search_ids.json`` if present).
+        knowledge_base_name: KB name to use for the MCP connection.
         kb_mcp_connection_name: Project connection name for the KB MCP tool.
         subscription_id: Azure subscription ID.
         resource_group: Azure resource group name.
         ai_service_name: Azure AI Services account name (required for MCP connection).
         ai_project_name: Azure AI Project name (required for MCP connection).
     """
-    # Load scenario info from ontology config if available
+    # Default scenario info
     _data_path = Path(DATA_DIR)
     _config_dir = _data_path / "config" if (_data_path / "config").exists() else _data_path
-    _ontology_path = _config_dir / "ontology_config.json"
     _scenario_name = solution_name
-    _scenario_desc = ""
-    if _ontology_path.exists():
-        with open(_ontology_path) as _f:
-            _ontology = json.load(_f)
-        _scenario_name = _ontology.get("name", solution_name)
-        _scenario_desc = _ontology.get("description", "")
-        logger.debug(f"      Loaded ontology config: {_scenario_name}")
-    else:
-        logger.debug("      No ontology_config.json found — using default scenario name")
-
-    # Load KB name from previous step's output if available
-    _search_ids_path = _config_dir / "search_ids.json"
-    _kb_name = knowledge_base_name
-    if _search_ids_path.exists():
-        with open(_search_ids_path) as _f2:
-            _search_ids = json.load(_f2)
-        _kb_name = _search_ids.get("knowledge_base_name", knowledge_base_name)
+    _scenario_desc = "Managing delivery operations, inventory logistics, and supplier relationships."
 
     # Build agent instructions
     _instructions = build_agent_instructions(_scenario_name, _scenario_desc)
@@ -86,13 +69,13 @@ def setup_agent(
 
     logger.info("   Creating KB MCP project connection…")
     _mcp_ep = (
-        f"{search_endpoint.rstrip('/')}/knowledgebases/{_kb_name}"
+        f"{search_endpoint.rstrip('/')}/knowledgebases/{knowledge_base_name}"
         f"/mcp?api-version=2025-11-01-preview"
     )
     if ai_service_name and ai_project_name:
         _connected = create_kb_mcp_connection(
             search_endpoint=search_endpoint,
-            kb_name=_kb_name,
+            kb_name=knowledge_base_name,
             connection_name=kb_mcp_connection_name,
             subscription_id=subscription_id,
             resource_group=resource_group,
@@ -123,7 +106,7 @@ def setup_agent(
         )
     logger.info(f"   Agent '{_agent.name}' ready (id: {_agent.id})")
 
-    # Persist agent metadata for downstream scripts
+    # Persist agent metadata for review / debugging
     _agent_ids_path = _config_dir / "agent_ids.json"
     _agent_ids: dict = {}
     if _agent_ids_path.exists():
@@ -133,7 +116,7 @@ def setup_agent(
         "chat_agent_id": _agent.id,
         "chat_agent_name": _agent.name,
         "search_index": search_index_name,
-        "knowledge_base_name": _kb_name,
+        "knowledge_base_name": knowledge_base_name,
         "mcp_connection_name": kb_mcp_connection_name,
         "search_endpoint": search_endpoint,
         "tools": ["knowledge_base_retrieve"],

@@ -72,8 +72,7 @@ clients.
 (`setup_agent()`) follow the same pattern as the Fabric-side `fabric/step_workspace_setup.py`
 (`setup_workspace()`) and `fabric/step_workspace_admins.py`
 (`setup_workspace_administrators()`): each is a single top-level function that the
-entry-point script calls once, takes the config values it needs as parameters, owns
-its file I/O (`ontology_config.json`, `search_ids.json`, `agent_ids.json`), and
+entry-point script calls once, takes the config values it needs as parameters, and
 raises on hard errors. Skip-when-not-configured logic stays in the entry point.
 
 ### Key constants and environment variables
