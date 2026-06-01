@@ -1,4 +1,4 @@
-# Solution Architecture and Four Deployment Choices
+# Solution Architecture Description
 
 The solution architecture is depicted below: 
 
