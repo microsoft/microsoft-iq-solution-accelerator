@@ -90,7 +90,7 @@ The useful question is not, "Do I have an entity for every table?" The useful qu
 
 ---
 
-## Module 2: Model for Business Concepts
+## Module 3: Model for Business Concepts
 
 ### Principle
 
@@ -125,7 +125,7 @@ Better question:
 
 ---
 
-## Module 3: Keys, Relationships, and Property Naming
+## Module 4: Keys, Relationships, and Property Naming
 
 ### Entity Key Rules
 
@@ -175,7 +175,7 @@ types in different entities can cause type conflict failures.
 
 ---
 
-## Module 4: Data Readiness Checklist
+## Module 5: Data Readiness Checklist
 
 ### Must Have
 
@@ -213,7 +213,7 @@ types in different entities can cause type conflict failures.
 
 ---
 
-## Module 5: Common Pitfalls and Recovery Patterns
+## Module 6: Common Pitfalls and Recovery Patterns
 
 ### Pitfall 1: Table Missing in Ontology
 
@@ -266,7 +266,7 @@ Recovery:
 
 ---
 
-## Module 6: Writing Lean Data Agent Instructions
+## Module 7: Writing Lean Data Agent Instructions
 
 Good instructions are short, specific, and focused on ambiguity handling and response shape.
 
@@ -301,7 +301,7 @@ Treat negative quantities as valid for Sale, Transfer, and Damage.
 
 ---
 
-## Module 7: Validation Lab
+## Module 8: Validation Lab
 
 Run these questions from easy to advanced.
 
