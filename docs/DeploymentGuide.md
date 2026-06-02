@@ -172,13 +172,13 @@ azd up
 
 The `azd up` workflow provisions **Fabric IQ** and **Microsoft Foundry**. The third component of the accelerator — **Work IQ** (the Copilot Studio email-triggered agent that orchestrates Fabric IQ and Foundry IQ from a single conversational ingress) — is deployed **manually after `azd up` completes successfully**.
 
-Work IQ ships as a Power Platform solution at [`src/copilot/sln/MicrosoftIQAccelerator`](../src/copilot/sln/MicrosoftIQAccelerator). Follow the dedicated guide for the full step-by-step procedure:
+Work IQ ships as a Power Platform solution file inside the [solution file folder](../src/copilot/sln).  Follow the dedicated guide for the full step-by-step procedure:
 
 > 👉 **[Copilot Studio Integration — Deployment Guide](./copilot/DeploymentGuide.md)**
 
 Summary of the manual steps it covers:
 
-1. **Import the solution** into your Power Platform environment from [`src/copilot/sln/MicrosoftIQAccelerator`](../src/copilot/sln/MicrosoftIQAccelerator) (latest `MicrosoftIQAccelerator*.zip`).
+1. **Import the solution**  Import the Power Platform zip solution file inside the [solution file folder](../src/copilot/sln) into your Power Platform environment
 2. **Configure connections** — sign in to and authorize the Work IQ, Microsoft Teams, Copilot Studio, Office 365 Outlook, Fabric Data Agent, and Foundry Agent connections. The Foundry Agent connection uses the `AZURE_AI_AGENT_ENDPOINT` value emitted by `azd env get-values`.
 3. **Configure the email trigger** in the Power Automate flow — select the target inbox/folder to monitor and (optionally) add a subject filter such as `IQ Request`.
 4. **Publish the agent** in [Copilot Studio](https://copilotstudio.microsoft.com) and enable the **Microsoft Teams** channel.
@@ -240,7 +240,7 @@ The deployment creates two integrated components in a single Azure Resource Grou
 
 #### 2. Microsoft Foundry Resources
 - **[Microsoft Foundry Hub & Project](https://learn.microsoft.com/azure/ai-studio/concepts/ai-resources)**: Core AI platform for agent management
-- **[Azure AI Search](https://learn.microsoft.com/azure/search/search-what-is-azure-search)**: Document indexing with [vector search](https://learn.microsoft.com/azure/search/vector-search-overview) and [Knowledge Base](https://learn.microsoft.com/azure/ai-foundry/concepts/knowledge-bases)
+- **[Azure AI Search](https://learn.microsoft.com/azure/search/search-what-is-azure-search)**: Document indexing with [vector search](https://learn.microsoft.com/azure/search/vector-search-overview) and [knowledge base](https://learn.microsoft.com/en-us/azure/search/agentic-retrieval-how-to-create-knowledge-base?tabs=rbac%2C2025-11-01-preview&pivots=csharp)
 - **[Azure Storage Account](https://learn.microsoft.com/azure/storage/common/storage-account-overview)**: [Blob storage](https://learn.microsoft.com/azure/storage/blobs/storage-blobs-overview) for documents with direct citations
 - **[Azure OpenAI Models](https://learn.microsoft.com/azure/ai-services/openai/)**:
   - [`gpt-4.1-mini`](https://learn.microsoft.com/azure/ai-services/openai/concepts/models) - Chat completion (150K TPM)
