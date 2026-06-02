@@ -1,0 +1,169 @@
+table 'inventory inventorytransactions'
+	lineageTag: 00a3834e-8645-4f36-bf3c-1adebe736de5
+
+	column TransactionID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 9dfa1737-21f2-4364-8841-1a6c62d782bc
+		summarizeBy: none
+		sourceColumn: TransactionID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: f0c944ea-38e1-41e9-b901-1101cbf050f0
+		summarizeBy: none
+		sourceColumn: ProductID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductName
+		dataType: string
+		lineageTag: 71ef8f4c-d091-4ece-a0b0-b8ab9c9611bd
+		summarizeBy: none
+		sourceColumn: ProductName
+
+		annotation SummarizationSetBy = Automatic
+
+	column TransactionType
+		dataType: string
+		lineageTag: 24547f47-fc3d-4092-aa21-056d847a5d1f
+		summarizeBy: none
+		sourceColumn: TransactionType
+
+		annotation SummarizationSetBy = Automatic
+
+	column TransactionDate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: f4fd84c8-0abf-422f-9c6c-2ecbe1335b0f
+		summarizeBy: none
+		sourceColumn: TransactionDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: 2c2696d6-42c8-4f11-ae5e-7dca49fd0dd4
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column UnitCost
+		dataType: double
+		lineageTag: 0b5329a2-5088-4cb0-83ca-ab80a9dbaff3
+		summarizeBy: sum
+		sourceColumn: UnitCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TotalValue
+		dataType: double
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 8f559fab-65ed-4df3-a01a-cb1e97492db6
+		summarizeBy: sum
+		sourceColumn: TotalValue
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReferenceNumber
+		dataType: string
+		lineageTag: 34731f9d-829b-4eab-bb16-bba3cac80339
+		summarizeBy: none
+		sourceColumn: ReferenceNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReasonCode
+		dataType: string
+		lineageTag: 5b55c306-91e2-4d64-ab75-f9a2244e0231
+		summarizeBy: none
+		sourceColumn: ReasonCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column StockBefore
+		dataType: int64
+		formatString: 0
+		lineageTag: d255e8b0-8177-4df0-a8e8-dfd672afa767
+		summarizeBy: sum
+		sourceColumn: StockBefore
+
+		annotation SummarizationSetBy = Automatic
+
+	column StockAfter
+		dataType: int64
+		formatString: 0
+		lineageTag: d9e79683-9eab-42ee-a5c2-afe20ad6ac5d
+		summarizeBy: sum
+		sourceColumn: StockAfter
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProcessedBy
+		dataType: string
+		lineageTag: e5de9257-a2d1-4a7f-a027-d9a05ac086cb
+		summarizeBy: none
+		sourceColumn: ProcessedBy
+
+		annotation SummarizationSetBy = Automatic
+
+	column Notes
+		dataType: string
+		lineageTag: aae09419-ad3b-4397-9af1-48e0b94df9a5
+		summarizeBy: none
+		sourceColumn: Notes
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedBy
+		dataType: string
+		lineageTag: 38622502-df5c-4c3d-b573-a9d5678bfdd1
+		summarizeBy: none
+		sourceColumn: CreatedBy
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 2662cd12-ce43-4426-b14c-a9a32f595011
+		summarizeBy: none
+		sourceColumn: CreatedDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column WarehouseID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 2a478da9-c3b8-451a-9672-b0d57ebfb99b
+		summarizeBy: none
+		sourceColumn: WarehouseID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'inventory inventorytransactions' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database(ServerParameter, DatabaseParameter),
+				    inventory_inventorytransactions = Source{[Schema="inventory",Item="inventorytransactions"]}[Data]
+				in
+				    inventory_inventorytransactions
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

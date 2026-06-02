@@ -1,0 +1,203 @@
+cultureInfo en-US
+
+	linguisticMetadata =
+			{
+			  "Version": "2.0.0",
+			  "Language": "en-US",
+			  "Entities": {
+			    "orderline.netsalesdisplay": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "orderline",
+			          "ConceptualProperty": "NetSales(Display)"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "suppliers.riskscore": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "suppliers",
+			          "ConceptualProperty": "RiskScore"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "suppliers.reliabilityscore": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "suppliers",
+			          "ConceptualProperty": "ReliabilityScore"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "inventory_inventory.product_count": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "inventory inventory",
+			          "ConceptualProperty": "Product Count"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "supplychain_suppliers.suppliertype": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "supplychain suppliers",
+			          "ConceptualProperty": "SupplierType"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Supplier Type": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "supplychain_suppliers.suppliername": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "supplychain suppliers",
+			          "ConceptualProperty": "SupplierName"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Supplier Name": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "product_product.productname": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "product product",
+			          "ConceptualProperty": "ProductName"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Product": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "inventory_warehouses.addresscity": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "inventory warehouses",
+			          "ConceptualProperty": "AddressCity"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Address City": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "inventory_warehouses.capacity_utilization_color": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "inventory inventory",
+			          "ConceptualProperty": "Capacity Utilization Color"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "product_product.list_price_2": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "product product",
+			          "ConceptualProperty": "List Price 2"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "List Price": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "inventory_inventory.stockhealth": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "inventory inventory",
+			          "ConceptualProperty": "StockHealth"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Stock Health": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "product_product.standard_cost_2": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "product product",
+			          "ConceptualProperty": "Standard Cost 2"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Standard Cost": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    }
+			  }
+			}
+		contentType: json
+

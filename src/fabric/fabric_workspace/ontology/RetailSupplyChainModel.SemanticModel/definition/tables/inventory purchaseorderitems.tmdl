@@ -1,0 +1,167 @@
+table 'inventory purchaseorderitems'
+	lineageTag: 60fff4ce-fe89-4c43-988c-09e1290ede2a
+
+	column PurchaseOrderItemID
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(8000)
+		lineageTag: 061d8451-ee71-4cd3-ba2b-b07ffd8fc1d4
+		summarizeBy: none
+		sourceColumn: PurchaseOrderItemID
+
+		annotation SummarizationSetBy = Automatic
+
+	column PurchaseOrderID
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(8000)
+		lineageTag: ace3b399-626e-4cab-baad-1c14bfa7c3a2
+		summarizeBy: none
+		sourceColumn: PurchaseOrderID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductID
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(8000)
+		lineageTag: 5898adab-1caf-4d78-9a0a-7c6b5ff45f34
+		summarizeBy: none
+		sourceColumn: ProductID
+
+		annotation SummarizationSetBy = Automatic
+
+	column QuantityOrdered
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 399e112c-4de7-442d-b64a-35404fa080a8
+		summarizeBy: sum
+		sourceColumn: QuantityOrdered
+
+		annotation SummarizationSetBy = Automatic
+
+	column QuantityReceived
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 619bc64b-47e4-4559-9c6d-34f316df78c7
+		summarizeBy: sum
+		sourceColumn: QuantityReceived
+
+		annotation SummarizationSetBy = Automatic
+
+	column UnitCost
+		dataType: double
+		sourceProviderType: decimal(10, 2)
+		lineageTag: fe72fd6f-c2e8-4ead-8a05-8ec9c96c8a0d
+		summarizeBy: sum
+		sourceColumn: UnitCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LineTotal
+		dataType: double
+		sourceProviderType: decimal(12, 2)
+		lineageTag: e1d32eaf-2dde-465a-a137-828102953249
+		summarizeBy: sum
+		sourceColumn: LineTotal
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Status
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 0d366fc8-f17a-4257-8c7c-afeafe4d1b86
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column ExpectedDate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 7318df37-6579-4989-92b4-974928f2d226
+		summarizeBy: none
+		sourceColumn: ExpectedDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ReceivedDate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 61161bef-551b-4a50-9bfa-6303bb97d45e
+		summarizeBy: none
+		sourceColumn: ReceivedDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Notes
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 86a37741-8979-417c-9c9e-57e2fbfd8d02
+		summarizeBy: none
+		sourceColumn: Notes
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedBy
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 2f00d1b5-654f-4220-85d0-b89add3fbdd7
+		summarizeBy: none
+		sourceColumn: CreatedBy
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: a9c61d45-3098-4423-b87a-3b18e3f4b87f
+		summarizeBy: none
+		sourceColumn: CreatedDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column PurchaseOrderNumber
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 376f919d-695f-4b7d-9142-b6cfc015d24a
+		summarizeBy: none
+		sourceColumn: PurchaseOrderNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 6c23fc5d-46fb-4cfe-8332-a02374863651
+		summarizeBy: none
+		sourceColumn: ProductName
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'inventory purchaseorderitems' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database(SQLEndpoint, DatabaseName),
+				    inventory_purchaseorderitems = Source{[Schema="inventory",Item="purchaseorderitems"]}[Data]
+				in
+				    inventory_purchaseorderitems
+
+	annotation PBI_ResultType = Exception
+

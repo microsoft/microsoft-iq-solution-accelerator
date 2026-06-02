@@ -1,0 +1,22 @@
+/// SQLEndpoint parameter for Fabric Lakehouse SQL endpoint
+table SQLEndpoint
+	isHidden
+	isPrivate
+	lineageTag: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+
+	column SQLEndpoint
+		dataType: string
+		lineageTag: 9c5971ad-1d8d-49a4-ba30-0938da256c0c
+		summarizeBy: none
+		sourceColumn: SQLEndpoint
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SQLEndpoint = m
+		mode: import
+		source = "ccllgusga4suzkb52t4j7lpn7y-vwhycj2qas4ufjfa3ocaowwi24.datawarehouse.fabric.microsoft.com" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+
+	annotation PBI_ResultType = Text
+
+	annotation PBI_NavigationStepName = Navigation
+

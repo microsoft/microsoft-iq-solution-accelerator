@@ -1,0 +1,23 @@
+ImpactID,EventID,SupplierID,ProductLineName,ImpactLevel,DeliveryDelay,CostIncrease,AlternativeAction,EstimatedRevenueImpact,CreatedBy,CreatedDate
+1,1,2,Kitchen,Medium,13,14.6,Expedite shipping,242749.19,system,2026-01-23
+2,2,3,Ski,High,11,5.29,Switch supplier,278898.27,system,2026-02-20
+3,2,5,Ski,High,11,5.29,Switch supplier,278898.27,system,2026-02-20
+4,3,1,Camping,High,6,4.67,,370422.11,system,2025-12-11
+5,4,2,Kitchen,Low,7,21.38,Negotiate terms,108850.99,system,2025-12-15
+6,4,4,Kitchen,Low,7,21.38,Negotiate terms,108850.99,system,2025-12-15
+7,5,3,Ski,Medium,6,4.87,Negotiate terms,119815.93,system,2025-11-15
+8,5,5,Ski,Medium,6,4.87,Negotiate terms,119815.93,system,2025-11-19
+9,6,1,Camping,High,6,12.39,Increase safety stock,357515.7,system,2025-12-08
+10,7,2,Kitchen,High,3,2.04,Negotiate terms,314771.08,system,2026-02-15
+11,8,3,Ski,High,11,19.98,Expedite shipping,313164.62,system,2025-11-19
+12,9,1,Camping,Medium,8,13.54,Increase safety stock,468194.07,system,2025-12-14
+13,9,4,Camping,Medium,8,13.54,Increase safety stock,468194.07,system,2025-12-14
+14,10,2,Kitchen,Low,3,10.21,,423412.22,system,2025-09-16
+15,11,3,Ski,High,1,21.3,Switch supplier,362965.42,system,2025-07-09
+16,11,5,Ski,High,1,21.3,Switch supplier,362965.42,system,2025-07-09
+17,12,1,Camping,Low,12,7.07,,452695.47,system,2026-01-06
+18,13,2,Kitchen,Low,2,1.64,Negotiate terms,146115.87,system,2026-02-08
+19,14,3,Ski,Medium,5,24.6,Switch supplier,200473.82,system,2026-01-23
+20,14,5,Ski,Medium,5,24.6,Switch supplier,200473.82,system,2026-01-23
+21,15,1,Camping,Low,13,4.4,Negotiate terms,252286.21,system,2026-04-01
+22,15,4,Camping,Low,13,4.4,Negotiate terms,252286.21,system,2026-04-01

@@ -1,0 +1,76 @@
+ProductSupplierID,ProductID,ProductName,ProductLineName,SupplierID,SupplierName,SupplierProductCode,WholesaleCost,MinOrderQuantity,MaxOrderQuantity,LeadTimeDays,Status,CreatedBy,CreatedDate
+1,1511,Alpine Explorer Tent,Camping,1,Contoso Ltd,CON-1511,281.53,3,10000,7,Active,system,12/21/2025
+2,1512,SkyView 2-Person Tent,Camping,1,Contoso Ltd,CON-1512,197.86,1,10000,9,Active,system,12/21/2025
+3,1521,Adventurer Pro Backpack,Camping,1,Contoso Ltd,CON-1521,119.17,5,10000,8,Active,system,12/21/2025
+4,1522,SummitClimber Backpack,Camping,1,Contoso Ltd,CON-1522,134.41,1,10000,7,Active,system,12/21/2025
+5,1523,TrailLite Daypack,Camping,1,Contoso Ltd,CON-1523,47.3,5,10000,7,Active,system,12/21/2025
+6,1531,Summit Breeze Jacket,Camping,1,Contoso Ltd,CON-1531,85.71,2,10000,13,Active,system,12/21/2025
+7,1532,TrailBlaze Hiking Pants,Camping,1,Contoso Ltd,CON-1532,54.8,1,10000,11,Active,system,12/21/2025
+8,1533,RainGuard Hiking Jacket,Camping,1,Contoso Ltd,CON-1533,107.78,4,10000,9,Active,system,12/21/2025
+9,1541,TrekReady Hiking Boots,Camping,1,Contoso Ltd,CON-1541,108.54,2,10000,9,Active,system,12/21/2025
+10,1542,TrailWalker Hiking Shoes,Camping,1,Contoso Ltd,CON-1542,83.67,1,10000,12,Active,system,12/21/2025
+11,1543,TrekStar Hiking Sandals,Camping,1,Contoso Ltd,CON-1543,52.24,3,10000,8,Active,system,12/21/2025
+12,1551,BaseCamp Folding Table,Camping,1,Contoso Ltd,CON-1551,56.2,1,10000,11,Active,system,12/21/2025
+13,1552,TrekMaster Camping Chair,Camping,1,Contoso Ltd,CON-1552,45.98,4,10000,8,Active,system,12/21/2025
+14,1553,Adventure Dining Table,Camping,1,Contoso Ltd,CON-1553,87.23,5,10000,11,Active,system,12/21/2025
+15,1561,EcoFire Camping Stove,Camping,1,Contoso Ltd,CON-1561,79.86,5,10000,12,Active,system,12/21/2025
+16,1562,PowerBurner Camping Stove,Camping,1,Contoso Ltd,CON-1562,112.81,1,10000,8,Active,system,12/21/2025
+17,1563,CompactCook Camping Stove,Camping,1,Contoso Ltd,CON-1563,59.37,1,10000,11,Active,system,12/21/2025
+18,1571,CozyNights Sleeping Bag,Camping,1,Contoso Ltd,CON-1571,102.1,4,10000,8,Active,system,12/21/2025
+19,1572,MountainDream Sleeping Bag,Camping,1,Contoso Ltd,CON-1572,177.25,2,10000,12,Active,system,12/21/2025
+20,1581,LED Headlamp - Rechargeable,Camping,1,Contoso Ltd,CON-1581,44.25,3,10000,10,Active,system,12/21/2025
+21,2011,Coffee Maker,Kitchen,2,Proseware Inc,PRO-2011,120.91,1,10000,10,Active,system,12/21/2025
+22,2012,Espresso Machine,Kitchen,2,Proseware Inc,PRO-2012,281,5,10000,6,Active,system,12/21/2025
+23,2021,Chef Knife,Kitchen,2,Proseware Inc,PRO-2021,59.8,4,10000,6,Active,system,12/21/2025
+24,2022,Fork Set,Kitchen,2,Proseware Inc,PRO-2022,28.69,5,10000,10,Active,system,12/21/2025
+25,2031,Coffee Mug,Kitchen,2,Proseware Inc,PRO-2031,20.25,1,10000,7,Active,system,12/21/2025
+26,2041,Serving Platter,Kitchen,2,Proseware Inc,PRO-2041,43.57,3,10000,5,Active,system,12/21/2025
+27,2051,Ice Cream Bowl,Kitchen,2,Proseware Inc,PRO-2051,15.41,2,10000,5,Active,system,12/21/2025
+28,2061,Mixing Bowl,Kitchen,2,Proseware Inc,PRO-2061,27.44,3,10000,9,Active,system,12/21/2025
+29,2071,Baking Pan,Kitchen,2,Proseware Inc,PRO-2071,17.53,4,10000,8,Active,system,12/21/2025
+30,2081,Food Storage Set,Kitchen,2,Proseware Inc,PRO-2081,23,4,10000,10,Active,system,12/21/2025
+31,2091,Spatula,Kitchen,2,Proseware Inc,PRO-2091,7.38,2,10000,6,Active,system,12/21/2025
+32,2101,Measuring Cup Set,Kitchen,2,Proseware Inc,PRO-2101,12.84,3,10000,9,Active,system,12/21/2025
+33,2111,High-Speed Blender,Kitchen,2,Proseware Inc,PRO-2111,129.6,5,10000,8,Active,system,12/21/2025
+34,2112,4-Slice Toaster,Kitchen,2,Proseware Inc,PRO-2112,57.27,2,10000,6,Active,system,12/21/2025
+35,2121,Bamboo Cutting Board Set,Kitchen,2,Proseware Inc,PRO-2121,29.56,1,10000,5,Active,system,12/21/2025
+36,3011,Alpine Pro Racing Skis - 170cm,Ski,3,Alpine Ski House,WIN-3011,845.83,3,10000,9,Active,system,12/21/2025
+37,3012,Mountain Master All-Terrain Skis - 165cm,Ski,3,Alpine Ski House,WIN-3012,560.67,2,10000,13,Active,system,12/21/2025
+38,3013,Beginner's Choice Alpine Skis - 160cm,Ski,3,Alpine Ski House,WIN-3013,305.62,2,10000,11,Active,system,12/21/2025
+39,3021,Nordic Classic XC Skis - 185cm,Ski,3,Alpine Ski House,WIN-3021,230.67,3,10000,11,Active,system,12/21/2025
+40,3022,Backcountry Explorer XC Skis - 190cm,Ski,3,Alpine Ski House,WIN-3022,358.21,1,10000,12,Active,system,12/21/2025
+41,3031,Pro Flex Racing Ski Boots,Ski,3,Alpine Ski House,WIN-3031,459.79,3,10000,8,Active,system,12/21/2025
+42,3032,Comfort Fit Recreational Boots,Ski,3,Alpine Ski House,WIN-3032,276.26,2,10000,14,Active,system,12/21/2025
+43,3033,Women's Performance Ski Boots,Ski,3,Alpine Ski House,WIN-3033,407.14,1,10000,10,Active,system,12/21/2025
+44,3041,Carbon Fiber Racing Poles - 120cm,Ski,3,Alpine Ski House,WIN-3041,114.35,2,10000,9,Active,system,12/21/2025
+45,3042,Aluminum All-Mountain Poles - 115cm,Ski,3,Alpine Ski House,WIN-3042,57.66,3,10000,13,Active,system,12/21/2025
+46,3051,Insulated Ski Jacket - Men's,Ski,3,Alpine Ski House,WIN-3051,167.9,1,10000,12,Active,system,12/21/2025
+47,3052,Thermal Base Layer Set - Women's,Ski,3,Alpine Ski House,WIN-3052,79.81,3,10000,8,Active,system,12/21/2025
+48,3053,Waterproof Ski Pants,Ski,3,Alpine Ski House,WIN-3053,123.28,3,10000,13,Active,system,12/21/2025
+49,3061,Professional Ski Helmet,Ski,3,Alpine Ski House,WIN-3061,117.61,2,10000,9,Active,system,12/21/2025
+50,3062,Anti-Fog Ski Goggles,Ski,3,Alpine Ski House,WIN-3062,71.96,3,10000,12,Active,system,12/21/2025
+51,3071,Ski Boot Bag - Premium,Ski,3,Alpine Ski House,WIN-3071,34.5,2,10000,12,Active,system,12/21/2025
+52,3072,Hand Warmers - 10 Pack,Ski,3,Alpine Ski House,WIN-3072,8.13,2,10000,8,Active,system,12/21/2025
+53,3081,All-Temp Ski Wax Kit,Ski,3,Alpine Ski House,WIN-3081,43.8,2,10000,14,Active,system,12/21/2025
+54,3082,Edge Tuning Tool Set,Ski,3,Alpine Ski House,WIN-3082,59.43,3,10000,9,Active,system,12/21/2025
+55,3091,Freestyle Snowboard - 155cm,Ski,3,Alpine Ski House,WIN-3091,414.73,3,10000,8,Active,system,12/21/2025
+56,3092,All-Mountain Snowboard - 158cm,Ski,3,Alpine Ski House,WIN-3092,488.21,3,10000,8,Active,system,12/21/2025
+57,3101,Winter Boots - Insulated,Ski,3,Alpine Ski House,WIN-3101,91.11,3,10000,9,Active,system,12/21/2025
+58,3102,Winter Hiking Boots - Waterproof,Ski,3,Alpine Ski House,WIN-3102,134.96,1,10000,12,Active,system,12/21/2025
+59,3103,Snowboard Bindings - Pro,Ski,3,Alpine Ski House,WIN-3103,177.45,3,10000,14,Active,system,12/21/2025
+60,3104,Ski Tuning Bench - Portable,Ski,3,Alpine Ski House,WIN-3104,115.52,3,10000,9,Active,system,12/21/2025
+61,1511,Alpine Explorer Tent,Camping,4,Worldwide Importers,ALT-1511,288.7,3,8000,15,Active,system,12/21/2025
+62,1512,SkyView 2-Person Tent,Camping,4,Worldwide Importers,ALT-1512,210.91,4,8000,13,Active,system,12/21/2025
+63,1521,Adventurer Pro Backpack,Camping,4,Worldwide Importers,ALT-1521,118.13,5,8000,14,Active,system,12/21/2025
+64,1522,SummitClimber Backpack,Camping,4,Worldwide Importers,ALT-1522,132.76,2,8000,11,Active,system,12/21/2025
+65,2011,Coffee Maker,Kitchen,4,Worldwide Importers,ALT-2011,118.4,6,8000,14,Active,system,12/21/2025
+66,2012,Espresso Machine,Kitchen,4,Worldwide Importers,ALT-2012,274.97,2,8000,11,Active,system,12/21/2025
+67,2021,Chef Knife,Kitchen,4,Worldwide Importers,ALT-2021,56.88,2,8000,15,Active,system,12/21/2025
+68,3011,Alpine Pro Racing Skis - 170cm,Ski,4,Worldwide Importers,ALT-3011,805.99,4,8000,10,Active,system,12/21/2025
+69,3012,Mountain Master All-Terrain Skis - 165cm,Ski,4,Worldwide Importers,ALT-3012,567.17,4,8000,11,Active,system,12/21/2025
+70,3013,Beginner's Choice Alpine Skis - 160cm,Ski,4,Worldwide Importers,ALT-3013,312.31,6,8000,11,Active,system,12/21/2025
+71,3011,Alpine Pro Racing Skis - 170cm,Ski,5,Fabrikam,SPE-3011,798.38,5,5000,16,Active,system,12/21/2025
+72,3012,Mountain Master All-Terrain Skis - 165cm,Ski,5,Fabrikam,SPE-3012,576.86,5,5000,15,Active,system,12/21/2025
+73,3013,Beginner's Choice Alpine Skis - 160cm,Ski,5,Fabrikam,SPE-3013,298.3,5,5000,12,Active,system,12/21/2025
+74,3021,Nordic Classic XC Skis - 185cm,Ski,5,Fabrikam,SPE-3021,228.78,5,5000,15,Active,system,12/21/2025
+75,3022,Backcountry Explorer XC Skis - 190cm,Ski,5,Fabrikam,SPE-3022,386.94,2,5000,12,Active,system,12/21/2025

@@ -1,0 +1,28 @@
+# Requirements for infra/scripts (Fabric + Foundry deployment)
+
+# Azure authentication
+azure-identity==1.23.0
+
+# HTTP requests
+requests==2.33.1
+
+# Azure Resource Manager SDK for Fabric capacity management
+azure-mgmt-fabric>=1.0.0
+
+# Azure AI Search — knowledge base and index management (Foundry IQ)
+azure-search-documents==11.7.0b2
+
+# Azure Blob Storage — document upload for knowledge base
+azure-storage-blob==12.28.0
+
+# Azure OpenAI — client factory (openai_api.py)
+openai==2.8.1
+
+# Azure AI Projects — agent creation (02_create_agent_no_sql.py)
+azure-ai-projects==2.1.0
+
+# PDF processing — document extraction and chunking
+pypdf==6.10.2
+
+# Environment variable loading (foundry helpers)
+python-dotenv==1.2.2

@@ -1,0 +1,26 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-IN
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["customer customer","customer customeraccount","customer customerrelationshiptype","customer customertradename","customer location","finance account","finance invoice","finance payment","product product","product productcategory","sales order","sales orderline","sales orderpayment","shared dimdate","ServerParameter","DatabaseParameter"]
+
+ref table 'customer customer'
+ref table 'customer customeraccount'
+ref table 'customer customerrelationshiptype'
+ref table 'customer customertradename'
+ref table 'customer location'
+ref table 'product product'
+ref table 'product productcategory'
+ref table 'sales order'
+ref table 'sales orderline'
+ref table 'sales orderpayment'
+ref table 'shared dimdate'
+
+ref cultureInfo en-US
+

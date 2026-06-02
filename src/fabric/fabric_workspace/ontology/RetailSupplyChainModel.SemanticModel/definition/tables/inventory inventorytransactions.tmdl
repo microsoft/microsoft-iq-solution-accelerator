@@ -1,0 +1,183 @@
+table 'inventory inventorytransactions'
+	lineageTag: 0fab22fb-623e-42e7-9f75-263f5f223341
+
+	column TransactionID
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(8000)
+		lineageTag: acfcae99-9beb-4224-85da-0a209496a032
+		summarizeBy: none
+		sourceColumn: TransactionID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductID
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(8000)
+		lineageTag: c9ed9b1a-d141-4ef3-bd10-1219ee5f81ed
+		summarizeBy: none
+		sourceColumn: ProductID
+
+		annotation SummarizationSetBy = Automatic
+
+	column WarehouseID
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(8000)
+		lineageTag: 9a17978b-6296-4c62-ab73-56f36d0b368c
+		summarizeBy: none
+		sourceColumn: WarehouseID
+
+		annotation SummarizationSetBy = Automatic
+
+	column TransactionType
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: c36f66d5-a238-437e-85b5-69d28a07983f
+		summarizeBy: none
+		sourceColumn: TransactionType
+
+		annotation SummarizationSetBy = Automatic
+
+	column TransactionDate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 04d2e22b-2a47-4077-bbc8-4fda89c12087
+		summarizeBy: none
+		sourceColumn: TransactionDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Quantity
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 31fd5809-1f05-4e08-ae2d-34284ac3daf9
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column UnitCost
+		dataType: double
+		sourceProviderType: decimal(10, 2)
+		lineageTag: 0ae8702f-71c2-43de-a97c-8d7ccbbffaa6
+		summarizeBy: sum
+		sourceColumn: UnitCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TotalValue
+		dataType: double
+		sourceProviderType: decimal(10, 2)
+		lineageTag: 09ac974f-77fb-4e99-b378-fed76c4444c0
+		summarizeBy: sum
+		sourceColumn: TotalValue
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ReferenceNumber
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 4e6e93f3-84d2-45b6-bbf4-833871824e46
+		summarizeBy: none
+		sourceColumn: ReferenceNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReasonCode
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 84c17437-e1df-4418-ac68-c47bd0635ebf
+		summarizeBy: none
+		sourceColumn: ReasonCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column StockBefore
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 41a5585f-c7f6-49f4-a45d-d4c6dfe95b85
+		summarizeBy: sum
+		sourceColumn: StockBefore
+
+		annotation SummarizationSetBy = Automatic
+
+	column StockAfter
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 0c652604-e694-470e-bb97-950759542ae2
+		summarizeBy: sum
+		sourceColumn: StockAfter
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProcessedBy
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 450c4662-fe12-4f17-901e-d61dddf47a67
+		summarizeBy: none
+		sourceColumn: ProcessedBy
+
+		annotation SummarizationSetBy = Automatic
+
+	column Notes
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: eedab4fd-bd95-4733-8c24-f10278690f7f
+		summarizeBy: none
+		sourceColumn: Notes
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedBy
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: cf5da941-6ed7-4d05-8ef9-fa03670f14e9
+		summarizeBy: none
+		sourceColumn: CreatedBy
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: d34577a1-8566-4e00-a6e4-7a7f11ce558e
+		summarizeBy: none
+		sourceColumn: CreatedDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ProductName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 2a5f6aba-7a8f-473b-a6e4-c3316fdb405f
+		summarizeBy: none
+		sourceColumn: ProductName
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'inventory inventorytransactions' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database(SQLEndpoint, DatabaseName),
+				    inventory_inventorytransactions = Source{[Schema="inventory",Item="inventorytransactions"]}[Data]
+				in
+				    inventory_inventorytransactions
+
+	annotation PBI_ResultType = Exception
+

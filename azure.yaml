@@ -1,0 +1,36 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
+
+name: microsoft-iq-solution-accelerator
+metadata:
+  template: microsoft-iq-solution-accelerator@1.0
+
+environment:
+  name: microsoft-iq-solution-accelerator
+  location: westus2
+
+requiredVersions:
+  azd: ">=1.23.11"
+  
+hooks:
+  postprovision:
+    windows:
+      run: ./infra/scripts/utils/Run-PythonScript.ps1 -ScriptPath "infra/scripts/install_microsoft_iq_solution.py"
+      shell: pwsh
+      continueOnError: false
+      interactive: true
+    posix:
+      run: ./infra/scripts/utils/Run-PythonScript.ps1 -ScriptPath "infra/scripts/install_microsoft_iq_solution.py" -SkipPythonVirtualEnvironment
+      shell: pwsh
+      continueOnError: false
+      interactive: true
+  predown:
+    windows:
+      run: ./infra/scripts/utils/Run-PythonScript.ps1 -ScriptPath "infra/scripts/remove_microsoft_iq_solution.py"
+      shell: pwsh
+      interactive: true
+      continueOnError: false
+    posix:
+      run: ./infra/scripts/utils/Run-PythonScript.ps1 -ScriptPath "infra/scripts/remove_microsoft_iq_solution.py" -SkipPythonVirtualEnvironment
+      shell: pwsh
+      interactive: true
+      continueOnError: false

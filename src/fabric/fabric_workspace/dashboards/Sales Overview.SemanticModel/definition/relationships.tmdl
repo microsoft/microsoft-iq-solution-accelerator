@@ -1,0 +1,51 @@
+relationship 6d5633ee-9a60-d505-4546-9afea32931d2
+	fromColumn: 'sales orderline'.OrderID
+	toColumn: 'sales order'.OrderID
+
+relationship 85425e04-7c87-c412-45b2-47162a3c523e
+	fromColumn: 'customer customer'.CustomerRelationshipTypeID
+	toColumn: 'customer customerrelationshiptype'.CustomerRelationshipTypeID
+
+relationship 99aab9f6-1be1-c698-f2f8-c6adf84f773f
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'customer customer'.CustomerID
+	toColumn: 'customer customertradename'.CustomerID
+
+relationship 9bda74b6-602e-1076-8b4d-1b6b182909c9
+	fromColumn: 'customer customeraccount'.CustomerID
+	toColumn: 'customer customer'.CustomerID
+
+relationship ea23964d-07e3-2ef2-0253-0889230b693a
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'customer location'.CustomerID
+	toColumn: 'customer customer'.CustomerID
+
+relationship 80f3c60f-8ca1-f68d-c60d-e10b4f7734ae
+	fromColumn: 'product product'.ProductCategoryID
+	toColumn: 'product productcategory'.ProductCategoryID
+
+relationship e28a4400-4899-f9cc-2c77-d7dbde17adf5
+	fromColumn: 'sales order'.CustomerAccountID
+	toColumn: 'customer customeraccount'.CustomerAccountID
+
+relationship d7bf3a19-80a5-42c4-0704-7a61375aba2d
+	isActive: false
+	fromColumn: 'sales order'.CustomerID
+	toColumn: 'customer customer'.CustomerID
+
+relationship ecb44673-4a5d-efe9-f518-4f4e0cca3f32
+	fromColumn: 'sales orderline'.ProductID
+	toColumn: 'product product'.ProductID
+
+relationship 175c311f-d653-373e-7d84-a066ac83834a
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'sales orderpayment'.OrderID
+	toColumn: 'sales order'.OrderID
+
+relationship 1e0d8a8d-7198-c058-4f55-891b3d0aa778
+	fromColumn: 'sales order'.OrderDate
+	toColumn: 'shared dimdate'.FullDate
+

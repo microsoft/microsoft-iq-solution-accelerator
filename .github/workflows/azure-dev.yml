@@ -1,0 +1,320 @@
+name: CI/CD Azure
+
+# Trigger the workflow on push to main/master or manual dispatch
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - "*"
+    paths:
+      - "infra/**"
+      - "src/**"
+      - ".github/workflows/azure-dev.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "infra/**"
+      - "src/**"
+      - ".github/workflows/azure-dev.yml"
+
+# Set up permissions for deploying with secretless Azure federated credentials
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  # ==================================================================
+  # Required variables
+  # ==================================================================
+  # Needed for Azure OIDC login and `azd up`.
+
+  # --- Azure federated credentials (Secrets) ---
+  AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+  AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+  # --- azd environment / resource group ---
+  # Override via repo/environment Variables to redeploy into an existing
+  # environment. `azd up` creates the resource group if it doesn't exist.
+  ENV_NAME: ${{ vars.ENV_NAME || 'miqsad'}}
+  RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME || 'rg-miqsad' }}
+
+  # --- Microsoft Foundry AI deployment region (required) ---
+  # The `aiDeploymentsLocation` bicep param has no default and is normally
+  # prompted by `azd up`. CI runs with `--no-prompt`, so a value must be
+  # provided here. Override via the repo/environment Variable; the fallback
+  # keeps the workflow self-contained for first-time setup.
+  AZURE_AI_DEPLOYMENTS_LOCATION: ${{ vars.AZURE_AI_DEPLOYMENTS_LOCATION || 'westus' }}
+
+  # ==================================================================
+  # Optional variables (commented out by default)
+  # ==================================================================
+  # Defaults live in infra/main.bicep, infra/main.parameters.json, or
+  # infra/scripts/install_microsoft_iq_solution.py.
+  #
+  # Do NOT uncomment a line unless the matching repo/environment Variable
+  # is set. An unset `${{ vars.* }}` resolves to '', which azd passes
+  # through to Bicep and breaks params with @allowed / @minLength(1).
+  #
+  # Reference: docs/DeploymentGuide.md → "Optional Configuration Variables".
+
+  # --- Fabric notebook private-repo access (Secret, safe if empty) ---
+  GITHUB_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
+
+  # --- Azure region ---
+  # AZURE_LOCATION: ${{ vars.AZURE_LOCATION }}
+
+  # --- Common ---
+  # ENABLE_TELEMETRY: ${{ vars.ENABLE_TELEMETRY }}
+  DEPLOYING_USER_PRINCIPAL_TYPE: ${{ vars.DEPLOYING_USER_PRINCIPAL_TYPE || 'ServicePrincipal' }}
+
+  # --- Fabric capacity (Bicep) ---
+  # FABRIC_CAPACITY_SKU_NAME: ${{ vars.FABRIC_CAPACITY_SKU_NAME }}
+  # AZURE_EXISTING_FABRIC_CAPACITY_NAME: ${{ vars.AZURE_EXISTING_FABRIC_CAPACITY_NAME }}
+  # FABRIC_ADMIN_MEMBERS: ${{ vars.FABRIC_ADMIN_MEMBERS }}
+
+  # --- Fabric workspace (postprovision) ---
+  # FABRIC_WORKSPACE_NAME: ${{ vars.FABRIC_WORKSPACE_NAME }}
+  FABRIC_WORKSPACE_ADMINISTRATORS: ${{ vars.FABRIC_WORKSPACE_ADMINISTRATORS }}
+
+  # --- Microsoft Foundry / OpenAI (Bicep) ---
+  # AZURE_AI_DEPLOYMENTS_LOCATION is required; see the Required variables
+  # section above.
+  # AZURE_OPENAI_DEPLOYMENT_MODEL: ${{ vars.AZURE_OPENAI_DEPLOYMENT_MODEL }}
+  # AZURE_OPENAI_MODEL_VERSION: ${{ vars.AZURE_OPENAI_MODEL_VERSION }}
+  # AZURE_OPENAI_DEPLOYMENT_MODEL_CAPACITY: ${{ vars.AZURE_OPENAI_DEPLOYMENT_MODEL_CAPACITY }}
+  # AZURE_OPENAI_MODEL_DEPLOYMENT_TYPE: ${{ vars.AZURE_OPENAI_MODEL_DEPLOYMENT_TYPE }}
+  # AZURE_OPENAI_EMBEDDING_MODEL: ${{ vars.AZURE_OPENAI_EMBEDDING_MODEL }}
+  # AZURE_OPENAI_EMBEDDING_CAPACITY: ${{ vars.AZURE_OPENAI_EMBEDDING_CAPACITY }}
+  # AZURE_SEARCH_SERVICE_LOCATION: ${{ vars.AZURE_SEARCH_SERVICE_LOCATION }}
+  # AZURE_ENV_USE_CASE: ${{ vars.AZURE_ENV_USE_CASE }}
+  # AZURE_EXISTING_LOG_ANALYTICS_WORKSPACE_ID: ${{ vars.AZURE_EXISTING_LOG_ANALYTICS_WORKSPACE_ID }}
+  # AZURE_EXISTING_AI_PROJECT_RESOURCE_ID: ${{ vars.AZURE_EXISTING_AI_PROJECT_RESOURCE_ID }}
+
+  # --- Foundry agent / Knowledge Base overrides (postprovision) ---
+  # AZURE_AI_ENDPOINT: ${{ vars.AZURE_AI_ENDPOINT }}
+  # AZURE_CHAT_MODEL: ${{ vars.AZURE_CHAT_MODEL }}
+  # AZURE_AI_SEARCH_INDEX: ${{ vars.AZURE_AI_SEARCH_INDEX }}
+  # AZURE_AI_AGENT_MODEL_DEPLOYMENT_NAME: ${{ vars.AZURE_AI_AGENT_MODEL_DEPLOYMENT_NAME }}
+  # KB_MCP_CONNECTION_NAME: ${{ vars.KB_MCP_CONNECTION_NAME }}
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build and Static Analysis
+    environment: 'miq-build'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Azure CLI
+        uses: azure/login@v3
+        with:
+          client-id: ${{ env.AZURE_CLIENT_ID }}
+          tenant-id: ${{ env.AZURE_TENANT_ID }}
+          subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Install Bicep CLI
+        run: |
+          curl -Lo bicep https://github.com/Azure/bicep/releases/latest/download/bicep-linux-x64
+          chmod +x ./bicep
+          sudo mv ./bicep /usr/local/bin/bicep
+
+      - name: Bicep Static Code Analysis
+        run: |
+          echo "Running Bicep static code analysis on main.bicep..."
+          bicep build infra/main.bicep --outfile infra/main.json
+          echo "✅ Bicep compilation successful"
+
+          # Run bicep linter
+          bicep lint infra/main.bicep
+          echo "✅ Bicep linting completed"
+
+      - name: Install azd
+        uses: Azure/setup-azd@v2
+
+      - name: Azure Developer CLI login
+        shell: bash
+        run: |
+          azd auth login \
+            --client-id "${{ env.AZURE_CLIENT_ID }}" \
+            --federated-credential-provider "github" \
+            --tenant-id "${{ env.AZURE_TENANT_ID }}"
+
+      - name: Validate Bicep Template (azd provision --preview)
+        # Uses `azd provision --preview` instead of `az deployment group validate`
+        # so azd's `${VAR=default}` substitution in main.parameters.json is
+        # applied identically to the deploy job. Assumes the resource group
+        # already exists (azd preview is RG-scoped here).
+        shell: bash
+        env:
+          AZURE_RESOURCE_GROUP: ${{ env.RESOURCE_GROUP_NAME }}
+        run: |
+          set -e
+          echo "Validating Bicep template against resource group '$RESOURCE_GROUP_NAME'..."
+
+          azd config set defaults.subscription "$AZURE_SUBSCRIPTION_ID"
+          azd env new "$ENV_NAME" --no-prompt || true
+          azd provision --preview --no-prompt
+          echo "✅ Bicep template validation completed"
+
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy
+    environment: 'miq-dev'
+    needs: build
+    # Skip the deploy job on pull_request events; PRs only run build / static
+    # analysis. Deployment runs on push to a branch and on workflow_dispatch.
+    if: github.event_name != 'pull_request'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      
+      - name: Azure CLI login
+        uses: azure/login@v3
+        with:
+          client-id: ${{ env.AZURE_CLIENT_ID }}
+          tenant-id: ${{ env.AZURE_TENANT_ID }}
+          subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Install azd
+        uses: Azure/setup-azd@v2
+
+      - name: Azure Developer CLI login
+        shell: bash
+        run: |
+          azd auth login \
+            --client-id "${{ env.AZURE_CLIENT_ID }}" \
+            --federated-credential-provider "github" \
+            --tenant-id "${{ env.AZURE_TENANT_ID }}"
+
+      - name: Deploy using azd up
+        id: get_output_linux
+        shell: bash
+        env:
+          # Required by main.parameters.json and the postprovision hook.
+          AZURE_RESOURCE_GROUP: ${{ env.RESOURCE_GROUP_NAME }}
+        run: |
+          set -e
+
+          echo "Creating azd environment: $ENV_NAME"
+          azd env new "$ENV_NAME" --no-prompt
+
+          echo "Setting default subscription..."
+          azd config set defaults.subscription "$AZURE_SUBSCRIPTION_ID"
+
+          # Optional parameters are sourced from the workflow `env:` block
+          # (azd substitutes them into main.parameters.json; the
+          # postprovision script reads them via os.getenv), so no explicit
+          # `azd env set` calls are needed here.
+          azd up --no-prompt
+
+      - name: Output Deployment Summary
+        shell: bash
+        run: |
+          # `azd env get-value` prints an "ERROR: key not found" banner to
+          # stdout on missing keys; strip it so missing values become "".
+          get_azd_env() {
+            local raw
+            raw=$(azd env get-value "$1" 2>/dev/null || true)
+            if printf '%s' "$raw" | grep -qiE '^(ERROR|Suggestion):'; then
+              echo ""
+            else
+              printf '%s' "$raw"
+            fi
+          }
+
+          # Read deployment outputs written by main.bicep and the
+          # postprovision installer during `azd up`.
+          SOLUTION_SUFFIX=$(get_azd_env SOLUTION_SUFFIX)
+          AZURE_FABRIC_CAPACITY_NAME=$(get_azd_env AZURE_FABRIC_CAPACITY_NAME)
+          AZURE_AI_PROJECT_NAME=$(get_azd_env AZURE_AI_PROJECT_NAME)
+          AZURE_AI_AGENT_ENDPOINT=$(get_azd_env AZURE_AI_AGENT_ENDPOINT)
+          AZURE_AI_SEARCH_ENDPOINT=$(get_azd_env AZURE_AI_SEARCH_ENDPOINT)
+          FABRIC_WORKSPACE_ID=$(get_azd_env FABRIC_WORKSPACE_ID)
+          FABRIC_WORKSPACE_NAME=$(get_azd_env FABRIC_WORKSPACE_NAME)
+
+          # AZURE_LOCATION is not exported by the workflow `env:` block;
+          # prefer the azd env value, then the workflow variable.
+          AZURE_LOCATION_VALUE=$(get_azd_env AZURE_LOCATION)
+          AZURE_LOCATION_VALUE="${AZURE_LOCATION_VALUE:-${AZURE_LOCATION:-unknown}}"
+
+          DEPLOYMENT_TIME=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+
+          AZURE_RG_URL="https://portal.azure.com/#@${AZURE_TENANT_ID}/resource/subscriptions/${AZURE_SUBSCRIPTION_ID}/resourceGroups/${RESOURCE_GROUP_NAME}/overview"
+          AZURE_FABRIC_CAPACITY_URL="https://portal.azure.com/#@${AZURE_TENANT_ID}/resource/subscriptions/${AZURE_SUBSCRIPTION_ID}/resourceGroups/${RESOURCE_GROUP_NAME}/providers/Microsoft.Fabric/capacities/${AZURE_FABRIC_CAPACITY_NAME}/overview"
+          # Fallback if the installer did not persist FABRIC_WORKSPACE_NAME.
+          FABRIC_WORKSPACE_NAME="${FABRIC_WORKSPACE_NAME:-Microsoft IQ - ${SOLUTION_SUFFIX}}"
+          FABRIC_PORTAL_URL="https://app.fabric.microsoft.com"
+          if [ -n "${FABRIC_WORKSPACE_ID}" ]; then
+            FABRIC_WORKSPACE_URL="https://app.fabric.microsoft.com/groups/${FABRIC_WORKSPACE_ID}?experience=fabric-developer"
+          else
+            FABRIC_WORKSPACE_URL="${FABRIC_PORTAL_URL}"
+          fi
+          FOUNDRY_PORTAL_URL="https://ai.azure.com"
+
+          # Foundry IQ resource names (defaults from install_microsoft_iq_solution.py)
+          SEARCH_INDEX_NAME="${SOLUTION_SUFFIX}-documents"
+          KNOWLEDGE_BASE_NAME="${SOLUTION_SUFFIX}-kb"
+          KNOWLEDGE_SOURCE_NAME="${SOLUTION_SUFFIX}-ks"
+          KB_MCP_CONNECTION_NAME="${SOLUTION_SUFFIX}-kb-mcp-connection"
+
+          echo "# 🚀 Microsoft IQ Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Deployment completed successfully!** ✅" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Completed at:** ${DEPLOYMENT_TIME}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "## 📊 Deployment Details" >> $GITHUB_STEP_SUMMARY
+          echo "| Resource | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| **Solution Name** | \`${ENV_NAME}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Azure Region** | \`${AZURE_LOCATION_VALUE}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Solution Suffix** | \`${SOLUTION_SUFFIX}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Resource Group** | [\`${RESOURCE_GROUP_NAME}\`](${AZURE_RG_URL}) |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Fabric Capacity** | [\`${AZURE_FABRIC_CAPACITY_NAME}\`](${AZURE_FABRIC_CAPACITY_URL}) |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Fabric Workspace** | [\`${FABRIC_WORKSPACE_NAME}\`](${FABRIC_WORKSPACE_URL}) |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Foundry Project** | \`${AZURE_AI_PROJECT_NAME}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Foundry Agent Endpoint** | \`${AZURE_AI_AGENT_ENDPOINT}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **AI Search Endpoint** | \`${AZURE_AI_SEARCH_ENDPOINT}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Knowledge Base** | \`${KNOWLEDGE_BASE_NAME}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "## 🔗 Quick Access Links" >> $GITHUB_STEP_SUMMARY
+          echo "| Service | Link |" >> $GITHUB_STEP_SUMMARY
+          echo "|---------|------|" >> $GITHUB_STEP_SUMMARY
+          echo "| **Azure Portal** | [View Resource Group](${AZURE_RG_URL}) |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Fabric Capacity** | [View Capacity](${AZURE_FABRIC_CAPACITY_URL}) |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Microsoft Fabric** | [Open Fabric Workspace](${FABRIC_WORKSPACE_URL}) |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Microsoft Foundry** | [Open Foundry Portal](${FOUNDRY_PORTAL_URL}) |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "## 📚 What Was Deployed" >> $GITHUB_STEP_SUMMARY
+          echo "### Phase 1 — Azure infrastructure (Bicep)" >> $GITHUB_STEP_SUMMARY
+          echo "- 🏗️ **Microsoft Fabric capacity** and user-assigned **managed identity**" >> $GITHUB_STEP_SUMMARY
+          echo "- 🧠 **Microsoft Foundry hub & project** with AI Search and Storage connections" >> $GITHUB_STEP_SUMMARY
+          echo "- 🔍 **Azure AI Search** service and **Azure Storage** account for document indexing" >> $GITHUB_STEP_SUMMARY
+          echo "- 🤖 **Azure OpenAI deployments**: \`gpt-4.1-mini\` (chat) and \`text-embedding-3-small\` (embeddings)" >> $GITHUB_STEP_SUMMARY
+          echo "- 📈 **Log Analytics workspace** and **Application Insights** for diagnostics" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Phase 2 — Solution bootstrap (\`install_microsoft_iq_solution.py\` postprovision hook)" >> $GITHUB_STEP_SUMMARY
+          echo "1. **Knowledge base** — AI Search index \`${SEARCH_INDEX_NAME}\`, knowledge source \`${KNOWLEDGE_SOURCE_NAME}\`, knowledge base \`${KNOWLEDGE_BASE_NAME}\` populated from \`src/foundry/data/documents/\`" >> $GITHUB_STEP_SUMMARY
+          echo "2. **Foundry agent** — \`ChatAgent\` wired to the Knowledge Base via the \`${KB_MCP_CONNECTION_NAME}\` MCP project connection (best-effort; check Foundry portal if a warning was reported)" >> $GITHUB_STEP_SUMMARY
+          echo "3. **Fabric workspace** — \`${FABRIC_WORKSPACE_NAME}\` created and assigned to the capacity" >> $GITHUB_STEP_SUMMARY
+          echo "4. **Workspace administrators** — assigned from \`AZURE_FABRIC_CAPACITY_ADMINISTRATORS\` and \`FABRIC_WORKSPACE_ADMINISTRATORS\`" >> $GITHUB_STEP_SUMMARY
+          echo "5. **Installer notebook uploaded** — \`fabric_solution_installer.ipynb\` (auto-patched with the current branch and \`GITHUB_TOKEN\` if set)" >> $GITHUB_STEP_SUMMARY
+          echo "6. **Installer notebook executed** — deployed lakehouse \`miqsadata\`, processing notebooks, semantic models, ontologies, and data agents from \`src/fabric/fabric_workspace/\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "## 🚀 Next Steps" >> $GITHUB_STEP_SUMMARY
+          echo "1. 📁 **Open the Fabric workspace**: [\`${FABRIC_WORKSPACE_NAME}\`](${FABRIC_WORKSPACE_URL}) — explore the lakehouse, notebooks, semantic models, and data agents" >> $GITHUB_STEP_SUMMARY
+          echo "2. 🤖 **Verify the Foundry agent**: open the [Foundry portal](${FOUNDRY_PORTAL_URL}), select project \`${AZURE_AI_PROJECT_NAME}\`, and confirm \`ChatAgent\` and \`${KNOWLEDGE_BASE_NAME}\` exist" >> $GITHUB_STEP_SUMMARY
+          echo "3. 📖 **Follow post-deployment steps**: see the [Deployment Guide](https://github.com/${{ github.repository }}/blob/main/docs/DeploymentGuide.md) for Work IQ post-deployment configuration, verification, and cleanup steps" >> $GITHUB_STEP_SUMMARY
+          echo "4. 🔧 **Customize**: drop additional PDFs in \`src/foundry/data/documents/\` and re-run \`azd up\` to refresh the knowledge base" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "## 🆘 Need Help?" >> $GITHUB_STEP_SUMMARY
+          echo "- 🐛 [Report Issues](https://github.com/${{ github.repository }}/issues)" >> $GITHUB_STEP_SUMMARY
+          echo "- 📘 [Deployment Guide](https://github.com/${{ github.repository }}/blob/main/docs/DeploymentGuide.md)" >> $GITHUB_STEP_SUMMARY

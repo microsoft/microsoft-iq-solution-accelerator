@@ -1,0 +1,255 @@
+table 'inventory inventory'
+	lineageTag: 817c5d97-4f9e-4e7c-91ed-c65dfb78a236
+
+	measure 'Product Count' = SUM('inventory inventory'[AvailableStock])
+		formatString: 0
+		lineageTag: 79371282-cb0b-4ee4-b075-ec04ff934b78
+
+	measure 'Capacity Utilization' =
+			
+			CALCULATE(DIVIDE(
+			    SUM('inventory Inventory'[CurrentStock]),
+			    SUM('inventory Inventory'[MaxStockLevel]),
+			    0
+			), USERELATIONSHIP('inventory inventory'[CreatedDate], 'shared dimdate'[FullDate]))
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 693e8020-0314-4429-98aa-d6d1ec5c1a74
+
+	measure 'Capacity Utilization Color' = ```
+			
+			
+			VAR Util = [Capacity Utilization]   -- value between 0 and 1
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    Util <= 0.7, "#0f6cbd",   -- Blue (0–70%)
+			    Util <= 0.9, "#eaa300",   -- Yellow (70–90%)
+			    "#bc4b09"               -- Red (90–100%)
+			)
+			
+			
+			
+			```
+		lineageTag: 3179cf11-4dfe-487f-9741-2b6110a7abd8
+
+	column InventoryID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 27af60e4-b5d7-459c-86c4-7ae24ba09b4b
+		summarizeBy: none
+		sourceColumn: InventoryID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 3a25573e-5802-4d0e-9a01-5b0a981d46da
+		summarizeBy: none
+		sourceColumn: ProductID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductName
+		dataType: string
+		lineageTag: 6345d823-4d92-4222-9479-aba8902cc343
+		summarizeBy: none
+		sourceColumn: ProductName
+
+		annotation SummarizationSetBy = Automatic
+
+	column CurrentStock
+		dataType: int64
+		formatString: 0
+		lineageTag: ae8d7e7c-2cc0-43d1-b642-24cb45453100
+		summarizeBy: sum
+		sourceColumn: CurrentStock
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReservedStock
+		dataType: int64
+		formatString: 0
+		lineageTag: 1d6a96c2-72df-4395-9820-15d3fb56a8b4
+		summarizeBy: sum
+		sourceColumn: ReservedStock
+
+		annotation SummarizationSetBy = Automatic
+
+	column AvailableStock
+		dataType: int64
+		formatString: 0
+		lineageTag: cda442a1-53bc-466f-b21f-428cbd589fed
+		summarizeBy: sum
+		sourceColumn: AvailableStock
+
+		annotation SummarizationSetBy = Automatic
+
+	column SafetyStockLevel
+		dataType: int64
+		formatString: 0
+		lineageTag: 258dca88-cdef-46b7-9893-491f163d2235
+		summarizeBy: sum
+		sourceColumn: SafetyStockLevel
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReorderPoint
+		dataType: int64
+		formatString: 0
+		lineageTag: d46e2bc4-3d43-4526-af25-a037038e9d83
+		summarizeBy: sum
+		sourceColumn: ReorderPoint
+
+		annotation SummarizationSetBy = Automatic
+
+	column MaxStockLevel
+		dataType: int64
+		formatString: 0
+		lineageTag: 6a61ed52-6242-4869-b139-94e799a5778a
+		summarizeBy: sum
+		sourceColumn: MaxStockLevel
+
+		annotation SummarizationSetBy = Automatic
+
+	column LastUpdated
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: e3177663-81dc-402e-bd2a-f722ff7365e3
+		summarizeBy: none
+		sourceColumn: LastUpdated
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column AverageCost
+		dataType: double
+		lineageTag: 772987e4-5cd4-4f00-bffa-4cddefcc1ec4
+		summarizeBy: sum
+		sourceColumn: AverageCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Status
+		dataType: string
+		lineageTag: fb155bcc-4d66-4d88-ab7b-060cc8d5a616
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedBy
+		dataType: string
+		lineageTag: ea0af7b5-00dd-47c9-9eb2-c31775c069dc
+		summarizeBy: none
+		sourceColumn: CreatedBy
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: c1051661-046e-4f25-b4f8-dea1389e78f6
+		summarizeBy: none
+		sourceColumn: CreatedDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column WarehouseID
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 19fda1f1-5c50-4be1-975d-2618a07519a9
+		summarizeBy: none
+		sourceColumn: WarehouseID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: ab6db6e2-2d03-40bc-ad9c-7d38c620ae18
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: f27d241c-6a7e-46ba-afbe-ed3ed03823d7
+		summarizeBy: sum
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 82e22f95-ad77-46ee-bb4d-df35e069b672
+		summarizeBy: sum
+		sourceColumn: Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column Day
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 1c65d82e-0857-4aeb-b5cf-07d08a8636ee
+		summarizeBy: sum
+		sourceColumn: Day
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month name'
+		dataType: string
+		sourceProviderType: nvarchar(4000)
+		lineageTag: a2484851-179c-436a-8d47-e3be3cb2851e
+		summarizeBy: none
+		sourceColumn: Month name
+		sortByColumn: Month
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column StockHealth
+		dataType: string
+		sourceProviderType: nvarchar(4000)
+		lineageTag: 1198f8f2-80d4-412b-866a-4dcf59d0db2c
+		summarizeBy: none
+		sourceColumn: StockHealth
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'inventory inventory' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database(ServerParameter, DatabaseParameter),
+				    inventory_inventory = Source{[Schema="inventory",Item="inventory"]}[Data],
+				    #"Inserted Year" = Table.AddColumn(inventory_inventory, "Year", each Date.Year([CreatedDate]), Int64.Type),
+				    #"Inserted Month" = Table.AddColumn(#"Inserted Year", "Month", each Date.Month([CreatedDate]), Int64.Type),
+				    #"Inserted Quarter" = Table.AddColumn(#"Inserted Month", "Quarter", each Date.QuarterOfYear([CreatedDate]), Int64.Type),
+				    #"Inserted Day" = Table.AddColumn(#"Inserted Quarter", "Day", each Date.Day([CreatedDate]), Int64.Type),
+				    #"Added Conditional Column" = Table.AddColumn(#"Inserted Day", "Month name", each if [Month] = 1 then "Jan" else if [Month] = 2 then "Feb" else if [Month] = 3 then "Mar" else if [Month] = 4 then "Apr" else if [Month] = 5 then "May" else if [Month] = 6 then "Jun" else if [Month] = 7 then "Jul" else if [Month] = 8 then "Aug" else if [Month] = 9 then "Sep" else if [Month] = 10 then "Oct" else if [Month] = 11 then "Nov" else if [Month] = 12 then "Dec" else null),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Added Conditional Column",{{"Month name", type text}}),
+				    #"Added Conditional Column1" = Table.AddColumn(#"Changed Type", "StockHealth", each if [CurrentStock] = 0 then "Out of Stock" else if [CurrentStock] <= [SafetyStockLevel] then "Low Stock" else if [CurrentStock] <= [ReorderPoint] then "Reorder Soon" else if [CurrentStock] >= [MaxStockLevel]*0.9 then "High Stock" else "Healthy Stock"),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Added Conditional Column1",{{"StockHealth", type text}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

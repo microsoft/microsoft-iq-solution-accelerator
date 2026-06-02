@@ -1,0 +1,14 @@
+expression ServerParameter = "ccllgusga4suzkb52t4j7lpn7y-vwhycj2qas4ufjfa3ocaowwi24.datawarehouse.fabric.microsoft.com" meta [IsParameterQuery=true, List={"ccllgusga4suzkb52t4j7lpn7y-vwhycj2qas4ufjfa3ocaowwi24.datawarehouse.fabric.microsoft.com"}, DefaultValue="ccllgusga4suzkb52t4j7lpn7y-vwhycj2qas4ufjfa3ocaowwi24.datawarehouse.fabric.microsoft.com", Type="Text", IsParameterQueryRequired=true]
+	lineageTag: d06f77a1-9f03-4f74-8a64-e3fdca947d5c
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
+expression DatabaseParameter = "miqsadata" meta [IsParameterQuery=true, List={"miqsadata"}, DefaultValue="miqsadata", Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 101798eb-1fa2-4991-9ec7-871d09971d5d
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
