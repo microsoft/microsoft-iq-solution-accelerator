@@ -105,22 +105,3 @@ def setup_agent(
             connection_name=kb_mcp_connection_name,
         )
     logger.info(f"   Agent '{_agent.name}' ready (id: {_agent.id})")
-
-    # Persist agent metadata for review / debugging
-    _agent_ids_path = _config_dir / "agent_ids.json"
-    _agent_ids: dict = {}
-    if _agent_ids_path.exists():
-        with open(_agent_ids_path) as _f3:
-            _agent_ids = json.load(_f3)
-    _agent_ids.update({
-        "chat_agent_id": _agent.id,
-        "chat_agent_name": _agent.name,
-        "search_index": search_index_name,
-        "knowledge_base_name": knowledge_base_name,
-        "mcp_connection_name": kb_mcp_connection_name,
-        "search_endpoint": search_endpoint,
-        "tools": ["knowledge_base_retrieve"],
-    })
-    with open(_agent_ids_path, "w") as _f4:
-        json.dump(_agent_ids, _f4, indent=2)
-    logger.debug(f"      Agent config saved to {_agent_ids_path}")
