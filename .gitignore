@@ -205,7 +205,4 @@ __marimo__/
 .work-folder-info
 
 # Deployment-specific configuration files
-src/foundry/data/config/search_ids.json
-src/foundry/data/config/agent_ids.json
-src/foundry/data/search_ids.json
 infra/preflight-*.bicepparam
