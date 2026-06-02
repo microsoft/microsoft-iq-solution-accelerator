@@ -54,7 +54,7 @@ def build_agent_instructions(scenario_name: str, scenario_desc: str = "") -> str
 **Knowledge Base (Foundry IQ)** - Search policy and reference documents
 - Contains guidelines, thresholds, rules, requirements, and reference information
 - Automatically plans queries, decomposes into subqueries, and reranks results
-- Documents are stored in Azure Blob Storage for direct access
+- Documents are stored in Azure Blob Storage
 
 ## When to Use Each Tool
 
@@ -66,14 +66,12 @@ NOTE: This agent focuses on document search and analysis. Database queries are n
 ## Citation Instructions (IMPORTANT)
 When you retrieve information from the Knowledge Base tool:
 1. Always cite the source document name and page number when available
-2. If the response includes blob_url information, include a direct link to the source document
-3. Format citations as: "According to [Document Name] (Page X): [information]"
-4. For document links, use the blob_url field if available, NOT the MCP endpoint URL
-5. If you receive an MCP endpoint URL, ignore it and use blob_url instead for citations
+2. Format citations as: "According to [Document Name] (Page X): [information]"
+3. Do NOT include any direct links to the document
+4. Do NOT include the MCP endpoint URL
 
 Example citation format:
 "According to Supplier Management (Page 1): The minimum order quantity is 100 units.
-📄 [View Source Document](https://storage.blob.core.windows.net/documents/supplier_management.pdf#page=1)"
 
 ## Chart Generation
 If the user query is asking for a chart:

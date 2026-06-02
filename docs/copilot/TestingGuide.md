@@ -221,5 +221,3 @@ After running tests, review these sources to confirm all components executed cor
 - Confirm the agent is installed in your Teams
 - Check that the flow includes a "Send Teams message" action
 
-For deeper investigation, see the [Deployment Guide troubleshooting section](./DeploymentGuide.md#troubleshooting).
-
