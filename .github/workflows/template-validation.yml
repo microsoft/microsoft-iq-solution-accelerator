@@ -20,7 +20,7 @@ permissions:
 jobs:
   template_validation_job:
     runs-on: ubuntu-latest
-    environment: production
+    environment: miq-validate
     name: Template validation
 
     steps:
