@@ -33,7 +33,7 @@
       "value": "${AZURE_SEARCH_SERVICE_LOCATION=}"
     },
     "aiDeploymentsLocation": {
-      "value": "${AZURE_AI_DEPLOYMENTS_LOCATION}"
+      "value": "${AZURE_AI_DEPLOYMENTS_LOCATION=westus}"
     },
     "deploymentType": {
       "value": "${AZURE_OPENAI_MODEL_DEPLOYMENT_TYPE=GlobalStandard}"
