@@ -103,7 +103,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     name: Build and Static Analysis
-    environment: 'miq-build'
+    environment: production
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -162,7 +162,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     name: Deploy
-    environment: 'miq-dev'
+    environment: production
     needs: build
     # Skip the deploy job on pull_request events; PRs only run build / static
     # analysis. Deployment runs on push to a branch and on workflow_dispatch.
@@ -188,6 +188,12 @@ jobs:
             --client-id "${{ env.AZURE_CLIENT_ID }}" \
             --federated-credential-provider "github" \
             --tenant-id "${{ env.AZURE_TENANT_ID }}"
+
+      - name: Set timestamp and env name
+        shell: bash
+        run: |
+          HHMM=$(date -u +'%H%M')
+          echo "ENV_NAME=${ENV_NAME}-${HHMM}" >> "$GITHUB_ENV"
 
       - name: Deploy using azd up
         id: get_output_linux
