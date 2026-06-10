@@ -16,42 +16,107 @@ The `azd up` deployment is fully automated and idempotent, provisioning Fabric I
 
 ### Table of Contents
 
-1. [Deployment Environment Setup](#deployment-environment-setup)
-2. [Deployment Commands](#deployment-commands)
-3. [Post-Deployment Steps — Work IQ](#post-deployment-steps--work-iq)
-4. [Optional Configuration Variables](#optional-configuration-variables)
-5. [Deployment Overview](#deployment-overview)
+1. [Prerequisites](#prerequisites)
+   - [Common requirements (all options)](#common-requirements-all-options)
+   - [Environment-specific tooling](#environment-specific-tooling)
+   - [Enable Ontology and required features in Fabric Admin Portal](#enable-ontology-and-required-features-in-fabric-admin-portal)
+2. [Deployment Environment Setup](#deployment-environment-setup)
+3. [Deployment Commands](#deployment-commands)
+4. [Post-Deployment Steps — Work IQ](#post-deployment-steps--work-iq)
+5. [Optional Configuration Variables](#optional-configuration-variables)
+6. [Deployment Overview](#deployment-overview)
    - [Infrastructure Provisioned](#infrastructure-provisioned)
    - [Deployment Phases](#deployment-phases)
-6. [Deployment Results](#deployment-results)
+7. [Deployment Results](#deployment-results)
    - [Azure Resources (Resource Group)](#azure-resources-resource-group)
    - [Fabric IQ Components](#fabric-iq-components)
    - [Microsoft Foundry Components](#microsoft-foundry-components)
    - [Environment Variables](#environment-variables)
    - [Next Steps](#next-steps)
-7. [Environment Cleanup](#environment-cleanup)
-8. [Additional Resources](#additional-resources)
+8. [Environment Cleanup](#environment-cleanup)
+9. [Additional Resources](#additional-resources)
+
+---
+
+## Prerequisites
+
+Before starting the deployment, ensure the following requirements are met.
+
+### Common requirements (all options)
+
+- An **Azure subscription** with permissions to create resources (Contributor + Role Based Access Control / User Access Administrator on the target subscription or resource group)
+- **Microsoft Fabric** enabled on your subscription ([register provider](https://learn.microsoft.com/azure/azure-resource-manager/management/resource-providers-and-types))
+- **Fabric Admin Portal** tenant settings enabled — see [Enable Ontology and required features in Fabric Admin Portal](#enable-ontology-and-required-features-in-fabric-admin-portal) below
+
+### Environment-specific tooling
+
+Install the tools matching the [Deployment Environment Setup](#deployment-environment-setup) option you plan to use:
+
+- **Option 1 · Local Deployment** — on your host machine:
+  - [Azure Developer CLI](https://learn.microsoft.com/azure/developer/azure-developer-cli/install-azd) (`azd`)
+  - [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli) (`az`)
+  - [Python 3.9+](https://www.python.org/downloads/)
+  - [PowerShell 7+](https://learn.microsoft.com/powershell/scripting/install/installing-powershell) — required because [`azure.yaml`](../azure.yaml) hooks invoke [`infra/scripts/utils/Run-PythonScript.ps1`](../infra/scripts/utils/Run-PythonScript.ps1)
+  - [Git](https://git-scm.com/downloads)
+- **Option 2 · GitHub Codespaces** — zero local install; only a [GitHub account](https://github.com/join) with access to launch Codespaces is required. All tooling is pre-installed by [`.devcontainer/`](../.devcontainer/README.md).
+- **Option 3 · Dev Container (VS Code + Docker Desktop)** — on your host machine:
+  - [Visual Studio Code](https://code.visualstudio.com/)
+  - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+  - [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+  - [Git](https://git-scm.com/downloads)
+- **Option 4 · GitHub Actions** — in your fork/repository:
+  - A Microsoft Entra ID **federated credential** configured for GitHub OIDC ([guide](https://learn.microsoft.com/entra/workload-id/workload-identity-federation-config-app-trust-create#github-actions))
+  - A GitHub environment named `miq-build` with secrets `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, and `AZURE_SUBSCRIPTION_ID`
+
+### Enable Ontology and required features in Fabric Admin Portal
+
+> **Fabric IQ must be enabled.** You must enable Ontology and related preview features in the Fabric Admin Portal before proceeding.
+
+Follow these steps to enable the required tenant settings:
+
+1. Navigate to the [Fabric Admin Portal](https://app.fabric.microsoft.com/admin-portal).
+
+   > If you don't see the **Admin Portal** option, ensure you have **Fabric Admin** or **Global Admin** permissions on your tenant.
+
+2. In the left-hand navigation pane, select **Tenant settings**.
+
+3. **Enable Ontology (preview):**
+   - In the **Tenant settings** page, use the search bar at the top and search for **Ontology**.
+   - Locate the **Ontology (preview)** setting.
+   - Toggle the setting to **Enabled**.
+   - Choose whether to enable it for **The entire organization** or for **Specific security groups** based on your needs.
+   - Click **Apply**.
+
+4. **Enable Graph (preview):**
+   - Search for **Graph** in the **Tenant settings** search bar.
+   - Locate the **Graph (preview)** setting.
+   - Toggle the setting to **Enabled**.
+   - Choose the appropriate scope (entire organization or specific security groups).
+   - Click **Apply**.
+
+5. **Enable Copilot and Azure OpenAI Service:**
+   - Search for **Copilot** in the **Tenant settings** search bar.
+   - Locate the **Copilot and Azure OpenAI Service** setting.
+   - Toggle the setting to **Enabled**.
+   - Choose the appropriate scope.
+   - Click **Apply**.
+
+> **Propagation delay:** These settings may take up to **15 minutes** to take effect across your tenant. If you don't see the **Ontology** or **Data Agent** options in your workspace immediately, wait and refresh the page.
+
+For detailed instructions, refer to the official documentation: [Fabric IQ Tenant Settings](https://learn.microsoft.com/en-us/fabric/iq/ontology/overview-tenant-settings).
 
 ---
 
 ## Deployment Environment Setup
 
-You can deploy the accelerator from any of the four environments below. Each prepares the same set of prerequisites — Azure Developer CLI, Python, Azure CLI, and access to your subscription — and then runs the common [Deployment Commands](#deployment-commands) below. Pick whichever option fits your workflow.
-
-> **Common requirements for all options**
-> - An **Azure subscription** with permissions to create resources
-> - **Microsoft Fabric** enabled on your subscription ([register provider](https://learn.microsoft.com/azure/azure-resource-manager/management/resource-providers-and-types))
-> - (Optional) A GitHub Personal Access Token with `repo` scope and `Contents: read` if you forked the repo as private — set with `azd env set GITHUB_TOKEN "ghp_..."` ([create one](https://github.com/settings/personal-access-tokens))
+You can deploy the accelerator from any of the four environments below. Each option leads to the common [Deployment Commands](#deployment-commands). Pick whichever fits your workflow, and make sure the matching tools are installed per [Prerequisites → Environment-specific tooling](#environment-specific-tooling).
 
 <details>
 <summary><b>Option 1 · Local Deployment</b> — your own machine</summary>
 
 Use this option to run the deployment from your local shell.
 
-1. **Install prerequisites** on your host:
-   - [Azure Developer CLI](https://learn.microsoft.com/azure/developer/azure-developer-cli/install-azd) (`azd`)
-   - [Python 3.9+](https://www.python.org/downloads/)
-   - [PowerShell 7+](https://learn.microsoft.com/powershell/scripting/install/installing-powershell) — required because [`azure.yaml`](../azure.yaml) hooks invoke [`infra/scripts/utils/Run-PythonScript.ps1`](../infra/scripts/utils/Run-PythonScript.ps1)
+1. Ensure the **Option 1** tools from [Prerequisites → Environment-specific tooling](#environment-specific-tooling) are installed on your host.
 2. **Clone the repository** and `cd` into it:
    ```bash
    git clone https://github.com/microsoft/microsoft-iq-solution-accelerator.git
@@ -81,10 +146,7 @@ Use this option to run the deployment from your local shell.
 
 Run the same dev container locally for an isolated, reproducible environment without polluting your host.
 
-1. **Install prerequisites** on your host:
-   - [Visual Studio Code](https://code.visualstudio.com/)
-   - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-   - [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+1. Ensure the **Option 3** tools from [Prerequisites → Environment-specific tooling](#environment-specific-tooling) are installed on your host.
 2. **Clone the repository** and open it in VS Code:
    ```bash
    git clone https://github.com/microsoft/microsoft-iq-solution-accelerator.git
@@ -102,13 +164,9 @@ Run the same dev container locally for an isolated, reproducible environment wit
 
 The repository ships with [`.github/workflows/azure-dev.yml`](../.github/workflows/azure-dev.yml), which runs `azd up` end-to-end on `push` to a branch (and on `workflow_dispatch`) using **OIDC federated credentials** — no secrets stored.
 
-1. **Configure a federated credential** in Microsoft Entra ID for your fork or this repository. See [Configure a federated identity credential](https://learn.microsoft.com/entra/workload-id/workload-identity-federation-config-app-trust-create#github-actions) and [`azd pipeline config`](https://learn.microsoft.com/azure/developer/azure-developer-cli/configure-devops-pipeline) (which can do this for you).
-2. **Create a GitHub environment** named `miq-build` (referenced by the workflow's `environment: 'miq-build'` job) and add three repository **secrets**:
-   - `AZURE_CLIENT_ID` — the app registration / managed identity client ID
-   - `AZURE_TENANT_ID` — your Microsoft Entra tenant ID
-   - `AZURE_SUBSCRIPTION_ID` — target subscription
-3. (Optional) Adjust `AZURE_LOCATION` in the workflow `env:` block (default `westus3`) and any `azd env set …` lines for SKU, region, or model overrides.
-4. **Trigger** the workflow by pushing to a branch matching the `paths:` filters (`infra/**`, `src/**`, `.github/workflows/azure-dev.yml`) or by running it manually from the **Actions** tab. The workflow:
+1. Ensure the **Option 4** items from [Prerequisites → Environment-specific tooling](#environment-specific-tooling) are configured (federated credential and the `miq-build` environment with secrets). See [`azd pipeline config`](https://learn.microsoft.com/azure/developer/azure-developer-cli/configure-devops-pipeline), which can configure the federated credential for you.
+2. (Optional) Adjust `AZURE_LOCATION` in the workflow `env:` block (default `westus3`) and any `azd env set …` lines for SKU, region, or model overrides.
+3. **Trigger** the workflow by pushing to a branch matching the `paths:` filters (`infra/**`, `src/**`, `.github/workflows/azure-dev.yml`) or by running it manually from the **Actions** tab. The workflow:
    - Logs in via `azure/login@v2` and `azd auth login --federated-credential-provider github`
    - Runs Bicep static analysis and validation
    - Executes `azd up --no-prompt` (which itself triggers Phase 2)
@@ -121,21 +179,18 @@ The repository ships with [`.github/workflows/azure-dev.yml`](../.github/workflo
 
 ## Deployment Commands
 
-### Prerequisites
-
-These commands assume you have completed one of the [Deployment Environment Setup](#deployment-environment-setup) options above (Local, Codespaces, or Dev Container) and have a shell open in the repository root. For [Option 4 · GitHub Actions](#deployment-environment-setup), skip this section — the workflow runs these commands automatically.
+> For fine-grained tuning of the deployment (Fabric capacity SKU, workspace name, AI deployment region, model selection, existing-resource reuse, etc.), set any of the variables documented in [Optional Configuration Variables](#optional-configuration-variables) **before** running `azd up`.
 
 ### Deploy
 
 Run the following commands in a single bash session:
 
 ```bash
-# Authenticate with Azure Developer CLI (run only if not already logged in)
+# Authenticate with Azure Developer CLI
 azd auth login
 
-# (Optional) Provide a GitHub PAT if you forked the repo as private.
-# The Fabric installer notebook pulls workspace items from GitHub.
-azd env set GITHUB_TOKEN "ghp_..."   # optional
+# Authenticate with Azure CLI
+az login
 
 # (Optional) Override defaults — Fabric SKU, AI region, model selection, etc.
 # See the "Optional Configuration Variables" section below for the full list.
@@ -143,15 +198,11 @@ azd env set GITHUB_TOKEN "ghp_..."   # optional
 # azd env set AZURE_AI_DEPLOYMENTS_LOCATION eastus
 
 # Deploy the solution
-# This will prompt you to select Azure subscription and region,
-# then provision all infrastructure and run post-deployment scripts
 azd up
 
 # (Optional) View all deployment outputs
 azd env get-values
 ```
-
-> For fine-grained tuning of the deployment (Fabric capacity SKU, workspace name, AI deployment region, model selection, existing-resource reuse, etc.), set any of the variables documented in [Optional Configuration Variables](#optional-configuration-variables) **before** running `azd up`.
 
 The entire deployment typically completes in **10–15 minutes**.
 
@@ -211,7 +262,6 @@ Customize your deployment by setting `azd` environment variables before running 
 | | `AZURE_EXISTING_LOG_ANALYTICS_WORKSPACE_ID` | Use an existing Log Analytics workspace | _(empty)_ | `azd env set AZURE_EXISTING_LOG_ANALYTICS_WORKSPACE_ID "/subscriptions/..."` |
 | | `AZURE_EXISTING_AI_PROJECT_RESOURCE_ID` | Use an existing AI Foundry project | _(empty)_ | `azd env set AZURE_EXISTING_AI_PROJECT_RESOURCE_ID "/subscriptions/..."` |
 | | `DEPLOYING_USER_PRINCIPAL_TYPE` | Deploying principal type (use `ServicePrincipal` for CI/CD with OIDC) | `User` | `azd env set DEPLOYING_USER_PRINCIPAL_TYPE ServicePrincipal` |
-| **GitHub** | `GITHUB_TOKEN` | GitHub Personal Access Token (for private repos) | _(empty)_ | `azd env set GITHUB_TOKEN "ghp_..."` |
 
 **Available Fabric SKUs**: `F2`, `F4`, `F8`, `F16`, `F32`, `F64`, `F128`, `F256`, `F512`, `F1024`, `F2048`
 
@@ -261,7 +311,7 @@ The deployment follows a **two-phase automated workflow**, both phases triggered
 | 2 | | | `setup_agent` ([`step_agent_setup.py`](../infra/scripts/foundry/step_agent_setup.py)) | Create the AI Foundry chat agent wired to the Knowledge Base via [MCP](https://modelcontextprotocol.io/introduction). **Best-effort**: transient platform errors are logged as warnings and the deployment continues. |
 | 3 | | | `setup_workspace` ([`step_workspace_setup.py`](../infra/scripts/fabric/step_workspace_setup.py)) | Create or find the Fabric workspace, assign it to the capacity, and resume the capacity if paused. |
 | 4 | | | `setup_administrators` ([`step_workspace_admins.py`](../infra/scripts/fabric/step_workspace_admins.py)) | Add [workspace administrators](https://learn.microsoft.com/fabric/get-started/roles-workspaces) using [Graph API](https://learn.microsoft.com/graph/overview) resolution with fallback. |
-| 5 | | | `upload_installer` ([`step_notebook_installer.py`](../infra/scripts/fabric/step_notebook_installer.py)) | Upload [`fabric_solution_installer.ipynb`](../infra/fabric/deploy/fabric_solution_installer.ipynb), patched in-memory with the current git branch and `GITHUB_TOKEN` if set. |
+| 5 | | | `upload_installer` ([`step_notebook_installer.py`](../infra/scripts/fabric/step_notebook_installer.py)) | Upload [`fabric_solution_installer.ipynb`](../infra/fabric/deploy/fabric_solution_installer.ipynb), patched in-memory with the current git branch. |
 | 6 | | | `run_installer` ([`step_notebook_installer.py`](../infra/scripts/fabric/step_notebook_installer.py)) | Execute the installer notebook as a Fabric job. The notebook uses [`fabric-launcher`](https://github.com/microsoft/fabric-launcher) to deploy items from [`src/fabric/fabric_workspace/`](../src/fabric/fabric_workspace/), then runs `pipeline_main` for data ingestion, deploys ontologies, and organizes folders. |
 
 ---
