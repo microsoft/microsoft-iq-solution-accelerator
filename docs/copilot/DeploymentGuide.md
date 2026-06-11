@@ -6,12 +6,11 @@ This guide covers deploying and configuring the Copilot Studio integration for *
 ## Prerequisites
  
 * Power Platform environment with **Dataverse** enabled.
-* **System Administrator** access to the target environment.
-* Active **Copilot Studio** license.
-* Permission to run and edit **Power Automate** flows.
+* **System Administrator** role on the Power Platform environment deploying the solution.
+* Active **Microsoft Copilot Studio User License** should be assigned.
 * End-user access to **Dataverse**.
 * Access to **Microsoft Teams** and **Microsoft Outlook**.
-* Access to the **Fabric Data Agent** and **Foundry Agent**, which must already be deployed as part of this solution. See [README.md](./README.md)
+* Access to the **Fabric Data Agent** and **Foundry Agent**, which is deployed as part of this solution. See [README.md](./README.md)
  
 ---
  
