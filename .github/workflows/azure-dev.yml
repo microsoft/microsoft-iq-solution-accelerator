@@ -64,7 +64,7 @@ env:
   GITHUB_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
 
   # --- Azure region ---
-  # AZURE_LOCATION: ${{ vars.AZURE_LOCATION }}
+  AZURE_LOCATION: ${{ vars.AZURE_LOCATION || 'eastus' }}
 
   # --- Common ---
   # ENABLE_TELEMETRY: ${{ vars.ENABLE_TELEMETRY }}
@@ -104,6 +104,9 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Static Analysis
     environment: production
+    outputs:
+      env_name: ${{ steps.set_env.outputs.env_name }}
+      resource_group_name: ${{ steps.check_create_rg.outputs.RESOURCE_GROUP_NAME }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -142,11 +145,56 @@ jobs:
             --federated-credential-provider "github" \
             --tenant-id "${{ env.AZURE_TENANT_ID }}"
 
+      - name: Generate Unique Environment Name
+        id: set_env
+        if: github.event_name != 'pull_request'
+        shell: bash
+        run: |
+          # COMMON_PART uses the workflow-level ENV_NAME (default `miqsad`,
+          # or whatever `vars.ENV_NAME` is set to) so overrides still apply.
+          COMMON_PART="${ENV_NAME}"
+          HHMM=$(date -u +'%H%M')
+          TIMESTAMP=$(date +%s)
+          UPDATED_TIMESTAMP=$(echo "$TIMESTAMP" | tail -c 6)
+          UNIQUE_ENV_NAME="${COMMON_PART}${HHMM}${UPDATED_TIMESTAMP}"
+          echo "Generated Environment Name: ${UNIQUE_ENV_NAME}"
+          # Update the value for subsequent steps in this job and expose
+          # it as a job output so the `deploy` and `cleanup` jobs pick
+          # up the same name.
+          echo "ENV_NAME=${UNIQUE_ENV_NAME}" >> "$GITHUB_ENV"
+          echo "env_name=${UNIQUE_ENV_NAME}" >> "$GITHUB_OUTPUT"
+
+      - name: Generate Resource Group Name
+        id: generate_rg_name
+        if: github.event_name != 'pull_request'
+        shell: bash
+        run: |
+          echo "Generating a unique resource group name..."
+          ACCL_NAME="miq"
+          SHORT_UUID=$(uuidgen | cut -d'-' -f1)
+          UNIQUE_RG_NAME="arg-${ACCL_NAME}-${SHORT_UUID}"
+          echo "RESOURCE_GROUP_NAME=${UNIQUE_RG_NAME}" >> $GITHUB_ENV
+          echo "Generated RESOURCE_GROUP_NAME: ${UNIQUE_RG_NAME}"
+
+      - name: Check and Create Resource Group
+        id: check_create_rg
+        if: github.event_name != 'pull_request'
+        shell: bash
+        run: |
+          set -e
+          echo "🔍 Checking if resource group '$RESOURCE_GROUP_NAME' exists..."
+          rg_exists=$(az group exists --name $RESOURCE_GROUP_NAME)
+          if [ "$rg_exists" = "false" ]; then
+            echo "📦 Resource group does not exist. Creating new resource group '$RESOURCE_GROUP_NAME' in location '$AZURE_LOCATION'..."
+            az group create --name $RESOURCE_GROUP_NAME --location $AZURE_LOCATION || { echo "❌ Error creating resource group"; exit 1; }
+            echo "✅ Resource group '$RESOURCE_GROUP_NAME' created successfully."
+          else
+            echo "✅ Resource group '$RESOURCE_GROUP_NAME' already exists. Deploying to existing resource group."
+          fi
+          echo "RESOURCE_GROUP_NAME=$RESOURCE_GROUP_NAME" >> $GITHUB_OUTPUT
+          echo "RESOURCE_GROUP_NAME=$RESOURCE_GROUP_NAME" >> $GITHUB_ENV
+
       - name: Validate Bicep Template (azd provision --preview)
-        # Uses `azd provision --preview` instead of `az deployment group validate`
-        # so azd's `${VAR=default}` substitution in main.parameters.json is
-        # applied identically to the deploy job. Assumes the resource group
-        # already exists (azd preview is RG-scoped here).
         shell: bash
         env:
           AZURE_RESOURCE_GROUP: ${{ env.RESOURCE_GROUP_NAME }}
@@ -167,10 +215,13 @@ jobs:
     # Skip the deploy job on pull_request events; PRs only run build / static
     # analysis. Deployment runs on push to a branch and on workflow_dispatch.
     if: github.event_name != 'pull_request'
+    env:
+      ENV_NAME: ${{ needs.build.outputs.env_name }}
+      RESOURCE_GROUP_NAME: ${{ needs.build.outputs.resource_group_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-      
+
       - name: Azure CLI login
         uses: azure/login@v3
         with:
@@ -188,12 +239,6 @@ jobs:
             --client-id "${{ env.AZURE_CLIENT_ID }}" \
             --federated-credential-provider "github" \
             --tenant-id "${{ env.AZURE_TENANT_ID }}"
-
-      - name: Set timestamp and env name
-        shell: bash
-        run: |
-          HHMM=$(date -u +'%H%M')
-          echo "ENV_NAME=${ENV_NAME}-${HHMM}" >> "$GITHUB_ENV"
 
       - name: Deploy using azd up
         id: get_output_linux
@@ -324,3 +369,92 @@ jobs:
           echo "## 🆘 Need Help?" >> $GITHUB_STEP_SUMMARY
           echo "- 🐛 [Report Issues](https://github.com/${{ github.repository }}/issues)" >> $GITHUB_STEP_SUMMARY
           echo "- 📘 [Deployment Guide](https://github.com/${{ github.repository }}/blob/main/docs/DeploymentGuide.md)" >> $GITHUB_STEP_SUMMARY
+
+  cleanup:
+    runs-on: ubuntu-latest
+    name: Cleanup Resources
+    environment: production
+    needs: [build, deploy]
+    if: always() && needs.deploy.result != 'skipped'
+    env:
+      ENV_NAME: ${{ needs.build.outputs.env_name || vars.ENV_NAME || 'miqsad' }}
+      RESOURCE_GROUP_NAME: ${{ needs.build.outputs.resource_group_name || vars.RESOURCE_GROUP_NAME || 'rg-miqsad' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Azure CLI login
+        uses: azure/login@v3
+        with:
+          client-id: ${{ env.AZURE_CLIENT_ID }}
+          tenant-id: ${{ env.AZURE_TENANT_ID }}
+          subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Install azd
+        uses: Azure/setup-azd@v2
+
+      - name: Azure Developer CLI login
+        shell: bash
+        run: |
+          azd auth login \
+            --client-id "${{ env.AZURE_CLIENT_ID }}" \
+            --federated-credential-provider "github" \
+            --tenant-id "${{ env.AZURE_TENANT_ID }}"
+
+      - name: Restore azd Environment and Run azd down
+        shell: bash
+        env:
+          # Required by the predown hook (remove_microsoft_iq_solution.py).
+          AZURE_RESOURCE_GROUP: ${{ env.RESOURCE_GROUP_NAME }}
+        run: |
+          set -e
+          echo "Restoring azd environment: $ENV_NAME"
+          azd env new "$ENV_NAME" --no-prompt || true
+          azd env select "$ENV_NAME"
+          azd config set defaults.subscription "$AZURE_SUBSCRIPTION_ID"
+
+          # Workspace-identifying values are sourced from the workflow
+          # `env:` block (azd's predown hook reads them via os.getenv),
+          # so no explicit `azd env set` calls are needed beyond the
+          # resource group.
+          azd env set AZURE_RESOURCE_GROUP "$AZURE_RESOURCE_GROUP"
+
+          echo "🗑️  Running azd down to remove Fabric workspace and Azure resources..."
+          azd down --force --purge --no-prompt || echo "⚠️ azd down failed, will fall back to direct RG deletion"
+          echo "✅ azd down step completed"
+
+      - name: Delete Resource Group (fallback)
+        if: always() && env.RESOURCE_GROUP_NAME != ''
+        shell: bash
+        run: |
+          echo "🗑️  Ensuring resource group '$RESOURCE_GROUP_NAME' is deleted..."
+          rg_exists=$(az group exists --name "$RESOURCE_GROUP_NAME")
+          if [ "$rg_exists" = "true" ]; then
+            echo "Resource group still exists. Deleting directly..."
+            az group delete --name "$RESOURCE_GROUP_NAME" --yes --no-wait
+            echo "✅ Resource group deletion initiated."
+          else
+            echo "✅ Resource group '$RESOURCE_GROUP_NAME' already deleted."
+          fi
+
+      - name: Output Cleanup Summary
+        shell: bash
+        run: |
+          CLEANUP_TIME=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          echo "# 🧹 Microsoft IQ Cleanup Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Cleanup completed at:** ${CLEANUP_TIME}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Resource | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| **azd environment** | \`${ENV_NAME}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Resource Group** | \`${RESOURCE_GROUP_NAME}\` — deletion initiated |" >> $GITHUB_STEP_SUMMARY
+          if [ -n "${FABRIC_WORKSPACE_NAME:-}" ]; then
+            echo "| **Fabric Workspace** | Deleted via \`azd down\` (name \`${FABRIC_WORKSPACE_NAME}\`) |" >> $GITHUB_STEP_SUMMARY
+          elif [ -n "${FABRIC_WORKSPACE_ID:-}" ]; then
+            echo "| **Fabric Workspace** | Deleted via \`azd down\` (ID \`${FABRIC_WORKSPACE_ID}\`) |" >> $GITHUB_STEP_SUMMARY
+          elif [ -n "${SOLUTION_SUFFIX:-}" ]; then
+            echo "| **Fabric Workspace** | Deleted via \`azd down\` (suffix \`${SOLUTION_SUFFIX}\`) |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| **Fabric Workspace** | Deleted via \`azd down\` (suffix read from azd environment) |" >> $GITHUB_STEP_SUMMARY
+          fi
