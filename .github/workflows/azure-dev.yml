@@ -218,6 +218,8 @@ jobs:
     env:
       ENV_NAME: ${{ needs.build.outputs.env_name }}
       RESOURCE_GROUP_NAME: ${{ needs.build.outputs.resource_group_name }}
+    outputs:
+      solution_suffix: ${{ steps.get_output_linux.outputs.solution_suffix }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -260,6 +262,12 @@ jobs:
           # postprovision script reads them via os.getenv), so no explicit
           # `azd env set` calls are needed here.
           azd up --no-prompt
+
+          SOLUTION_SUFFIX_VALUE=$(azd env get-value SOLUTION_SUFFIX 2>/dev/null || true)
+          if printf '%s' "$SOLUTION_SUFFIX_VALUE" | grep -qiE '^(ERROR|Suggestion):'; then
+            SOLUTION_SUFFIX_VALUE=""
+          fi
+          echo "solution_suffix=${SOLUTION_SUFFIX_VALUE}" >> "$GITHUB_OUTPUT"
 
       - name: Output Deployment Summary
         shell: bash
@@ -379,6 +387,7 @@ jobs:
     env:
       ENV_NAME: ${{ needs.build.outputs.env_name || vars.ENV_NAME || 'miqsad' }}
       RESOURCE_GROUP_NAME: ${{ needs.build.outputs.resource_group_name || vars.RESOURCE_GROUP_NAME || 'rg-miqsad' }}
+      SOLUTION_SUFFIX: ${{ needs.deploy.outputs.solution_suffix }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -413,11 +422,15 @@ jobs:
           azd env select "$ENV_NAME"
           azd config set defaults.subscription "$AZURE_SUBSCRIPTION_ID"
 
-          # Workspace-identifying values are sourced from the workflow
-          # `env:` block (azd's predown hook reads them via os.getenv),
-          # so no explicit `azd env set` calls are needed beyond the
-          # resource group.
+          azd env set AZURE_SUBSCRIPTION_ID "$AZURE_SUBSCRIPTION_ID"
+          azd env set AZURE_LOCATION "$AZURE_LOCATION"
           azd env set AZURE_RESOURCE_GROUP "$AZURE_RESOURCE_GROUP"
+          if [ -n "${SOLUTION_SUFFIX:-}" ]; then
+            echo "Forwarding SOLUTION_SUFFIX=$SOLUTION_SUFFIX from the deploy job"
+            azd env set SOLUTION_SUFFIX "$SOLUTION_SUFFIX"
+          else
+            echo "⚠️ SOLUTION_SUFFIX not available from deploy job (azd up likely failed before provisioning); predown hook will exit gracefully if no workspace is found."
+          fi
 
           echo "🗑️  Running azd down to remove Fabric workspace and Azure resources..."
           azd down --force --purge --no-prompt || echo "⚠️ azd down failed, will fall back to direct RG deletion"
