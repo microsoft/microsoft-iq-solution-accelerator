@@ -61,12 +61,53 @@ def calculate_business_phase(current_date: datetime, start_date: datetime, end_d
 
 def get_market_event_multiplier(current_date: datetime) -> Tuple[str, float, float]:
     """
-    Simple market events - minimal seasonal variation for smooth trends.
+    Calculate market event multipliers based on the date.
+    
+    Includes:
+    - Memorial Day Weekend: 1.4x frequency, 1.2x size
+    - Black Friday / Cyber Monday: 1.8x frequency, 1.3x size
+    - Holiday Rush (Dec 10-24): 1.5x frequency, 1.25x size
     
     Returns:
         Tuple[str, float, float]: (event_name, order_frequency_multiplier, order_size_multiplier)
     """
-    # Keep it simple - just normal business operations
+    month = current_date.month
+    day = current_date.day
+    current_date_only = datetime(current_date.year, current_date.month, current_date.day)
+    
+    # 1. Memorial Day Weekend (Friday before to Monday of Last Monday in May)
+    if month == 5:
+        # Find last Monday in May
+        for d in range(31, 23, -1):
+            dt = datetime(current_date.year, 5, d)
+            if dt.weekday() == 0:  # Monday
+                memorial_monday_dt = dt
+                break
+        if (memorial_monday_dt - timedelta(days=3)) <= current_date_only <= memorial_monday_dt:
+            return "Memorial Day Sale", 1.4, 1.2
+            
+    # 2. Black Friday / Cyber Monday (Friday after Thanksgiving to Cyber Monday)
+    # Thanksgiving is 4th Thursday in November. Cyber Monday can overflow into December.
+    if month == 11 or month == 12:
+        thursdays = []
+        for d in range(1, 31):
+            dt = datetime(current_date.year, 11, d)
+            if dt.weekday() == 3:  # Thursday
+                thursdays.append(dt)
+        thanksgiving_dt = thursdays[3]
+        black_friday_dt = thanksgiving_dt + timedelta(days=1)
+        cyber_monday_dt = thanksgiving_dt + timedelta(days=4)
+        
+        if black_friday_dt <= current_date_only <= cyber_monday_dt:
+            return "Black Friday / Cyber Monday", 1.8, 1.3
+            
+    # 3. Holiday Rush / Christmas (December 10 to December 24)
+    if month == 12:
+        if 10 <= day <= 24:
+            return "Holiday Rush", 1.5, 1.25
+        elif day == 25:
+            return "Christmas Day", 1.1, 1.1
+            
     return "Normal", 1.0, 1.0
 
 def get_customer_tier_multiplier(customer_relationship_type: str, base_multiplier: float) -> float:
