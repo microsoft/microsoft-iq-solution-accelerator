@@ -6,4 +6,4 @@ az bicep build --file main.bicep
 az group create --name <your-resource-group-name> --location <yourlocation>
 
 **Deploys bicep template**
-az deployment group create --resource-group <your-resource-group-name> --template-file master.bicep
+az deployment group create --resource-group <your-resource-group-name> --template-file main.bicep
