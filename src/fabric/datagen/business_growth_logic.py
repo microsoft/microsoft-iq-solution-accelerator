@@ -64,9 +64,9 @@ def get_market_event_multiplier(current_date: datetime) -> Tuple[str, float, flo
     Calculate market event multipliers based on the date.
     
     Includes:
-    - Memorial Day Weekend: 1.4x frequency, 1.2x size
-    - Black Friday / Cyber Monday: 1.8x frequency, 1.3x size
-    - Holiday Rush (Dec 10-24): 1.5x frequency, 1.25x size
+    - Memorial Day Sale (Fri–Mon around last Monday of May): 1.4x frequency, 1.2x size
+    - Black Friday / Cyber Monday (Fri after Thanksgiving through Cyber Monday): 1.8x frequency, 1.3x size
+    - Holiday Rush (Dec 10–24): 1.5x frequency, 1.25x size
     - Christmas Day (Dec 25): 1.1x frequency, 1.1x size
     
     Returns:
