@@ -78,12 +78,13 @@ def get_market_event_multiplier(current_date: datetime) -> Tuple[str, float, flo
     # 1. Memorial Day Weekend (Friday before to Monday of Last Monday in May)
     if month == 5:
         # Find last Monday in May
+        memorial_monday_dt = None
         for d in range(31, 23, -1):
             dt = datetime(current_date.year, 5, d)
             if dt.weekday() == 0:  # Monday
                 memorial_monday_dt = dt
                 break
-        if (memorial_monday_dt - timedelta(days=3)) <= current_date_only <= memorial_monday_dt:
+        if memorial_monday_dt and (memorial_monday_dt - timedelta(days=3)) <= current_date_only <= memorial_monday_dt:
             return "Memorial Day Sale", 1.4, 1.2
             
     # 2. Black Friday / Cyber Monday (Friday after Thanksgiving to Cyber Monday)
