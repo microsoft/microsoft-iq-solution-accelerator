@@ -22,7 +22,7 @@ openai==2.8.1
 azure-ai-projects==2.1.0
 
 # PDF processing — document extraction and chunking
-pypdf==6.10.2
+pypdf==6.13.3
 
 # Environment variable loading (foundry helpers)
 python-dotenv==1.2.2
