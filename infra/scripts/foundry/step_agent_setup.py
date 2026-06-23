@@ -5,12 +5,8 @@ AI Foundry agent setup step for the Microsoft IQ deployment.
 Extracts step 2 (``setup_agent``) of the deployment flow into a single
 top-level function callable from the entry-point script.
 """
-
-import json
 import logging
-from pathlib import Path
 
-from common.config import DATA_DIR
 from foundry.agent_api import (
     CHAT_AGENT_NAME,
     build_agent_instructions,
@@ -26,11 +22,11 @@ logger = logging.getLogger(__name__)
 
 def setup_agent(
     *,
-    solution_name: str,
+    scenario_name: str,
+    scenario_description: str,
     agent_endpoint: str,
     agent_model: str,
     search_endpoint: str,
-    search_index_name: str,
     knowledge_base_name: str,
     kb_mcp_connection_name: str,
     subscription_id: str,
@@ -41,11 +37,11 @@ def setup_agent(
     """Create or update an AI Foundry agent wired up to the Knowledge Base MCP tool.
 
     Args:
-        solution_name: Overall generic name for the project/solution
+        scenario_name: Human-readable name of the deployment scenario (used in agent instructions).
+        scenario_description: Description of the deployment scenario (used in agent instructions).
         agent_endpoint: Azure AI Project endpoint URL.
         agent_model: Chat model deployment name for the agent.
         search_endpoint: Azure AI Search service endpoint URL.
-        search_index_name: Name of the search index that backs the KB.
         knowledge_base_name: KB name to use for the MCP connection.
         kb_mcp_connection_name: Project connection name for the KB MCP tool.
         subscription_id: Azure subscription ID.
@@ -53,14 +49,8 @@ def setup_agent(
         ai_service_name: Azure AI Services account name (required for MCP connection).
         ai_project_name: Azure AI Project name (required for MCP connection).
     """
-    # Default scenario info
-    _data_path = Path(DATA_DIR)
-    _config_dir = _data_path / "config" if (_data_path / "config").exists() else _data_path
-    _scenario_name = solution_name
-    _scenario_desc = "Managing delivery operations, inventory logistics, and supplier relationships."
-
     # Build agent instructions
-    _instructions = build_agent_instructions(_scenario_name, _scenario_desc)
+    _instructions = build_agent_instructions(scenario_name, scenario_description)
     logger.debug(f"      Built instructions ({len(_instructions)} chars)")
 
     # Create agent client and MCP connection

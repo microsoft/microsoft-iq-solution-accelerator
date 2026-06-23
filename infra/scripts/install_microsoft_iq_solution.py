@@ -61,13 +61,18 @@ Environment Variables:
                                                     Falls back to AZURE_CHAT_MODEL, then gpt-4.1-mini.
     KB_MCP_CONNECTION_NAME               (optional) Project connection name for the Knowledge Base MCP tool.
                                                     Defaults to <SOLUTION_SUFFIX>-kb-mcp-connection.
+    CONTENT_PACK                         (optional) Name of the content pack to deploy (must match a
+                                                    folder under content_packs/ in the repository root).
+                                                    When not set, an interactive menu is presented.
 """
 
+import json
 import logging
 import os
 import sys
 from datetime import datetime
-from typing import NoReturn
+from pathlib import Path
+from typing import NoReturn, TypedDict
 
 # Add infra/scripts/ to path so the fabric package and its modules can be imported
 sys.path.append(os.path.dirname(__file__))
@@ -83,7 +88,7 @@ setup_logging()
 # use this logger; the level and handler are inherited from setup_logging().
 logger = logging.getLogger(__name__)
 
-from common.config import SOLUTION_NAME, default_workspace_name
+from common.config import REPO_ROOT, SOLUTION_NAME, default_workspace_name
 from common.env_utils import (
     get_required_env_var,
     parse_workspace_administrators,
@@ -118,13 +123,84 @@ ALL_DEPLOYMENT_STEPS = [
 ]
 
 
-# ---------------------------------------------------------------------------
-# Main
-# ---------------------------------------------------------------------------
+class ContentPack(TypedDict):
+    name: str
+    description: str
+    folder_name: str
+    docs_path: str
+
+
+def _select_content_pack() -> ContentPack:
+    """Return a ContentPack for the selected content pack.
+
+    When CONTENT_PACK is set, its value is used as the folder name and
+    ``definition.json`` is read from that folder to populate ``name`` and
+    ``description``.  Otherwise the subdirectories of ``content_packs/`` at
+    the repository root are listed, each pack's ``definition.json`` is read
+    for display, and the user is prompted to choose interactively.
+    """
+    content_packs_dir = os.path.join(REPO_ROOT, "content_packs")
+
+    def _load_definition(folder: str) -> ContentPack:
+        folder_path = os.path.join(content_packs_dir, folder)
+        definition_path = os.path.join(folder_path, "definition.json")
+        try:
+            with open(definition_path, encoding="utf-8") as fh:
+                definition = json.load(fh)
+            return ContentPack(
+                folder_name=folder,
+                name=definition.get("name", folder),
+                description=definition.get("description", ""),
+                docs_path= os.path.join(folder_path, "documents")
+            )
+        except (OSError, json.JSONDecodeError):
+            return ContentPack(folder_name=folder, name=folder, description="", docs_path="")
+
+    env_value = os.getenv("CONTENT_PACK")
+    if env_value:
+        print("Using content pack from environment variable CONTENT_PACK:", env_value)
+        return _load_definition(env_value.strip())
+
+    try:
+        pack_dirs = sorted(
+            entry
+            for entry in os.listdir(content_packs_dir)
+            if os.path.isdir(os.path.join(content_packs_dir, entry))
+        )
+    except OSError as exc:
+        logger.error(f"Could not read content_packs directory '{content_packs_dir}': {exc}")
+        sys.exit(1)
+
+    if not pack_dirs:
+        logger.error("No content packs found in the content_packs/ directory.")
+        sys.exit(1)
+
+    packs = [_load_definition(folder) for folder in pack_dirs]
+
+    print("\nSelect a content pack to deploy:")
+    for i, pack in enumerate(packs, 1):
+        label = pack["name"]
+        if pack["description"]:
+            label = f"{label} — {pack['description']}"
+        print(f"  {i}. {label}")
+
+    while True:
+        try:
+            raw = input(f"\nEnter selection [1-{len(packs)}]: ").strip()
+            index = int(raw) - 1
+            if 0 <= index < len(packs):
+                pack = packs[index]
+                set_azd_env_var("CONTENT_PACK", pack["folder_name"])
+                return pack
+        except (ValueError, EOFError):
+            pass
+        print(f"  Invalid selection. Please enter a number between 1 and {len(packs)}.")
 
 
 def main() -> None:
     """Orchestrate the minimal three-step solution installation."""
+
+    content_pack = _select_content_pack()
 
     # ------------------------------------------------------------------
     # Configuration from environment variables
@@ -141,6 +217,7 @@ def main() -> None:
         os.getenv("FABRIC_WORKSPACE_ADMINISTRATORS"),
     )
     github_token = os.getenv("GITHUB_TOKEN")
+    
 
     notebook_path = get_notebook_path()
 
@@ -177,6 +254,8 @@ def main() -> None:
     # ------------------------------------------------------------------
     logger.info(f"🏭 {SOLUTION_NAME} – Solution Installer")
     logger.info("=" * 60)
+    logger.info(f"Content Pack:       {content_pack['name']} ({content_pack['folder_name']})")
+    logger.info(f"Content Pack Description: {content_pack['description']}")
     logger.info(f"Capacity:           {capacity_name}")
     logger.info(f"Subscription:       {subscription_id}")
     logger.info(f"Resource Group:     {resource_group}")
@@ -266,6 +345,7 @@ def main() -> None:
     try:
         setup_knowledge_base(
             solution_name=SOLUTION_NAME,
+            docs_dir=Path(content_pack['docs_path']),
             search_endpoint=search_endpoint,
             blob_endpoint=blob_endpoint,
             ai_endpoint=ai_endpoint,
@@ -296,11 +376,11 @@ def main() -> None:
                connection=kb_mcp_connection_name)
     try:
         setup_agent(
-            solution_name=SOLUTION_NAME,
+            scenario_name=content_pack["name"],
+            scenario_description=content_pack["description"],
             agent_endpoint=agent_endpoint,
             agent_model=agent_model,
             search_endpoint=search_endpoint,
-            search_index_name=search_index_name,
             knowledge_base_name=knowledge_base_name,
             kb_mcp_connection_name=kb_mcp_connection_name,
             subscription_id=subscription_id,

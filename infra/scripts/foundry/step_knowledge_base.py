@@ -9,7 +9,6 @@ single top-level function callable from the entry-point script.
 import logging
 from pathlib import Path
 
-from common.config import DATA_DIR
 from common.pdf_utils import process_pdfs_to_documents
 from foundry.blob_api import create_blob_service_client, upload_pdf_to_blob
 from foundry.search_api import (
@@ -29,6 +28,7 @@ logger = logging.getLogger(__name__)
 def setup_knowledge_base(
     *,
     solution_name: str,
+    docs_dir: Path,
     search_endpoint: str,
     blob_endpoint: str,
     ai_endpoint: str,
@@ -43,6 +43,7 @@ def setup_knowledge_base(
 
     Args:
         solution_name: Human-readable solution name (used as KB description).
+        docs_dir: Directory containing PDF files to index.
         search_endpoint: Azure AI Search service endpoint URL.
         blob_endpoint: Azure Blob Storage service endpoint URL.
         ai_endpoint: Azure AI Services / OpenAI endpoint URL (for embeddings + chat).
@@ -54,8 +55,6 @@ def setup_knowledge_base(
         chat_model: OpenAI chat model deployment name (for KB query planning).
     """
     # Locate PDFs
-    data_path = Path(DATA_DIR)
-    docs_dir = data_path / "documents" if (data_path / "documents").exists() else data_path
     pdf_files = list(docs_dir.glob("*.pdf"))
     if not pdf_files:
         logger.warning(f"   No PDF files found in {docs_dir} — knowledge base will be empty")
