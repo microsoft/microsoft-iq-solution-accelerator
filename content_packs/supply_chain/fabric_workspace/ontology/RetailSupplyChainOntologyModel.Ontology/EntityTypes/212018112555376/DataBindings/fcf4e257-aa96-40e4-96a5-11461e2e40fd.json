@@ -1,0 +1,76 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "fcf4e257-aa96-40e4-96a5-11461e2e40fd",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "PurchaseOrderID",
+        "targetPropertyId": "2288658247792705776"
+      },
+      {
+        "sourceColumnName": "ActualDeliveryDate",
+        "targetPropertyId": "2288658139572744898"
+      },
+      {
+        "sourceColumnName": "CreatedBy",
+        "targetPropertyId": "2288658030105387268"
+      },
+      {
+        "sourceColumnName": "CreatedDate",
+        "targetPropertyId": "2288658011219764981"
+      },
+      {
+        "sourceColumnName": "DeliveryLocation",
+        "targetPropertyId": "2288657966046802822"
+      },
+      {
+        "sourceColumnName": "ExpectedDeliveryDate",
+        "targetPropertyId": "2288658160873992517"
+      },
+      {
+        "sourceColumnName": "Notes",
+        "targetPropertyId": "2288658051190031379"
+      },
+      {
+        "sourceColumnName": "OrderDate",
+        "targetPropertyId": "2288658182087485314"
+      },
+      {
+        "sourceColumnName": "OrderedBy",
+        "targetPropertyId": "2288658075591060896"
+      },
+      {
+        "sourceColumnName": "Priority",
+        "targetPropertyId": "2288657945419907652"
+      },
+      {
+        "sourceColumnName": "PurchaseOrderNumber",
+        "targetPropertyId": "2288658223807741098"
+      },
+      {
+        "sourceColumnName": "Status",
+        "targetPropertyId": "2288658116304959952"
+      },
+      {
+        "sourceColumnName": "SupplierID",
+        "targetPropertyId": "2288658201838121870"
+      },
+      {
+        "sourceColumnName": "SupplierName",
+        "targetPropertyId": "2288657987375990678"
+      },
+      {
+        "sourceColumnName": "TotalOrderValue",
+        "targetPropertyId": "1074776727820563070"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "00000000-0000-0000-0000-000000000000",
+      "itemId": "1fae70c2-8925-9cd0-498f-50e8e6cd0b76",
+      "sourceTableName": "purchaseorders",
+      "sourceSchema": "inventory"
+    }
+  }
+}

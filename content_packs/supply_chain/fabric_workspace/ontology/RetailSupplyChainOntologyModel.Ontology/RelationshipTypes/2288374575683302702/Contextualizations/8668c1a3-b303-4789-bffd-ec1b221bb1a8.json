@@ -1,0 +1,23 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/contextualization/1.0.0/schema.json",
+  "id": "8668c1a3-b303-4789-bffd-ec1b221bb1a8",
+  "dataBindingTable": {
+    "workspaceId": "00000000-0000-0000-0000-000000000000",
+    "itemId": "1fae70c2-8925-9cd0-498f-50e8e6cd0b76",
+    "sourceTableName": "purchaseorders",
+    "sourceSchema": "inventory",
+    "sourceType": "LakehouseTable"
+  },
+  "sourceKeyRefBindings": [
+    {
+      "sourceColumnName": "PurchaseOrderID",
+      "targetPropertyId": "2288658247792705776"
+    }
+  ],
+  "targetKeyRefBindings": [
+    {
+      "sourceColumnName": "SupplierID",
+      "targetPropertyId": "2288655753867077828"
+    }
+  ]
+}
