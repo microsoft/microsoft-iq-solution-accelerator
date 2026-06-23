@@ -35,7 +35,7 @@ Every item folder contains a `.platform` JSON file with Fabric metadata (type, c
 
 ## Parameterization
 
-[`parameter.yml`](../../fabric/fabric_workspace/parameter.yml) defines GUID replacements for environment-specific deployment using [fabric-cicd](https://pypi.org/project/fabric-cicd/). Notebook and DataAgent items reference lakehouse/workspace GUIDs that are substituted at deploy time.
+[`parameter.yml`](../../src/fabric/fabric_workspace/parameter.yml) defines GUID replacements for environment-specific deployment using [fabric-cicd](https://pypi.org/project/fabric-cicd/). Notebook and DataAgent items reference lakehouse/workspace GUIDs that are substituted at deploy time.
 
 ## Current inventory
 
