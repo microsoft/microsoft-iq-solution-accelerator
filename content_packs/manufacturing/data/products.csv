@@ -1,0 +1,21 @@
+Id,CategoryId,CategoryName,Name,Description,BrandName,Number,Status,Color,ListPrice,UnitCost,IsoCurrencyCode
+P_1000,2,Camping Stoves,EcoFire Camping Stove,EcoFire Camping Stove,Contoso Outdoors,f3237480-c3ca-4a1b-b082-593faf07d1c2,Active,Green,62.38,42.85,USD
+P_1001,1,Camping Tables,Adventure Dining Table,Adventure Dining Table,Contoso Outdoors,0b421305-3a47-42dc-9fbb-a8b3b20275de,Active,Green,53.89,33.03,USD
+P_1002,2,Camping Stoves,PowerBurner Camping Stove,PowerBurner Camping Stove,Contoso Outdoors,432d4a5e-259e-4ef4-8652-2ecd59d0191f,Active,Blue,94.46,57.1,USD
+P_1003,1,Camping Tables,Adventure Dining Table,Adventure Dining Table,Contoso Outdoors,7ce42089-f550-4edb-9914-9f824aa280b4,Active,Red,64.72,40.82,USD
+P_1004,1,Camping Tables,Adventure Dining Table,Adventure Dining Table,Contoso Outdoors,6454791d-f8a4-4623-9199-4e05bdaf0be3,Active,Blue,99.85,72.51,USD
+P_1005,2,Camping Stoves,PowerBurner Camping Stove,PowerBurner Camping Stove,Contoso Outdoors,fd93731d-3df9-41bf-b279-f23c91429921,Active,Red,94.85,66.67,USD
+P_1006,2,Camping Stoves,EcoFire Camping Stove,EcoFire Camping Stove,Contoso Outdoors,93a4e6a2-6b17-4ea7-aef5-a34c4c7a1c28,Active,Red,81.34,50.61,USD
+P_1007,2,Camping Stoves,EcoFire Camping Stove,EcoFire Camping Stove,Contoso Outdoors,05ce137f-fb4e-465e-8765-c9ae199c6665,Active,Blue,65.09,42.22,USD
+P_1008,1,Camping Tables,TrekMaster Camping Chair,TrekMaster Camping Chair,Contoso Outdoors,9e5dbed5-785c-4656-8dba-6949e620508f,Active,Green,71.69,48.93,USD
+P_1009,2,Camping Stoves,PowerBurner Camping Stove,PowerBurner Camping Stove,Contoso Outdoors,cdd002a5-b353-4cc2-84d7-56522a32f310,Active,Red,58.51,37.94,USD
+P_1010,2,Camping Stoves,CompactCook Camping Stove,CompactCook Camping Stove,Contoso Outdoors,5dc369f2-7bbf-4682-958c-7a412f84c46b,Active,Blue,72.72,41.2,USD
+P_1011,2,Camping Stoves,EcoFire Camping Stove,EcoFire Camping Stove,Contoso Outdoors,890635ed-de09-4699-8b86-4f66c2a4cd17,Active,Green,77.01,41.07,USD
+P_1012,1,Camping Tables,BaseCamp Folding Table,BaseCamp Folding Table,Contoso Outdoors,b243b3ea-b51e-4442-8f5c-2e7c336aa4ba,Active,Red,77.01,52.12,USD
+P_1013,2,Camping Stoves,PowerBurner Camping Stove,PowerBurner Camping Stove,Contoso Outdoors,db0b0ecd-ddd7-49b4-aeef-f20e73cbdbe8,Active,Yellow,86.7,52.11,USD
+P_1014,2,Camping Stoves,PowerBurner Camping Stove,PowerBurner Camping Stove,Contoso Outdoors,42bf205d-554e-48b8-abc7-87b685cb7275,Active,Green,59.3,35.12,USD
+P_1015,2,Camping Stoves,PowerBurner Camping Stove,PowerBurner Camping Stove,Contoso Outdoors,c8219c6a-c724-455e-8225-11c828be1109,Active,Blue,71.47,47.34,USD
+P_1016,2,Camping Stoves,PowerBurner Camping Stove,PowerBurner Camping Stove,Contoso Outdoors,34b1a599-38e7-430a-b97c-6a27088e94c6,Active,Blue,84.13,49.15,USD
+P_1017,2,Camping Stoves,PowerBurner Camping Stove,PowerBurner Camping Stove,Contoso Outdoors,0a6b8938-132a-4b98-b77a-c102de862403,Active,Blue,53.96,28.65,USD
+P_1018,1,Camping Tables,TrekMaster Camping Chair,TrekMaster Camping Chair,Contoso Outdoors,f3b27b4d-5d2e-49d5-86e3-6802b896fed1,Active,Green,54.86,33.04,USD
+P_1019,1,Camping Tables,BaseCamp Folding Table,BaseCamp Folding Table,Contoso Outdoors,41c8dcb7-2f50-40b0-9ec0-f047a9f81ae4,Active,Red,73.3,44.94,USD

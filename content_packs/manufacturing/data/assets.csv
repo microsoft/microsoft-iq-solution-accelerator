@@ -1,0 +1,3 @@
+Id,Name,SiteId,Type,SerialNumber,MaintenanceStatus
+A_1000,Robotic Arm 1,0,Assembly,d0d0fc98-5099-4cda-8123-b9f100eb0a91,Done
+A_1001,Packaging Line 1,1,Packaging,2c66471c-1e70-4181-be97-0bcc56b73e9c,Scheduled
