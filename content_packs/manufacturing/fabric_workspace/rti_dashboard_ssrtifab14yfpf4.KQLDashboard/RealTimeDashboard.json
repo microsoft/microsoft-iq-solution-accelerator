@@ -1,0 +1,689 @@
+{
+  "schema_version": 63,
+  "pagesNavWidth": 351.75534057617188,
+  "tiles": [
+    {
+      "id": "1904a25c-c394-4bc7-9f90-e90fe91eec97",
+      "title": "Real-Time Sensor Status with Z-Score Analysis",
+      "description": "Show latest sensor readings with statistical anomaly detection (z-scores)",
+      "visualType": "table",
+      "pageId": "0c8e7d45-07e9-4a37-9acc-3fdeb4222b9a",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "width": 12,
+        "height": 4
+      },
+      "queryRef": {
+        "kind": "query",
+        "queryId": "24b69da6-9fb6-4cc2-9477-eb88c90f1838"
+      },
+      "visualOptions": {
+        "table__enableRenderLinks": true,
+        "colorRulesDisabled": true,
+        "crossFilterDisabled": true,
+        "drillthroughDisabled": false,
+        "crossFilter": [],
+        "drillthrough": [],
+        "table__renderLinks": [],
+        "colorRules": []
+      }
+    },
+    {
+      "id": "f388c804-781e-442f-b61e-61d1085c993f",
+      "title": "Daily Anomaly Rate",
+      "description": "Timeline visualization showing when anomalies occurred across all sensor metrics with 5-minute time bins",
+      "visualType": "column",
+      "pageId": "0bb9a72f-9a5d-4776-b322-19b2388838ac",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "width": 24,
+        "height": 8
+      },
+      "queryRef": {
+        "kind": "query",
+        "queryId": "6fb2c7d9-46d7-4e14-88c7-33ebdab24807"
+      },
+      "visualOptions": {
+        "multipleYAxes": {
+          "base": {
+            "id": "-1",
+            "label": "Anomaly Rate",
+            "columns": [],
+            "yAxisMaximumValue": null,
+            "yAxisMinimumValue": null,
+            "yAxisScale": "linear",
+            "horizontalLines": []
+          },
+          "additional": [],
+          "showMultiplePanels": false
+        },
+        "hideLegend": false,
+        "legendLocation": "bottom",
+        "xColumnTitle": "Time Range",
+        "xColumn": null,
+        "yColumns": null,
+        "seriesColumns": null,
+        "xAxisScale": "linear",
+        "verticalLine": "",
+        "crossFilterDisabled": true,
+        "drillthroughDisabled": false,
+        "crossFilter": [],
+        "drillthrough": []
+      }
+    },
+    {
+      "id": "122ea88d-ac3f-44fc-8838-6bda99c83347",
+      "title": "Asset Quality Metrics",
+      "description": "Timeline visualization showing when anomalies occurred across all sensor metrics with 5-minute time bins",
+      "visualType": "bar",
+      "pageId": "0c8e7d45-07e9-4a37-9acc-3fdeb4222b9a",
+      "layout": {
+        "x": 12,
+        "y": 0,
+        "width": 12,
+        "height": 4
+      },
+      "queryRef": {
+        "kind": "query",
+        "queryId": "c6558f86-6d2f-4211-8f2a-13f1c8cf3db4"
+      },
+      "visualOptions": {
+        "multipleYAxes": {
+          "base": {
+            "id": "-1",
+            "label": "",
+            "columns": [],
+            "yAxisMaximumValue": null,
+            "yAxisMinimumValue": null,
+            "yAxisScale": "linear",
+            "horizontalLines": []
+          },
+          "additional": [],
+          "showMultiplePanels": false
+        },
+        "hideLegend": false,
+        "legendLocation": "bottom",
+        "xColumnTitle": "",
+        "xColumn": null,
+        "yColumns": null,
+        "seriesColumns": null,
+        "xAxisScale": "linear",
+        "verticalLine": "",
+        "crossFilterDisabled": true,
+        "drillthroughDisabled": false,
+        "crossFilter": [],
+        "drillthrough": []
+      }
+    },
+    {
+      "id": "be3336b1-6d2e-45e9-b3e1-8044b76b900b",
+      "title": "Speed Trend",
+      "description": "Show how average speed changes over time for the last 30 days",
+      "visualType": "line",
+      "pageId": "0c8e7d45-07e9-4a37-9acc-3fdeb4222b9a",
+      "layout": {
+        "x": 0,
+        "y": 4,
+        "width": 12,
+        "height": 6
+      },
+      "queryRef": {
+        "kind": "query",
+        "queryId": "e76b14c9-ec83-44ce-834c-5333ce1905ce"
+      },
+      "visualOptions": {
+        "multipleYAxes": {
+          "base": {
+            "id": "-1",
+            "label": "Speed",
+            "columns": [],
+            "yAxisMaximumValue": null,
+            "yAxisMinimumValue": null,
+            "yAxisScale": "linear",
+            "horizontalLines": []
+          },
+          "additional": [],
+          "showMultiplePanels": false
+        },
+        "hideLegend": true,
+        "legendLocation": "bottom",
+        "xColumnTitle": "Time Range",
+        "xColumn": "timeBin",
+        "yColumns": [
+          "avgSpeed"
+        ],
+        "seriesColumns": null,
+        "xAxisScale": "linear",
+        "verticalLine": "",
+        "crossFilterDisabled": true,
+        "drillthroughDisabled": false,
+        "crossFilter": [
+          {
+            "interaction": "column",
+            "property": "avgSpeed",
+            "parameterId": "674b5b0c-92bc-472a-99b7-528c32250537",
+            "disabled": true
+          },
+          {
+            "parameterId": "4e53a01c-162c-406f-b0d3-5add1f64b933",
+            "disabled": true
+          }
+        ],
+        "drillthrough": []
+      }
+    },
+    {
+      "id": "cdae34e6-2f70-4c88-a8cf-8c1eeb4b9551",
+      "title": "Temperature Trend",
+      "description": "This tile shows a line chart of average Temperature readings over time (1-hour bins) for the selected asset(s) and time range.\nevents",
+      "visualType": "line",
+      "pageId": "0c8e7d45-07e9-4a37-9acc-3fdeb4222b9a",
+      "layout": {
+        "x": 12,
+        "y": 4,
+        "width": 12,
+        "height": 6
+      },
+      "queryRef": {
+        "kind": "query",
+        "queryId": "03e86125-6159-41ce-843b-70c6ca297bdf"
+      },
+      "visualOptions": {
+        "multipleYAxes": {
+          "base": {
+            "id": "-1",
+            "label": "Temperature",
+            "columns": [],
+            "yAxisMaximumValue": null,
+            "yAxisMinimumValue": null,
+            "yAxisScale": "linear",
+            "horizontalLines": []
+          },
+          "additional": [],
+          "showMultiplePanels": false
+        },
+        "hideLegend": true,
+        "legendLocation": "left",
+        "xColumnTitle": "Time Range",
+        "xColumn": null,
+        "yColumns": null,
+        "seriesColumns": null,
+        "xAxisScale": "linear",
+        "verticalLine": "",
+        "crossFilterDisabled": true,
+        "drillthroughDisabled": false,
+        "crossFilter": [],
+        "drillthrough": []
+      }
+    },
+    {
+      "id": "ca436529-a6c1-4966-9047-5f476a180d61",
+      "title": "Vibration Trend",
+      "description": "Show how average vibrations of belt changes over time for the last 30 days",
+      "visualType": "line",
+      "pageId": "0c8e7d45-07e9-4a37-9acc-3fdeb4222b9a",
+      "layout": {
+        "x": 0,
+        "y": 10,
+        "width": 12,
+        "height": 6
+      },
+      "queryRef": {
+        "kind": "query",
+        "queryId": "bc6a61dd-997a-4082-95db-2a0c217a7dbb"
+      },
+      "visualOptions": {
+        "multipleYAxes": {
+          "base": {
+            "id": "-1",
+            "label": "Vibration",
+            "columns": [],
+            "yAxisMaximumValue": null,
+            "yAxisMinimumValue": null,
+            "yAxisScale": "linear",
+            "horizontalLines": []
+          },
+          "additional": [],
+          "showMultiplePanels": false
+        },
+        "hideLegend": true,
+        "legendLocation": "bottom",
+        "xColumnTitle": "Time Range",
+        "xColumn": "timeBin",
+        "yColumns": [
+          "avgVibration"
+        ],
+        "seriesColumns": null,
+        "xAxisScale": "linear",
+        "verticalLine": "",
+        "crossFilterDisabled": true,
+        "drillthroughDisabled": false,
+        "crossFilter": [
+          {
+            "interaction": "column",
+            "property": "avgSpeed",
+            "parameterId": "674b5b0c-92bc-472a-99b7-528c32250537",
+            "disabled": true
+          },
+          {
+            "parameterId": "4e53a01c-162c-406f-b0d3-5add1f64b933",
+            "disabled": true
+          }
+        ],
+        "drillthrough": []
+      }
+    },
+    {
+      "id": "46656b76-26d1-45f8-96e3-9d6811066ecb",
+      "title": "Defect Probability Rate",
+      "description": "Show how average Defect Probability Rate changes over time for the last 30 days",
+      "visualType": "line",
+      "pageId": "0c8e7d45-07e9-4a37-9acc-3fdeb4222b9a",
+      "layout": {
+        "x": 12,
+        "y": 10,
+        "width": 12,
+        "height": 6
+      },
+      "queryRef": {
+        "kind": "query",
+        "queryId": "638471db-f9e7-43be-b89a-5ab5d01f8fe5"
+      },
+      "visualOptions": {
+        "multipleYAxes": {
+          "base": {
+            "id": "-1",
+            "label": "Defect Probability",
+            "columns": [],
+            "yAxisMaximumValue": null,
+            "yAxisMinimumValue": null,
+            "yAxisScale": "linear",
+            "horizontalLines": []
+          },
+          "additional": [],
+          "showMultiplePanels": false
+        },
+        "hideLegend": true,
+        "legendLocation": "bottom",
+        "xColumnTitle": "Time Range",
+        "xColumn": "timeBin",
+        "yColumns": [
+          "AvgDefectProbability"
+        ],
+        "seriesColumns": null,
+        "xAxisScale": "linear",
+        "verticalLine": "",
+        "crossFilterDisabled": true,
+        "drillthroughDisabled": false,
+        "crossFilter": [
+          {
+            "interaction": "column",
+            "property": "avgSpeed",
+            "parameterId": "674b5b0c-92bc-472a-99b7-528c32250537",
+            "disabled": true
+          },
+          {
+            "parameterId": "4e53a01c-162c-406f-b0d3-5add1f64b933",
+            "disabled": true
+          }
+        ],
+        "drillthrough": []
+      }
+    },
+    {
+      "id": "45d6a4dd-4844-492f-bb21-2ec6093c84fd",
+      "title": "Anomaly Correlation Matrix",
+      "visualType": "table",
+      "pageId": "0bb9a72f-9a5d-4776-b322-19b2388838ac",
+      "layout": {
+        "x": 0,
+        "y": 8,
+        "width": 24,
+        "height": 5
+      },
+      "queryRef": {
+        "kind": "query",
+        "queryId": "d075b32a-f2f2-4186-9083-2c243b299b03"
+      },
+      "visualOptions": {
+        "table__enableRenderLinks": true,
+        "colorRulesDisabled": true,
+        "crossFilterDisabled": true,
+        "drillthroughDisabled": false,
+        "crossFilter": [],
+        "drillthrough": [],
+        "table__renderLinks": [],
+        "colorRules": []
+      }
+    },
+    {
+      "id": "30364333-f5e5-4d06-8640-ea8202cc3b09",
+      "title": "Asset Maintenance Status",
+      "visualType": "table",
+      "pageId": "0bb9a72f-9a5d-4776-b322-19b2388838ac",
+      "layout": {
+        "x": 0,
+        "y": 13,
+        "width": 13,
+        "height": 6
+      },
+      "queryRef": {
+        "kind": "query",
+        "queryId": "686b145a-4797-418b-b201-352b872c55e3"
+      },
+      "visualOptions": {
+        "table__enableRenderLinks": true,
+        "colorRulesDisabled": false,
+        "crossFilterDisabled": true,
+        "drillthroughDisabled": false,
+        "crossFilter": [],
+        "drillthrough": [],
+        "table__renderLinks": [],
+        "colorRules": [
+          {
+            "id": "38dbbcd3-98e4-4ab7-9efa-4a327436ed6f",
+            "ruleType": "colorByCondition",
+            "ruleName": "Maintenance status",
+            "applyTo": "rows",
+            "conditions": [
+              {
+                "operator": "==",
+                "column": "Maintenance Status",
+                "values": [
+                  "Done"
+                ]
+              }
+            ],
+            "chainingOperator": "or",
+            "colorStyle": "bold",
+            "applyToColumn": null,
+            "hideText": false,
+            "color": "green",
+            "tag": "",
+            "icon": null,
+            "visualType": "table"
+          },
+          {
+            "id": "a5471b67-40d2-4d18-9678-9b80bc0ddd40",
+            "ruleType": "colorByCondition",
+            "applyToColumn": null,
+            "hideText": false,
+            "applyTo": "rows",
+            "conditions": [
+              {
+                "operator": "==",
+                "column": "Maintenance Status",
+                "values": [
+                  "Scheduled"
+                ]
+              }
+            ],
+            "chainingOperator": "and",
+            "colorStyle": "bold",
+            "color": "yellow",
+            "tag": "",
+            "icon": null,
+            "ruleName": "",
+            "visualType": "table"
+          }
+        ]
+      }
+    },
+    {
+      "id": "54b08cf7-5918-4d39-be1b-27ba3b13ae97",
+      "title": "Shift Comparison-Anomaly Rate",
+      "visualType": "bar",
+      "pageId": "0bb9a72f-9a5d-4776-b322-19b2388838ac",
+      "layout": {
+        "x": 13,
+        "y": 13,
+        "width": 11,
+        "height": 6
+      },
+      "queryRef": {
+        "kind": "query",
+        "queryId": "508d126a-fef8-49d4-a67c-db9a2cbc45b4"
+      },
+      "visualOptions": {
+        "multipleYAxes": {
+          "base": {
+            "id": "-1",
+            "label": "",
+            "columns": [],
+            "yAxisMaximumValue": null,
+            "yAxisMinimumValue": null,
+            "yAxisScale": "linear",
+            "horizontalLines": []
+          },
+          "additional": [],
+          "showMultiplePanels": false
+        },
+        "hideLegend": true,
+        "legendLocation": "bottom",
+        "xColumnTitle": "",
+        "xColumn": null,
+        "yColumns": [
+          "Anomaly Rate %"
+        ],
+        "seriesColumns": null,
+        "xAxisScale": "linear",
+        "verticalLine": "",
+        "crossFilterDisabled": true,
+        "drillthroughDisabled": false,
+        "crossFilter": [],
+        "drillthrough": []
+      }
+    }
+  ],
+  "baseQueries": [],
+  "parameters": [
+    {
+      "kind": "duration",
+      "id": "4e53a01c-162c-406f-b0d3-5add1f64b933",
+      "displayName": "Time range",
+      "description": "",
+      "beginVariableName": "_startTime",
+      "endVariableName": "_endTime",
+      "defaultValue": {
+        "kind": "dynamic",
+        "count": 30,
+        "unit": "days"
+      },
+      "showOnPages": {
+        "kind": "all"
+      }
+    },
+    {
+      "kind": "string",
+      "id": "674b5b0c-92bc-472a-99b7-528c32250537",
+      "displayName": "Select Asset",
+      "description": "Choose which asset to monitor",
+      "variableName": "AssetFilter",
+      "selectionType": "scalar",
+      "includeAllOption": true,
+      "defaultValue": {
+        "kind": "all"
+      },
+      "dataSource": {
+        "kind": "query",
+        "columns": {
+          "value": "AssetName",
+          "label": "AssetName"
+        },
+        "queryRef": {
+          "kind": "query",
+          "queryId": "0cbfc6b7-10c2-44d5-94ce-e4b55bc16638"
+        }
+      },
+      "showOnPages": {
+        "kind": "all"
+      }
+    }
+  ],
+  "dataSources": [
+    {
+      "kind": "kusto-trident",
+      "scopeId": "kusto-trident",
+      "clusterUri": "",
+      "database": "2b724f0b-0365-812b-41e7-cf19db86e8ca",
+      "name": "manufacturing_eventhouse",
+      "id": "dc5f8f55-0327-42f8-b5fb-32f58e44be07",
+      "workspace": "00000000-0000-0000-0000-000000000000",
+      "queryResultsCacheMaxAge": 3600000
+    }
+  ],
+  "pages": [
+    {
+      "name": "Asset Performance Overview",
+      "id": "0c8e7d45-07e9-4a37-9acc-3fdeb4222b9a"
+    },
+    {
+      "name": "Advanced Analytics & Anomaly Insights",
+      "id": "0bb9a72f-9a5d-4776-b322-19b2388838ac"
+    }
+  ],
+  "queries": [
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "dc5f8f55-0327-42f8-b5fb-32f58e44be07"
+      },
+      "text": "// =========================\n// Tile:  Real-Time Sensor Status with Z-Score Analysis\n// Purpose: Show the latest sensor readings with statistical anomaly detection (z‑scores)\n// Refresh cadence: Every 30 seconds\n// =========================\n\n// -------------------------\n// 1) Configuration & Parameters\n// -------------------------\nlet BaselineWindow          = 30d;       // Statistical baseline lookback\nlet BaselineExcludeRecent   = 24h;       // Exclude latest 24h to stabilize baseline\nlet RedZThreshold           = 2.0;       // z-score threshold for Red status\nlet YellowZThreshold        = 1.5;       // z-score threshold for Yellow status\nlet DefectRedThreshold      = 0.05;      // DefectProbability threshold for Red\nlet DefectYellowThreshold   = 0.02;      // DefectProbability threshold for Yellow\n\n// Optional single-asset filter. Leave empty (\"\") to show all.\nlet AssetFilterParam        = tostring(['AssetFilter']); // expects a string or empty\n\n// -------------------------\n// 2) Asset mapping (Id -> Name)\n// -------------------------\nlet assetMapping =\n    assets\n    | project AssetId = Id, AssetName = Name;\n\n// -------------------------\n// 3) Baseline statistics for anomaly detection\n//    Build stats over historical window while excluding the most recent 24h\n// -------------------------\nlet sensorBaseline =\n    events\n    | join kind=inner (assetMapping) on AssetId\n    | where Timestamp >= ago(BaselineWindow) and Timestamp <= ago(BaselineExcludeRecent)\n    | where isempty(AssetFilterParam) or AssetName == AssetFilterParam\n    | summarize\n        SpeedMean       = avg(Speed),\n        SpeedStdev      = stdev(Speed),\n        TempMean        = avg(Temperature),\n        TempStdev       = stdev(Temperature),\n        VibrationMean   = avg(Vibration),\n        VibrationStdev  = stdev(Vibration),\n        DefectMean      = avg(DefectProbability),\n        DefectStdev     = stdev(DefectProbability)\n      by AssetId;\n\n// -------------------------\n// 4) Latest readings in requested time range (_startTime/_endTime)\n//    Use arg_max to get the most recent event per asset\n// -------------------------\nevents\n| join kind=inner (assetMapping) on AssetId\n| where Timestamp >= _startTime and Timestamp <= _endTime\n| where isempty(AssetFilterParam) or AssetName == AssetFilterParam\n| summarize arg_max(Timestamp, *) by AssetId\n| join kind=leftouter (sensorBaseline) on AssetId\n// -------------------------\n// 5) Z-score calculations (null-safe)\n//    z = |x - mean| / stdev; 0 if stats are missing or stdev <= 0\n// -------------------------\n| extend\n    SpeedZScore = iff(isnotnull(SpeedStdev)      and SpeedStdev      > 0, todecimal(abs(Speed        - SpeedMean)      / SpeedStdev),      todecimal(0)),\n    TempZScore  = iff(isnotnull(TempStdev)       and TempStdev       > 0, todecimal(abs(Temperature  - TempMean)       / TempStdev),       todecimal(0)),\n    VibZScore   = iff(isnotnull(VibrationStdev)  and VibrationStdev  > 0, todecimal(abs(Vibration    - VibrationMean)  / VibrationStdev),  todecimal(0)),\n    DefZScore   = iff(isnotnull(DefectStdev)     and DefectStdev     > 0, todecimal(abs(DefectProbability - DefectMean) / DefectStdev),    todecimal(0))\n// -------------------------\n// 6) Status assignment (emoji bands)\n//    Uses z-score thresholds for Speed/Temp/Vibration and raw probability for Defect\n// -------------------------\n| extend\n    SpeedStatus     = case(SpeedZScore > RedZThreshold,   \"🔴\",\n                           SpeedZScore > YellowZThreshold, \"🟡\", \"🟢\"),\n    TempStatus      = case(TempZScore  > RedZThreshold,   \"🔴\",\n                           TempZScore  > YellowZThreshold, \"🟡\", \"🟢\"),\n    VibrationStatus = case(VibZScore   > RedZThreshold,   \"🔴\",\n                           VibZScore   > YellowZThreshold, \"🟡\", \"🟢\"),\n    DefectStatus    = case(DefectProbability > DefectRedThreshold,   \"🔴\",\n                           DefectProbability > DefectYellowThreshold, \"🟡\", \"🟢\")\n// -------------------------\n// 8) Presentation: columns & formatting\n// -------------------------\n| project\n    Asset = AssetName,\n    [\"Speed\"]               = strcat(SpeedStatus, \" \", round(Speed, 1), \" RPM (Z:\", round(SpeedZScore, 1), \")\"),\n    [\"Temperature\"]         = strcat(TempStatus, \" \", round(Temperature, 1), \"°F (Z:\", round(TempZScore, 1), \")\"),\n    [\"Vibration\"]           = strcat(VibrationStatus, \" \", round(Vibration, 3), \" (Z:\", round(VibZScore, 1), \")\"),\n    [\"Defect Probability\"]  = strcat(DefectStatus, \" \", round(DefectProbability * 100, 1), \"%\"),\n       [\"Last Update\"]         = format_datetime(Timestamp, \"HH:mm:ss\")\n| order by Asset asc\n| render table\n",
+      "id": "24b69da6-9fb6-4cc2-9477-eb88c90f1838",
+      "usedVariables": [
+        "AssetFilter",
+        "_endTime",
+        "_startTime"
+      ]
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "dc5f8f55-0327-42f8-b5fb-32f58e44be07"
+      },
+      "text": "\n// =========================\n// tile: anomaly rate\n// purpose: show anomaly rate percentage per asset over time\n// refresh cadence: every 30 seconds\n// =========================\n\n// -------------------------\n// 1) configuration & parameters\n// -------------------------\nlet baselinewindow = ago(30d); // use 30 days for statistical baseline\nlet assetfilterparam = tostring(['AssetFilter']); // optional asset filter\nlet redzthreshold = 2.0;       // z-score threshold for anomaly detection\nlet binsize = 1d;              // time bin for anomaly rate calculation\n\n// -------------------------\n// 2) asset mapping (id -> name)\n// -------------------------\nlet assetmapping =\n    assets\n    | project AssetId = Id, assetname = Name;\n\n// -------------------------\n// 3) calculate baseline statistics (exclude last 24h for stability)\n// -------------------------\nlet sensorbaseline =\n    events\n    | join kind=inner (assetmapping) on AssetId\n    | where Timestamp >= baselinewindow and Timestamp <= ago(24h)\n    | where isempty(assetfilterparam) or assetname == assetfilterparam\n    | summarize\n        speedmean = avg(Speed), speedstdev = stdev(Speed),\n        tempmean = avg(Temperature), tempstdev = stdev(Temperature),\n        vibrationmean = avg(Vibration), vibrationstdev = stdev(Vibration)\n      by AssetId;\n\n// -------------------------\n// 4) detect anomalies with z-score logic\n// -------------------------\nevents\n| join kind=inner (assetmapping) on AssetId\n| where Timestamp >= _startTime and Timestamp <= _endTime\n| where isempty(assetfilterparam) or assetname == assetfilterparam\n| join kind=inner (sensorbaseline) on AssetId\n| extend\n    speedzscore = iff(isnotnull(speedstdev) and speedstdev > 0, todecimal(abs(Speed - speedmean) / speedstdev), todecimal(0)),\n    tempzscore = iff(isnotnull(tempstdev) and tempstdev > 0, todecimal(abs(Temperature - tempmean) / tempstdev), todecimal(0)),\n    vibrationzscore = iff(isnotnull(vibrationstdev) and vibrationstdev > 0, todecimal(abs(Vibration - vibrationmean) / vibrationstdev), todecimal(0))\n|extend \n    speedanomaly = speedzscore > redzthreshold,\n    tempanomaly = tempzscore > redzthreshold,\n    vibrationanomaly = vibrationzscore > redzthreshold,\n    qualityanomaly = DefectProbability > 0.05\n| summarize\n    speedanomalycount = countif(speedanomaly),\n    tempanomalycount = countif(tempanomaly),\n    vibrationanomalycount = countif(vibrationanomaly),\n    qualityanomalycount = countif(qualityanomaly),\n    totalanomalies = countif(speedanomaly or tempanomaly or vibrationanomaly or qualityanomaly),\n    eventcount = count()\n    by AssetId, assetname, timewindow = bin(Timestamp, binsize)\n| extend anomalyrate = round(totalanomalies * 100.0 / eventcount, 1)\n| project timewindow, anomalyrate, assetname| project timewindow, anomalyrate, assetname\n",
+      "id": "6fb2c7d9-46d7-4e14-88c7-33ebdab24807",
+      "usedVariables": [
+        "AssetFilter",
+        "_endTime",
+        "_startTime"
+      ]
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "dc5f8f55-0327-42f8-b5fb-32f58e44be07"
+      },
+      "text": "// =========================\n// tile: asset qualiy metrics\n// purpose: compare asset Anomaly Rate% and Quality Issues% side-by-side for operational insights\n// refresh cadence: every 30 seconds\n// =========================\n\n// -------------------------\n// 1) configuration & parameters\n// -------------------------\nlet baselinewindow = ago(30d); // use 30 days for statistical baseline\nlet assetfilterparam = tostring(['AssetFilter']); // optional asset filter\n\n// -------------------------\n// 2) asset mapping (id -> name)\n// -------------------------\nlet assetmapping =\n    assets\n    | project AssetId = Id, assetname = Name;\n// -------------------------\n// 3) calculate baseline statistics (exclude last 24h for stability)\n// -------------------------\nlet sensorbaseline =\n    events\n    | join kind=inner (assetmapping) on AssetId\n    | where Timestamp >= baselinewindow and Timestamp <= ago(24h)\n    | where isempty(assetfilterparam) or assetname == assetfilterparam\n    | summarize\n        speedmean = avg(Speed), speedstdev = stdev(Speed),\n        tempmean = avg(Temperature), tempstdev = stdev(Temperature),\n        vibrationmean = avg(Vibration), vibrationstdev = stdev(Vibration)\n      by AssetId;\n// -------------------------\n// 4) analyze recent performance\n// -------------------------\nevents\n| join kind=inner (assetmapping) on AssetId\n| where Timestamp >= _startTime and Timestamp <= _endTime\n| where isempty(assetfilterparam) or assetname == assetfilterparam\n| join kind=leftouter (sensorbaseline) on AssetId\n| extend\n    speedanomaly = iff(isnotnull(speedstdev) and speedstdev > 0, abs(Speed - speedmean) / speedstdev > 2.0, false),// Calculating Speed Z score\n    tempanomaly = iff(isnotnull(tempstdev) and tempstdev > 0, abs(Temperature - tempmean) / tempstdev > 2.0, false), // Calculating Temp Z score\n    vibrationanomaly = iff(isnotnull(vibrationstdev) and vibrationstdev > 0, abs(Vibration - vibrationmean) / vibrationstdev > 2.0, false), // Calculating Vibration Z score\n    qualityissue = DefectProbability > 0.05\n| summarize\n    totalevents = count(),\n    speedanomalies = countif(speedanomaly),\n    tempanomalies = countif(tempanomaly),\n    vibrationanomalies = countif(vibrationanomaly),\n    qualityissues = countif(qualityissue),\n    avgspeed = round(avg(Speed), 1),\n    avgtemp = round(avg(Temperature), 1),\n    avgvibration = round(avg(Vibration), 3),\n    avgdefectprob = round(avg(DefectProbability) * 100, 1)\n    by assetname\n| extend\n    anomalyrate = round((speedanomalies + tempanomalies + vibrationanomalies) * 100.0 / totalevents, 1),\n    qualityrate = round(qualityissues * 100.0 / totalevents, 1)\n| extend performancescore = case(\n    anomalyrate < 5 and qualityrate < 10, \"🟢 excellent\",\n    anomalyrate < 10 and qualityrate < 20, \"🟡 good\",\n    \"🔴 needs attention\"\n)\n| project\n    assetname,\n    [\"anomaly rate %\"] = anomalyrate,\n    [\"quality issues %\"] = qualityrate\n| order by assetname asc\n| render columnchart\n    with (\n        title = \"📊 asset performance comparison: anomaly vs quality issues\",\n        xtitle = \"asset\",\n        ytitle = \"percentage (%)\",\n        legend = visible\n    )",
+      "id": "c6558f86-6d2f-4211-8f2a-13f1c8cf3db4",
+      "usedVariables": [
+        "AssetFilter",
+        "_endTime",
+        "_startTime"
+      ]
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "dc5f8f55-0327-42f8-b5fb-32f58e44be07"
+      },
+      "text": "// =========================\n// Tile: Speed Trend Over Time (30 Days)\n// Purpose: Show average speed trend in time bins for the last 30 days\n// Refresh cadence: Every 30 seconds\n// =========================\n\n// -------------------------\n// 1) Configuration & Parameters (same naming as previous query)\n// -------------------------\nlet BaselineWindow        = 30d;        // Lookback period for trend analysis\nlet BinSize               = 1h;         // Time bin size for aggregation\nlet AssetFilterParam      = tostring(['AssetFilter']); // Optional asset filter\n\n// -------------------------\n// 2) Asset mapping (Id -> Name)\n// -------------------------\nlet assetMapping =\n    assets\n    | project AssetId = Id, AssetName = Name;\n\n// -------------------------\n// 3) Trend calculation\n//    Aggregate average speed per asset in hourly bins\n// -------------------------\nevents\n| join kind=inner (assetMapping) on AssetId\n| where Timestamp >= _startTime and Timestamp <= _endTime\n| where isempty(AssetFilterParam) or AssetName == AssetFilterParam\n| summarize avgSpeed = round(avg(Speed), 2) by AssetName, timeBin = bin(Timestamp, BinSize)\n// -------------------------\n// 4) Presentation: timechart\n// -------------------------\n| order by timeBin asc\n| render timechart\n       with (\n        title  = \"📈 Speed Trend Over Time (Last 30 Days)\",\n        xtitle = \"Time\",\n        ytitle = \"Average Speed (RPM)\"\n       )",
+      "id": "e76b14c9-ec83-44ce-834c-5333ce1905ce",
+      "usedVariables": [
+        "AssetFilter",
+        "_endTime",
+        "_startTime"
+      ]
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "dc5f8f55-0327-42f8-b5fb-32f58e44be07"
+      },
+      "text": "// =========================\n// Tile: Temperature Trend Over Time (30 Days)\n// Purpose: Show average temperature trend in time bins for the last 30 days\n// Refresh cadence: Every 30 seconds\n// =========================\n\n// -------------------------\n// 1) Configuration & Parameters (same naming as previous query)\n// -------------------------\nlet BaselineWindow        = 30d;        // Lookback period for trend analysis\nlet BinSize               = 1h;         // Time bin size for aggregation\nlet AssetFilterParam      = tostring(['AssetFilter']); // Optional asset filter\n\n// -------------------------\n// 2) Asset mapping (Id -> Name)\n// -------------------------\nlet assetMapping =\n    assets\n    | project AssetId = Id, AssetName = Name;\n\n// -------------------------\n// 3) Trend calculation\n//    Aggregate average temperature per asset in hourly bins\n// -------------------------\nevents\n| join kind=inner (assetMapping) on AssetId\n| where Timestamp >= _startTime and Timestamp <= _endTime\n| where isempty(AssetFilterParam) or AssetName == AssetFilterParam\n| summarize avgTemp = round(avg(Temperature), 2) by AssetName, timeBin = bin(Timestamp, BinSize)\n// -------------------------\n// 5) Presentation: timechart\n// -------------------------\n| order by timeBin asc\n| render timechart\n       with (\n        title  = \"📈 Temperature Trend Over Time (Last 30 Days)\",\n        xtitle = \"Time\",\n        ytitle = \"Average Temperature\"\n       )\n",
+      "id": "03e86125-6159-41ce-843b-70c6ca297bdf",
+      "usedVariables": [
+        "AssetFilter",
+        "_endTime",
+        "_startTime"
+      ]
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "dc5f8f55-0327-42f8-b5fb-32f58e44be07"
+      },
+      "text": "// =========================\n// Tile: Vibration Trend Over Time (30 Days)\n// Purpose: Show average Vibration trend in time bins for the last 30 days\n// Refresh cadence: Every 30 seconds\n// =========================\n\n// -------------------------\n// 1) Configuration & Parameters (same naming as previous query)\n// -------------------------\nlet BaselineWindow        = 30d;        // Lookback period for trend analysis\nlet BinSize               = 1h;         // Time bin size for aggregation\nlet AssetFilterParam      = tostring(['AssetFilter']); // Optional asset filter\n\n// -------------------------\n// 2) Asset mapping (Id -> Name)\n// -------------------------\nlet assetMapping =\n    assets\n    | project AssetId = Id, AssetName = Name;\n\n// -------------------------\n// 3) Trend calculation\n//    Aggregate average Vibration per asset in hourly bins\n// -------------------------\nevents\n| join kind=inner (assetMapping) on AssetId\n| where Timestamp >= _startTime and Timestamp <= _endTime\n| where isempty(AssetFilterParam) or AssetName == AssetFilterParam\n| summarize avgVibration = round(avg(Vibration), 2) by AssetName, timeBin = bin(Timestamp, BinSize)\n// -------------------------\n// 5) Presentation: timechart\n// -------------------------\n| order by timeBin asc\n| render timechart\n       with (\n        title  = \"📈 Vibration Trend Over Time (Last 30 Days)\",\n        xtitle = \"Time\",\n        ytitle = \"Average Vibration\"\n       )\n",
+      "id": "bc6a61dd-997a-4082-95db-2a0c217a7dbb",
+      "usedVariables": [
+        "AssetFilter",
+        "_endTime",
+        "_startTime"
+      ]
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "dc5f8f55-0327-42f8-b5fb-32f58e44be07"
+      },
+      "text": "// =========================\n// Tile: Defect Probabilty Rate (30 Days)\n// Purpose: Show average Defect Probabilty trend in time bins for the last 30 days\n// Refresh cadence: Every 30 seconds\n// =========================\n\n// -------------------------\n// 1) Configuration & Parameters (same naming as previous query)\n// -------------------------\nlet BaselineWindow        = 30d;        // Lookback period for trend analysis\nlet BinSize               = 1h;         // Time bin size for aggregation\nlet AssetFilterParam      = tostring(['AssetFilter']); // Optional asset filter\n\n// -------------------------\n// 2) Asset mapping (Id -> Name)\n// -------------------------\nlet assetMapping =\n    assets\n    | project AssetId = Id, AssetName = Name;\n\n// -------------------------\n// 3) Trend calculation\n//    Aggregate average Defect Probabilty per asset in hourly bins\n// -------------------------\nevents\n| join kind=inner (assetMapping) on AssetId\n| where Timestamp >= _startTime and Timestamp <= _endTime\n| where isempty(AssetFilterParam) or AssetName == AssetFilterParam\n| summarize AvgDefectProbability = round(avg(DefectProbability), 3) by AssetName, timeBin = bin(Timestamp, BinSize)\n// -------------------------\n// 5) Presentation: timechart\n// -------------------------\n| order by timeBin asc\n| render timechart\n       with (\n        title  = \"📈 Defect Probabilty Rate (Last 30 Days)\",\n        xtitle = \"Time\",\n        ytitle = \"Average Defect Probabilty\"\n       )\n",
+      "id": "638471db-f9e7-43be-b89a-5ab5d01f8fe5",
+      "usedVariables": [
+        "AssetFilter",
+        "_endTime",
+        "_startTime"
+      ]
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "dc5f8f55-0327-42f8-b5fb-32f58e44be07"
+      },
+      "text": "\n// =========================\n// tile: anomaly correlation matrix\n// purpose: show which metrics tend to have anomalies together\n// refresh cadence: every 30 seconds\n// =========================\n\n// -------------------------\n// 1) configuration & parameters\n// -------------------------\nlet baselinewindow = ago(30d); // use 30 days for statistical baseline\nlet assetfilterparam = tostring(['AssetFilter']); // optional asset filter\nlet redzthreshold = 2.0; // z-score threshold for anomaly detection\n\n// -------------------------\n// 2) asset mapping (id -> name)\n// -------------------------\nlet assetmapping =\n    assets\n    | project AssetId = Id, assetname = Name;\n\n// -------------------------\n// 3) calculate baseline statistics (exclude last 24h for stability)\n// -------------------------\nlet sensorbaseline =\n    events\n    | join kind=inner (assetmapping) on AssetId\n    | where Timestamp >= baselinewindow and Timestamp <= ago(24h)\n    | where isempty(assetfilterparam) or assetname == assetfilterparam\n    | summarize\n        speedmean = avg(Speed), speedstdev = stdev(Speed),\n        tempmean = avg(Temperature), tempstdev = stdev(Temperature),\n        vibrationmean = avg(Vibration), vibrationstdev = stdev(Vibration)\n      by AssetId;\n\n// -------------------------\n// 4) detect anomalies with z-score logic\n// -------------------------\nlet anomalyevents =\n    events\n    | join kind=inner (assetmapping) on AssetId\n    | where Timestamp >= _startTime and Timestamp <= _endTime\n    | where isempty(assetfilterparam) or assetname == assetfilterparam\n    | join kind=inner (sensorbaseline) on AssetId\n    | extend\n        speedzscore = iff(isnotnull(speedstdev) and speedstdev > 0, todecimal(abs(Speed - speedmean) / speedstdev), todecimal(0)),\n        tempzscore = iff(isnotnull(tempstdev) and tempstdev > 0, todecimal(abs(Temperature - tempmean) / tempstdev), todecimal(0)),\n        vibrationzscore = iff(isnotnull(vibrationstdev) and vibrationstdev > 0, todecimal(abs(Vibration - vibrationmean) / vibrationstdev), todecimal(0))\n    | extend \n        speedanomaly = speedzscore > redzthreshold,\n        tempanomaly = tempzscore > redzthreshold,\n        vibrationanomaly = vibrationzscore > redzthreshold,\n        qualityanomaly = DefectProbability > 0.05\n    | project AssetId, assetname, Timestamp, speedanomaly, tempanomaly, vibrationanomaly, qualityanomaly;\n\n// -------------------------\n// 5) calculate correlation matrix\n// -------------------------\nanomalyevents\n| summarize\n    totalevents = count(),\n    speedanomalies = countif(speedanomaly),\n    tempanomalies = countif(tempanomaly),\n    vibrationanomalies = countif(vibrationanomaly),\n    qualityanomalies = countif(qualityanomaly),\n    speedtempboth = countif(speedanomaly and tempanomaly),\n    speedvibrationboth = countif(speedanomaly and vibrationanomaly),\n    speedqualityboth = countif(speedanomaly and qualityanomaly),\n    tempvibrationboth = countif(tempanomaly and vibrationanomaly),\n    tempqualityboth = countif(tempanomaly and qualityanomaly),\n    vibrationqualityboth = countif(vibrationanomaly and qualityanomaly)\n    by AssetId, assetname = coalesce(assetname, strcat(\"asset \", AssetId))\n| extend\n    speedtempcorr = iff(speedanomalies > 0, round(speedtempboth * 100.0 / speedanomalies, 1), 0.0),\n    speedvibrationcorr = iff(speedanomalies > 0, round(speedvibrationboth * 100.0 / speedanomalies, 1), 0.0),\n    speedqualitycorr = iff(speedanomalies > 0, round(speedqualityboth * 100.0 / speedanomalies, 1), 0.0),\n    tempvibrationcorr = iff(tempanomalies > 0, round(tempvibrationboth * 100.0 / tempanomalies, 1), 0.0),\n    tempqualitycorr = iff(tempanomalies > 0, round(tempqualityboth * 100.0 / tempanomalies, 1), 0.0),\n    vibrationqualitycorr = iff(vibrationanomalies > 0, round(vibrationqualityboth * 100.0 / vibrationanomalies, 1), 0.0)\n| extend\n    speedtempindicator = case(speedtempcorr >= 70, \"🔴 Strong\", speedtempcorr >= 40, \"🟡 Moderate\", speedtempcorr >= 20, \"🟢 Weak\", \"⚪ none\"),\n    speedvibrationindicator = case(speedvibrationcorr >= 70, \"🔴 Strong\", speedvibrationcorr >= 40, \"🟡 Moderate\", speedvibrationcorr >= 20, \"🟢 Weak\", \"⚪ none\"),\n    speedqualityindicator = case(speedqualitycorr >= 70, \"🔴 Strong\", speedqualitycorr >= 40, \"🟡 Moderate\", speedqualitycorr >= 20, \"🟢 Weak\", \"⚪ none\"),\n    tempvibrationindicator = case(tempvibrationcorr >= 70, \"🔴 Strong\", tempvibrationcorr >= 40, \"🟡 Moderate\", tempvibrationcorr >= 20, \"🟢 Weak\", \"⚪ none\"),\n    tempqualityindicator = case(tempqualitycorr >= 70, \"🔴 Strong\", tempqualitycorr >= 40, \"🟡 Moderate\", tempqualitycorr >= 20, \"🟢 Weak\", \"⚪ none\"),\n    vibrationqualityindicator = case(vibrationqualitycorr >= 70, \"🔴 Strong\", vibrationqualitycorr >= 40, \"🟡 Moderate\", vibrationqualitycorr >= 20, \"🟢 Weak\", \"⚪ none\")\n| project\n    [\"Asset\"] = assetname,\n    [\"Speed→Temp\"] = strcat(speedtempindicator, \" \", speedtempcorr, \"%\"),\n    [\"Speed→Vibration\"] = strcat(speedvibrationindicator, \" \", speedvibrationcorr, \"%\"),\n    [\"Speed→Quality\"] = strcat(speedqualityindicator, \" \", speedqualitycorr, \"%\"),\n    [\"Temp→Vibration\"] = strcat(tempvibrationindicator, \" \", tempvibrationcorr, \"%\"),\n    [\"Temp→Quality\"] = strcat(tempqualityindicator, \" \", tempqualitycorr, \"%\"),\n    [\"Vibration→Quality\"] = strcat(vibrationqualityindicator, \" \", vibrationqualitycorr, \"%\"),\n    [\"Total Anomalies\"] = speedanomalies + tempanomalies + vibrationanomalies + qualityanomalies\n| order by [\"Total Anomalies\"] desc\n| render table\n    with (\n        title = \"🔗 anomaly correlation matrix - when one metric has anomaly, % chance others do too\"\n    )\n",
+      "id": "d075b32a-f2f2-4186-9083-2c243b299b03",
+      "usedVariables": [
+        "AssetFilter",
+        "_endTime",
+        "_startTime"
+      ]
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "dc5f8f55-0327-42f8-b5fb-32f58e44be07"
+      },
+      "text": "// =========================\n// tile: asset maintenance & health status\n// purpose: add maintenance awareness to real-time monitoring\n// =========================\n\n// Get asset information with maintenance status\nlet assetInfo = assets\n| join kind= leftouter  (sites) on $left.SiteId == $right.Id\n| project \n    AssetId = Id, \n    AssetName = Name, \n    AssetType = Type,\n    SiteName = Name1,\n    MaintenanceStatus;\n\n// -------------------------\n// 3) get latest performance data for context\n// -------------------------\nlet latestPerformance = events\n| where Timestamp >= _startTime and Timestamp <= _endTime\n| summarize \n    LatestReading = arg_max(Timestamp, *) by AssetId\n| project AssetId, Speed, Temperature, Vibration, DefectProbability,LatestReading;\n\n// Combine maintenance status with real-time performance\nassetInfo\n| join kind=leftouter(latestPerformance) on AssetId\n| where isempty(['AssetFilter']) or AssetName == ['AssetFilter']\n| extend \n    // Create maintenance status indicator\n    StatusIcon = case(\n        MaintenanceStatus == \"Done\", \"✅\",\n        MaintenanceStatus == \"Scheduled\", \"🔧\",\n        MaintenanceStatus == \"Overdue\", \"🚨\",\n        MaintenanceStatus == \"In Progress\", \"⚡\",\n        \"❓\"\n    ),\n    // Create maintenance urgency\n    MaintenanceUrgency = case(\n       MaintenanceStatus == \"Overdue\", \"🚨 URGENT\",\n        MaintenanceStatus == \"Scheduled\" and (Temperature > 35 or Vibration > 0.5), \"🟡 SOON\", \n        MaintenanceStatus == \"Scheduled\", \"🔧 MAINTENANCE PLANNED\",\n        MaintenanceStatus == \"Done\", \"✅ HEALTHY\",\n        \"❓ CHECK\"\n    )\n| project \n    [\"Asset\"] = AssetName,\n    [\"Site\"] = SiteName,\n    [\"Maintenance Status\"] = strcat(MaintenanceStatus),\n    [\"Last Update\"] = iff(isnull(LatestReading), \"No Recent Data\", format_datetime(LatestReading, \"HH:mm\"))\n| render table\n    with (\n        title=\"🔧 Asset Maintenance & Health Status\"\n    )",
+      "id": "686b145a-4797-418b-b201-352b872c55e3",
+      "usedVariables": [
+        "AssetFilter",
+        "_endTime",
+        "_startTime"
+      ]
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "dc5f8f55-0327-42f8-b5fb-32f58e44be07"
+      },
+      "text": "// =============================================================================\n// SHIFT ANOMALY ANALYSIS\n// =============================================================================\n// PURPOSE: Compare anomaly rates across work shifts (Day/Evening/Night)\n// VISUAL: Table with shift performance comparison\n// BUSINESS VALUE: Identify training needs and shift-specific operational issues\n\n// Shift Definitions:\n// Day Shift (6AM-2PM): Primary production hours\n// Evening Shift (2PM-10PM): Secondary production \n// Night Shift (10PM-6AM): Maintenance window with reduced staff\n\nlet baselineWindow = ago(30d);\n\n// Calculate statistical baseline for anomaly detection\nlet sensorBaseline = events\n| where Timestamp >= baselineWindow and Timestamp <= ago(24h)\n| summarize \n    SpeedMean = avg(Speed), SpeedStdev = stdev(Speed),\n    TempMean = avg(Temperature), TempStdev = stdev(Temperature),  \n    VibrationMean = avg(Vibration), VibrationStdev = stdev(Vibration)\n    by AssetId;\n\n// Get asset names for display\nlet assetMapping = assets\n| project AssetId = Id, AssetName = Name;\n\n// Main analysis: Shift-based anomaly detection\nevents\n| join kind=inner (assetMapping) on AssetId\n| where Timestamp >= _startTime and Timestamp <= _endTime\n| where isempty(['AssetFilter']) or AssetName == ['AssetFilter']\n| join kind=inner (sensorBaseline) on AssetId\n| join kind=inner (assetMapping) on AssetId\n| extend Hour = datetime_part(\"hour\", Timestamp)\n| extend\n    Shift = case(\n        Hour >= 6 and Hour < 14, \"Day Shift\",\n        Hour >= 14 and Hour < 22, \"Evening Shift\", \n        \"Night Shift\"\n    ),\n    ShiftOrder = case(\n        Hour >= 6 and Hour < 14, 1,\n        Hour >= 14 and Hour < 22, 2,\n        3\n    ),\n    // Anomaly detection using Z-score > 2.0\n    SpeedAnomaly = iff(SpeedStdev > 0, abs(Speed - SpeedMean) / SpeedStdev > 2.0, false),\n    TempAnomaly = iff(TempStdev > 0, abs(Temperature - TempMean) / TempStdev > 2.0, false),\n    VibrationAnomaly = iff(VibrationStdev > 0, abs(Vibration - VibrationMean) / VibrationStdev > 2.0, false),\n    QualityAnomaly = DefectProbability > 0.05,\n    HasAnyAnomaly = (SpeedStdev > 0 and abs(Speed - SpeedMean) / SpeedStdev > 2.0) or \n                    (TempStdev > 0 and abs(Temperature - TempMean) / TempStdev > 2.0) or \n                    (VibrationStdev > 0 and abs(Vibration - VibrationMean) / VibrationStdev > 2.0) or \n                    (DefectProbability > 0.05)\n| summarize \n    TotalEvents = count(),\n    AnomalyEvents = countif(HasAnyAnomaly),\n    SpeedIssues = countif(SpeedAnomaly),\n    TempIssues = countif(TempAnomaly), \n    VibrationIssues = countif(VibrationAnomaly),\n    QualityIssues = countif(QualityAnomaly),\n    AvgSpeed = round(avg(Speed), 1),\n    AvgTemp = round(avg(Temperature), 1),\n    AvgVibration = round(avg(Vibration), 3),\n    AvgDefectRate = round(avg(DefectProbability) * 100, 1)\n    by Shift, AssetName\n| extend \n    AnomalyRate = round(AnomalyEvents * 100.0 / TotalEvents, 1),\n    SpeedIssueRate = round(SpeedIssues * 100.0 / TotalEvents, 1),\n    TempIssueRate = round(TempIssues * 100.0 / TotalEvents, 1),\n    VibrationIssueRate = round(VibrationIssues * 100.0 / TotalEvents, 1),\n    QualityIssueRate = round(QualityIssues * 100.0 / TotalEvents, 1) \n|extend AnomalyRate,SpeedIssueRate,TempIssueRate,VibrationIssueRate,QualityIssueRate,Performance = case(\n        AnomalyRate > 15, \"🔴 Needs Attention\",\n        AnomalyRate > 8, \"🟡 Monitor\", \n        \"🟢 Good\"\n    )\n| project \n    [\"Shift\"] = Shift,\n    [\"Asset\"] = AssetName,\n    [\"Status\"] = Performance,\n    [\"Anomaly Rate %\"] = AnomalyRate,\n    [\"Events\"] = TotalEvents\n| order by Shift asc \n| render table\n    with (\n        title=\"� Shift Performance Analysis - Operations by Time Period\"\n    )\n",
+      "id": "508d126a-fef8-49d4-a67c-db9a2cbc45b4",
+      "usedVariables": [
+        "AssetFilter",
+        "_endTime",
+        "_startTime"
+      ]
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "dc5f8f55-0327-42f8-b5fb-32f58e44be07"
+      },
+      "text": "assets\n| project AssetName = Name",
+      "id": "0cbfc6b7-10c2-44d5-94ce-e4b55bc16638",
+      "usedVariables": []
+    }
+  ],
+  "title": "rti_dashboard_ssrtifab14yfpf4"
+}

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "KQLDashboard",
+    "displayName": "rti_dashboard_ssrtifab14yfpf4",
+    "description": "Real-Time Intelligence Dashboard: rti_dashboard_ssrtifab14yfpf4"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "4ca14bbc-cbbd-be62-42f9-833f08147d73"
+  }
+}

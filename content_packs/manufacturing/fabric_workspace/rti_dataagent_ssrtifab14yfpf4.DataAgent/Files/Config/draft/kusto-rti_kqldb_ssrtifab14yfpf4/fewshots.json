@@ -1,0 +1,20 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/dataAgent/definition/fewShots/1.0.0/schema.json",
+  "fewShots": [
+    {
+      "id": "9cbdfcfb-e199-479c-987a-c32dc0eb7598",
+      "question": "Can you show me the baseline statistics and performance ranges for each asset?",
+      "query": "events\r\n| summarize \r\n    EventCount = count(),\r\n    SpeedMean = round(avg(Speed), 2),\r\n    SpeedStdev = round(stdev(Speed), 2),\r\n    SpeedMin = round(min(Speed), 1),\r\n    SpeedMax = round(max(Speed), 1),\r\n    TempMean = round(avg(Temperature), 2),\r\n    TempStdev = round(stdev(Temperature), 2),\r\n    TempMin = round(min(Temperature), 1),\r\n    TempMax = round(max(Temperature), 1),\r\n    DefectMean = round(avg(DefectProbability), 4),\r\n    DefectStdev = round(stdev(DefectProbability), 4),\r\n    DefectMin = round(min(DefectProbability), 4),\r\n    DefectMax = round(max(DefectProbability), 4)\r\nby AssetId\r\n| order by AssetId"
+    },
+    {
+      "id": "05196f04-670a-46aa-9ee3-9e521588ab66",
+      "question": "What are the detailed defect statistics and quality issue rates by asset?",
+      "query": "events\r\n| summarize \r\n    Events = count(),\r\n    MinDefect = round(min(DefectProbability), 4),\r\n    MaxDefect = round(max(DefectProbability), 4),\r\n    MeanDefect = round(avg(DefectProbability), 4),\r\n    MedianDefect = round(percentile(DefectProbability, 50), 4),\r\n    StdDevDefect = round(stdev(DefectProbability), 4),\r\n    P95Defect = round(percentile(DefectProbability, 95), 4),\r\n    Above5Percent = countif(DefectProbability > 0.05),\r\n    Above10Percent = countif(DefectProbability > 0.10),\r\n    Above15Percent = countif(DefectProbability > 0.15)\r\nby AssetId\r\n| extend \r\n    MeanPercent = round(MeanDefect * 100, 2),\r\n    MedianPercent = round(MedianDefect * 100, 2),\r\n    P95Percent = round(P95Defect * 100, 2)\r\n| extend\r\n    QualityIssueRate = round(Above5Percent * 100.0 / Events, 1),\r\n    HighDefectRate = round(Above10Percent * 100.0 / Events, 1),\r\n    CriticalDefectRate = round(Above15Percent * 100.0 / Events, 1)\r\n| order by MeanPercent asc"
+    },
+    {
+      "id": "1c73b3e7-3ec9-4b14-9389-f032b50899f2",
+      "question": "Can you give me a high-level overview of our manufacturing data and operations?",
+      "query": "events \r\n| summarize \r\n    EventCount = count(),\r\n    DateFrom = min(Timestamp),\r\n    DateTo = max(Timestamp),\r\n    UniqueAssets = dcount(AssetId),\r\n    AvgSpeed = round(avg(Speed), 1),\r\n    AvgTemp = round(avg(Temperature), 1),\r\n    AvgDefectRate = round(avg(DefectProbability) * 100, 2)\r\n\r\n"
+    }
+  ]
+}

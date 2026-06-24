@@ -1,0 +1,9 @@
+// KQL script
+// Use management commands in this script to configure your database items, such as tables, functions, materialized views, and more.
+
+
+.create-merge table locations (Id:int, City:string, Country:string) 
+.create-merge table sites (Id:int, Name:string, LocationId:int, PlantType:string) 
+.create-merge table assets (Id:string, Name:string, SiteId:int, Type:string, SerialNumber:string, MaintenanceStatus:string) 
+.create-merge table products (Id:string, CategoryId:int, CategoryName:string, Name:string, Description:string, BrandName:string, Number:string, Status:string, Color:string, ListPrice:real, UnitCost:real, IsoCurrencyCode:string) 
+.create-merge table events (Id:string, AssetId:string, ProductId:string, Timestamp:datetime, BatchId:string, Vibration:real, Temperature:real, Humidity:real, Speed:real, DefectProbability:real) 

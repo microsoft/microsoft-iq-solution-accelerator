@@ -1,0 +1,405 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/dataAgent/definition/dataSource/1.0.0/schema.json",
+  "artifactId": "2b724f0b-0365-812b-41e7-cf19db86e8ca",
+  "workspaceId": "00000000-0000-0000-0000-000000000000",
+  "dataSourceInstructions": "\n# Data Source Instructions\n\n## Overview\n\nThis Fabric Data Agent has access to manufacturing operations data in an EventHouse database.\n\n## Business Context\n\n**Note:** Replace this content with your organization's actual business performance measurements. \n\nThis sample dataset represents common manufacturing scenarios:\n\n- Equipment monitoring and maintenance\n- Product quality control\n- Operational efficiency analysis\n- Real-time alerting and diagnostics\n\n### Database Tables and Relationships \n\n**Note:** Replace this content with your organization's actual data and update table schemas accordingly.\n\n#### Core Tables\n\n- **`events`** - Manufacturing telemetry and sensor data (real-time + historical)\n- **`assets`** - Equipment and machinery information  \n- **`products`** - Product catalog and specifications\n- **`sites`** - Manufacturing facility locations\n- **`locations`** - Geographic information\n\n#### Data Relationships\n\n```\nevents → assets → sites → locations\nevents → products\n```\n\n#### Real-Time Data\n\n- **`events` table** receives continuous real-time data via EventStream\n- Contains sensor readings: temperature, vibration, humidity, speed\n- Includes quality metrics: defect probability\n- Links to specific assets and products\n\n#### Reference Data  \n\n- **Static tables** (assets, products, sites, locations) contain stable reference information\n- Used for context and enrichment of event data\n- Updated infrequently\n\n### Query Patterns\n\nWhen analyzing manufacturing data, typically join events with reference tables:\n\n```kql\n// Asset performance analysis\nevents\n| join assets on $left.AssetId == $right.Id\n| summarize avg(Temperature), avg(Speed) by AssetId, assets.Name\n\n// Product quality tracking  \nevents\n| join products on $left.ProductId == $right.Id\n| summarize avg(DefectProbability) by ProductId, products.Name\n```\n```\n",
+  "displayName": "rti_kqldb_ssrtifab14yfpf4",
+  "type": "kusto",
+  "userDescription": "\n# Data Source Descriptions for Fabric Data Agent \n\n## Overview\nThe KQL database contains manufacturing operations data from Contoso Outdoors' Ho Chi Minh facility, which produces outdoor camping equipment. The data includes real-time telemetry, asset information, and product details.\n\n## Data Tables\n\n### Table `events`\nLarge telemetry dataset with 259,000+ sensor readings from manufacturing equipment. Contains timestamps, asset IDs, product IDs, sensor measurements (vibration, temperature, humidity, speed), and defect probability calculations.\n\n### Table `assets`  \nEquipment information for 2 manufacturing assets:\n- A_1000: Robotic Arm 1 (Assembly line)\n- A_1001: Packaging Line 1 (Packaging operations)\n\nIncludes asset names, types, serial numbers, and maintenance status.\n\n### Table `products`\nProduct catalog with 21 outdoor camping products including camping stoves and tables. Contains product details, pricing (list price and unit cost), categories, colors, and brand information (Contoso Outdoors).\n\n### Table `locations`\nGeographic data showing the facility location in Ho Chi Minh City, Vietnam.\n",
+  "metadata": {},
+  "elements": [
+    {
+      "id": "c8a5e868-dc0d-4ec7-82b4-7c9ed1390059",
+      "is_selected": false,
+      "display_name": "Tables",
+      "type": "table_grouping",
+      "description": null,
+      "children": [
+        {
+          "id": "72a3a485-7784-44b2-95fe-c16d1bfa72b0",
+          "is_selected": false,
+          "display_name": "locations",
+          "type": "kusto.table",
+          "description": null,
+          "children": [
+            {
+              "id": "Id",
+              "is_selected": true,
+              "display_name": "Id",
+              "type": "kusto.column",
+              "data_type": "System.Int32",
+              "description": null,
+              "children": []
+            },
+            {
+              "id": "City",
+              "is_selected": true,
+              "display_name": "City",
+              "type": "kusto.column",
+              "data_type": "System.String",
+              "description": null,
+              "children": []
+            },
+            {
+              "id": "Country",
+              "is_selected": true,
+              "display_name": "Country",
+              "type": "kusto.column",
+              "data_type": "System.String",
+              "description": null,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "7c7491d4-caea-4c46-bc8a-d3906d0c5501",
+          "is_selected": false,
+          "display_name": "sites",
+          "type": "kusto.table",
+          "description": null,
+          "children": [
+            {
+              "id": "Id",
+              "is_selected": true,
+              "display_name": "Id",
+              "type": "kusto.column",
+              "data_type": "System.Int32",
+              "description": null,
+              "children": []
+            },
+            {
+              "id": "Name",
+              "is_selected": true,
+              "display_name": "Name",
+              "type": "kusto.column",
+              "data_type": "System.String",
+              "description": null,
+              "children": []
+            },
+            {
+              "id": "LocationId",
+              "is_selected": true,
+              "display_name": "LocationId",
+              "type": "kusto.column",
+              "data_type": "System.Int32",
+              "description": null,
+              "children": []
+            },
+            {
+              "id": "PlantType",
+              "is_selected": true,
+              "display_name": "PlantType",
+              "type": "kusto.column",
+              "data_type": "System.String",
+              "description": null,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "2a3005b1-d6c8-4d51-a593-5e802cc7dbb0",
+          "is_selected": false,
+          "display_name": "assets",
+          "type": "kusto.table",
+          "description": null,
+          "children": [
+            {
+              "id": "Id",
+              "is_selected": true,
+              "display_name": "Id",
+              "type": "kusto.column",
+              "data_type": "System.String",
+              "description": null,
+              "children": []
+            },
+            {
+              "id": "Name",
+              "is_selected": true,
+              "display_name": "Name",
+              "type": "kusto.column",
+              "data_type": "System.String",
+              "description": null,
+              "children": []
+            },
+            {
+              "id": "SiteId",
+              "is_selected": true,
+              "display_name": "SiteId",
+              "type": "kusto.column",
+              "data_type": "System.Int32",
+              "description": null,
+              "children": []
+            },
+            {
+              "id": "Type",
+              "is_selected": true,
+              "display_name": "Type",
+              "type": "kusto.column",
+              "data_type": "System.String",
+              "description": null,
+              "children": []
+            },
+            {
+              "id": "SerialNumber",
+              "is_selected": true,
+              "display_name": "SerialNumber",
+              "type": "kusto.column",
+              "data_type": "System.String",
+              "description": null,
+              "children": []
+            },
+            {
+              "id": "MaintenanceStatus",
+              "is_selected": true,
+              "display_name": "MaintenanceStatus",
+              "type": "kusto.column",
+              "data_type": "System.String",
+              "description": null,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "b20fa889-d982-41a5-bdb4-92fb697afd3a",
+          "is_selected": false,
+          "display_name": "products",
+          "type": "kusto.table",
+          "description": null,
+          "children": [
+            {
+              "id": "Id",
+              "is_selected": true,
+              "display_name": "Id",
+              "type": "kusto.column",
+              "data_type": "System.String",
+              "description": null,
+              "children": []
+            },
+            {
+              "id": "CategoryId",
+              "is_selected": true,
+              "display_name": "CategoryId",
+              "type": "kusto.column",
+              "data_type": "System.Int32",
+              "description": null,
+              "children": []
+            },
+            {
+              "id": "CategoryName",
+              "is_selected": true,
+              "display_name": "CategoryName",
+              "type": "kusto.column",
+              "data_type": "System.String",
+              "description": null,
+              "children": []
+            },
+            {
+              "id": "Name",
+              "is_selected": true,
+              "display_name": "Name",
+              "type": "kusto.column",
+              "data_type": "System.String",
+              "description": null,
+              "children": []
+            },
+            {
+              "id": "Description",
+              "is_selected": true,
+              "display_name": "Description",
+              "type": "kusto.column",
+              "data_type": "System.String",
+              "description": null,
+              "children": []
+            },
+            {
+              "id": "BrandName",
+              "is_selected": true,
+              "display_name": "BrandName",
+              "type": "kusto.column",
+              "data_type": "System.String",
+              "description": null,
+              "children": []
+            },
+            {
+              "id": "Number",
+              "is_selected": true,
+              "display_name": "Number",
+              "type": "kusto.column",
+              "data_type": "System.String",
+              "description": null,
+              "children": []
+            },
+            {
+              "id": "Status",
+              "is_selected": true,
+              "display_name": "Status",
+              "type": "kusto.column",
+              "data_type": "System.String",
+              "description": null,
+              "children": []
+            },
+            {
+              "id": "Color",
+              "is_selected": true,
+              "display_name": "Color",
+              "type": "kusto.column",
+              "data_type": "System.String",
+              "description": null,
+              "children": []
+            },
+            {
+              "id": "ListPrice",
+              "is_selected": true,
+              "display_name": "ListPrice",
+              "type": "kusto.column",
+              "data_type": "System.Double",
+              "description": null,
+              "children": []
+            },
+            {
+              "id": "UnitCost",
+              "is_selected": true,
+              "display_name": "UnitCost",
+              "type": "kusto.column",
+              "data_type": "System.Double",
+              "description": null,
+              "children": []
+            },
+            {
+              "id": "IsoCurrencyCode",
+              "is_selected": true,
+              "display_name": "IsoCurrencyCode",
+              "type": "kusto.column",
+              "data_type": "System.String",
+              "description": null,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "36d44baf-ee4f-4a00-8e00-10a29eaaf2ec",
+          "is_selected": false,
+          "display_name": "events",
+          "type": "kusto.table",
+          "description": null,
+          "children": [
+            {
+              "id": "Id",
+              "is_selected": true,
+              "display_name": "Id",
+              "type": "kusto.column",
+              "data_type": "System.String",
+              "description": null,
+              "children": []
+            },
+            {
+              "id": "AssetId",
+              "is_selected": true,
+              "display_name": "AssetId",
+              "type": "kusto.column",
+              "data_type": "System.String",
+              "description": null,
+              "children": []
+            },
+            {
+              "id": "ProductId",
+              "is_selected": true,
+              "display_name": "ProductId",
+              "type": "kusto.column",
+              "data_type": "System.String",
+              "description": null,
+              "children": []
+            },
+            {
+              "id": "Timestamp",
+              "is_selected": true,
+              "display_name": "Timestamp",
+              "type": "kusto.column",
+              "data_type": "System.DateTime",
+              "description": null,
+              "children": []
+            },
+            {
+              "id": "BatchId",
+              "is_selected": true,
+              "display_name": "BatchId",
+              "type": "kusto.column",
+              "data_type": "System.String",
+              "description": null,
+              "children": []
+            },
+            {
+              "id": "Vibration",
+              "is_selected": true,
+              "display_name": "Vibration",
+              "type": "kusto.column",
+              "data_type": "System.Double",
+              "description": null,
+              "children": []
+            },
+            {
+              "id": "Temperature",
+              "is_selected": true,
+              "display_name": "Temperature",
+              "type": "kusto.column",
+              "data_type": "System.Double",
+              "description": null,
+              "children": []
+            },
+            {
+              "id": "Humidity",
+              "is_selected": true,
+              "display_name": "Humidity",
+              "type": "kusto.column",
+              "data_type": "System.Double",
+              "description": null,
+              "children": []
+            },
+            {
+              "id": "Speed",
+              "is_selected": true,
+              "display_name": "Speed",
+              "type": "kusto.column",
+              "data_type": "System.Double",
+              "description": null,
+              "children": []
+            },
+            {
+              "id": "DefectProbability",
+              "is_selected": true,
+              "display_name": "DefectProbability",
+              "type": "kusto.column",
+              "data_type": "System.Double",
+              "description": null,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "5320f750-2012-4c09-bc59-470acb2c1daf",
+      "is_selected": false,
+      "display_name": "Functions",
+      "type": "function_grouping",
+      "description": null,
+      "children": []
+    },
+    {
+      "id": "b855a455-e8b8-422d-840b-6c572a0b03ab",
+      "is_selected": false,
+      "display_name": "Shortcuts",
+      "type": "shortcut_grouping",
+      "description": null,
+      "children": []
+    },
+    {
+      "id": "11db1a10-9c45-4e03-8b5f-5462ddd91e46",
+      "is_selected": false,
+      "display_name": "Materialized Views",
+      "type": "materialized_view_grouping",
+      "description": null,
+      "children": []
+    }
+  ]
+}

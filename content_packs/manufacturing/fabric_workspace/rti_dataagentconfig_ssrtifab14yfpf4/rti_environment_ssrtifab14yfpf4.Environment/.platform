@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Environment",
+    "displayName": "rti_environment_ssrtifab14yfpf4",
+    "description": "Environment for ssrtifab14"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "dbdd05da-38b9-ba76-46a5-48b7eb002739"
+  }
+}
