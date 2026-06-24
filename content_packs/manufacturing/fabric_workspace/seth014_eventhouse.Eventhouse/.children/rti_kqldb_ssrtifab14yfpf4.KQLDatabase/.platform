@@ -2,8 +2,7 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
   "metadata": {
     "type": "KQLDatabase",
-    "displayName": "rti_kqldb_ssrtifab14yfpf4",
-    "description": "seth014_eventhouse"
+    "displayName": "kql_manufacturing"
   },
   "config": {
     "version": "2.0",
