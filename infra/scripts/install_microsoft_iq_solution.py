@@ -70,9 +70,10 @@ import json
 import logging
 import os
 import sys
+from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import NoReturn, TypedDict
+from typing import NoReturn
 
 # Add infra/scripts/ to path so the fabric package and its modules can be imported
 sys.path.append(os.path.dirname(__file__))
@@ -122,12 +123,24 @@ ALL_DEPLOYMENT_STEPS = [
     "run_installer",
 ]
 
-
-class ContentPack(TypedDict):
+@dataclass
+class ContentPack:
     name: str
     description: str
     folder_name: str
-    docs_path: str
+    folder_path: str
+
+    @property
+    def docs_path(self) -> str:
+        return os.path.join(self.folder_path, "documents")
+
+    @property
+    def data_path(self) -> str:
+        return os.path.join(self.folder_path, "data")
+
+    @property
+    def fabric_workspace_path(self) -> str:
+        return os.path.join(self.folder_path, "fabric_workspace")
 
 
 def _select_content_pack() -> ContentPack:
@@ -151,10 +164,10 @@ def _select_content_pack() -> ContentPack:
                 folder_name=folder,
                 name=definition.get("name", folder),
                 description=definition.get("description", ""),
-                docs_path= os.path.join(folder_path, "documents")
+                folder_path=folder_path,
             )
         except (OSError, json.JSONDecodeError):
-            return ContentPack(folder_name=folder, name=folder, description="", docs_path="")
+            return ContentPack(folder_name=folder, name=folder, description="", folder_path="")
 
     env_value = os.getenv("CONTENT_PACK")
     if env_value:
@@ -179,9 +192,9 @@ def _select_content_pack() -> ContentPack:
 
     print("\nSelect a content pack to deploy:")
     for i, pack in enumerate(packs, 1):
-        label = pack["name"]
-        if pack["description"]:
-            label = f"{label} — {pack['description']}"
+        label = pack.name
+        if pack.description:
+            label = f"{label} — {pack.description}"
         print(f"  {i}. {label}")
 
     while True:
@@ -190,7 +203,7 @@ def _select_content_pack() -> ContentPack:
             index = int(raw) - 1
             if 0 <= index < len(packs):
                 pack = packs[index]
-                set_azd_env_var("CONTENT_PACK", pack["folder_name"])
+                set_azd_env_var("CONTENT_PACK", pack.folder_name)
                 return pack
         except (ValueError, EOFError):
             pass
@@ -217,8 +230,6 @@ def main() -> None:
         os.getenv("FABRIC_WORKSPACE_ADMINISTRATORS"),
     )
     github_token = os.getenv("GITHUB_TOKEN")
-    
-
     notebook_path = get_notebook_path()
 
     # Foundry / AI Search configuration (required — main.bicep outputs)
@@ -254,8 +265,8 @@ def main() -> None:
     # ------------------------------------------------------------------
     logger.info(f"🏭 {SOLUTION_NAME} – Solution Installer")
     logger.info("=" * 60)
-    logger.info(f"Content Pack:       {content_pack['name']} ({content_pack['folder_name']})")
-    logger.info(f"Content Pack Description: {content_pack['description']}")
+    logger.info(f"Content Pack:       {content_pack.name} ({content_pack.folder_name})")
+    logger.info(f"Content Pack Description: {content_pack.description}")
     logger.info(f"Capacity:           {capacity_name}")
     logger.info(f"Subscription:       {subscription_id}")
     logger.info(f"Resource Group:     {resource_group}")
@@ -345,7 +356,7 @@ def main() -> None:
     try:
         setup_knowledge_base(
             solution_name=SOLUTION_NAME,
-            docs_dir=Path(content_pack['docs_path']),
+            docs_dir=Path(content_pack.docs_path),
             search_endpoint=search_endpoint,
             blob_endpoint=blob_endpoint,
             ai_endpoint=ai_endpoint,
@@ -376,8 +387,8 @@ def main() -> None:
                connection=kb_mcp_connection_name)
     try:
         setup_agent(
-            scenario_name=content_pack["name"],
-            scenario_description=content_pack["description"],
+            scenario_name=content_pack.name,
+            scenario_description=content_pack.description,
             agent_endpoint=agent_endpoint,
             agent_model=agent_model,
             search_endpoint=search_endpoint,
