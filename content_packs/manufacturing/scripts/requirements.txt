@@ -1,0 +1,18 @@
+# Consolidated requirements for the Real-Time Intelligence Operations Solution Accelerator
+# This file contains all Python dependencies needed for deployment scripts and project functionality
+
+# === FABRIC DEPLOYMENT SCRIPTS (infra/scripts/fabric/) ===
+# Used by: deploy_fabric_rti.py, fabric_*.py files for Microsoft Fabric configuration deployment
+azure-identity>=1.25.1                  # Authentication for Azure services (fabric_api.py, fabric_database.py, fabric_data_ingester.py, fabric_event_hub.py)
+azure-core>=1.29.0                      # Core Azure SDK functionality (fabric_api.py, graph_api.py)
+azure-storage-file-datalake>=12.14.0    # OneLake operations and Data Lake Storage (fabric_api.py)
+azure-mgmt-eventhub>=11.2.0             # Event Hub management operations (fabric_event_hub.py)
+azure-kusto-data>=6.0.0                 # Kusto/KQL database connections and queries (fabric_database.py, fabric_data_ingester.py)
+azure-kusto-ingest>=6.0.0               # Data ingestion to Kusto databases (fabric_data_ingester.py)
+requests>=2.32.5                        # HTTP API calls to Microsoft Fabric REST APIs (fabric_api.py, graph_api.py)
+python-dateutil>=2.8.2                  # Date/time utilities (fabric_api.py, graph_api.py)
+
+# === EVENT SIMULATION SCRIPTS (infra/scripts/) ===
+# Used by: event_simulator.py, sample_data.py, event_hub_service.py for event generation and simulation
+azure-eventhub>=5.15.1                  # Sending events to Event Hub (event_hub_service.py, event_simulator.py)
+pandas>=2.3.3                           # Data manipulation and CSV operations (sample_data.py)
