@@ -2,8 +2,7 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
   "metadata": {
     "type": "KQLDashboard",
-    "displayName": "rti_dashboard_ssrtifab14yfpf4",
-    "description": "Real-Time Intelligence Dashboard: rti_dashboard_ssrtifab14yfpf4"
+    "displayName": "Manufacturing Dashboard"
   },
   "config": {
     "version": "2.0",
