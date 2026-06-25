@@ -99,8 +99,6 @@ from common.step_printer import print_step, print_steps_summary
 from fabric.fabric_api import create_fabric_client, create_workspace_fabric_client
 from fabric.graph_api import create_graph_client
 from fabric.step_notebook_installer import (
-    INSTALLER_NOTEBOOK_NAME,
-    get_notebook_path,
     run_installer_notebook,
     upload_installer_notebook,
 )
@@ -141,6 +139,10 @@ class ContentPack:
     @property
     def fabric_workspace_path(self) -> str:
         return os.path.join(self.folder_path, "fabric_workspace")
+
+    @property
+    def fabric_installer_notebook_path(self) -> str:
+        return os.path.join(self.folder_path, "fabric_installer.ipynb")
 
 
 def _select_content_pack() -> ContentPack:
@@ -230,7 +232,6 @@ def main() -> None:
         os.getenv("FABRIC_WORKSPACE_ADMINISTRATORS"),
     )
     github_token = os.getenv("GITHUB_TOKEN")
-    notebook_path = get_notebook_path()
 
     # Foundry / AI Search configuration (required — main.bicep outputs)
     search_endpoint = get_required_env_var("AZURE_AI_SEARCH_ENDPOINT")
@@ -272,7 +273,7 @@ def main() -> None:
     logger.info(f"Resource Group:     {resource_group}")
     logger.info(f"Workspace:          {workspace_name}")
     logger.info(f"Solution Suffix:    {solution_suffix}")
-    logger.info(f"Installer Notebook: {notebook_path}")
+    logger.info(f"Installer Notebook: {content_pack.fabric_installer_notebook_path}")
     logger.info(f"GitHub Token:       {'***' if github_token else 'Not set'}")
     if workspace_administrators:
         logger.info(f"Administrators:     {', '.join(workspace_administrators)}")
@@ -464,9 +465,13 @@ def main() -> None:
     # Step 5 – Upload installer notebook
     # ------------------------------------------------------------------
     print_step(5, 6, "Uploading installer notebook",
-               notebook=INSTALLER_NOTEBOOK_NAME)
+               notebook=content_pack.fabric_installer_notebook_path)
     try:
-        notebook_id = upload_installer_notebook(workspace_client, notebook_path, github_token=github_token)
+        notebook_id = upload_installer_notebook(
+            workspace_client, 
+            content_pack.fabric_installer_notebook_path, 
+            github_token=github_token)
+        
         logger.info("Successfully completed: upload_installer")
         executed_steps.append("upload_installer")
     except Exception as exc:
