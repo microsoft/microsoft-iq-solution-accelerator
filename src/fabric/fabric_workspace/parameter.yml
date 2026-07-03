@@ -9,12 +9,15 @@
 # the optional item_type / item_name / file_path filters.
 # .platform files are excluded automatically by fabric-cicd.
 #
-# Current GUIDs (source/DEV workspace — pipeline_main.Notebook):
-#   Lakehouse : 22222222-2222-2222-2222-222222222222
-#   Workspace : 11111111-1111-1111-1111-111111111111
-#
-# NOTE: model_customer.Notebook uses different GUIDs (lakehouse 7bc5f01b,
-#       workspace 2948455a) that are NOT parameterized here.
+# Source placeholder IDs used below as find_value keys. These are NOT real
+# tenant IDs — they are neutral placeholders that fabric-cicd (and the
+# fabric_solution_installer notebook) swap for the target environment's IDs
+# at deploy time. Keep these values identical to the ones embedded in the
+# artifact files (notebooks, ontology data bindings, semantic models) and in
+# the installer's SOURCE_* constants, otherwise the replacement will not match.
+#   Lakehouse    : 22222222-2222-2222-2222-222222222222
+#   Workspace    : 11111111-1111-1111-1111-111111111111
+#   SQL endpoint : xxxxxxxxxxxxxxxxxxxxxxxxxx-yyyyyyyyyyyyyyyyyyyyyyyyyy.datawarehouse.fabric.microsoft.com
 # ============================================================================
 
 find_replace:
