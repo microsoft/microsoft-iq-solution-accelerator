@@ -1,354 +1,553 @@
-# Deployment Guide - Microsoft IQ Solution Accelerator
+# Deployment Guide
 
-Deploy the complete **Microsoft IQ Solution Accelerator** using Azure Developer CLI in minutes. This deployment provisions Fabric IQ (data platform) and Microsoft Foundry (intelligent agents) components.
+Deploy the **Microsoft IQ Solution Accelerator** using Azure Developer CLI to provision a complete enterprise intelligence platform. This automated deployment creates Fabric IQ (data lakehouse, semantic models, ontologies, data agents), Microsoft Foundry (intelligent agents with knowledge base search), and prepares Work IQ (Copilot Studio integration) for manual configuration—all ready to use in minutes.
 
----
+> 🆘 **Need Help?** If you encounter issues during deployment, check our [Known Issues and Troubleshooting](#known-issues-and-troubleshooting) section for solutions to common problems.
 
-## Introduction
+## Key Sections
 
-The Microsoft IQ Solution Accelerator is an end-to-end data and AI platform that combines:
-
-- **Fabric IQ**: Data lakehouse, notebooks, semantic models, and data agents for unified data foundation
-- **Microsoft Foundry**: Intelligent agents with knowledge base search for document-based question answering
-- **Work IQ**: Copilot Studio email-triggered agent (deployed manually after `azd up`) that orchestrates Fabric IQ and Foundry IQ from a single conversational ingress — see [Post-Deployment Steps — Work IQ](#post-deployment-steps--work-iq)
-
-The `azd up` deployment is fully automated and idempotent, provisioning Fabric IQ and Microsoft Foundry. Work IQ is configured manually after `azd up` completes by importing the Power Platform zip solution file inside the [solution file folder](../src/copilot/sln).
-
-### Table of Contents
-
-1. [Prerequisites](#prerequisites)
-   - [Common requirements (all options)](#common-requirements-all-options)
-   - [Environment-specific tooling](#environment-specific-tooling)
-   - [Enable Ontology and required features in Fabric Admin Portal](#enable-ontology-and-required-features-in-fabric-admin-portal)
-2. [Deployment Environment Setup](#deployment-environment-setup)
-3. [Deployment Commands](#deployment-commands)
-4. [Post-Deployment Steps — Work IQ](#post-deployment-steps--work-iq)
-5. [Optional Configuration Variables](#optional-configuration-variables)
-6. [Deployment Overview](#deployment-overview)
-   - [Infrastructure Provisioned](#infrastructure-provisioned)
-   - [Deployment Phases](#deployment-phases)
-7. [Deployment Results](#deployment-results)
-   - [Azure Resources (Resource Group)](#azure-resources-resource-group)
-   - [Fabric IQ Components](#fabric-iq-components)
-   - [Microsoft Foundry Components](#microsoft-foundry-components)
-   - [Environment Variables](#environment-variables)
-   - [Next Steps](#next-steps)
-8. [Environment Cleanup](#environment-cleanup)
-9. [Additional Resources](#additional-resources)
+| Section | Description |
+|---------|-------------|
+| [**Overview**](#overview) | Two-phase deployment architecture explained |
+| [**Prerequisites & Setup**](#step-1-prerequisites--setup) | Azure, Fabric requirements, software installation |
+| [**Deployment Environment**](#step-2-choose-your-deployment-environment) | Choose deployment method: Local, Codespaces, Dev Container, or GitHub Actions |
+| [**Configuration Settings**](#step-3-configure-deployment-settings-optional) | Optional: Customize resource names and settings |
+| [**Deploy the Solution**](#step-4-deploy-the-solution) | Execute deployment with step-by-step instructions |
+| [**Post-Deployment Configuration**](#step-5-post-deployment-configuration) | Set up Work IQ (Copilot Studio) and verify components |
+| [**Deployment Results**](#step-6-deployment-results) | Verify Azure and Fabric resources |
+| [**Clean Up**](#step-7-clean-up-optional) | Remove all deployed resources |
+| [**Known Issues and Troubleshooting**](#known-issues-and-troubleshooting) | Common problems and solutions |
+| [**Next Steps**](#next-steps) | Additional resources and guides |
+| [**Need Help?**](#need-help) | Support options |
 
 ---
 
-## Prerequisites
+## Overview
 
-Before starting the deployment, ensure the following requirements are met.
+This guide walks you through deploying the Microsoft IQ Solution Accelerator to both Azure and Microsoft Fabric. The deployment process takes approximately 10-15 minutes and provisions a complete enterprise intelligence platform with cloud infrastructure, data foundation, and AI components.
 
-### Common requirements (all options)
+### Two-Phase Architecture
 
-- An **Azure subscription** with permissions to create resources (Contributor + Role Based Access Control / User Access Administrator on the target subscription or resource group)
-- **Microsoft Fabric** enabled on your subscription ([register provider](https://learn.microsoft.com/azure/azure-resource-manager/management/resource-providers-and-types))
-- **Fabric Admin Portal** tenant settings enabled — see [Enable Ontology and required features in Fabric Admin Portal](#enable-ontology-and-required-features-in-fabric-admin-portal) below
+The deployment uses a coordinated two-phase approach that is **idempotent** and **safe to re-run**, automatically detecting existing resources and only creating what's missing:
 
-### Environment-specific tooling
+```text
+PHASE 1: Infrastructure (Bicep)           PHASE 2: Solution Bootstrap (Python)
+├─ Fabric Capacity                        ├─ Knowledge Base Setup
+├─ Microsoft Foundry Hub & Project        ├─ Chat Agent Configuration
+├─ Azure OpenAI Model Deployments         ├─ Fabric Workspace
+├─ Azure AI Search                        ├─ Workspace Administrators
+├─ Azure Storage Account                  ├─ Installer Notebook Upload
+└─ Managed Identity                       └─ Run Installer (Lakehouse, Notebooks,
+                                              Semantic Models, Ontology, Data Agents)
+```
 
-Install the tools matching the [Deployment Environment Setup](#deployment-environment-setup) option you plan to use:
+**Phase 1** provisions Azure infrastructure using Bicep templates with ARM idempotency:
 
-- **Option 1 · Local Deployment** — on your host machine:
-  - [Azure Developer CLI](https://learn.microsoft.com/azure/developer/azure-developer-cli/install-azd) (`azd`)
-  - [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli) (`az`)
-  - [Python 3.9+](https://www.python.org/downloads/)
-  - [PowerShell 7+](https://learn.microsoft.com/powershell/scripting/install/installing-powershell) — required because [`azure.yaml`](../azure.yaml) hooks invoke [`infra/scripts/utils/Run-PythonScript.ps1`](../infra/scripts/utils/Run-PythonScript.ps1)
-  - [Git](https://git-scm.com/downloads)
-- **Option 2 · GitHub Codespaces** — zero local install; only a [GitHub account](https://github.com/join) with access to launch Codespaces is required. All tooling is pre-installed by [`.devcontainer/`](../.devcontainer/README.md).
-- **Option 3 · Dev Container (VS Code + Docker Desktop)** — on your host machine:
-  - [Visual Studio Code](https://code.visualstudio.com/)
-  - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-  - [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
-  - [Git](https://git-scm.com/downloads)
-- **Option 4 · GitHub Actions** — in your fork/repository:
-  - A Microsoft Entra ID **federated credential** configured for GitHub OIDC ([guide](https://learn.microsoft.com/entra/workload-id/workload-identity-federation-config-app-trust-create#github-actions))
-  - A GitHub environment named `miq-build` with secrets `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, and `AZURE_SUBSCRIPTION_ID`
+- **[Resource Group](https://learn.microsoft.com/azure/azure-resource-manager/management/manage-resource-groups-portal)**: Logical container organizing all deployed Azure resources
+- **[Fabric Capacity](https://learn.microsoft.com/fabric/enterprise/licenses#capacity)**: Dedicated compute resources for Fabric workloads (F2-F2048 SKU)
+- **[Microsoft Foundry Hub & Project](https://learn.microsoft.com/azure/ai-studio/concepts/ai-resources)**: Core AI platform for agent management
+- **[Azure OpenAI Models](https://learn.microsoft.com/azure/ai-services/openai/)**: Chat completion (`gpt-5-mini`) and embedding (`text-embedding-3-small`) deployments
+- **[Azure AI Search](https://learn.microsoft.com/azure/search/search-what-is-azure-search)**: Document indexing with vector search for knowledge base
+- **[Azure Storage Account](https://learn.microsoft.com/azure/storage/common/storage-account-overview)**: Blob storage for documents with direct citations
 
-### Enable Ontology and required features in Fabric Admin Portal
+**Phase 2** manages solution components using Python scripts with intelligent resource detection:
 
-> **Fabric IQ must be enabled.** You must enable Ontology and related preview features in the Fabric Admin Portal before proceeding.
+- **[Knowledge Base](https://learn.microsoft.com/azure/search/agentic-retrieval-how-to-create-knowledge-base)**: Azure AI Search index with chunked PDFs and embeddings for hybrid retrieval
+- **[Chat Agent](https://learn.microsoft.com/azure/ai-studio/how-to/develop/create-agent)**: AI Foundry agent wired to Knowledge Base via [MCP](https://modelcontextprotocol.io/introduction)
+- **[Fabric Workspace](https://learn.microsoft.com/fabric/get-started/workspaces)**: Collaborative environment hosting all Fabric artifacts
+  - **[Lakehouse](https://learn.microsoft.com/fabric/data-engineering/lakehouse-overview)**: Unified data platform with sample data
+  - **[Notebooks](https://learn.microsoft.com/fabric/data-engineering/how-to-use-notebook)**: Data processing and ingestion pipelines
+  - **[Semantic Models](https://learn.microsoft.com/fabric/data-warehouse/semantic-models)**: Business intelligence layer
+  - **[Ontology](https://learn.microsoft.com/fabric/data-science/ontology)**: Knowledge graph definitions
+  - **[Data Agents](https://learn.microsoft.com/fabric/data-science/ai-services/data-agent-overview)**: AI-powered conversational interface
 
-Follow these steps to enable the required tenant settings:
+The entire process is orchestrated by Azure Developer CLI with comprehensive error handling and rollback capabilities.
+
+---
+
+## Step 1: Prerequisites & Setup
+
+### 1.1 Azure Account Requirements
+
+Ensure you have access to an [Azure subscription](https://azure.microsoft.com/free/) with the following permissions:
+
+| Permission | Level | Purpose |
+|-----------|-------|---------|
+| **Contributor** | Subscription/Resource Group | Deploy Bicep templates and create Azure resources |
+| **User Access Administrator** | Subscription/Resource Group | Configure role-based access control (RBAC) |
+
+<details>
+<summary><b>How to Check Your Permissions</b></summary>
+
+1. Go to [Azure Portal](https://portal.azure.com/)
+2. Search for "Subscriptions" in the top search bar
+3. Click on your target subscription
+4. Select **Access control (IAM)** from the left menu
+5. Look for your user account—you should see **Contributor** or **Owner** role assigned
+
+</details>
+
+### 1.2 Microsoft Fabric Requirements
+
+Your organization must have the following setup:
+
+| Requirement | Details |
+|-------------|---------|
+| **Fabric License** | [Microsoft Fabric](https://learn.microsoft.com/fabric/admin/fabric-switch) must be enabled in your organization |
+| **Fabric Capacity** | Dedicated capacity available for your deployments (or deployment will create one) |
+| **Workspace Creation** | Permissions to create new Fabric workspaces |
+| **Fabric Admin Portal** | Required tenant settings enabled (see below) |
+
+#### Enable Required Fabric Admin Portal Settings
+
+> **Important:** You must enable Ontology and related preview features in the Fabric Admin Portal before proceeding.
 
 1. Navigate to the [Fabric Admin Portal](https://app.fabric.microsoft.com/admin-portal).
 
-   > If you don't see the **Admin Portal** option, ensure you have **Fabric Admin** or **Global Admin** permissions on your tenant.
+   > If you don't see the **Admin Portal** option, ensure you have **Fabric Admin** or **Global Admin** permissions.
 
 2. In the left-hand navigation pane, select **Tenant settings**.
 
 3. **Enable Ontology (preview):**
-   - In the **Tenant settings** page, use the search bar at the top and search for **Ontology**.
-   - Locate the **Ontology (preview)** setting.
-   - Toggle the setting to **Enabled**.
-   - Choose whether to enable it for **The entire organization** or for **Specific security groups** based on your needs.
-   - Click **Apply**.
+   - Search for **Ontology** in the Tenant settings search bar
+   - Toggle the setting to **Enabled**
+   - Choose whether to enable for **The entire organization** or **Specific security groups**
+   - Click **Apply**
 
-4. **Enable Graph (preview):**
-   - Search for **Graph** in the **Tenant settings** search bar.
-   - Locate the **Graph (preview)** setting.
-   - Toggle the setting to **Enabled**.
-   - Choose the appropriate scope (entire organization or specific security groups).
-   - Click **Apply**.
+4. **Enable Copilot and Azure OpenAI Service:**
+   - Search for **Copilot** in the Tenant settings search bar
+   - Toggle the setting to **Enabled**
+   - Click **Apply**
 
-5. **Enable Copilot and Azure OpenAI Service:**
-   - Search for **Copilot** in the **Tenant settings** search bar.
-   - Locate the **Copilot and Azure OpenAI Service** setting.
-   - Toggle the setting to **Enabled**.
-   - Choose the appropriate scope.
-   - Click **Apply**.
+> **Propagation delay:** These settings may take up to **15 minutes** to take effect across your tenant.
 
-> **Propagation delay:** These settings may take up to **15 minutes** to take effect across your tenant. If you don't see the **Ontology** or **Data Agent** options in your workspace immediately, wait and refresh the page.
+For detailed instructions, refer to the official documentation: [Fabric IQ Tenant Settings](https://learn.microsoft.com/fabric/iq/ontology/overview-tenant-settings).
 
-For detailed instructions, refer to the official documentation: [Fabric IQ Tenant Settings](https://learn.microsoft.com/en-us/fabric/iq/ontology/overview-tenant-settings).
+### 1.3 Deployment Identity
+
+Deployment identity determines how your deployment interacts with Azure and Microsoft Fabric resources. Choose one identity type:
+
+| Identity Type | Best For | Setup Required |
+|---------------|----------|----------------|
+| **User Account** | Interactive development and testing | Your Azure AD credentials |
+| **Service Principal** | Automated deployments and CI/CD pipelines | [Federated identity credentials](https://learn.microsoft.com/azure/developer/github/connect-from-azure-openid-connect) |
+| **Managed Identity** | Azure-native automation | Azure subscription access |
+
+### 1.4 Software Requirements
+
+**Note:** Skip this section if using GitHub Codespaces or VS Code Dev Container—all tools are pre-installed in these environments.
+
+Install the following tools on your local machine:
+
+| Tool | Version | Installation |
+|------|---------|--------------|
+| **Python** | 3.9 or later | [Download from python.org](https://www.python.org/downloads/) |
+| **Azure Developer CLI (azd)** | Latest | [Install azd](https://learn.microsoft.com/azure/developer/azure-developer-cli/install-azd) |
+| **PowerShell** | 7+ | [Install PowerShell](https://learn.microsoft.com/powershell/scripting/install/installing-powershell) |
+| **Git** | Latest | [Download from git-scm.com](https://git-scm.com/downloads) |
+
+<details>
+<summary><b>Verify Installation</b></summary>
+
+```bash
+python --version
+azd version
+pwsh --version
+git --version
+```
+
+</details>
+
+📖 **Detailed Setup:** For complete Azure account configuration, see [Azure Account Setup Guide](./AzureAccountSetUp.md).
 
 ---
 
-## Deployment Environment Setup
+## Step 2: Choose Your Deployment Environment
 
-You can deploy the accelerator from any of the four environments below. Each option leads to the common [Deployment Commands](#deployment-commands). Pick whichever fits your workflow, and make sure the matching tools are installed per [Prerequisites → Environment-specific tooling](#environment-specific-tooling).
+Select one of the following options to deploy the solution:
+
+### Environment Comparison
+
+| Environment | Setup Required | Notes |
+|-------------|----------------|-------|
+| **[GitHub Codespaces](#option-a-github-codespaces)** | GitHub account | Cloud development environment, zero local install |
+| **[VS Code Dev Container](#option-b-vs-code-dev-container)** | Docker Desktop + VS Code | Containerized consistency |
+| **[Local Machine](#option-c-local-machine)** | Install [software requirements](#14-software-requirements) | Most flexible, requires local setup |
+| **[GitHub Actions](#option-d-github-actions)** | Azure service principal | Federated identity, automated deployment |
 
 <details>
-<summary><b>Option 1 · Local Deployment</b> — your own machine</summary>
+<summary><b>Option A: GitHub Codespaces</b></summary>
 
-Use this option to run the deployment from your local shell.
+**Cloud development environment—zero local install required.**
 
-1. Ensure the **Option 1** tools from [Prerequisites → Environment-specific tooling](#environment-specific-tooling) are installed on your host.
-2. **Clone the repository** and `cd` into it:
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/microsoft/microsoft-iq-solution-accelerator)
+
+1. Click the **Open in GitHub Codespaces** badge above (or use **Code → Codespaces → Create codespace** on the repository page)
+2. Wait for the environment to initialize (2-3 minutes). The `postCreateCommand` runs [`post-create.sh`](../.devcontainer/post-create.sh) and [`setup_env.sh`](../.devcontainer/setup_env.sh) automatically.
+3. All tools are pre-installed; proceed to [Step 4: Deploy](#step-4-deploy-the-solution)
+
+> If `azd auth login` opens a browser window that fails to redirect back to the codespace, use `azd auth login --use-device-code`.
+
+See [`.devcontainer/README.md`](../.devcontainer/README.md) for the full list of pre-installed tools and extensions.
+
+</details>
+
+<details>
+<summary><b>Option B: VS Code Dev Container</b></summary>
+
+**Consistent development environment using Docker.**
+
+
+
+1. Install [Visual Studio Code](https://code.visualstudio.com/)
+2. Install [Docker Desktop](https://www.docker.com/products/docker-desktop)
+3. Install [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) in VS Code
+4. Clone the repository:
+
    ```bash
    git clone https://github.com/microsoft/microsoft-iq-solution-accelerator.git
    cd microsoft-iq-solution-accelerator
    ```
-3. Continue with the [Deployment Commands](#deployment-commands) below.
+
+5. Open the folder in VS Code
+6. Click "Reopen in Container" when prompted (or run **Command Palette → Dev Containers: Reopen in Container**)
+7. All tools are pre-installed; proceed to [Step 4: Deploy](#step-4-deploy-the-solution)
+
+> Existing `azd` credentials from the host's `~/.azure` (or `%USERPROFILE%\.azure`) are bind-mounted into the container, so a previous `azd auth login` carries over.
+
+See [`.devcontainer/README.md`](../.devcontainer/README.md) for configuration details and troubleshooting.
 
 </details>
 
 <details>
-<summary><b>Option 2 · GitHub Codespaces</b> — zero-install browser environment</summary>
+<summary><b>Option C: Local Machine</b></summary>
 
-[GitHub Codespaces](https://github.com/features/codespaces) provisions a cloud dev container that already contains every tool needed by the accelerator (defined in [`.devcontainer/`](../.devcontainer/README.md)).
+**Full control with your local development environment.**
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/microsoft/microsoft-iq-solution-accelerator)
+1. Install the [software requirements](#14-software-requirements) above
+2. Clone the repository:
 
-1. Click the **Open in GitHub Codespaces** badge above (or use **Code → Codespaces → Create codespace** on the repository page) to launch a codespace on the default branch. To target a fork or branch, replace `microsoft/microsoft-iq-solution-accelerator` in the URL with `<owner>/<repo>` and append `?ref=<branch>` if needed.
-2. Wait for the codespace to finish building. The `postCreateCommand` runs [`post-create.sh`](../.devcontainer/post-create.sh) and [`setup_env.sh`](../.devcontainer/setup_env.sh) automatically — they install Python deps, `msodbcsql18`, dev tooling, and helpful aliases.
-3. Continue with the [Deployment Commands](#deployment-commands) below — the repository is already cloned at the working directory. If `azd auth login` opens a browser window that fails to redirect back to the codespace, use `azd auth login --use-device-code`.
-
-> See [`.devcontainer/README.md`](../.devcontainer/README.md) for the full list of pre-installed tools and extensions.
-
-</details>
-
-<details>
-<summary><b>Option 3 · Dev Container (VS Code + Docker Desktop)</b> — local container, same image as Codespaces</summary>
-
-Run the same dev container locally for an isolated, reproducible environment without polluting your host.
-
-1. Ensure the **Option 3** tools from [Prerequisites → Environment-specific tooling](#environment-specific-tooling) are installed on your host.
-2. **Clone the repository** and open it in VS Code:
    ```bash
    git clone https://github.com/microsoft/microsoft-iq-solution-accelerator.git
-   code microsoft-iq-solution-accelerator
+   cd microsoft-iq-solution-accelerator
    ```
-3. Run **Command Palette → *Dev Containers: Reopen in Container***. VS Code builds the image from [`.devcontainer/Dockerfile`](../.devcontainer/Dockerfile) and runs the post-create scripts.
-4. Continue with the [Deployment Commands](#deployment-commands) below. Existing `azd` credentials from the host's `~/.azure` (or `%USERPROFILE%\.azure`) are bind-mounted into the container, so a previous `azd auth login` carries over.
 
-> See [`.devcontainer/README.md`](../.devcontainer/README.md) for configuration details and troubleshooting.
+3. Proceed to [Step 4: Deploy](#step-4-deploy-the-solution)
 
 </details>
 
 <details>
-<summary><b>Option 4 · GitHub Actions</b> — automated CI/CD deployment</summary>
+<summary><b>Option D: GitHub Actions</b></summary>
 
-The repository ships with [`.github/workflows/azure-dev.yml`](../.github/workflows/azure-dev.yml), which runs `azd up` end-to-end on `push` to a branch (and on `workflow_dispatch`) using **OIDC federated credentials** — no secrets stored.
+**Automated CI/CD deployment using GitHub Actions.**
 
-1. Ensure the **Option 4** items from [Prerequisites → Environment-specific tooling](#environment-specific-tooling) are configured (federated credential and the `miq-build` environment with secrets). See [`azd pipeline config`](https://learn.microsoft.com/azure/developer/azure-developer-cli/configure-devops-pipeline), which can configure the federated credential for you.
-2. (Optional) Adjust `AZURE_LOCATION` in the workflow `env:` block (default `westus3`) and any `azd env set …` lines for SKU, region, or model overrides.
-3. **Trigger** the workflow by pushing to a branch matching the `paths:` filters (`infra/**`, `src/**`, `.github/workflows/azure-dev.yml`) or by running it manually from the **Actions** tab. The workflow:
-   - Logs in via `azure/login@v2` and `azd auth login --federated-credential-provider github`
-   - Runs Bicep static analysis and validation
-   - Executes `azd up --no-prompt` (which itself triggers Phase 2)
+The repository ships with [`.github/workflows/azure-dev.yml`](../.github/workflows/azure-dev.yml), which runs `azd up` end-to-end using **OIDC federated credentials**.
 
-> The same six post-provision steps described above run inside the workflow. You do **not** need to run the [Deployment Commands](#deployment-commands) section manually for this option — the workflow performs them on your behalf.
+1. Fork the repository to your GitHub account
+2. Configure [Azure service principal with federated identity credentials](https://learn.microsoft.com/azure/developer/github/connect-from-azure-openid-connect)
+3. Set the following repository secrets in GitHub Settings → Secrets and variables → Actions:
+   - `AZURE_CLIENT_ID`: Service principal client ID
+   - `AZURE_TENANT_ID`: Azure tenant ID
+   - `AZURE_SUBSCRIPTION_ID`: Target subscription ID
+4. (Optional) Set additional variables:
+   - `FABRIC_WORKSPACE_ADMINISTRATORS`: Comma-separated admin identities
+   - `AZURE_AI_DEPLOYMENTS_LOCATION`: AI deployment region
+5. Go to **Actions** tab in your GitHub repository
+6. Select **CI/CD Azure** workflow
+7. Click **Run workflow** and select your branch
+8. Monitor the deployment progress in the Actions tab
+
+> You do **not** need to run the [Step 4](#step-4-deploy-the-solution) commands manually for this option—the workflow performs them on your behalf.
 
 </details>
 
 ---
 
-## Deployment Commands
+## Step 3: Configure Deployment Settings (Optional)
 
-> For fine-grained tuning of the deployment (Fabric capacity SKU, workspace name, AI deployment region, model selection, existing-resource reuse, etc.), set any of the variables documented in [Optional Configuration Variables](#optional-configuration-variables) **before** running `azd up`.
+> **Skip to [Step 4](#step-4-deploy-the-solution) if you want to use default settings.**
 
-### Deploy
-
-Run the following commands in a single bash session:
-
-```bash
-# Authenticate with Azure Developer CLI
-azd auth login
-
-# Authenticate with Azure CLI
-az login
-
-# (Optional) Override defaults — Fabric SKU, AI region, model selection, etc.
-# See the "Optional Configuration Variables" section below for the full list.
-# azd env set FABRIC_CAPACITY_SKU_NAME F4
-# azd env set AZURE_AI_DEPLOYMENTS_LOCATION eastus
-
-# Deploy the solution
-azd up
-
-# (Optional) View all deployment outputs
-azd env get-values
-```
-
-The entire deployment typically completes in **10–15 minutes**.
-
-### Re-running Deployment
-
-The deployment is **idempotent** and safe to re-run:
-```bash
-azd up
-```
-
-- Existing resources are updated (not recreated)
-- Fabric workspace content is refreshed to latest version
-- New administrators can be added without affecting existing ones
+This section covers all optional configuration settings you can customize before deployment. All settings are configured using `azd env set` commands before running `azd up`.
 
 ---
 
-## Post-Deployment Steps — Work IQ
+<details>
+<summary><b>3.1 Fabric Configuration</b></summary>
 
-The `azd up` workflow provisions **Fabric IQ** and **Microsoft Foundry**. The third component of the accelerator — **Work IQ** (the Copilot Studio email-triggered agent that orchestrates Fabric IQ and Foundry IQ from a single conversational ingress) — is deployed **manually after `azd up` completes successfully**.
+**Fabric Capacity:**
 
-Work IQ ships as a Power Platform zip solution file inside the [solution file folder](../src/copilot/sln).  Follow the dedicated guide for the full step-by-step procedure:
+```bash
+# Use a different Fabric SKU (default: F2)
+azd env set FABRIC_CAPACITY_SKU_NAME F4
+
+# Use an existing Fabric capacity (skips creation)
+azd env set AZURE_EXISTING_FABRIC_CAPACITY_NAME "my-existing-capacity"
+
+# Add additional capacity admins (JSON array)
+azd env set FABRIC_ADMIN_MEMBERS '["user@contoso.com"]'
+```
+
+**Available Fabric SKUs:** `F2`, `F4`, `F8`, `F16`, `F32`, `F64`, `F128`, `F256`, `F512`, `F1024`, `F2048`
+
+**Workspace Configuration:**
+
+```bash
+# Custom workspace name
+azd env set FABRIC_WORKSPACE_NAME "My IQ Workspace"
+
+# Add workspace administrators (comma-separated UPNs or object IDs)
+azd env set FABRIC_WORKSPACE_ADMINISTRATORS "user@contoso.com,11111111-2222-3333-4444-555555555555"
+```
+
+</details>
+
+---
+
+<details>
+<summary><b>3.2 Microsoft Foundry / AI Configuration</b></summary>
+
+**AI Deployment Region (Required if not prompted):**
+
+```bash
+azd env set AZURE_AI_DEPLOYMENTS_LOCATION eastus
+```
+
+**Available AI Deployment Regions:** `australiaeast`, `eastus`, `eastus2`, `francecentral`, `japaneast`, `swedencentral`, `uksouth`, `westus`, `westus3`
+
+**Model Configuration:**
+
+```bash
+# GPT model (default: gpt-5-mini)
+azd env set AZURE_OPENAI_DEPLOYMENT_MODEL <your-model>
+azd env set AZURE_OPENAI_MODEL_VERSION "<your-model-version>"
+azd env set AZURE_OPENAI_DEPLOYMENT_MODEL_CAPACITY <capacity>
+
+# Embedding model (default: text-embedding-3-small)
+azd env set AZURE_OPENAI_EMBEDDING_MODEL <your-embedding-model>
+azd env set AZURE_OPENAI_EMBEDDING_CAPACITY <capacity>
+
+# Deployment type
+azd env set AZURE_OPENAI_MODEL_DEPLOYMENT_TYPE <deployment-type>
+```
+
+**Available Deployment Types:** `GlobalStandard`, `Standard`
+
+</details>
+
+---
+
+<details>
+<summary><b>3.3 Reuse Existing Resources</b></summary>
+
+If you already have Azure resources that you want to reuse:
+
+```bash
+# Use an existing Log Analytics workspace
+azd env set AZURE_EXISTING_LOG_ANALYTICS_WORKSPACE_ID "/subscriptions/..."
+
+# Use an existing AI Foundry project
+azd env set AZURE_EXISTING_AI_PROJECT_RESOURCE_ID "/subscriptions/..."
+```
+
+</details>
+
+---
+
+<details>
+<summary><b>3.4 All Configuration Variables</b></summary>
+
+| Category | Variable | Description | Default |
+|----------|----------|-------------|---------|
+| **Common** | `ENABLE_TELEMETRY` | Enable/disable usage telemetry | `true` |
+| **Fabric Capacity** | `FABRIC_CAPACITY_SKU_NAME` | Fabric capacity SKU | `F2` |
+| | `AZURE_EXISTING_FABRIC_CAPACITY_NAME` | Use existing capacity | _(empty)_ |
+| | `FABRIC_ADMIN_MEMBERS` | Additional capacity admins | `[]` |
+| **Fabric Workspace** | `FABRIC_WORKSPACE_NAME` | Workspace name | `Microsoft IQ - {suffix}` |
+| | `FABRIC_WORKSPACE_ADMINISTRATORS` | Additional workspace admins | _(empty)_ |
+| **Microsoft Foundry** | `AZURE_AI_DEPLOYMENTS_LOCATION` | AI deployment region | _(prompted)_ |
+| | `AZURE_OPENAI_DEPLOYMENT_MODEL` | GPT model | `gpt-5-mini` |
+| | `AZURE_OPENAI_MODEL_VERSION` | GPT model version | `2025-04-14` |
+| | `AZURE_OPENAI_DEPLOYMENT_MODEL_CAPACITY` | GPT capacity (K tokens/min) | `150` |
+| | `AZURE_OPENAI_MODEL_DEPLOYMENT_TYPE` | Deployment type | `GlobalStandard` |
+| | `AZURE_OPENAI_EMBEDDING_MODEL` | Embedding model | `text-embedding-3-small` |
+| | `AZURE_OPENAI_EMBEDDING_CAPACITY` | Embedding capacity (K tokens/min) | `80` |
+| | `AZURE_SEARCH_SERVICE_LOCATION` | AI Search location | Same as `AZURE_LOCATION` |
+| | `AZURE_ENV_USE_CASE` | Industry use case | `Retail-sales-analysis` |
+| | `DEPLOYING_USER_PRINCIPAL_TYPE` | Principal type for CI/CD | `User` |
+
+**Available Use Cases:** `Retail-sales-analysis`, `Insurance-improve-customer-meetings`
+
+</details>
+
+---
+
+## Step 4: Deploy the Solution
+
+### 4.1 Clone Repository (If Needed)
+
+If you haven't already cloned the repository, do so now:
+
+```bash
+git clone https://github.com/microsoft/microsoft-iq-solution-accelerator.git
+cd microsoft-iq-solution-accelerator
+```
+
+### 4.2 Authenticate with Azure
+
+```bash
+# Login to Azure Developer CLI
+azd auth login
+
+# For specific Azure tenants:
+azd auth login --tenant-id <your-tenant-id>
+```
+
+> **Note: Finding Your Tenant ID:**
+>
+> 1. Open [Azure Portal](https://portal.azure.com/)
+> 2. Go to Microsoft Entra ID
+> 3. Copy the **Tenant ID** from the Overview section
+
+### 4.3 Configure Settings (Optional)
+
+> See [Step 3: Configure Deployment Settings](#step-3-configure-deployment-settings-optional) for all configuration options including:
+> - Fabric capacity and workspace settings
+> - AI deployment region and model configuration
+> - Reusing existing Azure/Fabric resources
+
+### 4.4 Start Deployment
+
+Run the deployment command:
+
+```bash
+azd up
+```
+
+During deployment, you'll be prompted for:
+
+1. **Environment name** (e.g., "miqdev"): Used to build the name of deployed Azure resources
+2. **Azure subscription**: Select your target subscription
+3. **AI Deployments location** (`aiDeploymentsLocation`): Select the region for AI model deployments
+4. **Resource group**: Choose to create a new resource group or use an existing one
+5. **Resource group location**: Select the region for the resource group
+6. **Resource group name**: Enter a name for the new resource group (e.g., "rg-miqdev")
+
+**What Happens During Deployment:**
+
+| Phase | Step | Description |
+|-------|------|-------------|
+| **Phase 1** | Infrastructure | Provision Fabric Capacity, Foundry Hub/Project, AI Search, Storage, OpenAI models |
+| **Phase 2** | `setup_knowledge_base` | Create search index, upload PDFs, provision knowledge base |
+| | `setup_agent` | Create AI Foundry chat agent with Knowledge Base MCP tool (**Best-effort**) |
+| | `setup_workspace` | Create or find Fabric workspace, assign to capacity |
+| | `setup_administrators` | Add workspace administrators |
+| | `upload_installer` | Upload installer notebook to workspace |
+| | `run_installer` | Execute notebook to deploy lakehouse, notebooks, semantic models, ontology, data agents |
+
+The entire deployment typically completes in **10-15 minutes**.
+
+### 4.5 Verify Deployment Success
+
+After `azd up` completes successfully:
+
+- ✅ Check the deployment summary displayed in your terminal
+- ✅ Verify resources in [Azure Portal](https://portal.azure.com/)
+- ✅ Confirm your Fabric workspace in [Fabric Portal](https://app.fabric.microsoft.com)
+
+⚠️ **Deployment Issues?** Check [Known Issues and Troubleshooting](#known-issues-and-troubleshooting) for common solutions.
+
+> **Preview Feature Notice:** If the Agent setup fails during deployment (step `setup_agent`), the core functionality will still work. You can verify and retry by running `azd up` again.
+
+---
+
+## Step 5: Post-Deployment Configuration
+
+### 5.1 Work IQ (Copilot Studio) Setup
+
+The `azd up` workflow provisions **Fabric IQ** and **Microsoft Foundry**. The third component—**Work IQ** (Copilot Studio email-triggered agent)—is deployed **manually** after `azd up` completes.
 
 > 👉 **[Copilot Studio Integration — Deployment Guide](./copilot/DeploymentGuide.md)**
 
-Summary of the manual steps it covers:
+**Summary of Manual Steps:**
 
-1. **Import the solution**  Import the Power Platform zip solution file inside the [solution file folder](../src/copilot/sln) into your Power Platform environment
-2. **Configure connections** — sign in to and authorize the Work IQ, Microsoft Teams, Copilot Studio, Office 365 Outlook, Fabric Data Agent, and Foundry Agent connections. The Foundry Agent connection uses the `AZURE_AI_AGENT_ENDPOINT` value emitted by `azd env get-values`.
-3. **Configure the email trigger** in the Power Automate flow — select the target inbox/folder to monitor and (optionally) add a subject filter such as `IQ Request`.
-4. **Publish the agent** in [Copilot Studio](https://copilotstudio.microsoft.com) and enable the **Microsoft Teams** channel.
+1. **Import the solution**: Import the Power Platform zip solution from [src/copilot/sln](../src/copilot/sln) into your Power Platform environment
+2. **Configure connections**: Sign in to Work IQ, Microsoft Teams, Copilot Studio, Office 365 Outlook, Fabric Data Agent, and Foundry Agent connections
+   - The Foundry Agent connection uses the `AZURE_AI_AGENT_ENDPOINT` value from `azd env get-values`
+   - The Fabric Data Agent connection requires the workspace name or ID from `azd env get-values` → `FABRIC_WORKSPACE_NAME`
+3. **Configure email trigger**: In the Power Automate cloud flow **When a New Email Arrives (V3)**, select the target inbox/folder to monitor
+4. **Publish the agent**: In [Copilot Studio](https://copilotstudio.microsoft.com), publish and enable the **Microsoft Teams** channel
 
-For an architecture overview of how Work IQ orchestrates Fabric IQ and Foundry IQ, see [`docs/copilot/README.md`](./copilot/README.md). For end-to-end QA, see the [Copilot Studio Testing Guide](./copilot/TestingGuide.md).
+For architecture overview, see [docs/copilot/README.md](./copilot/README.md). For end-to-end QA, see [Copilot Studio Testing Guide](./copilot/TestingGuide.md).
 
----
+### 5.2 Verify Fabric Data Agent
 
-## Optional Configuration Variables
+The Fabric Data Agent is automatically configured during deployment to answer natural language questions about your data.
 
-Customize your deployment by setting `azd` environment variables before running `azd up`. Use `azd env set <VARIABLE> <value>` to configure any of the following:
+**Access your workspace:**
 
-| Category | Variable | Description | Default | Example |
-|----------|----------|-------------|---------|---------|
-| **Common** | `ENABLE_TELEMETRY` | Enable/disable usage telemetry | `true` | `azd env set ENABLE_TELEMETRY false` |
-| **Fabric Capacity** | `FABRIC_CAPACITY_SKU_NAME` | Fabric capacity SKU | `F2` | `azd env set FABRIC_CAPACITY_SKU_NAME F4` |
-| | `AZURE_EXISTING_FABRIC_CAPACITY_NAME` | Use an existing Fabric capacity (skips creation) | _(empty)_ | `azd env set AZURE_EXISTING_FABRIC_CAPACITY_NAME "my-capacity"` |
-| | `FABRIC_ADMIN_MEMBERS` | Additional Fabric capacity admins (JSON array of UPNs or object IDs) | `[]` | `azd env set FABRIC_ADMIN_MEMBERS '["user@contoso.com"]'` |
-| **Fabric Workspace** | `FABRIC_WORKSPACE_NAME` | Override the default Fabric workspace name | `Microsoft IQ - {suffix}` | `azd env set FABRIC_WORKSPACE_NAME "My Workspace"` |
-| | `FABRIC_WORKSPACE_ADMINISTRATORS` | Comma-separated additional workspace admins (UPNs and/or object IDs) | _(empty)_ | `azd env set FABRIC_WORKSPACE_ADMINISTRATORS "user@contoso.com,11111111-2222-3333-4444-555555555555"` |
-| **Microsoft Foundry** | `AZURE_AI_DEPLOYMENTS_LOCATION` | AI deployment region (**required**) | _(prompted)_ | `azd env set AZURE_AI_DEPLOYMENTS_LOCATION eastus` |
-| | `AZURE_OPENAI_DEPLOYMENT_MODEL` | GPT model to deploy | `gpt-5-mini` | `azd env set AZURE_OPENAI_DEPLOYMENT_MODEL gpt-4o` |
-| | `AZURE_OPENAI_MODEL_VERSION` | GPT model version | `2025-04-14` | `azd env set AZURE_OPENAI_MODEL_VERSION 2025-04-14` |
-| | `AZURE_OPENAI_DEPLOYMENT_MODEL_CAPACITY` | GPT capacity (tokens/min in thousands) | `150` | `azd env set AZURE_OPENAI_DEPLOYMENT_MODEL_CAPACITY 200` |
-| | `AZURE_OPENAI_MODEL_DEPLOYMENT_TYPE` | GPT deployment type | `GlobalStandard` | `azd env set AZURE_OPENAI_MODEL_DEPLOYMENT_TYPE Standard` |
-| | `AZURE_OPENAI_EMBEDDING_MODEL` | Embedding model to deploy | `text-embedding-3-small` | `azd env set AZURE_OPENAI_EMBEDDING_MODEL text-embedding-3-small` |
-| | `AZURE_OPENAI_EMBEDDING_CAPACITY` | Embedding capacity (tokens/min in thousands) | `80` | `azd env set AZURE_OPENAI_EMBEDDING_CAPACITY 120` |
-| | `AZURE_SEARCH_SERVICE_LOCATION` | Azure AI Search service location | Same as `AZURE_LOCATION` | `azd env set AZURE_SEARCH_SERVICE_LOCATION eastus` |
-| | `AZURE_ENV_USE_CASE` | Industry use case scenario | `Retail-sales-analysis` | `azd env set AZURE_ENV_USE_CASE Insurance-improve-customer-meetings` |
-| | `AZURE_EXISTING_LOG_ANALYTICS_WORKSPACE_ID` | Use an existing Log Analytics workspace | _(empty)_ | `azd env set AZURE_EXISTING_LOG_ANALYTICS_WORKSPACE_ID "/subscriptions/..."` |
-| | `AZURE_EXISTING_AI_PROJECT_RESOURCE_ID` | Use an existing AI Foundry project | _(empty)_ | `azd env set AZURE_EXISTING_AI_PROJECT_RESOURCE_ID "/subscriptions/..."` |
-| | `DEPLOYING_USER_PRINCIPAL_TYPE` | Deploying principal type (use `ServicePrincipal` for CI/CD with OIDC) | `User` | `azd env set DEPLOYING_USER_PRINCIPAL_TYPE ServicePrincipal` |
+1. Open [Microsoft Fabric portal](https://app.fabric.microsoft.com)
+2. Switch to **Fabric Developer** experience (top-right)
+3. Select your workspace (default: `Microsoft IQ - {suffix}`)
+4. Navigate to the Data Agent item
 
-**Available Fabric SKUs**: `F2`, `F4`, `F8`, `F16`, `F32`, `F64`, `F128`, `F256`, `F512`, `F1024`, `F2048`
+### 5.3 Verify Microsoft Foundry Agent
 
-**Available AI Deployment Regions**: `australiaeast`, `eastus`, `eastus2`, `francecentral`, `japaneast`, `swedencentral`, `uksouth`, `westus`, `westus3`
+**Access your Foundry project:**
 
-**Available Use Cases**: `Retail-sales-analysis`, `Insurance-improve-customer-meetings`
+1. Open [ai.azure.com](https://ai.azure.com)
+2. Select your hub and project (project name from `azd env get-values` → `AZURE_AI_PROJECT_NAME`)
+3. Verify:
+   - **Knowledge Bases** → `{solution_suffix}-kb` exists with status *Ready*
+   - **Agents** → `ChatAgent` exists with Knowledge Base MCP tool attached
+   - **Connections** → AI Search, Blob Storage, and KB MCP connections are *Connected*
 
-**Available Deployment Types**: `GlobalStandard`, `Standard`
+**Test the agent from CLI:**
 
----
-
-## Deployment Overview
-
-### Infrastructure Provisioned
-
-The deployment creates two integrated components in a single Azure Resource Group:
-
-#### 1. Fabric IQ Resources
-- **[Fabric Capacity](https://learn.microsoft.com/fabric/enterprise/licenses)**: Compute engine (F2-F2048 SKU) powering data workloads
-- **[Fabric Workspace](https://learn.microsoft.com/fabric/get-started/workspaces)**: Organized workspace containing:
-  - [Lakehouse](https://learn.microsoft.com/fabric/data-engineering/lakehouse-overview) with ingested sample data
-  - [Data processing notebooks](https://learn.microsoft.com/fabric/data-engineering/how-to-use-notebook)
-  - [Semantic models](https://learn.microsoft.com/fabric/data-warehouse/semantic-models) and [reports](https://learn.microsoft.com/power-bi/create-reports/service-report-create-new)
-  - [Ontology definitions](https://learn.microsoft.com/fabric/data-science/ontology)
-  - [Data agents](https://learn.microsoft.com/fabric/data-science/ai-services/data-agent-overview)
-
-#### 2. Microsoft Foundry Resources
-- **[Microsoft Foundry Hub & Project](https://learn.microsoft.com/azure/ai-studio/concepts/ai-resources)**: Core AI platform for agent management
-- **[Azure AI Search](https://learn.microsoft.com/azure/search/search-what-is-azure-search)**: Document indexing with [vector search](https://learn.microsoft.com/azure/search/vector-search-overview) and [knowledge base](https://learn.microsoft.com/en-us/azure/search/agentic-retrieval-how-to-create-knowledge-base?tabs=rbac%2C2025-11-01-preview&pivots=csharp)
-- **[Azure Storage Account](https://learn.microsoft.com/azure/storage/common/storage-account-overview)**: [Blob storage](https://learn.microsoft.com/azure/storage/blobs/storage-blobs-overview) for documents with direct citations
-- **[Azure OpenAI Models](https://learn.microsoft.com/azure/ai-services/openai/)**:
-  - [`gpt-5-mini`](https://learn.microsoft.com/azure/ai-services/openai/concepts/models) - Chat completion (150K TPM)
-  - [`text-embedding-3-small`](https://learn.microsoft.com/azure/ai-services/openai/concepts/models#embeddings) - Vector embeddings (80K TPM)
-- **[Chat Agent](https://learn.microsoft.com/azure/ai-studio/how-to/develop/create-agent)**: Knowledge Base-powered agent for document Q&A
-
-### Deployment Phases
-
-The deployment follows a **two-phase automated workflow**, both phases triggered by a single `azd up` command:
-
-| # | Phase | Driver | Step / Resource | Description |
-|---|---|---|---|---|
-| — | **Phase 1: Infrastructure** | [`main.bicep`](../infra/main.bicep) (Bicep) | Fabric capacity & [managed identity](https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/overview) | Provision the [Fabric capacity](https://learn.microsoft.com/fabric/enterprise/licenses) and the user-assigned managed identity used by deployment scripts. |
-| — | | | [Microsoft Foundry hub](https://learn.microsoft.com/azure/ai-studio/concepts/ai-resources), [project](https://learn.microsoft.com/azure/ai-studio/how-to/create-projects) & [connections](https://learn.microsoft.com/azure/ai-studio/how-to/connections-add) | Create the Foundry hub/project and the AI Search + Storage connections. |
-| — | | | AI Search service & Storage account | Provision the indexer + blob storage backing the knowledge base. |
-| — | | | [OpenAI model deployments](https://learn.microsoft.com/azure/ai-services/openai/how-to/create-resource) | Deploy the chat completion and embedding models. |
-| 1 | **Phase 2: Solution Bootstrap** | [`install_microsoft_iq_solution.py`](../infra/scripts/install_microsoft_iq_solution.py) (Python, `postprovision` hook) | `setup_knowledge_base` ([`step_knowledge_base.py`](../infra/scripts/foundry/step_knowledge_base.py)) | Create the Azure AI Search index, upload PDFs from [`src/foundry/data/documents/`](../src/foundry/data/documents/), and provision the Foundry IQ knowledge source and knowledge base. |
-| 2 | | | `setup_agent` ([`step_agent_setup.py`](../infra/scripts/foundry/step_agent_setup.py)) | Create the AI Foundry chat agent wired to the Knowledge Base via [MCP](https://modelcontextprotocol.io/introduction). **Best-effort**: transient platform errors are logged as warnings and the deployment continues. |
-| 3 | | | `setup_workspace` ([`step_workspace_setup.py`](../infra/scripts/fabric/step_workspace_setup.py)) | Create or find the Fabric workspace, assign it to the capacity, and resume the capacity if paused. |
-| 4 | | | `setup_administrators` ([`step_workspace_admins.py`](../infra/scripts/fabric/step_workspace_admins.py)) | Add [workspace administrators](https://learn.microsoft.com/fabric/get-started/roles-workspaces) using [Graph API](https://learn.microsoft.com/graph/overview) resolution with fallback. |
-| 5 | | | `upload_installer` ([`step_notebook_installer.py`](../infra/scripts/fabric/step_notebook_installer.py)) | Upload [`fabric_solution_installer.ipynb`](../infra/fabric/deploy/fabric_solution_installer.ipynb), patched in-memory with the current git branch. |
-| 6 | | | `run_installer` ([`step_notebook_installer.py`](../infra/scripts/fabric/step_notebook_installer.py)) | Execute the installer notebook as a Fabric job. The notebook uses [`fabric-launcher`](https://github.com/microsoft/fabric-launcher) to deploy items from [`src/fabric/fabric_workspace/`](../src/fabric/fabric_workspace/), then runs `pipeline_main` for data ingestion, deploys ontologies, and organizes folders. |
-
----
-
-## Deployment Results
-
-After successful deployment, you will have a single Azure Resource Group containing the resources below, plus a Fabric workspace populated by the installer notebook.
-
-### Azure Resources (Resource Group)
-
-| Component | Purpose |
-|---|---|
-| **Fabric Capacity** (`{solution_suffix}-fabric-capacity` or your existing capacity) | Compute backing the Fabric workspace. Resumed automatically if paused. |
-| **User-assigned Managed Identity** | Identity used by deployment scripts and Foundry connections to call Azure AI Search and Storage without secrets. |
-| **Microsoft Foundry Hub & Project** | Container for AI agents, model deployments, knowledge bases, and connections. |
-| **Azure OpenAI deployments** | Two model deployments inside the Foundry project: a chat completion model (default `gpt-5-mini`) and an embedding model (default `text-embedding-3-small`). |
-| **Azure AI Search** | Vector + keyword search service. Backs the Foundry knowledge base; index name `{solution_suffix}-documents`. |
-| **Azure Storage Account** | Blob storage for source documents. Container `{solution_suffix}-documents` is uploaded to by `setup_knowledge_base` and referenced by AI Search citations. |
-| **Log Analytics workspace + Application Insights** | Diagnostic and monitoring sink for the Foundry project, AI Search, and the chat agent. Reused if `AZURE_EXISTING_LOG_ANALYTICS_WORKSPACE_ID` is set. |
-| **Foundry connections** | Project connections wiring Foundry to AI Search, Blob Storage, and the Knowledge Base MCP endpoint (`{solution_suffix}-kb-mcp-connection`). |
-
-**Access in the Azure portal**: open [portal.azure.com](https://portal.azure.com) → **Resource groups** → select the group named after your `azd` environment (the value of `AZURE_RESOURCE_GROUP`, shown by `azd env get-values`). Use the resource list to navigate to any individual resource. Diagnostic logs are available under **Monitoring → Logs** on the Foundry project, AI Search, and Storage resources.
-
-### Fabric IQ Components
-
-The installer notebook deploys workspace items from [`src/fabric/fabric_workspace/`](../src/fabric/fabric_workspace/) into the Fabric workspace:
-
+```bash
+python infra/scripts/foundry/test_agent.py
 ```
+
+### 5.4 Explore Sample Features
+
+- **Real-Time Dashboard:** Open the Power BI reports in the Fabric workspace to monitor data
+- **Data Agent:** Ask natural language questions about your data through the Fabric Data Agent
+- **Chat Agent:** Query documents through the Foundry Chat Agent
+
+---
+
+## Step 6: Deployment Results
+
+### Azure Infrastructure
+
+After successful deployment, you have:
+
+| Resource | Purpose | Details |
+|----------|---------|---------|
+| **Fabric Capacity** | Compute for Fabric workloads | Auto-scaled, dedicated capacity |
+| **Microsoft Foundry Hub & Project** | AI platform for agents | Contains model deployments, connections |
+| **Azure OpenAI deployments** | AI models | `gpt-5-mini` (chat), `text-embedding-3-small` (embeddings) |
+| **Azure AI Search** | Document indexing | Vector + keyword search for knowledge base |
+| **Azure Storage Account** | Document storage | Blob storage for source documents |
+| **Log Analytics + App Insights** | Monitoring | Diagnostic and monitoring sink |
+| **User-assigned Managed Identity** | Security | Used by deployment scripts and connections |
+
+**Access in Azure Portal:** Open [portal.azure.com](https://portal.azure.com) → **Resource groups** → select your resource group (value of `AZURE_RESOURCE_GROUP` from `azd env get-values`).
+
+### Fabric Workspace
+
+**Workspace Name:** `Microsoft IQ - {suffix}`
+
+**Contents:**
+
+```text
 Microsoft IQ - {suffix}
 ├── 📊 Lakehouses
 │   └── miqsadata (with sample data tables)
 ├── 📓 Notebooks
-│   ├── pipeline_main          (data ingestion orchestrator)
-│   ├── pipeline_update        (pipeline maintenance)
-│   ├── data_processing/       (per-domain load notebooks)
-│   ├── schema/                (per-domain table schemas)
-│   └── …
+│   ├── pipeline_main (data ingestion orchestrator)
+│   ├── pipeline_update (pipeline maintenance)
+│   ├── data_processing/ (per-domain load notebooks)
+│   └── schema/ (per-domain table schemas)
 ├── 📈 Semantic Models & Reports
 │   ├── RetailSupplyChainModel.SemanticModel
 │   ├── Sales Overview.SemanticModel
@@ -361,88 +560,215 @@ Microsoft IQ - {suffix}
     └── RetailSC Ontology Agent
 ```
 
-Access your workspace:
-- Open the [Microsoft Fabric portal](https://app.fabric.microsoft.com) and sign in with the same account used for `azd auth login`.
-- Switch the experience to **Fabric Developer** (top-right) and select your workspace from the left sidebar (default name: `Microsoft IQ - {SOLUTION_SUFFIX}`).
-- The lakehouse, notebooks, semantic models, ontologies, and data agents above appear under the workspace's items list — use the folder filters to narrow by type.
-- Direct link template: `https://app.fabric.microsoft.com/groups/{workspace_id}?experience=fabric-developer` (the `workspace_id` is printed in the deployment summary and saved as `FABRIC_WORKSPACE_ID` in your `azd` environment).
+**Access:** Open [app.fabric.microsoft.com](https://app.fabric.microsoft.com) → Switch to **Fabric Developer** → Select your workspace.
 
 ### Microsoft Foundry Components
 
-Sourced and named by [`install_microsoft_iq_solution.py`](../infra/scripts/install_microsoft_iq_solution.py) (steps `setup_knowledge_base` and `setup_agent`).
-
-| Component | Default name | Purpose |
-|---|---|---|
-| **Search Index** | `{solution_suffix}-documents` | Azure AI Search index containing chunked PDFs from [`src/foundry/data/documents/`](../src/foundry/data/documents/) with embeddings for hybrid (vector + keyword) retrieval. Override with `AZURE_AI_SEARCH_INDEX`. |
-| **Knowledge Source** | `{solution_suffix}-ks` | Foundry IQ pointer to the AI Search index. |
-| **Knowledge Base** | `{solution_suffix}-kb` | Foundry IQ knowledge base with automatic query planning over the knowledge source. Used by the agent for grounded answers with citations. |
-| **KB MCP project connection** | `{solution_suffix}-kb-mcp-connection` | Foundry connection that exposes the Knowledge Base to the agent through the [Model Context Protocol](https://modelcontextprotocol.io/introduction). Override with `KB_MCP_CONNECTION_NAME`. |
-| **Chat Agent** | `ChatAgent` | AI Foundry agent wired to the Knowledge Base via the MCP tool above. Answers questions with document citations. |
-
-#### Verify in the Foundry portal
-
-Open [ai.azure.com](https://ai.azure.com) and sign in with the same account used for `azd auth login`. From the landing page, select your hub and then your project (the project name is stored as `AZURE_AI_PROJECT_NAME` in your `azd` environment; the endpoint is `AZURE_AI_AGENT_ENDPOINT`). Once inside the project, confirm:
-
-1. **Knowledge Bases** → `{solution_suffix}-kb` exists, status is *Ready*, and it lists `{solution_suffix}-ks` as its source.
-2. **Agents** → an agent named `ChatAgent` exists, its model matches `AZURE_AI_AGENT_MODEL_DEPLOYMENT_NAME` / `AZURE_CHAT_MODEL` (default `gpt-5-mini`), and the **Tools** panel shows the `{solution_suffix}-kb-mcp-connection` MCP tool attached.
-3. **Connections** → the AI Search, Blob Storage, and KB MCP connections are all *Connected*.
-
-> If `setup_agent` finished with a warning during deployment, this verification is the recommended way to check whether the agent was actually created. If `ChatAgent` is missing, simply re-run `azd up`.
-
-**Test the agent from the CLI**:
-```bash
-# From the repository root
-python infra/scripts/foundry/test_agent.py
-```
+| Component | Default Name | Purpose |
+|-----------|--------------|---------|
+| **Search Index** | `{solution_suffix}-documents` | Chunked PDFs with embeddings for hybrid retrieval |
+| **Knowledge Source** | `{solution_suffix}-ks` | Pointer to AI Search index |
+| **Knowledge Base** | `{solution_suffix}-kb` | Automatic query planning over knowledge source |
+| **KB MCP Connection** | `{solution_suffix}-kb-mcp-connection` | Exposes Knowledge Base to agent via MCP |
+| **Chat Agent** | `ChatAgent` | AI agent for document Q&A with citations |
 
 ### Environment Variables
 
-All connection details are saved in your azd environment. View them with:
+View all deployment outputs with:
+
 ```bash
 azd env get-values
 ```
 
-Key outputs:
-- `AZURE_AI_AGENT_ENDPOINT` — Microsoft Foundry agent endpoint
-- `AZURE_AI_SEARCH_ENDPOINT` — Search service endpoint
-- `AZURE_STORAGE_BLOB_ENDPOINT` — Document storage endpoint
-- `AZURE_FABRIC_CAPACITY_NAME` — Fabric capacity name
-- `SOLUTION_NAME` / `SOLUTION_SUFFIX` — Your solution identifier and suffix used in resource names
+**Key outputs:**
 
-### Next Steps
-
-1. **Add your documents**: drop PDFs into [`src/foundry/data/documents/`](../src/foundry/data/documents/) and re-run the deployment to refresh the knowledge base:
-   ```bash
-   azd up
-   ```
-   This re-executes `setup_knowledge_base` (Step 1), which re-uploads PDFs to blob storage and re-indexes them.
-2. **Explore the Fabric workspace**: open notebooks and run the data pipelines.
-3. **Test the agent**: use the test script above, or chat with `ChatAgent` from the Foundry portal.
-4. **View dashboards**: access the Power BI reports in the Fabric workspace.
+| Variable | Description |
+|----------|-------------|
+| `AZURE_AI_AGENT_ENDPOINT` | Microsoft Foundry agent endpoint |
+| `AZURE_AI_SEARCH_ENDPOINT` | Search service endpoint |
+| `AZURE_STORAGE_BLOB_ENDPOINT` | Document storage endpoint |
+| `AZURE_FABRIC_CAPACITY_NAME` | Fabric capacity name |
+| `FABRIC_WORKSPACE_ID` | Fabric workspace ID |
+| `SOLUTION_NAME` / `SOLUTION_SUFFIX` | Solution identifier |
 
 ---
 
-## Environment Cleanup
+## Step 7: Clean Up (Optional)
 
-To remove all deployed resources:
+### Remove All Resources
+
+When you no longer need the deployment:
 
 ```bash
-azd down
+# Navigate to your solution directory
+cd microsoft-iq-solution-accelerator
+
+# Remove everything deployed by azd up
+azd down --force --purge
 ```
 
-This command:
-- Runs the `predown` hook ([`remove_microsoft_iq_solution.py`](../infra/scripts/remove_microsoft_iq_solution.py)) to delete the Fabric workspace
-- Deletes the Azure Resource Group and all resources inside it (including the Fabric capacity)
-- Preserves your local `.azure/{environment}` configuration unless you also pass `--purge`
+**What Gets Cleaned Up:**
+
+- ✅ Fabric workspace and all components
+- ✅ Azure infrastructure (Foundry, AI Search, Storage, OpenAI deployments)
+- ✅ Fabric capacity (if created by deployment)
+- ✅ Resource groups and configurations
+
+**What Gets Preserved:**
+
+- ✅ Local development files
+- ✅ Environment configurations (unless `--purge` is used)
+- ✅ Source code
+
+### Manual Cleanup (If Needed)
+
+If automated cleanup fails:
+
+1. Go to [Azure Portal](https://portal.azure.com/)
+2. Navigate to Resource Groups
+3. Select your resource group
+4. Click **Delete resource group**
+5. Confirm deletion
+
+> **Note:** This command removes all Azure resources. Ensure you've backed up any important data before running cleanup.
+
+---
+
+## Known Issues and Troubleshooting
+
+### Fabric REST API Permission Issues
+
+**Problem:** Deployment fails during workspace or component creation
+
+**Symptoms:**
+
+- Error mentions "insufficient permissions" or "unauthorized access"
+- Workspace creation fails
+
+**Resolution:**
+
+1. **Verify Fabric Licensing**: Ensure your organization has appropriate [Microsoft Fabric licenses](https://learn.microsoft.com/fabric/enterprise/licenses)
+
+2. **Verify Organization Setup:**
+   - Confirm [Microsoft Fabric is enabled](https://learn.microsoft.com/fabric/admin/fabric-switch) in your organization
+   - Check that appropriate Fabric licenses are assigned
+
+3. **Enable Required Tenant Settings:**
+   - Go to [Fabric Admin Portal](https://app.fabric.microsoft.com/admin-portal)
+   - Navigate to Tenant settings
+   - Enable **Ontology (preview)** and **Copilot and Azure OpenAI Service**
+
+4. **Verify Azure Permissions:**
+   - Confirm deployment identity has **Contributor** or **Owner** role on subscription/resource group
+   - Check that **Microsoft.Fabric** resource provider is registered
+
+### Agent Setup Fails (Best-Effort)
+
+**Problem:** The `setup_agent` step completes with a warning
+
+**Resolution:** This is expected behavior—the step uses best-effort semantics. Verify the agent in the [Foundry portal](https://ai.azure.com):
+
+1. Navigate to your project
+2. Check **Agents** → `ChatAgent` exists
+3. If missing, re-run `azd up`
+
+### Propagation Delays
+
+**Problem:** Ontology or Data Agent options not visible in Fabric workspace
+
+**Resolution:** Tenant settings may take up to **15 minutes** to propagate. Wait and refresh the page.
+
+### Azure Foundry Agent Publish — Protocol Error
+
+**Problem:** Publishing the Foundry agent fails with a protocol error message
+
+**Symptoms:**
+
+- Error message references a protocol mismatch or connection protocol issue during agent publish
+
+**Resolution:**
+
+1. Retry the publish operation — transient protocol errors often resolve on retry
+2. Ensure you are using a supported browser (Microsoft Edge or Google Chrome) and are not behind a proxy that modifies request headers
+3. Check that the Azure AI Foundry endpoint is reachable from your network — verify no firewall or VPN is blocking the connection
+4. If the error persists, navigate to [ai.azure.com](https://ai.azure.com), open your project, go to **Agents**, and manually verify or re-create the `ChatAgent`
+5. Re-run `azd up` to re-attempt agent setup — the step is idempotent and safe to retry
+
+### Graph Not Loading in Fabric
+
+**Problem:** The ontology graph or knowledge graph view does not load in the Fabric workspace
+
+**Symptoms:**
+
+- Graph view is blank or stuck loading
+- No nodes or edges appear after workspace deployment
+
+**Resolution:**
+
+Tenant settings changes (Ontology preview, Data Agents) can take up to **15 minutes** to propagate across the tenant. Wait 15 minutes, then:
+
+1. Refresh the browser tab
+2. If using the Fabric desktop app, sign out and sign back in
+3. If the graph still does not appear, confirm that **Ontology (preview)** is enabled in your [Fabric Admin Portal](https://app.fabric.microsoft.com/admin-portal) under **Tenant settings**
+
+### Teams Agent Not Responding
+
+**Problem:** The Work IQ agent in Microsoft Teams does not respond to messages
+
+**Symptoms:**
+
+- Agent is visible in Teams but does not reply
+- Messages appear sent but no response is received
+
+**Resolution:**
+
+1. **Verify the agent is published**: In [Copilot Studio](https://copilotstudio.microsoft.com), confirm the agent has been published at least once and the **Teams** channel is enabled
+
+2. **Refresh Teams cache**: Teams caches app configurations — sign out and sign back into the Teams desktop client, or refresh the browser if using Teams on the web
+
+3. **Disconnect and reconnect the Teams channel**:
+   1. In Copilot Studio, open your agent and select **Channels**
+   2. Select the **Teams and Microsoft 365 Copilot** tile
+   3. Select **Remove channel** and confirm **Disconnect**
+   4. Wait a few minutes, then select **Add channel** to reconnect
+   5. Republish the agent and reinstall it in Teams via **See agent in Teams** → **Add**
+
+4. **Use Teams on the web as a fallback**: Navigate to [teams.microsoft.com](https://teams.microsoft.com) to interact with the agent while the desktop client cache refreshes
+
+5. **Check connection authorizations**: In the Power Platform solution, ensure all connections (Work IQ, Microsoft Teams, Copilot Studio, Office 365 Outlook) are signed in and authorized — unauthorized connections silently prevent the agent from responding
+
+### For Additional Help
+
+- Review [Technical Architecture](./TechnicalArchitecture.md) for system design questions
+- See [FAQ](./FAQs.md) for common questions
+
+---
+
+## Next Steps
+
+Now that deployment is complete, explore these resources:
+
+- **[Copilot Studio Deployment](./copilot/DeploymentGuide.md)**: Complete Work IQ setup
+- **[Copilot Studio Testing](./copilot/TestingGuide.md)**: End-to-end QA testing
+- **[Manual Fabric Deployment](./fabric/DeploymentGuideFabricManual.md)**: Fabric workspace only (no Azure infrastructure)
+- **[Foundry Deep-Dive](./foundry/DeploymentGuideFoundry.md)**: Foundry-specific details
+- **[Technical Architecture](./TechnicalArchitecture.md)**: System design and data flow
+
+---
+
+## Need Help?
+
+- 🐛 **Issues:** Check [Known Issues and Troubleshooting](#known-issues-and-troubleshooting) section above
+- 🐞 **Report Issue:** [Open a GitHub Issue](https://github.com/microsoft/microsoft-iq-solution-accelerator/issues/new) for bugs or problems
+- 💬 **Support:** Review [Support Guidelines](../SUPPORT.md)
+- 🔧 **Contributing:** See [Contributing Guide](../CONTRIBUTING.md)
+- 📖 **FAQs:** Check [Frequently Asked Questions](./FAQs.md)
 
 ---
 
 ## Additional Resources
 
-- **Manual Fabric Notebook Deployment**: [DeploymentGuideFabricManual.md](./fabric/DeploymentGuideFabricManual.md) — Fabric workspace items only, no Azure infrastructure or Foundry.
-- **Work IQ (Copilot Studio) Deployment**: [docs/copilot/DeploymentGuide.md](./copilot/DeploymentGuide.md)
-- **Work IQ (Copilot Studio) Testing**: [docs/copilot/TestingGuide.md](./copilot/TestingGuide.md)
-- **Azure Developer CLI Documentation**: [learn.microsoft.com/azure/developer/azure-developer-cli](https://learn.microsoft.com/azure/developer/azure-developer-cli/overview)
-- **Microsoft Fabric Documentation**: [learn.microsoft.com/fabric](https://learn.microsoft.com/fabric/)
-- **Microsoft Foundry Documentation**: [learn.microsoft.com/azure/foundry](https://learn.microsoft.com/azure/foundry/what-is-foundry)
-- **GitHub Repository**: [microsoft/microsoft-iq-solution-accelerator](https://github.com/microsoft/microsoft-iq-solution-accelerator)
+- **Azure Developer CLI Documentation:** [learn.microsoft.com/azure/developer/azure-developer-cli](https://learn.microsoft.com/azure/developer/azure-developer-cli/overview)
+- **Microsoft Fabric Documentation:** [learn.microsoft.com/fabric](https://learn.microsoft.com/fabric/)
+- **Microsoft Foundry Documentation:** [learn.microsoft.com/azure/foundry](https://learn.microsoft.com/azure/foundry/what-is-foundry)
+- **GitHub Repository:** [microsoft/microsoft-iq-solution-accelerator](https://github.com/microsoft/microsoft-iq-solution-accelerator)

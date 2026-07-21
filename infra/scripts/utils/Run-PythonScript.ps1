@@ -10,8 +10,8 @@
 .PARAMETER ScriptPath
     Relative path to the Python script to execute (relative to repository root).
     Examples: 
-    - "infra/scripts/fabric/deploy_fabric_rti.py"
-    - "infra/scripts/fabric/delete_fabric_rti.py" 
+    - "infra/scripts/install_microsoft_iq_solution.py"
+    - "infra/scripts/remove_microsoft_iq_solution.py" 
 
 .PARAMETER ScriptArguments
     Optional array of arguments to pass to the Python script.
