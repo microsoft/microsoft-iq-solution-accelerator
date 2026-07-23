@@ -680,19 +680,30 @@ If automated cleanup fails:
 
 ### Azure Foundry Agent Publish — Protocol Error
 
-**Problem:** Publishing the Foundry agent fails with a protocol error message
+**Problem:** Agent deployment fails with HTTP 400 error indicating a protocol mismatch between the client and the agent endpoint
+
+**Error Message:**
+
+```
+The connector 'Azure AI Foundry Agent Service' returned an HTTP error with code 400.
+Inner Error: Agent endpoint does not support activity. Please update the agent endpoint to support this protocol.
+```
 
 **Symptoms:**
 
-- Error message references a protocol mismatch or connection protocol issue during agent publish
+- Agent publish fails with protocol error during Copilot Studio integration
+- Connection attempt shows "endpoint does not support activity" message
+- Agent is unreachable from Teams or Work IQ
 
 **Resolution:**
 
-1. Retry the publish operation — transient protocol errors often resolve on retry
-2. Ensure you are using a supported browser (Microsoft Edge or Google Chrome) and are not behind a proxy that modifies request headers
-3. Check that the Azure AI Foundry endpoint is reachable from your network — verify no firewall or VPN is blocking the connection
-4. If the error persists, navigate to [ai.azure.com](https://ai.azure.com), open your project, go to **Agents**, and manually verify or re-create the `ChatAgent`
-5. Re-run `azd up` to re-attempt agent setup — the step is idempotent and safe to retry
+Fix — enable the Activity Protocol in the Foundry portal
+1. Open Microsoft Foundry portal → your project → Agents → ChatAgent.
+2. Click Deploy (or Channels / Endpoints, depending on portal version) in the agent's top-right menu.
+3. Enable "Connect to Copilot Studio" or "Enable Activity Protocol" or "Publish to channels → Direct Line" — the label varies with the portal build.
+4. Copy the new activity-protocol endpoint that appears (it will end in something like /agents/ChatAgent/activity instead of /api/projects/...).
+5. In Copilot Studio → your agent → Agents → Microsoft Foundry connection → Edit → paste the new endpoint → Save.
+6. Test again.
 
 ### Graph Not Loading in Fabric
 
