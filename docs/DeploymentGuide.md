@@ -604,7 +604,10 @@ When you no longer need the deployment:
 cd microsoft-iq-solution-accelerator
 
 # Remove everything deployed by azd up
-azd down --force --purge
+azd down
+
+# (Optional) Also remove the local azd environment configuration
+# azd down --purge
 ```
 
 **What Gets Cleaned Up:**

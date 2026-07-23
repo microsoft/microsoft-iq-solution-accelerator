@@ -29,10 +29,10 @@
     Path to requirements.txt file. Defaults to repository root requirements.txt.
 
 .EXAMPLE
-    .\Run-PythonScript.ps1 -ScriptPath "infra/scripts/fabric/deploy_fabric_rti.py"
+    .\Run-PythonScript.ps1 -ScriptPath "infra/scripts/install_microsoft_iq_solution.py"
     
 .EXAMPLE
-    .\Run-PythonScript.ps1 -ScriptPath "infra/scripts/fabric/delete_fabric_rti.py" -SkipPythonVirtualEnvironment -SkipPythonDependencies
+    .\Run-PythonScript.ps1 -ScriptPath "infra/scripts/remove_microsoft_iq_solution.py" -SkipPythonVirtualEnvironment -SkipPythonDependencies
 
 .NOTES
     Prerequisites: PowerShell 7+, Python 3.9+
@@ -42,7 +42,7 @@
 #>
 
 param(
-    [Parameter(Mandatory = $true, HelpMessage = "Relative path to the Python script to execute (e.g., 'infra/scripts/fabric/deploy_fabric_rti.py')")]
+    [Parameter(Mandatory = $true, HelpMessage = "Relative path to the Python script to execute (e.g., 'infra/scripts/install_microsoft_iq_solution.py')")]
     [string]$ScriptPath,
     
     [Parameter(Mandatory = $false, HelpMessage = "Optional array of arguments to pass to the Python script")]
