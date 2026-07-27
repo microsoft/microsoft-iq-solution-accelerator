@@ -1,4 +1,4 @@
-# Deployment Guide for MIcrosoft IQ
+# Deployment Guide for Microsoft IQ
 
 Deploy the **Microsoft IQ Solution Accelerator** using Azure Developer CLI to provision a complete enterprise intelligence platform. This automated deployment creates Fabric IQ (data lakehouse, semantic models, ontologies, data agents), Microsoft Foundry (intelligent agents with knowledge base search), and prepares Work IQ (Copilot Studio integration) for manual configuration—all ready to use in minutes.
 
