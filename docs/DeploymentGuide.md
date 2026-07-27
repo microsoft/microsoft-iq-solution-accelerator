@@ -1,4 +1,4 @@
-# Deployment Guide
+# Deployment Guide for MIcrosoft IQ
 
 Deploy the **Microsoft IQ Solution Accelerator** using Azure Developer CLI to provision a complete enterprise intelligence platform. This automated deployment creates Fabric IQ (data lakehouse, semantic models, ontologies, data agents), Microsoft Foundry (intelligent agents with knowledge base search), and prepares Work IQ (Copilot Studio integration) for manual configuration—all ready to use in minutes.
 
@@ -129,7 +129,7 @@ Deployment identity determines how your deployment interacts with Azure and Micr
 
 | Identity Type | Best For | Setup Required |
 |---------------|----------|----------------|
-| **User Account** | Interactive development and testing | Your Azure AD credentials |
+| **User Account** | Interactive development and testing | Your Microsoft Entra ID |
 | **Service Principal** | Automated deployments and CI/CD pipelines | [Federated identity credentials](https://learn.microsoft.com/azure/developer/github/connect-from-azure-openid-connect) |
 | **Managed Identity** | Azure-native automation | Azure subscription access |
 
@@ -701,12 +701,15 @@ Inner Error: Agent endpoint does not support activity. Please update the agent e
 **Resolution:**
 
 Fix — enable the Activity Protocol in the Foundry portal
-1. Open Microsoft Foundry portal → your project → Agents → ChatAgent.
-2. Click Deploy (or Channels / Endpoints, depending on portal version) in the agent's top-right menu.
-3. Enable "Connect to Copilot Studio" or "Enable Activity Protocol" or "Publish to channels → Direct Line" — the label varies with the portal build.
-4. Copy the new activity-protocol endpoint that appears (it will end in something like /agents/ChatAgent/activity instead of /api/projects/...).
-5. In Copilot Studio → your agent → Agents → Microsoft Foundry connection → Edit → paste the new endpoint → Save.
-6. Test again.
+1. Open **Microsoft Foundry** → **Project** → **Agent** → **Configuration/Endpoints**.
+2. Enable the **Activity Endpoint (Activity Protocol)** and save the changes. 
+3. Select **Publish** → **Teams and Microsoft 365** and publish (or republish) the agent.
+4. Once publishing completes, copy the latest **Activity Protocol endpoint**.
+5. In Work IQ (or Copilot Studio), edit the Microsoft Foundry Agent connection and replace the existing endpoint with the newly published Activity Protocol endpoint.
+6. Reauthenticate if prompted and save the configuration.
+7. Test the agent from **Teams**, **Microsoft 365 Copilot**, or **Work IQ** and verify activity events appear in monitoring/traces. 
+
+> Note: Work IQ can communicate only through the agent's Activity Protocol endpoint. If it's disabled or an older endpoint is configured, the connection will fail. [Azure Foun...act Center | Word], [3. Microso...y Overview | PowerPoint]
 
 ### Graph Not Loading in Fabric
 
