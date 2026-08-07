@@ -74,16 +74,20 @@ After import, add the Fabric and Foundry agents again in Copilot Studio. Use Fab
 5. Select **Microsoft Foundry**.
 6. Authenticate with Microsoft Entra.
 7. Provide the Azure AI Foundry project endpoint configured during the Foundry deployment. The article uses the format `https://<project-resource>.services.ai.azure.com/api/projects/<project-name>`.
-8. Save the connection and confirm the Foundry agent appears in the connected-agent list.
- 
- 
+8. Set the following:
+   - **Name**: ChatAgent
+   - **Description**: You are a data analyst assistant for Microsoft IQ with access to documents and reference materials.
+   - **Agent Id**: ChatAgent
+     - This is the same name as the agent in Foundry.
+9. Save the connection and confirm the Foundry agent appears in the connected-agent list.
+
 ### 4.2 Add the Fabric Data Agent
  
 1. Stay in the same **Microsoft IQ Accelerator** agent.
 2. Navigate to **Agents** from the top pane and then select + Add to add agents.
 3. Select **Connect to an external agent** and select **Microsoft Fabric** from the dropdown.
 4. If there's already a connection between Microsoft Fabric and the Microsoft IQ agent, you can select **Next** and move to next step. Otherwise, select the dropdown and select Create new connection to establish a connection between Microsoft Fabric and Copilot Studio.
-5. Pick the published **Fabric Data Agent** that belongs to this solution.
+5. Pick the published **Fabric Data Agent** named **RetailSC Ontology Agent** that belongs to this solution.
 6. Save the connection and make sure the Fabric agent now shows up in the list of connected agents.
  
 ---
@@ -116,3 +120,16 @@ After import, add the Fabric and Foundry agents again in Copilot Studio. Use Fab
 4. Configure Teams as a channel: **Channels** → **Microsoft Teams** → **Turn on Teams**
  
 The solution is now active and ready to test. See the [Testing Guide](./TestingGuide.md) for the golden path QA flow.
+
+## Troubleshooting
+
+- **The connector 'Azure AI Foundry Agent Service' returned an HTTP error with code 400. Inner Error: Agent ChatAgent endpoint does not support activity. Please update the agent endpoint to support this protocol.**
+  - This error means the Foundry Agent doesn't have the `ActivityProtocol` enabled. This can occur on new deployments of agents. You will need to [programmatically enable this setting](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/configure-agent?tabs=rest#enable-protocols-and-authorization-schemes) on your `ChatAgent`. You can do this via the Azure CLI.
+    ```shell
+    az rest \
+    --method patch \
+    --url https://<foundry-resource>.services.ai.azure.com/api/projects/<project-name>/agents/ChatAgent?api-version=v1 \
+    --resource https://ai.azure.com \
+    --headers 'Content-Type=application/merge-patch+json' \
+    --body '{"agent_endpoint": {"protocol_configuration": {"activity": {}, "responses": {}, "invocations": {}, "a2a": {}}, "authorization_schemes": [{"type": "Entra"}, {"type": "BotServiceRbac"}]}}'
+    ```

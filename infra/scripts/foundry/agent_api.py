@@ -6,6 +6,7 @@ Provides functions for:
 - Building the default Knowledge Base agent instructions.
 - Creating a RemoteTool project connection for a Knowledge Base MCP endpoint.
 - Creating or replacing an AI Foundry agent with the Knowledge Base MCP tool.
+- Enabling the Activity protocol and authorization schemes on an agent endpoint.
 """
 
 import logging
@@ -160,7 +161,9 @@ def create_kb_mcp_connection(
     )
 
     credential = DefaultAzureCredential()
-    token = get_bearer_token_provider(credential, "https://management.azure.com/.default")()
+    token = get_bearer_token_provider(
+        credential, "https://management.azure.com/.default"
+    )()
     headers = {"Authorization": f"Bearer {token}"}
 
     url = (
@@ -248,4 +251,51 @@ def create_or_update_agent(
     return project_client.agents.create_version(
         agent_name=agent_name,
         definition=agent_definition,
+    )
+
+
+def enable_activity_protocol(project_endpoint: str, agent_name: str) -> None:
+    """Enable Activity and Responses protocols on an AI Foundry agent endpoint.
+
+    Configures the authorization schemes required for Microsoft Copilot Studio
+    to communicate with the agent through the Activity protocol.
+
+    Args:
+        project_endpoint: Azure AI Project endpoint URL.
+        agent_name: Name of the agent resource to update.
+
+    Raises:
+        RuntimeError: If the agent endpoint configuration cannot be updated.
+    """
+    import requests as http_requests
+    from azure.identity import DefaultAzureCredential, get_bearer_token_provider
+
+    credential = DefaultAzureCredential()
+    token = get_bearer_token_provider(credential, "https://ai.azure.com/.default")()
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/merge-patch+json",
+    }
+    url = f"{project_endpoint.rstrip('/')}/agents/{agent_name}?api-version=v1"
+    body = {
+        "agent_endpoint": {
+            "protocol_configuration": {
+                "activity": {},
+                "responses": {},
+                "invocations": {},
+                "a2a": {},
+            },
+            "authorization_schemes": [
+                {"type": "Entra"},
+                {"type": "BotServiceRbac"},
+            ],
+        }
+    }
+
+    response = http_requests.patch(url, headers=headers, json=body)
+    if response.status_code == 200:
+        return
+    raise RuntimeError(
+        "Activity protocol configuration failed "
+        f"({response.status_code}): {response.text[:500]}"
     )

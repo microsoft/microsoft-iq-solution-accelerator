@@ -11,12 +11,14 @@ import logging
 from pathlib import Path
 
 from common.config import DATA_DIR
+
 from foundry.agent_api import (
     CHAT_AGENT_NAME,
     build_agent_instructions,
     create_agent_client,
     create_kb_mcp_connection,
     create_or_update_agent,
+    enable_activity_protocol,
 )
 
 # Module-level logger — inherits configuration from the root logger set up
@@ -55,9 +57,13 @@ def setup_agent(
     """
     # Default scenario info
     _data_path = Path(DATA_DIR)
-    _config_dir = _data_path / "config" if (_data_path / "config").exists() else _data_path
+    _config_dir = (
+        _data_path / "config" if (_data_path / "config").exists() else _data_path
+    )
     _scenario_name = solution_name
-    _scenario_desc = "Managing delivery operations, inventory logistics, and supplier relationships."
+    _scenario_desc = (
+        "Managing delivery operations, inventory logistics, and supplier relationships."
+    )
 
     # Build agent instructions
     _instructions = build_agent_instructions(_scenario_name, _scenario_desc)
@@ -103,5 +109,10 @@ def setup_agent(
             instructions=_instructions,
             mcp_endpoint=_mcp_ep,
             connection_name=kb_mcp_connection_name,
+        )
+        logger.info("   Enabling Activity protocol and authorization…")
+        enable_activity_protocol(
+            project_endpoint=agent_endpoint,
+            agent_name=CHAT_AGENT_NAME,
         )
     logger.info(f"   Agent '{_agent.name}' ready (id: {_agent.id})")
