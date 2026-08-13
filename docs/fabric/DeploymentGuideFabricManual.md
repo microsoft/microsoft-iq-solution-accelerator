@@ -102,6 +102,6 @@ Delete the workspace from the Fabric portal:
 
 ## Next steps
 
-- For a fully automated end-to-end deployment that also provisions Foundry, the chat agent, and the knowledge base, switch to the [top-level Deployment Guide](../DeploymentGuide.md).
+- For a fully automated end-to-end deployment that also provisions Foundry, the chat agent, and the knowledge base, switch to the [top-level Deployment Guide](../DeploymentGuide.md). That workflow can use public repository citation URLs when organizational storage policy blocks local Blob data-plane access.
 - For the Work IQ (Copilot Studio) component that orchestrates Fabric IQ + Foundry IQ from a single conversational ingress, see the [Copilot Studio Deployment Guide](../copilot/DeploymentGuide.md).
 - Microsoft Fabric documentation: [learn.microsoft.com/fabric](https://learn.microsoft.com/fabric/).
