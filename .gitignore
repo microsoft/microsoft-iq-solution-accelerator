@@ -206,3 +206,19 @@ __marimo__/
 
 # Deployment-specific configuration files
 infra/preflight-*.bicepparam
+
+# Terraform local and generated files
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+*.tfplan
+tfplan
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json

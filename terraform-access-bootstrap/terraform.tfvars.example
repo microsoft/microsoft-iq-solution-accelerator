@@ -1,0 +1,50 @@
+environment         = "hackathon"
+subscription_id     = "00000000-0000-0000-0000-000000000000"
+resource_group_name = "rg-hackathon"
+group_prefix        = "contoso"
+
+# Resource ID of the Azure AI Foundry project/hub or Azure AI Services resource.
+# Foundry roles are assigned here instead of to the whole resource group.
+foundry_resource_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-hackathon/providers/Microsoft.CognitiveServices/accounts/ai-hackathon"
+
+# Optional: only required if administrators need to manage the Fabric capacity.
+# fabric_capacity_resource_id = "/subscriptions/.../resourceGroups/.../providers/Microsoft.Fabric/capacities/<capacity-name>"
+
+# Optional: only required if the Foundry agent uses Azure AI Search for grounding/RAG.
+# search_service_resource_id = "/subscriptions/.../resourceGroups/.../providers/Microsoft.Search/searchServices/<search-name>"
+
+# Optional: only required if the Foundry agent reads/writes blobs (file uploads, RAG sources).
+# storage_account_resource_id = "/subscriptions/.../resourceGroups/.../providers/Microsoft.Storage/storageAccounts/<storage-name>"
+
+# Optional: grants administrators 'Cognitive Services User' on the Foundry resource for
+# post-deploy management (requires foundry_resource_id to be set).
+# admin_cognitive_services_role = true
+
+# Optional: Fabric workspace ID. When set, `terraform apply` calls the Fabric REST API
+# to add the administrators group as a Fabric workspace Admin. Requires the caller to
+# be logged in via `az login` and already hold Fabric workspace admin rights.
+# fabric_workspace_id = "00000000-0000-0000-0000-000000000000"
+
+owners = [
+  "platform-admin@contoso.com",
+]
+
+eligible_members = [
+  "developer1@contoso.com",
+  "developer2@contoso.com",
+]
+
+permanent_members = [
+  "observer@contoso.com",
+]
+
+# Azure AI Foundry data-plane roles are assigned as PIM-eligible roles to the
+# contributor group. Do not add Contributor/User Access Administrator unless approved.
+azure_role_definitions = [
+  "Azure AI Developer",
+  "Cognitive Services OpenAI User",
+]
+
+# Leave empty unless you have an approved Entra directory-role requirement.
+# Examples require the Entra built-in role template GUID, not the role display name.
+directory_role_templates = []
