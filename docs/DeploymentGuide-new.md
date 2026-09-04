@@ -1,4 +1,4 @@
-# Deployment Guide for Microsoft IQ
+# Deployment Guide
 
 Deploy the **Microsoft IQ Solution Accelerator** using Azure Developer CLI to provision a complete enterprise intelligence platform. This automated deployment creates Fabric IQ (data lakehouse, semantic models, ontologies, data agents), Microsoft Foundry (intelligent agents with knowledge base search), and prepares Work IQ (Copilot Studio integration) for manual configuration—all ready to use in minutes.
 
@@ -129,7 +129,7 @@ Deployment identity determines how your deployment interacts with Azure and Micr
 
 | Identity Type | Best For | Setup Required |
 |---------------|----------|----------------|
-| **User Account** | Interactive development and testing | Your Microsoft Entra ID |
+| **User Account** | Interactive development and testing | Your Azure AD credentials |
 | **Service Principal** | Automated deployments and CI/CD pipelines | [Federated identity credentials](https://learn.microsoft.com/azure/developer/github/connect-from-azure-openid-connect) |
 | **Managed Identity** | Azure-native automation | Azure subscription access |
 
@@ -604,10 +604,7 @@ When you no longer need the deployment:
 cd microsoft-iq-solution-accelerator
 
 # Remove everything deployed by azd up
-azd down
-
-# (Optional) Also remove the local azd environment configuration
-# azd down --purge
+azd down --force --purge
 ```
 
 **What Gets Cleaned Up:**
@@ -683,33 +680,19 @@ If automated cleanup fails:
 
 ### Azure Foundry Agent Publish — Protocol Error
 
-**Problem:** Agent deployment fails with HTTP 400 error indicating a protocol mismatch between the client and the agent endpoint
-
-**Error Message:**
-
-```
-The connector 'Azure AI Foundry Agent Service' returned an HTTP error with code 400.
-Inner Error: Agent endpoint does not support activity. Please update the agent endpoint to support this protocol.
-```
+**Problem:** Publishing the Foundry agent fails with a protocol error message
 
 **Symptoms:**
 
-- Agent publish fails with protocol error during Copilot Studio integration
-- Connection attempt shows "endpoint does not support activity" message
-- Agent is unreachable from Teams or Work IQ
+- Error message references a protocol mismatch or connection protocol issue during agent publish
 
 **Resolution:**
 
-Fix — enable the Activity Protocol in the Foundry portal
-1. Open **Microsoft Foundry** → **Project** → **Agent** → **Configuration/Endpoints**.
-2. Enable the **Activity Endpoint (Activity Protocol)** and save the changes. 
-3. Select **Publish** → **Teams and Microsoft 365** and publish (or republish) the agent.
-4. Once publishing completes, copy the latest **Activity Protocol endpoint**.
-5. In Work IQ (or Copilot Studio), edit the Microsoft Foundry Agent connection and replace the existing endpoint with the newly published Activity Protocol endpoint.
-6. Reauthenticate if prompted and save the configuration.
-7. Test the agent from **Teams**, **Microsoft 365 Copilot**, or **Work IQ** and verify activity events appear in monitoring/traces. 
-
-> Note: Work IQ can communicate only through the agent's Activity Protocol endpoint. If it's disabled or an older endpoint is configured, the connection will fail. [Azure Foun...act Center | Word], [3. Microso...y Overview | PowerPoint]
+1. Retry the publish operation — transient protocol errors often resolve on retry
+2. Ensure you are using a supported browser (Microsoft Edge or Google Chrome) and are not behind a proxy that modifies request headers
+3. Check that the Azure AI Foundry endpoint is reachable from your network — verify no firewall or VPN is blocking the connection
+4. If the error persists, navigate to [ai.azure.com](https://ai.azure.com), open your project, go to **Agents**, and manually verify or re-create the `ChatAgent`
+5. Re-run `azd up` to re-attempt agent setup — the step is idempotent and safe to retry
 
 ### Graph Not Loading in Fabric
 
