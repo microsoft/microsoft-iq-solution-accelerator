@@ -11,8 +11,9 @@ echo ">>> Running setup_env.sh ..."
 if ! dpkg -s msodbcsql18 >/dev/null 2>&1; then
     echo ">>> Adding Microsoft SQL Server ODBC repository and installing msodbcsql18..."
     sudo bash -eu <<'EOF'
-        curl -sSL https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-        curl -sSL https://packages.microsoft.com/config/debian/11/prod.list \
+        curl -sSL https://packages.microsoft.com/keys/microsoft.asc \
+            | gpg --dearmor --yes -o /usr/share/keyrings/microsoft-prod.gpg
+        curl -sSL https://packages.microsoft.com/config/debian/12/prod.list \
             > /etc/apt/sources.list.d/mssql-release.list
 
         export DEBIAN_FRONTEND=noninteractive

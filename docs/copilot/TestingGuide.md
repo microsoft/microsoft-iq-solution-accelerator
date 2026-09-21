@@ -85,7 +85,7 @@ Send an email to trigger the agent. Use one of these example scenarios that test
 Hi Team,
 
 I just received notification that our primary camping tent supplier, 
-Mountain Peak Manufacturing, is experiencing production delays due to 
+Worldwide Importers, is experiencing production delays due to 
 material shortages. This could impact our inventory levels significantly.
 
 Can you provide:
