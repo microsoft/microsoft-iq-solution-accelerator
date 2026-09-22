@@ -7,7 +7,7 @@ This directory contains the development container configuration for the **Micros
 | File | Purpose |
 |---|---|
 | [`devcontainer.json`](./devcontainer.json) | Dev container manifest: base image build, [dev container Features](https://containers.dev/features), VS Code extensions and settings, mounts, port forwarding, and the `postCreateCommand`. |
-| [`Dockerfile`](./Dockerfile) | Base image (`mcr.microsoft.com/devcontainers/python:3.11-bullseye`) with a fix that removes the expired Yarn apt repo to avoid GPG errors. |
+| [`Dockerfile`](./Dockerfile) | Base image (`mcr.microsoft.com/devcontainers/python:3.11-bookworm`) with a fix that removes the expired Yarn apt repo to avoid GPG errors. |
 | [`post-create.sh`](./post-create.sh) | Runs as the `vscode` user after the container is built. Installs Python project dependencies, dev tooling, helpful aliases, and fixes script permissions / line endings. |
 | [`setup_env.sh`](./setup_env.sh) | Runs after `post-create.sh`. Installs the Microsoft SQL Server ODBC driver (`msodbcsql18`) under `sudo`, then refreshes the working tree and ensures helper scripts under [`infra/scripts/`](../infra/scripts/) are executable. |
 | [`.dockerignore`](./.dockerignore) | Excludes files from the Docker build context. |
@@ -69,7 +69,7 @@ Both options use the configuration documented below; the deployment guide descri
 ## Container Configuration
 
 ### Base configuration
-- **Base image**: `mcr.microsoft.com/devcontainers/python:3.11-bullseye` (see [`Dockerfile`](./Dockerfile))
+- **Base image**: `mcr.microsoft.com/devcontainers/python:3.11-bookworm` (see [`Dockerfile`](./Dockerfile))
 - **Remote user**: `vscode` (non-root)
 - **Host requirement**: 4 GB memory minimum (see `hostRequirements` in [`devcontainer.json`](./devcontainer.json))
 
