@@ -70,6 +70,9 @@ Quick deploy
 
 To deploy the solution in your environment, follow the [deployment guide](./docs/DeploymentGuide.md).
 
+| [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/microsoft/microsoft-iq-solution-accelerator) | [![Open in Dev Containers](https://img.shields.io/static/v1?style=for-the-badge&label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/microsoft/microsoft-iq-solution-accelerator) |
+|---|---|
+
 ### Prerequisites and costs
 
 To deploy this solution accelerator, ensure you have access to an [Azure subscription](https://azure.microsoft.com/free/) with the following permissions:
