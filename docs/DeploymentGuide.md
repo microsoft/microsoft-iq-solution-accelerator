@@ -245,6 +245,7 @@ Customize your deployment by setting `azd` environment variables before running 
 | Category | Variable | Description | Default | Example |
 |----------|----------|-------------|---------|---------|
 | **Common** | `ENABLE_TELEMETRY` | Enable/disable usage telemetry | `true` | `azd env set ENABLE_TELEMETRY false` |
+| | `AZURE_SOLUTION_UNIQUE_TEXT` | Override the 5-character resource-name suffix when a soft-deleted global name is still reserved | Deterministic value | `azd env set AZURE_SOLUTION_UNIQUE_TEXT e13a6` |
 | **Fabric Capacity** | `FABRIC_CAPACITY_SKU_NAME` | Fabric capacity SKU | `F2` | `azd env set FABRIC_CAPACITY_SKU_NAME F4` |
 | | `AZURE_EXISTING_FABRIC_CAPACITY_NAME` | Use an existing Fabric capacity (skips creation) | _(empty)_ | `azd env set AZURE_EXISTING_FABRIC_CAPACITY_NAME "my-capacity"` |
 | | `FABRIC_ADMIN_MEMBERS` | Additional Fabric capacity admins (JSON array of UPNs or object IDs) | `[]` | `azd env set FABRIC_ADMIN_MEMBERS '["user@contoso.com"]'` |
@@ -291,7 +292,7 @@ The deployment creates two integrated components in a single Azure Resource Grou
 #### 2. Microsoft Foundry Resources
 - **[Microsoft Foundry Hub & Project](https://learn.microsoft.com/azure/ai-studio/concepts/ai-resources)**: Core AI platform for agent management
 - **[Azure AI Search](https://learn.microsoft.com/azure/search/search-what-is-azure-search)**: Document indexing with [vector search](https://learn.microsoft.com/azure/search/vector-search-overview) and [knowledge base](https://learn.microsoft.com/en-us/azure/search/agentic-retrieval-how-to-create-knowledge-base?tabs=rbac%2C2025-11-01-preview&pivots=csharp)
-- **[Azure Storage Account](https://learn.microsoft.com/azure/storage/common/storage-account-overview)**: [Blob storage](https://learn.microsoft.com/azure/storage/blobs/storage-blobs-overview) for documents with direct citations
+- **[Azure Storage Account](https://learn.microsoft.com/azure/storage/common/storage-account-overview)**: [Blob storage](https://learn.microsoft.com/azure/storage/blobs/storage-blobs-overview) for documents with direct citations; deployments whose storage policy blocks local data-plane access use public repository URLs for citations
 - **[Azure OpenAI Models](https://learn.microsoft.com/azure/ai-services/openai/)**:
   - [`gpt-5-mini`](https://learn.microsoft.com/azure/ai-services/openai/concepts/models) - Chat completion (150K TPM)
   - [`text-embedding-3-small`](https://learn.microsoft.com/azure/ai-services/openai/concepts/models#embeddings) - Vector embeddings (80K TPM)
@@ -307,7 +308,7 @@ The deployment follows a **two-phase automated workflow**, both phases triggered
 | — | | | [Microsoft Foundry hub](https://learn.microsoft.com/azure/ai-studio/concepts/ai-resources), [project](https://learn.microsoft.com/azure/ai-studio/how-to/create-projects) & [connections](https://learn.microsoft.com/azure/ai-studio/how-to/connections-add) | Create the Foundry hub/project and the AI Search + Storage connections. |
 | — | | | AI Search service & Storage account | Provision the indexer + blob storage backing the knowledge base. |
 | — | | | [OpenAI model deployments](https://learn.microsoft.com/azure/ai-services/openai/how-to/create-resource) | Deploy the chat completion and embedding models. |
-| 1 | **Phase 2: Solution Bootstrap** | [`install_microsoft_iq_solution.py`](../infra/scripts/install_microsoft_iq_solution.py) (Python, `postprovision` hook) | `setup_knowledge_base` ([`step_knowledge_base.py`](../infra/scripts/foundry/step_knowledge_base.py)) | Create the Azure AI Search index, upload PDFs from [`src/foundry/data/documents/`](../src/foundry/data/documents/), and provision the Foundry IQ knowledge source and knowledge base. |
+| 1 | **Phase 2: Solution Bootstrap** | [`install_microsoft_iq_solution.py`](../infra/scripts/install_microsoft_iq_solution.py) (Python, `postprovision` hook) | `setup_knowledge_base` ([`step_knowledge_base.py`](../infra/scripts/foundry/step_knowledge_base.py)) | Create the Azure AI Search index, upload PDFs from [`src/foundry/data/documents/`](../src/foundry/data/documents/), and provision the Foundry IQ knowledge source and knowledge base. If storage policy blocks local Blob access, public repository URLs are used for citations. |
 | 2 | | | `setup_agent` ([`step_agent_setup.py`](../infra/scripts/foundry/step_agent_setup.py)) | Create the AI Foundry chat agent wired to the Knowledge Base via [MCP](https://modelcontextprotocol.io/introduction). **Best-effort**: transient platform errors are logged as warnings and the deployment continues. |
 | 3 | | | `setup_workspace` ([`step_workspace_setup.py`](../infra/scripts/fabric/step_workspace_setup.py)) | Create or find the Fabric workspace, assign it to the capacity, and resume the capacity if paused. |
 | 4 | | | `setup_administrators` ([`step_workspace_admins.py`](../infra/scripts/fabric/step_workspace_admins.py)) | Add [workspace administrators](https://learn.microsoft.com/fabric/get-started/roles-workspaces) using [Graph API](https://learn.microsoft.com/graph/overview) resolution with fallback. |
@@ -329,7 +330,7 @@ After successful deployment, you will have a single Azure Resource Group contain
 | **Microsoft Foundry Hub & Project** | Container for AI agents, model deployments, knowledge bases, and connections. |
 | **Azure OpenAI deployments** | Two model deployments inside the Foundry project: a chat completion model (default `gpt-5-mini`) and an embedding model (default `text-embedding-3-small`). |
 | **Azure AI Search** | Vector + keyword search service. Backs the Foundry knowledge base; index name `{solution_suffix}-documents`. |
-| **Azure Storage Account** | Blob storage for source documents. Container `{solution_suffix}-documents` is uploaded to by `setup_knowledge_base` and referenced by AI Search citations. |
+| **Azure Storage Account** | Blob storage for source documents. `setup_knowledge_base` uses container `{solution_suffix}-documents` when permitted; if storage policy blocks local Blob access, citations point to the public repository copies instead. |
 | **Log Analytics workspace + Application Insights** | Diagnostic and monitoring sink for the Foundry project, AI Search, and the chat agent. Reused if `AZURE_EXISTING_LOG_ANALYTICS_WORKSPACE_ID` is set. |
 | **Foundry connections** | Project connections wiring Foundry to AI Search, Blob Storage, and the Knowledge Base MCP endpoint (`{solution_suffix}-kb-mcp-connection`). |
 
@@ -415,7 +416,7 @@ Key outputs:
    ```bash
    azd up
    ```
-   This re-executes `setup_knowledge_base` (Step 1), which re-uploads PDFs to blob storage and re-indexes them.
+   This re-executes `setup_knowledge_base` (Step 1), which uploads PDFs to blob storage when permitted and re-indexes them. If storage policy blocks local Blob access, the indexed citations use public repository URLs.
 2. **Explore the Fabric workspace**: open notebooks and run the data pipelines.
 3. **Test the agent**: use the test script above, or chat with `ChatAgent` from the Foundry portal.
 4. **View dashboards**: access the Power BI reports in the Fabric workspace.

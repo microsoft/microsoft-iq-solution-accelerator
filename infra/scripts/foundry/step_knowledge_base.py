@@ -7,9 +7,14 @@ single top-level function callable from the entry-point script.
 """
 
 import logging
+import re
+import subprocess
 from pathlib import Path
+from urllib.parse import quote
 
-from common.config import DATA_DIR
+from azure.core.exceptions import HttpResponseError
+
+from common.config import DATA_DIR, REPO_ROOT
 from common.pdf_utils import process_pdfs_to_documents
 from foundry.blob_api import create_blob_service_client, upload_pdf_to_blob
 from foundry.search_api import (
@@ -24,6 +29,40 @@ from foundry.search_api import (
 # Module-level logger — inherits configuration from the root logger set up
 # by setup_logging() in the entry-point scripts.
 logger = logging.getLogger(__name__)
+
+
+def _get_repository_document_urls(pdf_files: list) -> dict:
+    """Build public raw GitHub URLs for locally checked-out PDF files."""
+    try:
+        remote = subprocess.run(
+            ["git", "remote", "get-url", "origin"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=True,
+        ).stdout.strip()
+        remote_head = subprocess.run(
+            ["git", "symbolic-ref", "--short", "refs/remotes/origin/HEAD"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+    except (subprocess.CalledProcessError, FileNotFoundError) as exc:
+        raise RuntimeError("Could not determine the GitHub repository for document citations") from exc
+
+    match = re.search(r"github\.com[/:]([^/]+/[^/]+?)(?:\.git)?$", remote)
+    if not match:
+        raise RuntimeError(f"Git remote is not a supported GitHub URL: {remote}")
+
+    repository = match.group(1)
+    branch = remote_head.removeprefix("origin/") or "main"
+    return {
+        pdf_path.name: (
+            f"https://raw.githubusercontent.com/{repository}/{quote(branch, safe='')}/"
+            f"{quote(pdf_path.relative_to(REPO_ROOT).as_posix(), safe='/')}"
+        )
+        for pdf_path in pdf_files
+    }
 
 
 def setup_knowledge_base(
@@ -77,9 +116,18 @@ def setup_knowledge_base(
     documents: list = []
     if pdf_files:
         logger.info(f"   Uploading {len(pdf_files)} PDF(s) to blob storage…")
-        for _pdf_path in pdf_files:
-            _url = upload_pdf_to_blob(_blob_client, blob_endpoint, blob_container_name, _pdf_path)
-            pdf_blob_urls[_pdf_path.name] = _url
+        try:
+            for _pdf_path in pdf_files:
+                _url = upload_pdf_to_blob(_blob_client, blob_endpoint, blob_container_name, _pdf_path)
+                pdf_blob_urls[_pdf_path.name] = _url
+        except HttpResponseError as _exc:
+            if _exc.error_code != "AuthorizationFailure":
+                raise
+            logger.warning(
+                "   Blob access is blocked by storage policy; using public repository URLs "
+                "for document citations"
+            )
+            pdf_blob_urls = _get_repository_document_urls(pdf_files)
 
         logger.info("   Processing and indexing document chunks…")
         documents = process_pdfs_to_documents(pdf_files, pdf_blob_urls)
