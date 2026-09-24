@@ -96,6 +96,9 @@ resource aiProject 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-pre
 resource aiProjectWithIdentity 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-preview' = if (!empty(aiProjectName) && enableSystemAssignedIdentity) {
   name: aiProjectName
   parent: aiServicesWithIdentity
+  dependsOn: [
+    aiServicesDeployments
+  ]
   location: aiLocation
   identity: {
     type: 'SystemAssigned'
