@@ -235,6 +235,9 @@ module searchServiceEnableIdentity 'deploy_enable_srch_managed_identity.bicep' =
 resource aiProject 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-preview' =  if (empty(azureExistingAIProjectResourceId)) {
   parent: aiServices
   name: aiProjectName
+  dependsOn: [
+    aiServicesDeployments
+  ]
   location: solutionLocation
   kind: 'AIServices'
   identity: {
@@ -334,13 +337,16 @@ resource assignOpenAIRoleToAISearch 'Microsoft.Authorization/roleAssignments@202
 module existingOpenAiProject 'deploy_foundry_role_assignment.bicep' = if (!empty(azureExistingAIProjectResourceId)) {
   name: 'assignOpenAIRoleToAISearchExisting'
   scope: resourceGroup(existingAIServiceSubscription, existingAIServiceResourceGroup)
+  dependsOn: [
+    assignFoundryRoleToMIExisting
+  ]
   params: {
     roleDefinitionId: cognitiveServicesOpenAIUser.id
     roleAssignmentName: guid(resourceGroup().id, aiSearch.id, cognitiveServicesOpenAIUser.id, 'openai-foundry')
     aiServicesName: existingAIServicesName
     aiProjectName: existingAIProjectName
     principalId: searchServiceEnableIdentity.outputs.principalId
-    enableSystemAssignedIdentity: true
+    enableSystemAssignedIdentity: false
   }
 }
 
