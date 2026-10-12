@@ -92,7 +92,7 @@ Optional env vars (user-configurable):
 ### Deployment flow
 
 [`install_microsoft_iq_solution.py`](../../infra/scripts/install_microsoft_iq_solution.py) runs 6 steps unconditionally (matching `ALL_DEPLOYMENT_STEPS`). All required env vars are sourced from `main.bicep` outputs via `azd`; the script aborts on the first step that raises:
-1. `setup_knowledge_base` — create AI Search index, upload PDFs, create Foundry IQ knowledge source and knowledge base (via [`foundry/step_knowledge_base.py`](../../infra/scripts/foundry/step_knowledge_base.py))
+1. `setup_knowledge_base` — create AI Search index, upload PDFs, create Foundry IQ knowledge source and knowledge base (via [`foundry/step_knowledge_base.py`](../../infra/scripts/foundry/step_knowledge_base.py)). If Blob upload returns `AuthorizationFailure` because storage policy blocks local data-plane access, use public raw GitHub URLs for citations and continue indexing the local PDF content.
 2. `setup_agent` — create AI Foundry agent with Knowledge Base MCP tool (via [`foundry/step_agent_setup.py`](../../infra/scripts/foundry/step_agent_setup.py))
 3. `setup_workspace` — create/find workspace, assign capacity, resume if paused (via [`fabric/step_workspace_setup.py`](../../infra/scripts/fabric/step_workspace_setup.py))
 4. `setup_administrators` — add admins with Graph API resolution + fallback (via [`fabric/step_workspace_admins.py`](../../infra/scripts/fabric/step_workspace_admins.py))

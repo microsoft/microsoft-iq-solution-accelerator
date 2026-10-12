@@ -5,6 +5,9 @@
     "solutionName": {
       "value": "${AZURE_ENV_NAME}"
     },
+    "solutionUniqueTextOverride": {
+      "value": "${AZURE_SOLUTION_UNIQUE_TEXT=}"
+    },
     "location": {
       "value": "${AZURE_LOCATION}"
     },

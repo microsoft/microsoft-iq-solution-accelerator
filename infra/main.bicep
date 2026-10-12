@@ -17,6 +17,10 @@ param solutionName string = 'miqsa'
 @description('A unique text value for the solution. This is used to ensure resource names are unique for global resources. Defaults to a 5-character substring of the unique string generated from the subscription ID, resource group name, and solution name.')
 param solutionUniqueText string = substring(uniqueString(subscription().id, resourceGroup().name, solutionName), 0, 5)
 
+@maxLength(5)
+@description('Optional override for the generated unique text when a globally unique resource name is unavailable.')
+param solutionUniqueTextOverride string = ''
+
 @minLength(3)
 @metadata({ azd: { type: 'location' } })
 @description('Azure region for all services. Defaults to the resource group location.')
@@ -127,12 +131,13 @@ param embeddingDeploymentCapacity int = 80
 param deployingUserPrincipalType string = 'User'
 
 // ========== Variables ========== //
+var effectiveSolutionUniqueText = empty(solutionUniqueTextOverride) ? solutionUniqueText : solutionUniqueTextOverride
 var solutionSuffix = toLower(trim(replace(
   replace(
     replace(
       replace(
         replace(
-          replace('${solutionName}${solutionUniqueText}', '-', ''),
+          replace('${solutionName}${effectiveSolutionUniqueText}', '-', ''),
         '_', ''),
       '.', ''),
     '/', ''),
@@ -193,7 +198,7 @@ module aifoundry 'deploy_ai_foundry.bicep' = {
   name: 'deploy_ai_foundry'
   params: {
     solutionName: solutionName
-    solutionUniqueText: solutionUniqueText
+    solutionUniqueText: effectiveSolutionUniqueText
     solutionLocation: aiDeploymentsLocation
     deploymentType: deploymentType
     gptModelName: gptModelName
@@ -227,7 +232,7 @@ output SOLUTION_NAME string = solutionName
 output SOLUTION_SUFFIX string = solutionSuffix
 
 @description('The unique text appended to solution name for global uniqueness')
-output SOLUTION_UNIQUE_TEXT string = solutionUniqueText
+output SOLUTION_UNIQUE_TEXT string = effectiveSolutionUniqueText
 
 // Fabric Outputs
 @description('The name of the Fabric capacity resource')
