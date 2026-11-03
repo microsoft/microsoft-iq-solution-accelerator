@@ -20,9 +20,6 @@ permissions:
 jobs:
   template_validation_job:
     runs-on: ubuntu-latest
-    if: >-
-      (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
-      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
     environment: production
     name: Template validation
 
