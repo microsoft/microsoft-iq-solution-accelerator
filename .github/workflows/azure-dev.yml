@@ -19,21 +19,15 @@ on:
       - "src/**"
       - ".github/workflows/azure-dev.yml"
 
-# Set up permissions for deploying with secretless Azure federated credentials
+# Azure OIDC permissions are granted only to non-PR jobs.
 permissions:
-  id-token: write
   contents: read
 
 env:
   # ==================================================================
   # Required variables
   # ==================================================================
-  # Needed for Azure OIDC login and `azd up`.
-
-  # --- Azure federated credentials (Secrets) ---
-  AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-  AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-  AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  # Azure credentials and private-repo tokens are scoped to non-PR jobs below.
 
   # --- azd environment / resource group ---
   # Override via repo/environment Variables to redeploy into an existing
@@ -59,9 +53,6 @@ env:
   # through to Bicep and breaks params with @allowed / @minLength(1).
   #
   # Reference: docs/DeploymentGuide.md → "Optional Configuration Variables".
-
-  # --- Fabric notebook private-repo access (Secret, safe if empty) ---
-  GITHUB_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
 
   # --- Azure region ---
   AZURE_LOCATION: ${{ vars.AZURE_LOCATION || 'eastus' }}
@@ -106,23 +97,12 @@ env:
   # AZURE_AI_AGENT_MODEL_DEPLOYMENT_NAME: ${{ vars.AZURE_AI_AGENT_MODEL_DEPLOYMENT_NAME }}
   # KB_MCP_CONNECTION_NAME: ${{ vars.KB_MCP_CONNECTION_NAME }}
 jobs:
-  build:
+  static-analysis:
     runs-on: ubuntu-latest
     name: Build and Static Analysis
-    environment: production
-    outputs:
-      env_name: ${{ steps.set_env.outputs.env_name }}
-      resource_group_name: ${{ steps.check_create_rg.outputs.RESOURCE_GROUP_NAME }}
     steps:
       - name: Checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
-
-      - name: Setup Azure CLI
-        uses: azure/login@f5d393ae46f8fde4be8b75f32e3fc50e654ad0ca # v3.0.1
-        with:
-          client-id: ${{ env.AZURE_CLIENT_ID }}
-          tenant-id: ${{ env.AZURE_TENANT_ID }}
-          subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
 
       - name: Install Bicep CLI
         run: |
@@ -139,6 +119,34 @@ jobs:
           # Run bicep linter
           bicep lint infra/main.bicep
           echo "✅ Bicep linting completed"
+
+  build:
+    runs-on: ubuntu-latest
+    name: Validate Azure Provisioning
+    needs: static-analysis
+    if: github.event_name != 'pull_request'
+    environment: production
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      GITHUB_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
+    outputs:
+      env_name: ${{ steps.set_env.outputs.env_name }}
+      resource_group_name: ${{ steps.check_create_rg.outputs.RESOURCE_GROUP_NAME }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+
+      - name: Setup Azure CLI
+        uses: azure/login@f5d393ae46f8fde4be8b75f32e3fc50e654ad0ca # v3.0.1
+        with:
+          client-id: ${{ env.AZURE_CLIENT_ID }}
+          tenant-id: ${{ env.AZURE_TENANT_ID }}
+          subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
 
       - name: Install azd
         uses: Azure/setup-azd@0b7e3a35ab00f2eee7080c845eb39c3f0ebfa553 # v2.4.0
@@ -221,7 +229,14 @@ jobs:
     # Skip the deploy job on pull_request events; PRs only run build / static
     # analysis. Deployment runs on push to a branch and on workflow_dispatch.
     if: github.event_name != 'pull_request'
+    permissions:
+      id-token: write
+      contents: read
     env:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      GITHUB_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
       ENV_NAME: ${{ needs.build.outputs.env_name }}
       RESOURCE_GROUP_NAME: ${{ needs.build.outputs.resource_group_name }}
     outputs:
@@ -389,8 +404,15 @@ jobs:
     name: Cleanup Resources
     environment: production
     needs: [build, deploy]
-    if: always() && needs.deploy.result != 'skipped'
+    if: always() && github.event_name != 'pull_request' && needs.deploy.result != 'skipped'
+    permissions:
+      id-token: write
+      contents: read
     env:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      GITHUB_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
       ENV_NAME: ${{ needs.build.outputs.env_name || vars.ENV_NAME || 'miqsad' }}
       RESOURCE_GROUP_NAME: ${{ needs.build.outputs.resource_group_name || vars.RESOURCE_GROUP_NAME || 'rg-miqsad' }}
       SOLUTION_SUFFIX: ${{ needs.deploy.outputs.solution_suffix }}
