@@ -1,6 +1,6 @@
 name: CI/CD Azure
 
-# Trigger the workflow on push to main/master or manual dispatch
+# Run static checks on pushes, pull requests to main, and manual dispatch.
 on:
   workflow_dispatch:
   push:
@@ -124,7 +124,9 @@ jobs:
     runs-on: ubuntu-latest
     name: Validate Azure Provisioning
     needs: static-analysis
-    if: github.event_name != 'pull_request'
+    if: >-
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
+      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
     environment: production
     permissions:
       id-token: write
@@ -227,8 +229,10 @@ jobs:
     environment: production
     needs: build
     # Skip the deploy job on pull_request events; PRs only run build / static
-    # analysis. Deployment runs on push to a branch and on workflow_dispatch.
-    if: github.event_name != 'pull_request'
+    # analysis. Deployment runs only on main/dev pushes and manual dispatch.
+    if: >-
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
+      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
     permissions:
       id-token: write
       contents: read
@@ -404,7 +408,11 @@ jobs:
     name: Cleanup Resources
     environment: production
     needs: [build, deploy]
-    if: always() && github.event_name != 'pull_request' && needs.deploy.result != 'skipped'
+    if: >-
+      always() &&
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
+      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev') &&
+      needs.deploy.result != 'skipped'
     permissions:
       id-token: write
       contents: read
