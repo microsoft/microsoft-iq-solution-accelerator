@@ -31,9 +31,9 @@ env:
   # Needed for Azure OIDC login and `azd up`.
 
   # --- Azure federated credentials (Secrets) ---
-  AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-  AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-  AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  AZURE_CLIENT_ID: ${{ github.event_name != 'pull_request' && secrets.AZURE_CLIENT_ID || '' }}
+  AZURE_TENANT_ID: ${{ github.event_name != 'pull_request' && secrets.AZURE_TENANT_ID || '' }}
+  AZURE_SUBSCRIPTION_ID: ${{ github.event_name != 'pull_request' && secrets.AZURE_SUBSCRIPTION_ID || '' }}
 
   # --- azd environment / resource group ---
   # Override via repo/environment Variables to redeploy into an existing
@@ -61,7 +61,7 @@ env:
   # Reference: docs/DeploymentGuide.md → "Optional Configuration Variables".
 
   # --- Fabric notebook private-repo access (Secret, safe if empty) ---
-  GITHUB_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
+  GITHUB_TOKEN: ${{ github.event_name != 'pull_request' && secrets.GH_PAT_TOKEN || '' }}
 
   # --- Azure region ---
   AZURE_LOCATION: ${{ vars.AZURE_LOCATION || 'eastus' }}
@@ -109,7 +109,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     name: Build and Static Analysis
-    environment: production
+    environment: ${{ github.event_name != 'pull_request' && 'production' || '' }}
     outputs:
       env_name: ${{ steps.set_env.outputs.env_name }}
       resource_group_name: ${{ steps.check_create_rg.outputs.RESOURCE_GROUP_NAME }}
@@ -118,6 +118,7 @@ jobs:
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
       - name: Setup Azure CLI
+        if: github.event_name != 'pull_request'
         uses: azure/login@f5d393ae46f8fde4be8b75f32e3fc50e654ad0ca # v3.0.1
         with:
           client-id: ${{ env.AZURE_CLIENT_ID }}
@@ -144,6 +145,7 @@ jobs:
         uses: Azure/setup-azd@0b7e3a35ab00f2eee7080c845eb39c3f0ebfa553 # v2.4.0
 
       - name: Azure Developer CLI login
+        if: github.event_name != 'pull_request'
         shell: bash
         run: |
           azd auth login \
@@ -201,6 +203,7 @@ jobs:
           echo "RESOURCE_GROUP_NAME=$RESOURCE_GROUP_NAME" >> $GITHUB_ENV
 
       - name: Validate Bicep Template (azd provision --preview)
+        if: github.event_name != 'pull_request'
         shell: bash
         env:
           AZURE_RESOURCE_GROUP: ${{ env.RESOURCE_GROUP_NAME }}
