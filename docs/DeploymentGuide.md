@@ -55,7 +55,7 @@ Install the tools matching the [Deployment Environment Setup](#deployment-enviro
 - **Option 1 · Local Deployment** — on your host machine:
   - [Azure Developer CLI](https://learn.microsoft.com/azure/developer/azure-developer-cli/install-azd) (`azd`)
   - [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli) (`az`)
-  - [Python 3.9+](https://www.python.org/downloads/)
+  - [Python 3.10+](https://www.python.org/downloads/)
   - [PowerShell 7+](https://learn.microsoft.com/powershell/scripting/install/installing-powershell) — required because [`azure.yaml`](../azure.yaml) hooks invoke [`infra/scripts/utils/Run-PythonScript.ps1`](../infra/scripts/utils/Run-PythonScript.ps1)
   - [Git](https://git-scm.com/downloads)
 - **Option 2 · GitHub Codespaces** — zero local install; only a [GitHub account](https://github.com/join) with access to launch Codespaces is required. All tooling is pre-installed by [`.devcontainer/`](../.devcontainer/README.md).
